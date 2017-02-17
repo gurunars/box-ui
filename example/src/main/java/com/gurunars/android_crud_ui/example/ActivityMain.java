@@ -7,10 +7,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
 
-import com.gurunars.utils.storage.PersistentStorage;
-import com.gurunars.utils.ui.AutoBg;
-import com.gurunars.utils.ui.ColoredShapeDrawable;
-import com.gurunars.utils.ui.ViewFinder;
+import com.gurunars.android_utils.storage.PersistentStorage;
+import com.gurunars.android_utils.ui.AutoBg;
+import com.gurunars.android_utils.ui.ColoredShapeDrawable;
+import com.gurunars.android_utils.ui.ViewFinder;
 
 
 public class ActivityMain extends AppCompatActivity {

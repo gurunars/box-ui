@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 
-import com.gurunars.utils.ui.ViewFinder;
+import com.gurunars.android_utils.ui.ViewFinder;
 
 import icepick.Icepick;
 import icepick.State;

@@ -20,8 +20,8 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
-import com.gurunars.utils.ui.AutoBg;
-import com.gurunars.utils.ui.ColoredShapeDrawable;
+import com.gurunars.android_utils.ui.AutoBg;
+import com.gurunars.android_utils.ui.ColoredShapeDrawable;
 
 import icepick.Icepick;
 import icepick.State;

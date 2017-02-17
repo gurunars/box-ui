@@ -1,4 +1,4 @@
-package com.gurunars.utils.ui;
+package com.gurunars.android_utils.ui;
 
 import android.graphics.Color;
 import android.graphics.ColorFilter;
