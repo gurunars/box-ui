@@ -1,14 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:gravity="center"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.gurunars.android_crud_ui.AndroidCrudUi
-        app:text="@string/app_name"
-        android:id="@+id/customView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/payload"
+        android:padding="15dp"
+        android:background="#FFFFAA"
+        android:layout_margin="10dp"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <LinearLayout
+        android:layout_below="@+id/payload"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:clickable="true"
+            android:enabled="false"
+            android:padding="20dp"
+            android:background="@android:color/holo_blue_light"
+            android:text="@string/disabled"
+            android:id="@+id/disabled"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:clickable="true"
+            android:padding="20dp"
+            android:background="@android:color/holo_green_light"
+            android:text="@string/set"
+            android:id="@+id/set"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:clickable="true"
+            android:background="@android:color/holo_green_light"
+            android:padding="20dp"
+            android:text="@string/clear"
+            android:id="@+id/clear"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
 
 </RelativeLayout>

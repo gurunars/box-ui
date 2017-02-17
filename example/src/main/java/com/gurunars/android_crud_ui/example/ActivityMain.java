@@ -1,45 +1,58 @@
 package com.gurunars.android_crud_ui.example;
 
+import android.graphics.Color;
+import android.graphics.drawable.shapes.OvalShape;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
-import com.gurunars.android_crud_ui.AndroidCrudUi;
+import com.gurunars.utils.storage.PersistentStorage;
+import com.gurunars.utils.ui.AutoBg;
+import com.gurunars.utils.ui.ColoredShapeDrawable;
+import com.gurunars.utils.ui.ViewFinder;
 
 
 public class ActivityMain extends AppCompatActivity {
 
-    private AndroidCrudUi viewCustom;
+    private TextView payloadView;
+    private PersistentStorage<TestPayload> storage;
 
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        viewCustom = (AndroidCrudUi) findViewById(R.id.customView);
-    }
+        payloadView = ViewFinder.findViewById(this, R.id.payload);
+        storage = new PersistentStorage<>(this, "payloadAlias", new TestPayload("Empty"),
+                new PersistentStorage.PayloadChangeListener<TestPayload>() {
+                    @Override
+                    public void onChange(TestPayload payload) {
+                        payloadView.setText(payload.title);
+                    }
+        });
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        // inflater.inflate(R.menu.ActivityMain, menu);
-        return true;
-    }
+        View set = ViewFinder.findViewById(this, R.id.set);
+        set.setBackground(new ColoredShapeDrawable(new OvalShape(), Color.YELLOW));
+        AutoBg.apply(set, 6);
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+        set.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                storage.set(new TestPayload("Configured"));
+            }
+        });
 
-        /*
-        int i = item.getItemId();
-        if (i == NUMBER) {
-            // DO STH
-            return true;
-        }
-        */
+        View clear = ViewFinder.findViewById(this, R.id.clear);
+        AutoBg.apply(clear, 6);
 
-        return super.onOptionsItemSelected(item);
+        clear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                storage.clear();
+            }
+        });
+
+        AutoBg.apply(ViewFinder.findViewById(this, R.id.disabled), 6);
     }
 
 }
