@@ -3,9 +3,9 @@ apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'com.jfrog.bintray'
 
 def buildInfo = [
-    siteUrl: 'https://gurunars.github.io/android-crud-ui',
-    gitUrl: 'git@github.com:gurunars/android-crud-ui.git',
-    group: 'com.gurunars.utils',
+    siteUrl: 'https://gurunars.github.io/android-utils',
+    gitUrl: 'git@github.com:gurunars/android-utils.git',
+    group: 'com.gurunars.u',
     name: 'android-utils',
     version: '0.4',
     versionCode: 4,
