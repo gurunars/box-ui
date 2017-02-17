@@ -1,5 +1,0 @@
-<resources>
-    <declare-styleable name="AndroidCrudUi">
-        <attr name="text" format="string|reference" />
-    </declare-styleable>
-</resources>

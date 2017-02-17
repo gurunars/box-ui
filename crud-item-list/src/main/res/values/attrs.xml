@@ -1,0 +1,21 @@
+<resources>
+
+    <declare-styleable name="CircularIconButton">
+        <attr format="reference|color" name="backgroundColor" />
+        <attr format="reference|color" name="foregroundColor" />
+        <attr format="reference" name="innerDrawable" />
+    </declare-styleable>
+
+    <declare-styleable name="CrudItemList">
+        <attr name="itemDivider" />
+        <attr name="actionIconFgColor" format="reference|color" />
+        <attr name="actionIconBgColor" format="reference|color" />
+        <attr name="contextualCloseFgColor" format="reference|color" />
+        <attr name="contextualCloseBgColor" format="reference|color" />
+        <attr name="createCloseFgColor" format="reference|color" />
+        <attr name="createCloseBgColor" format="reference|color" />
+        <attr name="openBgColor" format="reference|color" />
+        <attr name="openFgColor" format="reference|color" />
+    </declare-styleable>
+
+</resources>

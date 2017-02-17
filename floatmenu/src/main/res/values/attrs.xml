@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="FloatMenu">
+        <attr name="fabHasOverlay" format="boolean" />
+        <attr name="fabAnimationDuration" format="integer" />
+        <attr name="fabLeftHanded" format="boolean" />
+
+        <attr name="fabOpenIcon" format="reference" />
+        <attr name="fabOpenIconBgColor" format="reference|color" />
+        <attr name="fabOpenIconFgColor" format="reference|color" />
+
+        <attr name="fabCloseIcon" format="reference" />
+        <attr name="fabCloseIconBgColor" format="reference|color" />
+        <attr name="fabCloseIconFgColor" format="reference|color" />
+    </declare-styleable>
+</resources>

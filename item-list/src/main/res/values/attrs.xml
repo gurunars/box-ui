@@ -1,0 +1,5 @@
+<resources>
+    <declare-styleable name="ItemList">
+        <attr name="itemDivider" format="reference" />
+    </declare-styleable>
+</resources>
