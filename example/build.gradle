@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
-        applicationId "com.gurunars.android_utils.example"
+        applicationId "com.gurunars.android_crud_ui.example"
         minSdkVersion 17
         targetSdkVersion 25
         versionCode 1
@@ -24,4 +24,7 @@ dependencies {
     compile 'com.android.support:appcompat-v7:25.1.1'
     compile project(':utils')
     compile project(':leaflet-view')
+    compile project(':item-list')
+    compile project(':floatmenu')
+    compile project(':crud-item-list')
 }

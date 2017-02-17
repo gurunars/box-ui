@@ -1,1 +1,1 @@
-include ':example', ':utils', ':leaflet-view'
+include ':example', ':utils', ':leaflet-view', ':item-list', ':floatmenu', ':crud-item-list'

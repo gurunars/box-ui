@@ -3,12 +3,13 @@ apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'com.jfrog.bintray'
 
 def buildInfo = [
-        siteUrl: 'https://github.com/gurunars/leaflet-view',
-        gitUrl: 'https://github.com/gurunars/leaflet-view.git',
-        name: "leaflet-view",
-        group: "com.gurunars.leaflet_view",
-        version: "0.12",
-        versionCode: 12
+    siteUrl: 'https://gurunars.github.io/android-crud-ui',
+    gitUrl: 'git@github.com:gurunars/android-crud-ui.git',
+    name: "leaflet-view",
+    group: "com.gurunars.leaflet_view",
+    version: "0.12",
+    versionCode: 12,
+    license: 'Apache-2.0'
 ]
 
 group = buildInfo.group
