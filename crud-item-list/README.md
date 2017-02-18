@@ -38,7 +38,7 @@ Add the following to your app's **build.gradle**:
 
     dependencies {
         ...
-        compile ('com.gurunars.crud-item-list:core:0.+@aar') {
+        compile ('com.gurunars.crud_item_list:crud-item-list:0.+@aar') {
             transitive = true
         }
         ...

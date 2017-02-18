@@ -8,7 +8,7 @@ Add the following to your app's **build.gradle**:
 
     dependencies {
         ...
-        compile ('com.gurunars.android_utils:core:0.+@aar') {
+        compile ('com.gurunars.android_utils:android-utils:0.+@aar') {
             transitive = true
         }
         ...

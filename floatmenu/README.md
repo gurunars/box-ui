@@ -28,7 +28,7 @@ Add the following to your app's **build.gradle**:
 
     dependencies {
         ...
-        compile ('com.gurunars.floatmenu:core:0.+@aar') {
+        compile ('com.gurunars.floatmenu:floatmenu:0.+@aar') {
             transitive = true
         }
         ...

@@ -26,7 +26,7 @@ Add the following to your app's **build.gradle**:
 
     dependencies {
         ...
-        compile ('com.gurunars.leaflet_view:core:0.+@aar') {
+        compile ('com.gurunars.leaflet_view:leaflet-view:0.+@aar') {
             transitive = true
         }
         ...

@@ -14,7 +14,7 @@ Add the following to your app's **build.gradle**:
 
     dependencies {
         ...
-        compile ('com.gurunars.item-list:core:0.+@aar') {
+        compile ('com.gurunars.item_list:item-list:0.+@aar') {
             transitive = true
         }
         ...
