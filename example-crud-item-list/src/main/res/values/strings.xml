@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">CRUD Item List example</string>
+    <string name="reset">Reset</string>
+    <string name="lock">Lock</string>
+    <string name="unlock">Unlock</string>
+    <string name="sortable">Sortable</string>
+    <string name="unsortable">Unsortable</string>
+    <string name="no_items_at_all">No items at all</string>
+    <string name="toTop">To top</string>
+    <string name="leftHanded">Left handed</string>
+    <string name="rightHanded">Right handed</string>
+    <string name="monkey">Monkey</string>
+    <string name="lion">Lion</string>
+    <string name="tiger">Tiger</string>
+    <string name="wolf">Wolf</string>
+    <string name="next_version">Next version</string>
+    <string name="current_version">Current version</string>
+    <string name="id">ID</string>
+    <string name="addMany">Add many</string>
+    <string name="toBottom">To bottom</string>
+</resources>

@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">Item List</string>
+    <string name="update">Update items</string>
+    <string name="create">Create items</string>
+    <string name="delete">Delete items</string>
+    <string name="reset">Reset items</string>
+    <string name="move_up">Move up</string>
+    <string name="move_down">Move down</string>
+    <string name="clear">Clear</string>
+    <string name="did_clear">Removed all the items.</string>
+    <string name="did_create">Created an additional set of items.</string>
+    <string name="did_delete">Removed every 2nd item.</string>
+    <string name="did_update">Updated every 2nd item.</string>
+    <string name="did_move_to_top">Move bottom item to top.</string>
+    <string name="did_move_to_bottom">Moved top item to bottom.</string>
+    <string name="did_reset">Reset to the initial collection.</string>
+    <string name="no_action">No action.</string>
+</resources>

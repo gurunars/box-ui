@@ -1,0 +1,10 @@
+<resources>
+    <string name="appName">Float Menu</string>
+    <string name="toggleBackground">Toggle background</string>
+    <string name="toggleButtonColor">Toggle button color</string>
+    <string name="menuClosed">Menu closed</string>
+    <string name="menuOpen">Menu open</string>
+    <string name="click_me">Click Me</string>
+    <string name="toggleMenu">Toggle menu</string>
+    <string name="toggleHand">Toggle left/right hand</string>
+</resources>

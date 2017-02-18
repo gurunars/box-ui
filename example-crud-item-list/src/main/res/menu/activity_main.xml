@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item android:id="@+id/addMany"
+        android:title="@string/addMany"
+        app:showAsAction="never" />
+
+    <item android:id="@+id/leftHanded"
+        android:title="@string/leftHanded"
+        app:showAsAction="never" />
+
+    <item android:id="@+id/rightHanded"
+        android:title="@string/rightHanded"
+        app:showAsAction="never" />
+
+    <item android:id="@+id/toBottom"
+        android:title="@string/toBottom"
+        app:showAsAction="never" />
+
+    <item android:id="@+id/toTop"
+        android:title="@string/toTop"
+        app:showAsAction="never" />
+
+    <item android:id="@+id/lock"
+        android:icon="@drawable/ic_lock"
+        android:title="@string/lock"
+        app:showAsAction="always" />
+
+    <item android:id="@+id/unlock"
+        android:icon="@drawable/ic_unlock"
+        android:title="@string/unlock"
+        app:showAsAction="always" />
+
+    <item android:id="@+id/reset"
+        android:icon="@drawable/ic_reload"
+        android:title="@string/reset"
+        app:showAsAction="always" />
+
+</menu>

@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">example</string>
+    <string name="create">Create page</string>
+    <string name="delete">Delete page</string>
+    <string name="edit">Edit page</string>
+    <string name="go_to">Go to page</string>
+    <string name="value">Value</string>
+    <string name="cancel">Cancel</string>
+    <string name="ok">OK</string>
+    <string name="select_page">Select page</string>
+    <string name="clear">Clear</string>
+</resources>

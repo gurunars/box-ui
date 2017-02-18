@@ -1,1 +1,3 @@
-include ':example', ':utils', ':leaflet-view', ':item-list', ':floatmenu', ':crud-item-list'
+include ':android-utils', ':leaflet-view', ':item-list', ':floatmenu', ':crud-item-list',
+        ':example-android-utils', ':example-leaflet-view', ':example-item-list',
+        ':example-floatmenu', ':example-crud-item-list'

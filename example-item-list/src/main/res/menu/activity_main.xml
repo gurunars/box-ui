@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item android:id="@+id/clear"
+        android:title="@string/clear"
+        app:showAsAction="never" />
+
+    <item android:id="@+id/reset"
+        android:title="@string/reset"
+        app:showAsAction="never" />
+
+    <item android:id="@+id/delete"
+        android:title="@string/delete"
+        app:showAsAction="never" />
+
+    <item android:id="@+id/create"
+        android:title="@string/create"
+        app:showAsAction="never" />
+
+    <item android:id="@+id/update"
+        android:title="@string/update"
+        app:showAsAction="never" />
+
+    <item android:id="@+id/moveUp"
+        android:title="@string/move_up"
+        app:showAsAction="never" />
+
+    <item android:id="@+id/moveDown"
+        android:title="@string/move_down"
+        app:showAsAction="never" />
+
+</menu>
