@@ -29,6 +29,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import butterknife.ButterKnife;
+
 
 public class ActivityMain extends AppCompatActivity {
 
@@ -49,7 +51,7 @@ public class ActivityMain extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        leafletView = (LeafletView<View, TitledPage>) findViewById(R.id.leafletView);
+        leafletView = ButterKnife.findById(this, R.id.leafletView);
         leafletView.setPageRenderer(new PageRenderer<View, TitledPage>() {
             @Override
             public View renderPage(TitledPage page) {

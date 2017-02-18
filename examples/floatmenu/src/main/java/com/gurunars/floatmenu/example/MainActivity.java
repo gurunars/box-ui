@@ -11,9 +11,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-import com.gurunars.android_utils.ui.ViewFinder;
 import com.gurunars.floatmenu.AnimationListener;
 import com.gurunars.floatmenu.FloatMenu;
+
+import butterknife.ButterKnife;
 
 import static android.view.View.inflate;
 
@@ -79,13 +80,13 @@ public class MainActivity extends AppCompatActivity {
             flag = savedInstanceState.getBoolean("flag", flag);
         }
 
-        floatingMenu = ViewFinder.findViewById(this, R.id.floatingMenu);
+        floatingMenu = ButterKnife.findById(this, R.id.floatingMenu);
 
         floatingMenu.setContentView(inflate(this, R.layout.content_view, null));
         floatingMenu.setMenuView(inflate(this, R.layout.menu_view, null));
 
         floatingMenu.setHasOverlay(true);
-        status = ViewFinder.findViewById(this, R.id.status);
+        status = ButterKnife.findById(this, R.id.status);
 
         floatingMenu.setOnCloseListener(new AnimationListener() {
             @Override

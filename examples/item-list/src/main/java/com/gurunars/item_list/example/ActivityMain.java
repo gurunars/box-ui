@@ -21,6 +21,8 @@ import com.gurunars.item_list.ItemViewBinder;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.ButterKnife;
+
 
 public class ActivityMain extends AppCompatActivity {
 
@@ -84,7 +86,7 @@ public class ActivityMain extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        itemList = (ItemList<AnimalItem>) findViewById(R.id.itemList);
+        itemList = ButterKnife.findById(this, R.id.itemList);
 
         for (AnimalItem.Type type: AnimalItem.Type.values()) {
             itemList.registerItemViewBinder(type, new AnimalBinder());

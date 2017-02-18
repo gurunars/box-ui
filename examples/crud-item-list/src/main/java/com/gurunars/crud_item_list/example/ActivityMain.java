@@ -10,13 +10,14 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.gurunars.android_utils.ui.ViewFinder;
 import com.gurunars.crud_item_list.CrudItemList;
 import com.gurunars.crud_item_list.ListChangeListener;
 import com.gurunars.crud_item_list.NewItemSupplier;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import butterknife.ButterKnife;
 
 
 public class ActivityMain extends AppCompatActivity {
@@ -60,7 +61,7 @@ public class ActivityMain extends AppCompatActivity {
         model = new Model(this);
         setContentView(R.layout.crud_list);
 
-        crudItemList = ViewFinder.findViewById(this, R.id.customView);
+        crudItemList = ButterKnife.findById(this, R.id.customView);
 
         crudItemList.setListChangeListener(new ListChangeListener<AnimalItem>() {
             @Override

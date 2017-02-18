@@ -12,8 +12,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 
-import com.gurunars.android_utils.ui.ViewFinder;
-
+import butterknife.ButterKnife;
 import icepick.Icepick;
 import icepick.State;
 
@@ -46,9 +45,9 @@ public class FloatMenu extends FrameLayout {
 
         inflate(context, R.layout.float_menu, this);
 
-        contentPane = ViewFinder.findViewById(this, R.id.contentPane);
+        contentPane = ButterKnife.findById(this, R.id.contentPane);
 
-        openFab = ViewFinder.findViewById(this, R.id.openFab);
+        openFab = ButterKnife.findById(this, R.id.openFab);
 
         openFab.setRotationDuration(DURATION_IN_MILLIS);
 
@@ -59,7 +58,7 @@ public class FloatMenu extends FrameLayout {
             }
         });
 
-        menuPane = ViewFinder.findViewById(this, R.id.menuPane);
+        menuPane = ButterKnife.findById(this, R.id.menuPane);
 
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.FloatMenu);
 

@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
-import com.gurunars.android_utils.ui.ViewFinder;
 import com.gurunars.floatmenu.AnimationListener;
 import com.gurunars.floatmenu.FloatMenu;
 import com.gurunars.item_list.EmptyViewBinder;
@@ -21,6 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import butterknife.ButterKnife;
 import java8.util.function.Consumer;
 
 /**
@@ -71,14 +71,14 @@ public class CrudItemList<ItemType extends Item> extends RelativeLayout {
 
         inflate(context, R.layout.crud_item_list, this);
 
-        floatingMenu = ViewFinder.findViewById(this, R.id.floatingMenu);
+        floatingMenu = ButterKnife.findById(this, R.id.floatingMenu);
         floatingMenu.setMenuView(inflate(context, R.layout.raw_menu_layout, null));
         floatingMenu.setContentView(inflate(context, R.layout.raw_item_list, null));
 
-        contextualMenu = ViewFinder.findViewById(this, R.id.contextualMenu);
-        creationMenuPlaceholder = ViewFinder.findViewById(this, R.id.creationMenuPlaceholder);
-        itemList = ViewFinder.findViewById(this, R.id.itemList);
-        formPlaceholder = ViewFinder.findViewById(this, R.id.formPlaceholder);
+        contextualMenu = ButterKnife.findById(this, R.id.contextualMenu);
+        creationMenuPlaceholder = ButterKnife.findById(this, R.id.creationMenuPlaceholder);
+        itemList = ButterKnife.findById(this, R.id.itemList);
+        formPlaceholder = ButterKnife.findById(this, R.id.formPlaceholder);
 
         collectionManager = new CollectionManager<>(new Consumer<List<SelectableItem<ItemType>>>() {
             @Override

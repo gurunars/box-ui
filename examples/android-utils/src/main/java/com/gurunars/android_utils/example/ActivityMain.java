@@ -10,7 +10,8 @@ import android.widget.TextView;
 import com.gurunars.android_utils.storage.PersistentStorage;
 import com.gurunars.android_utils.ui.AutoBg;
 import com.gurunars.android_utils.ui.ColoredShapeDrawable;
-import com.gurunars.android_utils.ui.ViewFinder;
+
+import butterknife.ButterKnife;
 
 
 public class ActivityMain extends AppCompatActivity {
@@ -22,7 +23,7 @@ public class ActivityMain extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        payloadView = ViewFinder.findViewById(this, R.id.payload);
+        payloadView = ButterKnife.findById(this, R.id.payload);
         storage = new PersistentStorage<>(this, "payloadAlias", new TestPayload("Empty"),
                 new PersistentStorage.PayloadChangeListener<TestPayload>() {
                     @Override
@@ -31,7 +32,7 @@ public class ActivityMain extends AppCompatActivity {
                     }
         });
 
-        View set = ViewFinder.findViewById(this, R.id.set);
+        View set = ButterKnife.findById(this, R.id.set);
         set.setBackground(new ColoredShapeDrawable(new OvalShape(), Color.YELLOW));
         AutoBg.apply(set, 6);
 
@@ -42,7 +43,7 @@ public class ActivityMain extends AppCompatActivity {
             }
         });
 
-        View clear = ViewFinder.findViewById(this, R.id.clear);
+        View clear = ButterKnife.findById(this, R.id.clear);
         AutoBg.apply(clear, 6);
 
         clear.setOnClickListener(new View.OnClickListener() {
@@ -52,7 +53,7 @@ public class ActivityMain extends AppCompatActivity {
             }
         });
 
-        AutoBg.apply(ViewFinder.findViewById(this, R.id.disabled), 6);
+        AutoBg.apply(ButterKnife.findById(this, R.id.disabled), 6);
     }
 
 }

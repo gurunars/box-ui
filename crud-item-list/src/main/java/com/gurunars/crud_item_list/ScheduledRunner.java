@@ -15,7 +15,7 @@ class ScheduledRunner {
     private final Random random = new Random();
     private int executionId;
 
-    public void stop() {
+    void stop() {
         handler.removeCallbacks(currentCallback);
         pause = INITIAL_PAUSE;
         currentCallback = null;
@@ -35,7 +35,7 @@ class ScheduledRunner {
         pause = PAUSE;
     }
 
-    public void start(Runnable runnable) {
+    void start(Runnable runnable) {
         currentCallback = runnable;
         executionId = random.nextInt();
         runIteration(executionId);

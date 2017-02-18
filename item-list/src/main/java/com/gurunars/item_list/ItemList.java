@@ -10,6 +10,9 @@ import android.widget.FrameLayout;
 
 import java.util.List;
 
+import butterknife.BindDrawable;
+import butterknife.ButterKnife;
+
 /**
  *
  * @param <ItemType> subclass of the Item instances of which are used to populate the views
@@ -38,7 +41,7 @@ public class ItemList<ItemType extends Item> extends FrameLayout {
 
         a.recycle();
 
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        RecyclerView recyclerView = ButterKnife.findById(this, R.id.recyclerView);
         layoutManager = new LinearLayoutManager(context);
         itemAdapter = new ItemAdapter<>(new Scroller() {
             @Override
