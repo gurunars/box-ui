@@ -20,10 +20,10 @@ public class JavadocAggregationPlugin implements Plugin<Project> {
             rootProject.task(TASK_NAME, type: Javadoc) {
                 description = 'Aggregates Javadoc API documentation of all subprojects.'
                 group = JavaBasePlugin.DOCUMENTATION_GROUP
-                dependsOn modules.generateReleaseJavadoc
-                source modules.generateReleaseJavadoc.source
+                dependsOn modules.generateJavadoc
+                source modules.generateJavadoc.source
                 destinationDir rootProject.file("$rootProject.buildDir/docs/javadoc")
-                classpath = rootProject.files(modules.generateReleaseJavadoc.classpath)
+                classpath = rootProject.files(modules.generateJavadoc.classpath)
             }
         }
     }

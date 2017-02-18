@@ -1,21 +1,5 @@
-apply plugin: 'com.android.application'
+apply from: '../all-examples.gradle'
 
-android {
-    compileSdkVersion 25
-    buildToolsVersion '23.0.3'
-
-    defaultConfig {
-        testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
-        applicationId "com.gurunars.leaflet_view.example"
-        minSdkVersion 17
-        targetSdkVersion 25
-        versionCode 1
-        versionName "1.0"
-        vectorDrawables.useSupportLibrary = true
-    }
-
-    return true
-}
 
 dependencies {
     testCompile 'junit:junit:4.12'
