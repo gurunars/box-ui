@@ -184,9 +184,3 @@ itemList.setItems(Arrays.asList(
 Note, the widget retains the collection of items in its internal state thus
 whenever you invoke setItems method again a new list is diffed against
 the old one and proper animations are invoked visualizing the changes.
-
-## More information
-
-Check the **example** app for a reference.
-
-Check [javadoc](https://gurunars.github.io/item-list/).

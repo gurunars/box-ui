@@ -145,9 +145,3 @@ Navigate to a particular page:
 leafletView.goTo(pageTwo);
 
 ```
-
-## More information
-
-Check the **example** app for a reference.
-
-Check [javadoc](https://gurunars.github.io/leaflet-view/).

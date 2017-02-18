@@ -295,9 +295,3 @@ the left edge of the screen.
 itemList.setLeftHanded(true)
 
 ```
-
-## More information
-
-Check the **example** app for a reference.
-
-Check [javadoc](https://gurunars.github.io/crud-item-list/).

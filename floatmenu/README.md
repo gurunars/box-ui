@@ -223,9 +223,3 @@ View to be shown behind the menu pane.
     floatingMenu.setContentView(inflate(this, R.layout.content_view, null));
 
 ```
-
-## More information
-
-Check the **example** app for a reference.
-
-Check [javadoc](https://gurunars.github.io/floatmenu/).

@@ -13,7 +13,3 @@ Add the following to your app's **build.gradle**:
         }
         ...
     }
-
-Check the **example** app for a reference.
-
-Check [javadoc](https://gurunars.github.io/android-utils/) for api-reference.
