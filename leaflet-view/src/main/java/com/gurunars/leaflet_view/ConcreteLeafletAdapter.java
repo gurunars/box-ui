@@ -5,8 +5,10 @@ import android.support.annotation.Nullable;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.SparseArray;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.esotericsoftware.kryo.Kryo;
 
@@ -15,12 +17,13 @@ import org.objenesis.strategy.StdInstantiatorStrategy;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.ButterKnife;
+
 class ConcreteLeafletAdapter<ViewT extends View, PageT extends Page> extends PagerAdapter {
 
     private Kryo kryo = new Kryo();
     private ViewPager pager;
     private PageRenderer<ViewT, PageT> pageRenderer;
-    private PageRenderer<ViewT, PageT> defaultPageRenderer;
     private List<PageHolder<PageT>> pages = new ArrayList<>();
     private SparseArray<ViewT> mapping = new SparseArray<>();
     private NoPageRenderer noPageRenderer;
@@ -32,10 +35,6 @@ class ConcreteLeafletAdapter<ViewT extends View, PageT extends Page> extends Pag
         this.pager = pager;
         this.emptyHolder = emptyHolder;
         this.kryo.setInstantiatorStrategy(new Kryo.DefaultInstantiatorStrategy(new StdInstantiatorStrategy()));
-    }
-
-    void setDefaultPageRenderer(PageRenderer<ViewT, PageT> defaultPageRenderer) {
-        this.defaultPageRenderer = defaultPageRenderer;
     }
 
     void setNoPageRenderer(NoPageRenderer noPageRenderer) {
@@ -79,12 +78,9 @@ class ConcreteLeafletAdapter<ViewT extends View, PageT extends Page> extends Pag
             emptyHolder.setVisibility(View.GONE);
 
             for(int i = 0; i < mapping.size(); i++) {
-                pageRenderer.leave(mapping.get(i));
+                leave(pageRenderer, mapping.get(i));
             }
-            ViewT currentView = mapping.get(desiredIndex);
-            if (currentView != null) {
-                pageRenderer.enter(currentView);
-            }
+            enter(pageRenderer, mapping.get(desiredIndex));
         }
     }
 
@@ -93,23 +89,49 @@ class ConcreteLeafletAdapter<ViewT extends View, PageT extends Page> extends Pag
         return pages.size();
     }
 
+    private void enter(PageRenderer<ViewT, PageT> renderer, ViewT pageView) {
+        if (renderer != null && pageView != null) {
+            renderer.enter(pageView);
+        }
+    }
+
+    private void leave(PageRenderer<ViewT, PageT> renderer, ViewT pageView) {
+        if (renderer != null && pageView != null) {
+            renderer.leave(pageView);
+        }
+    }
+
+    private View renderDefault(ViewGroup collection, PageT page) {
+        LayoutInflater inflater = LayoutInflater.from(collection.getContext());
+        View viewGroup = inflater.inflate(R.layout.default_page_view, collection, false);
+        TextView textView = ButterKnife.findById(viewGroup, R.id.pageTitle);
+        textView.setText(page.toString());
+        return viewGroup;
+    }
+
     @Nullable
     @Override
     public Object instantiateItem(@NonNull ViewGroup collection, int position) {
         PageT page = pages.get(position).getPage();
         ViewT view = mapping.get(position);
+        View actual = view;
 
-        if (view == null) {
-            PageRenderer<ViewT, PageT> renderer = pageRenderer == null ? defaultPageRenderer : pageRenderer;
-            view = renderer.renderPage(page);
-            mapping.put(position, view);
-            if (position == pager.getCurrentItem()) {
-                pageRenderer.enter(view);
+        if (actual == null) {
+            if (pageRenderer == null) {
+                actual = renderDefault(collection, page);
+            } else {
+                view = pageRenderer.renderPage(page);
+                actual = view;
+                mapping.put(position, view);
+                if (position == pager.getCurrentItem()) {
+                    enter(pageRenderer, view);
+                }
             }
-            collection.addView(view);
+
+            collection.addView(actual);
         }
 
-        view.setId(position);
+        actual.setId(position);
         return view;
     }
 

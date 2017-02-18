@@ -7,9 +7,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import java.util.List;
+
+import butterknife.ButterKnife;
 
 /**
  * View pager without fragments on steroids.
@@ -34,35 +35,13 @@ public class LeafletView<ViewT extends View, PageT extends Page> extends LinearL
     public LeafletView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         inflate(context, R.layout.leaflet_view, this);
-        viewPager = (ViewPager) findViewById(R.id.view_pager);
-        emptyHolder = (ViewGroup) findViewById(R.id.empty_holder);
+        viewPager = ButterKnife.findById(this, R.id.view_pager);
+        emptyHolder = ButterKnife.findById(this, R.id.empty_holder);
         configureAdapter();
     }
 
     private void configureAdapter() {
         leafletAdapter = new ConcreteLeafletAdapter<>(viewPager, emptyHolder);
-        // Note casting the default view group here is fine since we know for sure that the enter
-        // and leave methods won't use them
-        leafletAdapter.setDefaultPageRenderer((PageRenderer<ViewT, PageT>) new PageRenderer<View, PageT>() {
-            @Override
-            public View renderPage(PageT page) {
-                LayoutInflater inflater = LayoutInflater.from(getContext());
-                ViewGroup viewGroup = (ViewGroup) inflater.inflate(R.layout.default_page_view, LeafletView.this, false);
-                TextView textView = (TextView) viewGroup.findViewById(R.id.pageTitle);
-                textView.setText(page.toString());
-                return viewGroup;
-            }
-
-            @Override
-            public void enter(View pageView) {
-
-            }
-
-            @Override
-            public void leave(View pageView) {
-
-            }
-        });
         leafletAdapter.setNoPageRenderer(new NoPageRenderer() {
             @Override
             public View renderNoPage() {
