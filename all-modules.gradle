@@ -57,14 +57,15 @@ bintray {
 
 bintrayUpload.dependsOn([build, sourcesJar])
 
-// NOTE: there is no point to generate multi flavour java docs for android libraries
-task("generateJavadoc", type: Javadoc) {
-    description "Generates Javadoc"
-    source = android.libraryVariants.release.javaCompile.source
-    ext.androidJar = "${android.sdkDirectory}/platforms/${android.compileSdkVersion}/android.jar"
-    classpath = files(android.libraryVariants.release.javaCompile.classpath.files) + files(ext.androidJar)
-    options.links("http://docs.oracle.com/javase/7/docs/api/");
-    options.links("http://d.android.com/reference/");
-    exclude '**/BuildConfig.java'
-    exclude '**/R.java'
+android.libraryVariants.all { variant ->
+    task("generate${variant.name.capitalize()}Javadoc", type: Javadoc) {
+        description "Generates Javadoc for $variant.name."
+        source = variant.javaCompile.source
+        ext.androidJar = "${android.sdkDirectory}/platforms/${android.compileSdkVersion}/android.jar"
+        classpath = files(variant.javaCompile.classpath.files) + files(ext.androidJar)
+        options.links("http://docs.oracle.com/javase/7/docs/api/");
+        options.links("http://d.android.com/reference/");
+        exclude '**/BuildConfig.java'
+        exclude '**/R.java'
+    }
 }

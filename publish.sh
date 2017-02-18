@@ -9,7 +9,7 @@ TMP=/tmp/pages.${PROJECT_NAME}
 
 ./gradlew test connectedAndroidTest aggregateJavadoc bintrayUpload
 rm -rf ${TMP}
-mv core/build/docs/javadoc ${TMP}
+mv build/docs/javadoc ${TMP}
 cd ${TMP}
 git init
 git checkout -b gh-pages
