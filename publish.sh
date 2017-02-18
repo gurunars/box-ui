@@ -7,7 +7,7 @@ PROJECT_NAME=android-crud-ui
 
 TMP=/tmp/pages.${PROJECT_NAME}
 
-./gradlew test connectedAndroidTest generateReleaseJavadoc bintrayUpload
+./gradlew test connectedAndroidTest aggregateJavadoc bintrayUpload
 rm -rf ${TMP}
 mv core/build/docs/javadoc ${TMP}
 cd ${TMP}
