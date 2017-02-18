@@ -117,17 +117,15 @@ class ConcreteLeafletAdapter<ViewT extends View, PageT extends Page> extends Pag
         View actual = view;
 
         if (actual == null) {
-            if (pageRenderer == null) {
-                actual = renderDefault(collection, page);
-            } else {
+            if (pageRenderer != null){
                 view = pageRenderer.renderPage(page);
-                actual = view;
                 mapping.put(position, view);
                 if (position == pager.getCurrentItem()) {
                     enter(pageRenderer, view);
                 }
             }
 
+            actual = view == null ? renderDefault(collection, page) : view;
             collection.addView(actual);
         }
 
