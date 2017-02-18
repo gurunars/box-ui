@@ -8,6 +8,8 @@ import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.widget.RelativeLayout;
 
 import com.gurunars.floatmenu.AnimationListener;
@@ -27,6 +29,8 @@ import java8.util.function.Consumer;
  * Widget to be used for manipulating a collection of items.
  */
 public class CrudItemList<ItemType extends Item> extends RelativeLayout {
+
+    private static int ANIMATION_DURATION = 400;
 
     private Map<Enum, ItemFormSupplier<ItemType>> formBinders = new HashMap<>();
 
@@ -72,6 +76,7 @@ public class CrudItemList<ItemType extends Item> extends RelativeLayout {
         inflate(context, R.layout.crud_item_list, this);
 
         floatingMenu = ButterKnife.findById(this, R.id.floatingMenu);
+        floatingMenu.setAnimationDuration(ANIMATION_DURATION);
         floatingMenu.setMenuView(inflate(context, R.layout.raw_menu_layout, null));
         floatingMenu.setContentView(inflate(context, R.layout.raw_item_list, null));
 
@@ -199,7 +204,7 @@ public class CrudItemList<ItemType extends Item> extends RelativeLayout {
         collectionManager.setItemConsumer(new Consumer<ItemType>() {
             @Override
             public void accept(ItemType item) {
-                showForm(item, false);
+                showForm(item, false, true);
             }
         });
 
@@ -251,7 +256,8 @@ public class CrudItemList<ItemType extends Item> extends RelativeLayout {
         collectionManager.loadState(localState.getSerializable("selectedItems"));
         showForm(
                 (ItemType) localState.getSerializable("editableItem"),
-                localState.getBoolean("isNew", false)
+                localState.getBoolean("isNew", false),
+                false
         );
     }
 
@@ -277,12 +283,32 @@ public class CrudItemList<ItemType extends Item> extends RelativeLayout {
      */
     public void close() {
         floatingMenu.close();
-        editableItem = null;
-        formPlaceholder.removeAllViews();
-        formPlaceholder.setVisibility(GONE);
+
+        Animation fadeOut = new AlphaAnimation(1, 0);
+        fadeOut.setDuration(ANIMATION_DURATION);
+        fadeOut.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                editableItem = null;
+                formPlaceholder.removeAllViews();
+                formPlaceholder.setVisibility(GONE);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+        formPlaceholder.startAnimation(fadeOut);
+
     }
 
-    private void showForm(ItemType editableItem, boolean isNew) {
+    private void showForm(ItemType editableItem, boolean isNew, boolean withAnimations) {
         if (editableItem == null || formPlaceholder.getChildCount() != 0) {
             return;
         }
@@ -313,7 +339,11 @@ public class CrudItemList<ItemType extends Item> extends RelativeLayout {
         form.setOkButtonFgColor(openFgColor);
 
         formPlaceholder.addView(form);
+        formPlaceholder.setAlpha(1.0f);
         formPlaceholder.setVisibility(VISIBLE);
+        Animation fadeIn = new AlphaAnimation(0, 1);
+        fadeIn.setDuration(withAnimations ? ANIMATION_DURATION : 0);
+        formPlaceholder.startAnimation(fadeIn);
 
     }
 
@@ -342,7 +372,7 @@ public class CrudItemList<ItemType extends Item> extends RelativeLayout {
                     new OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            showForm(newItemSupplier.supply(), true);
+                            showForm(newItemSupplier.supply(), true, true);
                         }
                     });
         }

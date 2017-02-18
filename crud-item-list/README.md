@@ -255,14 +255,14 @@ class AnimalFormSupplier implements ItemFormSupplier<AnimalItem> {
 ```
 
 And assign it to the item list for each item type together with a supplier of
-new items:
+new items and the id of the :
 
 ```java
 
-private void confItemType(int id, final AnimalItem.Type type) {
+private void confItemType(int menuItemId, final AnimalItem.Type type) {
     crudItemList.registerItemType(type,
             new AnimalRowBinder(),
-            id,
+            menuItemId,
             new AnimalFormSupplier(type),
             new NewItemSupplier<AnimalItem>() {
                 @Override
@@ -283,8 +283,7 @@ confItemType(R.id.wolf, AnimalItem.Type.WOLF);
 ## Creation menu
 
 Configure the menu to be shown when a plus icon is clicked in order to create
-a new item. The menu should contain the ids referred by
-**getCreationMenuTriggerId** method of the view binder.
+a new item. The menu should contain the ids used in registerItemType calls.
 
 ```java
 
