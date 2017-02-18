@@ -180,24 +180,13 @@ class AnimalItemForm extends ItemForm<AnimalItem> {
 
 }
 
-
 ```
 
-Implement CrudItemViewBinder:
+Implement item view binder:
 
 ```java
 
-class AnimalBinder implements CrudItemViewBinder<AnimalItem> {
-
-    private int menuId;
-    private AnimalItem.Type type;
-    private Model model;
-
-    AnimalBinder(Model model, int menuId, AnimalItem.Type type) {
-        this.menuId = menuId;
-        this.type = type;
-        this.model = model;
-    }
+class AnimalRowBinder implements SelectableItemViewBinder<AnimalItem> {
 
     @Override
     public View getView(Context context) {
@@ -217,35 +206,72 @@ class AnimalBinder implements CrudItemViewBinder<AnimalItem> {
                         com.gurunars.crud_item_list.R.color.White));
         view.setText(item.toString());
         view.setContentDescription("I"+item.getId());
+
+        // Animate created and updated items
+        if (previousItem == null) {
+            animate(itemView);
+        }
+    }
+
+    private void animate(final View view) {
+        view.clearAnimation();
+        ValueAnimator anim = new ValueAnimator();
+        anim.setFloatValues((float) 1.0, (float) 0.0, (float) 1.0);
+        anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                view.setAlpha((Float) animation.getAnimatedValue());
+            }
+        });
+        anim.setDuration(1300);
+        anim.start();
+    }
+
+}
+
+```
+
+Implement FormSupplir:
+
+```java
+
+class AnimalFormSupplier implements ItemFormSupplier<AnimalItem> {
+
+    private AnimalItem.Type type;
+
+    AnimalFormSupplier(AnimalItem.Type type) {
+        this.type = type;
     }
 
     @Override
-    public ItemForm<AnimalItem> getForm(Context context) {
+    public ItemForm<AnimalItem> supply(Context context) {
         AnimalItemForm form = new AnimalItemForm(context);
         form.setItemType(type);
         return form;
     }
 
-    @Override
-    public int getCreationMenuTriggerId() {
-        return menuId;
-    }
-
-    @Override
-    public AnimalItem createBlank() {
-        return new AnimalItem(model.getMaxItemId()+1, type);
-    }
 }
 
 ```
 
-And assign it to the item list for each item type:
+And assign it to the item list for each item type together with a supplier of
+new items:
 
 ```java
 
 private void confItemType(int id, final AnimalItem.Type type) {
-    crudItemList.registerItemViewBinder(type, new AnimalBinder(model, id, type));
+    crudItemList.registerItemType(type,
+            new AnimalRowBinder(),
+            id,
+            new AnimalFormSupplier(type),
+            new NewItemSupplier<AnimalItem>() {
+                @Override
+                public AnimalItem supply() {
+                    return new AnimalItem(model.getMaxItemId()+1, type);
+                }
+            });
 }
+
 
 confItemType(R.id.lion, AnimalItem.Type.LION);
 confItemType(R.id.tiger, AnimalItem.Type.TIGER);
