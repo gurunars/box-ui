@@ -1,3 +1,8 @@
 include ':android-utils', ':leaflet-view', ':item-list', ':floatmenu', ':crud-item-list',
         ':example-android-utils', ':example-leaflet-view', ':example-item-list',
         ':example-floatmenu', ':example-crud-item-list'
+project(":example-android-utils").projectDir = file("examples/android-utils")
+project(":example-leaflet-view").projectDir = file("examples/leaflet-view")
+project(":example-item-list").projectDir = file("examples/item-list")
+project(":example-floatmenu").projectDir = file("examples/floatmenu")
+project(":example-crud-item-list").projectDir = file("examples/crud-item-list")
