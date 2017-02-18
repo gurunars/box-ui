@@ -20,3 +20,30 @@ allprojects {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+
+class JavadocAggregationPlugin implements Plugin<Project> {
+    static final String TASK_NAME = 'aggregateJavadocs'
+
+    @Override
+    void apply(Project project) {
+        Project rootProject = project.rootProject
+        rootProject.gradle.projectsEvaluated {
+            Set<Project> modules = rootProject.subprojects.findAll {
+                module -> module.plugins.findPlugin("com.android.library")
+            }
+            if (!modules.isEmpty()) {
+                rootProject.task(TASK_NAME, type: Javadoc) {
+                    description = 'Aggregates Javadoc API documentation of all subprojects.'
+                    group = JavaBasePlugin.DOCUMENTATION_GROUP
+                    dependsOn modules.generateReleaseJavadoc
+                    source modules.generateReleaseJavadoc.source
+                    destinationDir rootProject.file("$rootProject.buildDir/docs/javadoc")
+                    classpath = rootProject.files(modules.generateReleaseJavadoc.classpath)
+                }
+            }
+        }
+    }
+
+}
+
+apply plugin: JavadocAggregationPlugin
