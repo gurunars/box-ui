@@ -1,8 +1,6 @@
 package com.gurunars.item_list;
 
 import android.content.Context;
-import android.content.res.TypedArray;
-import android.graphics.drawable.Drawable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
@@ -10,7 +8,6 @@ import android.widget.FrameLayout;
 
 import java.util.List;
 
-import butterknife.BindDrawable;
 import butterknife.ButterKnife;
 
 /**
@@ -35,12 +32,6 @@ public class ItemList<ItemType extends Item> extends FrameLayout {
 
         inflate(context, R.layout.item_list_view, this);
 
-        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.ItemList);
-
-        Drawable divider = a.getDrawable(R.styleable.ItemList_itemDivider);
-
-        a.recycle();
-
         RecyclerView recyclerView = ButterKnife.findById(this, R.id.recyclerView);
         layoutManager = new LinearLayoutManager(context);
         itemAdapter = new ItemAdapter<>(new Scroller() {
@@ -62,7 +53,6 @@ public class ItemList<ItemType extends Item> extends FrameLayout {
 
         recyclerView.setAdapter(itemAdapter);
         recyclerView.setLayoutManager(layoutManager);
-        recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), divider));
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
 
     }

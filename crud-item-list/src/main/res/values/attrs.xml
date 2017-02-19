@@ -7,7 +7,6 @@
     </declare-styleable>
 
     <declare-styleable name="CrudItemList">
-        <attr name="itemDivider" />
         <attr name="actionIconFgColor" format="reference|color" />
         <attr name="actionIconBgColor" format="reference|color" />
         <attr name="contextualCloseFgColor" format="reference|color" />
