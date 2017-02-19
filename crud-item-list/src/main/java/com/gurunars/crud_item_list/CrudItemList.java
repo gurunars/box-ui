@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Map;
 
 import butterknife.ButterKnife;
+import icepick.State;
 import java8.util.function.Consumer;
 
 /**
@@ -34,18 +35,19 @@ public class CrudItemList<ItemType extends Item> extends RelativeLayout {
 
     private Map<Enum, ItemFormSupplier<ItemType>> formBinders = new HashMap<>();
 
-    private final int contextualCloseFgColor;
-    private final int contextualCloseBgColor;
-
-    private final int createCloseFgColor;
-    private final int createCloseBgColor;
-    private final int openBgColor;
-    private final int openFgColor;
+    @State int actionIconFgColor;
+    @State int actionIconBgColor;
+    @State int contextualCloseFgColor;
+    @State int contextualCloseBgColor;
+    @State int createCloseFgColor;
+    @State int createCloseBgColor;
+    @State int openBgColor;
+    @State int openFgColor;
 
     private boolean sortable = true;
     private boolean leftHanded = false;
-    private boolean isNew = true;
 
+    private boolean isNew = true;
     private ItemType editableItem;
 
     private final CollectionManager<ItemType> collectionManager;
@@ -121,12 +123,10 @@ public class CrudItemList<ItemType extends Item> extends RelativeLayout {
         int bgColor = ContextCompat.getColor(context, R.color.Black);
         int fgColor = ContextCompat.getColor(context, R.color.White);
 
-        int actionIconFgColor = a.getColor(R.styleable.CrudItemList_actionIconFgColor, bgColor);
-        int actionIconBgColor = a.getColor(R.styleable.CrudItemList_actionIconBgColor, fgColor);
-
+        actionIconFgColor = a.getColor(R.styleable.CrudItemList_actionIconFgColor, bgColor);
+        actionIconBgColor = a.getColor(R.styleable.CrudItemList_actionIconBgColor, fgColor);
         contextualCloseFgColor = a.getColor(R.styleable.CrudItemList_contextualCloseFgColor, bgColor);
         contextualCloseBgColor = a.getColor(R.styleable.CrudItemList_contextualCloseBgColor, fgColor);
-
         createCloseBgColor = a.getColor(R.styleable.CrudItemList_createCloseBgColor, bgColor);
         createCloseFgColor = a.getColor(R.styleable.CrudItemList_createCloseFgColor, fgColor);
         openBgColor = a.getColor(R.styleable.CrudItemList_openBgColor, bgColor);
@@ -152,10 +152,6 @@ public class CrudItemList<ItemType extends Item> extends RelativeLayout {
             }
         });
 
-        floatingMenu.setOpenIconBgColor(openBgColor);
-        floatingMenu.setOpenIconFgColor(openFgColor);
-        contextualMenu.setIconBgColor(actionIconBgColor);
-        contextualMenu.setIconFgColor(actionIconFgColor);
         contextualMenu.setMenuListener(new ContextualMenu.MenuListener() {
             @Override
             public void delete() {
@@ -208,7 +204,19 @@ public class CrudItemList<ItemType extends Item> extends RelativeLayout {
             }
         });
 
-        setUpCreationMenu();
+        setUpColors();
+    }
+
+    private void setUpColors() {
+        floatingMenu.setOpenIconBgColor(openBgColor);
+        floatingMenu.setOpenIconFgColor(openFgColor);
+        contextualMenu.setIconBgColor(actionIconBgColor);
+        contextualMenu.setIconFgColor(actionIconFgColor);
+        if (collectionManager.hasSelection()) {
+            setUpContextualMenu();
+        } else {
+            setUpCreationMenu();
+        }
     }
 
     /**
@@ -412,4 +420,43 @@ public class CrudItemList<ItemType extends Item> extends RelativeLayout {
         creationMenuPlaceholder.addView(creationMenu);
     }
 
+    public void setActionIconFgColor(int actionIconFgColor) {
+        this.actionIconFgColor = actionIconFgColor;
+        setUpColors();
+    }
+
+    public void setActionIconBgColor(int actionIconBgColor) {
+        this.actionIconBgColor = actionIconBgColor;
+        setUpColors();
+    }
+
+    public void setContextualCloseFgColor(int contextualCloseFgColor) {
+        this.contextualCloseFgColor = contextualCloseFgColor;
+        setUpColors();
+    }
+
+    public void setContextualCloseBgColor(int contextualCloseBgColor) {
+        this.contextualCloseBgColor = contextualCloseBgColor;
+        setUpColors();
+    }
+
+    public void setCreateCloseFgColor(int createCloseFgColor) {
+        this.createCloseFgColor = createCloseFgColor;
+        setUpColors();
+    }
+
+    public void setCreateCloseBgColor(int createCloseBgColor) {
+        this.createCloseBgColor = createCloseBgColor;
+        setUpColors();
+    }
+
+    public void setOpenBgColor(int openBgColor) {
+        this.openBgColor = openBgColor;
+        setUpColors();
+    }
+
+    public void setOpenFgColor(int openFgColor) {
+        this.openFgColor = openFgColor;
+        setUpColors();
+    }
 }

@@ -155,4 +155,5 @@ public abstract class ItemForm<ItemType extends Item> extends FrameLayout {
         isCreateMenu = createMenu;
         save.setText(createMenu ? R.string.create : R.string.update);
     }
+
 }
