@@ -7,10 +7,12 @@ import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.InsetDrawable;
 import android.graphics.drawable.shapes.OvalShape;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
 import android.support.v4.content.res.ResourcesCompat;
@@ -35,9 +37,6 @@ class Fab extends FrameLayout {
     @State int closeIcon = R.drawable.ic_menu_close;
     @State int openIcon = R.drawable.ic_menu;
     @State int rotationDuration = 400;
-    @State boolean isActive;
-
-    private boolean noAnimation = false;
 
     private ImageView actualImageView;
 
@@ -52,26 +51,18 @@ class Fab extends FrameLayout {
     public Fab(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         setLayerType(View.LAYER_TYPE_SOFTWARE, null);
-        openIconBgColor = closeIconBgColor = ResourcesCompat.getColor(
-                getResources(), R.color.Red, null);
-        openIconFgColor = closeIconFgColor = ResourcesCompat.getColor(
-                getResources(), R.color.White, null);
+        openIconBgColor = closeIconBgColor = Color.RED;
+        openIconFgColor = closeIconFgColor = Color.WHITE;
         actualImageView = new ImageView(getContext());
         actualImageView.setLayoutParams(
                 new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT));
         addView(actualImageView);
-        fullInit();
-    }
-
-    private void reloadActivationBasedState() {
-        setActivated(isActive);
-        currentIcon = isActivated() ? closeIcon : openIcon;
-        currentBgColor = isActivated() ? closeIconBgColor : openIconBgColor;
-        currentFgColor = isActivated() ? closeIconFgColor : openIconFgColor;
+        loadFromState();
     }
 
     private void reloadUi() {
+        currentIcon = isActivated() ? closeIcon : openIcon;
         // Bg
         setBackground(new ColoredShapeDrawable(new OvalShape(), currentBgColor));
         AutoBg.apply(this, 6);
@@ -82,15 +73,11 @@ class Fab extends FrameLayout {
         actualImageView.setImageDrawable(new InsetDrawable(fg, ICON_PADDING));
         // Content description
         setContentDescription(
-            "|BG:"+ openIconBgColor +
-            "|IC:"+ openIconFgColor +
+            "|BG:"+ currentBgColor +
+            "|IC:"+ currentFgColor +
             "|ACT:" + isActivated()
         );
-    }
 
-    private void fullInit() {
-        reloadActivationBasedState();
-        reloadUi();
         requestLayout();
     }
 
@@ -100,45 +87,56 @@ class Fab extends FrameLayout {
 
     public void setOpenIconBgColor(int openIconBgColor) {
         this.openIconBgColor = openIconBgColor;
-        fullInit();
+        loadFromState();
     }
 
     public void setOpenIconFgColor(int openIconFgColor) {
         this.openIconFgColor = openIconFgColor;
-        fullInit();
+        loadFromState();
     }
 
     public void setCloseIconBgColor(int closeIconBgColor) {
         this.closeIconBgColor = closeIconBgColor;
-        fullInit();
+        loadFromState();
     }
 
     public void setCloseIconFgColor(int closeIconFgColor) {
         this.closeIconFgColor = closeIconFgColor;
-        fullInit();
+        loadFromState();
     }
 
     public void setOpenIcon(int icon) {
         this.openIcon = icon;
-        fullInit();
+        loadFromState();
     }
 
     public void setCloseIcon(int icon) {
         this.closeIcon = icon;
-        fullInit();
+        loadFromState();
+    }
+
+    private void loadFromState() {
+        currentIcon = isActivated() ? closeIcon : openIcon;
+        currentBgColor = isActivated() ? closeIconBgColor : openIconBgColor;
+        currentFgColor = isActivated() ? closeIconFgColor : openIconFgColor;
+        actualImageView.setRotation(isActivated() ? 360 : 0);
+        reloadUi();
     }
 
     @Override
     protected Parcelable onSaveInstanceState() {
-        return Icepick.saveInstanceState(this, super.onSaveInstanceState());
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("superState", Icepick.saveInstanceState(this, super.onSaveInstanceState()));
+        bundle.putBoolean("isActivated", isActivated());
+        return bundle;
     }
 
     @Override
     protected void onRestoreInstanceState(Parcelable state) {
-        super.onRestoreInstanceState(Icepick.restoreInstanceState(this, state));
-        noAnimation = true;
-        fullInit();
-        noAnimation = false;
+        Bundle localState = (Bundle) state;
+        super.onRestoreInstanceState(Icepick.restoreInstanceState(this, localState.getParcelable("superState")));
+        super.setActivated(localState.getBoolean("isActivated"));
+        loadFromState();
     }
 
     @Override
@@ -147,10 +145,7 @@ class Fab extends FrameLayout {
             return;
         }
 
-        final int actualRotationDuration = noAnimation ? 0 : rotationDuration;
-
-        final boolean originalState = this.isActive;
-        this.isActive = isActive;
+        final boolean originalState = isActivated();
 
         ObjectAnimator rotation = ObjectAnimator.ofFloat(actualImageView,
                 "rotation",
@@ -189,7 +184,7 @@ class Fab extends FrameLayout {
 
         AnimatorSet animatorSet = new AnimatorSet();
         animatorSet.setStartDelay(0);
-        animatorSet.setDuration(actualRotationDuration);
+        animatorSet.setDuration(rotationDuration);
         animatorSet.playTogether(rotation, bgColorAnimation, fgColorAnimation, uiUpdateAnimaton);
         animatorSet.addListener(new AnimatorListenerAdapter() {
 
@@ -200,15 +195,15 @@ class Fab extends FrameLayout {
                     @Override
                     public void run() {
                         Fab.super.setActivated(isActive);
-                        fullInit();
+                        reloadUi();
                     }
-                }, actualRotationDuration / 2);
+                }, rotationDuration / 2);
             }
 
             @Override
             public void onAnimationCancel(Animator animation) {
                 Fab.super.setActivated(originalState);
-                fullInit();
+                reloadUi();
             }
         });
         animatorSet.start();

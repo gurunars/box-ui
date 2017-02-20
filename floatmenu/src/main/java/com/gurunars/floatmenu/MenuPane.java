@@ -25,8 +25,9 @@ class MenuPane extends FrameLayout {
         super(context, attrs, defStyleAttr);
     }
 
-    public void setHasOverlay(boolean hasOverlay) {
-        setClickable(hasOverlay);
+    @Override
+    public void setClickable(boolean hasOverlay) {
+        super.setClickable(hasOverlay);
         setBackgroundColor(hasOverlay ? Color.parseColor("#99000000") : Color.TRANSPARENT);
     }
 
@@ -69,12 +70,13 @@ class MenuPane extends FrameLayout {
         return !isClickable() && !touchBelongsTo(this, ev);
     }
 
+
     @Override
     protected Parcelable onSaveInstanceState() {
         Bundle bundle = new Bundle();
         bundle.putParcelable("superState", super.onSaveInstanceState());
-        bundle.putInt("visibility", getVisibility());
-        bundle.putBoolean("hasOverlay", isClickable());
+        bundle.putBoolean("isClickable", isClickable());
+        bundle.putBoolean("visible", getVisibility() == VISIBLE);
         return bundle;
     }
 
@@ -82,12 +84,8 @@ class MenuPane extends FrameLayout {
     protected void onRestoreInstanceState(Parcelable state) {
         Bundle localState = (Bundle) state;
         super.onRestoreInstanceState(localState.getParcelable("superState"));
-        //noinspection WrongConstant
-        setVisibility(localState.getInt("visibility"));
-        setHasOverlay(localState.getBoolean("hasOverlay"));
+        setClickable(localState.getBoolean("isClickable"));
+        setVisibility(localState.getBoolean("visible") ? VISIBLE : GONE);
     }
 
-    public boolean hasOverlay() {
-        return isClickable();
-    }
 }

@@ -4,8 +4,8 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Color;
 import android.os.Parcelable;
-import android.support.v4.content.res.ResourcesCompat;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,8 +27,7 @@ public class FloatMenu extends FrameLayout {
 
     @State boolean isLeftHanded;
 
-    private AnimationListener onCloseListener;
-    private AnimationListener onOpenListener;
+    private AnimationListener onCloseListener, onOpenListener;
 
     private final static int DURATION_IN_MILLIS = 400;
 
@@ -45,11 +44,17 @@ public class FloatMenu extends FrameLayout {
 
         inflate(context, R.layout.float_menu, this);
 
+        onCloseListener = onOpenListener = new AnimationListener() {
+            @Override
+            public void onStart(int projectedDuration) {}
+
+            @Override
+            public void onFinish() {}
+        };
+
         contentPane = ButterKnife.findById(this, R.id.contentPane);
-
+        menuPane = ButterKnife.findById(this, R.id.menuPane);
         openFab = ButterKnife.findById(this, R.id.openFab);
-
-        openFab.setRotationDuration(DURATION_IN_MILLIS);
 
         openFab.setOnClickListener(new OnClickListener() {
             @Override
@@ -58,20 +63,20 @@ public class FloatMenu extends FrameLayout {
             }
         });
 
-        menuPane = ButterKnife.findById(this, R.id.menuPane);
+        setAnimationDuration(DURATION_IN_MILLIS);
 
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.FloatMenu);
 
-        menuPane.setHasOverlay(a.getBoolean(
+        setHasOverlay(a.getBoolean(
                 R.styleable.FloatMenu_fabHasOverlay,
                 true));
 
         int openIconBgColor = a.getColor(
                 R.styleable.FloatMenu_fabOpenIconBgColor,
-                ResourcesCompat.getColor(getResources(), R.color.Red, null));
+                Color.RED);
         int openIconFgColor = a.getColor(
                 R.styleable.FloatMenu_fabOpenIconFgColor,
-                ResourcesCompat.getColor(getResources(), R.color.White, null));
+                Color.WHITE);
         int closeIconBgColor = a.getColor(
                 R.styleable.FloatMenu_fabCloseIconBgColor,
                 openIconBgColor);
@@ -79,17 +84,17 @@ public class FloatMenu extends FrameLayout {
                 R.styleable.FloatMenu_fabCloseIconFgColor,
                 openIconFgColor);
 
-        openFab.setOpenIcon(a.getResourceId(
+        setOpenIcon(a.getResourceId(
                 R.styleable.FloatMenu_fabOpenIcon,
                 R.drawable.ic_menu));
-        openFab.setCloseIcon(a.getResourceId(
+        setCloseIcon(a.getResourceId(
                 R.styleable.FloatMenu_fabCloseIcon,
                 R.drawable.ic_menu_close));
 
-        openFab.setOpenIconBgColor(openIconBgColor);
-        openFab.setOpenIconFgColor(openIconFgColor);
-        openFab.setCloseIconBgColor(closeIconBgColor);
-        openFab.setCloseIconFgColor(closeIconFgColor);
+        setOpenIconBgColor(openIconBgColor);
+        setOpenIconFgColor(openIconFgColor);
+        setCloseIconBgColor(closeIconBgColor);
+        setCloseIconFgColor(closeIconFgColor);
 
         setLeftHanded(a.getBoolean(R.styleable.FloatMenu_fabLeftHanded, false));
 
@@ -108,66 +113,41 @@ public class FloatMenu extends FrameLayout {
         setLeftHanded(isLeftHanded);
     }
 
-    private void hide() {
-        menuPane.setVisibility(GONE);
-        if (onCloseListener != null) {
-            onCloseListener.onFinish();
-        }
-        openFab.setClickable(true);
-    }
-
-    private void show() {
-        menuPane.setVisibility(VISIBLE);
-        if (onOpenListener != null) {
-            onOpenListener.onFinish();
-        }
-        openFab.setClickable(true);
-    }
-
     private void setFloatingMenuVisibility(boolean visible) {
+
+        if (isOpen() == visible) {
+            return;
+        }
+
         openFab.setClickable(false);
         openFab.setActivated(visible);
         menuPane.setActivated(visible);
 
-        if (visible) {
-            if (onOpenListener != null) {
-                onOpenListener.onStart(DURATION_IN_MILLIS);
-            }
-            menuPane.setVisibility(VISIBLE);
-            menuPane.setAlpha(0.0f);
-            menuPane.animate()
-                    .alpha(1.0f)
-                    .setDuration(DURATION_IN_MILLIS)
-                    .setListener(new AnimatorListenerAdapter() {
-                        @Override
-                        public void onAnimationEnd(Animator animation) {
-                            show();
-                        }
+        final AnimationListener listener = visible ? onOpenListener : onCloseListener;
+        final int targetVisibility = visible ? VISIBLE : GONE;
+        final float sourceAlpha = visible ? 0.0f : 1.0f;
+        final float targetAlpha = visible ? 1.0f : 0.0f;
 
-                        @Override
-                        public void onAnimationCancel(Animator animation) {
-                            show();
-                        }
-                    });
-        } else {
-            if (onCloseListener != null) {
-                onCloseListener.onStart(DURATION_IN_MILLIS);
-            }
-            menuPane.animate()
-                    .alpha(0.0f)
-                    .setDuration(DURATION_IN_MILLIS)
-                    .setListener(new AnimatorListenerAdapter() {
-                        @Override
-                        public void onAnimationEnd(Animator animation) {
-                            hide();
-                        }
+        listener.onStart(openFab.rotationDuration);
+        menuPane.setVisibility(VISIBLE);
+        menuPane.setAlpha(sourceAlpha);
+        menuPane.animate()
+                .alpha(targetAlpha)
+                .setDuration(openFab.rotationDuration)
+                .setListener(new AnimatorListenerAdapter() {
 
-                        @Override
-                        public void onAnimationCancel(Animator animation) {
-                            hide();
-                        }
-                    });
-        }
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        menuPane.setVisibility(targetVisibility);
+                        listener.onFinish();
+                        openFab.setClickable(true);
+                    }
+
+                    @Override
+                    public void onAnimationCancel(Animator animation) {
+                        onAnimationEnd(animation);
+                    }
+                });
     }
 
     /**
@@ -181,18 +161,14 @@ public class FloatMenu extends FrameLayout {
      * Collapse the menu.
      */
     public void close() {
-        if (isOpen()) {
-            setFloatingMenuVisibility(false);
-        }
+        setFloatingMenuVisibility(false);
     }
 
     /**
      * Expand the menu.
      */
     public void open() {
-        if (!isOpen()) {
-            setFloatingMenuVisibility(true);
-        }
+        setFloatingMenuVisibility(true);
     }
 
     /**
@@ -231,14 +207,14 @@ public class FloatMenu extends FrameLayout {
      * clicks are intercepted by the group.
      */
     public void setHasOverlay(boolean hasOverlay) {
-        menuPane.setHasOverlay(hasOverlay);
+        menuPane.setClickable(hasOverlay);
     }
 
     /**
      * @return true if the pane has a shaded background, false otherwise
      */
     public boolean hasOverlay() {
-        return menuPane.hasOverlay();
+        return menuPane.isClickable();
     }
 
     /**

@@ -19,7 +19,7 @@
         android:layout_margin="16dp"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:contentDescription="@string/x"
+        android:contentDescription="X"
         android:id="@+id/openFab"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true" />

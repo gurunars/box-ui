@@ -1,8 +1,0 @@
-<resources>
-    <string name="x">X</string>
-    <string name="hide">hide</string>
-    <string name="lineBreak">Line Break</string>
-    <string name="fill_me">Fill Me</string>
-    <string name="fill_content">Fill content</string>
-    <string name="fill_menu">Fill menu</string>
-</resources>

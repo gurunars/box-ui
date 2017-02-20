@@ -53,7 +53,7 @@ public class MainActivityTest {
         checkFab("|BG:-7667712|IC:-1|ACT:false", "LH:false");
         fab().perform(click());
         restart();
-        checkFab("|BG:-7667712|IC:-1|ACT:true", "LH:false");
+        checkFab("|BG:-1|IC:-16777216|ACT:true", "LH:false");
         fab().perform(click());
         restart();
         checkFab("|BG:-7667712|IC:-1|ACT:false", "LH:false");
