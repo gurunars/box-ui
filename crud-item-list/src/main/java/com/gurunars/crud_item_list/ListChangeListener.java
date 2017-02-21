@@ -15,4 +15,13 @@ public interface ListChangeListener<ItemType extends Item> {
      * @param items a new version ot the list to be saved
      */
     void onChange(List<ItemType> items);
+
+    class DefaultListChangeListener<ItemType extends Item> implements ListChangeListener<ItemType> {
+
+        @Override
+        public void onChange(List<ItemType> items) {
+
+        }
+    }
+
 }

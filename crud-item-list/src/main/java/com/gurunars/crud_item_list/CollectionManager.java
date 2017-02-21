@@ -155,7 +155,7 @@ class CollectionManager<ItemType extends Item> implements Serializable {
 
         Iterator<ItemType> iterator = selectedItems.iterator();
         if (iterator.hasNext()) {
-            itemConsumer.accept(iterator.next());
+            itemConsumer.accept(kryo.copy(iterator.next()));
         }
     }
 

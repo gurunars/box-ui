@@ -18,11 +18,10 @@ import com.gurunars.item_list.EmptyViewBinder;
 import com.gurunars.item_list.Item;
 import com.gurunars.item_list.ItemList;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import butterknife.ButterKnife;
+import icepick.Icepick;
 import icepick.State;
 import java8.util.function.Consumer;
 
@@ -33,8 +32,6 @@ public class CrudItemList<ItemType extends Item> extends RelativeLayout {
 
     private static int ANIMATION_DURATION = 400;
 
-    private Map<Enum, ItemFormSupplier<ItemType>> formBinders = new HashMap<>();
-
     @State int actionIconFgColor;
     @State int actionIconBgColor;
     @State int contextualCloseFgColor;
@@ -43,12 +40,6 @@ public class CrudItemList<ItemType extends Item> extends RelativeLayout {
     @State int createCloseBgColor;
     @State int openBgColor;
     @State int openFgColor;
-
-    private boolean sortable = true;
-    private boolean leftHanded = false;
-
-    private boolean isNew = true;
-    private ItemType editableItem;
 
     private final CollectionManager<ItemType> collectionManager;
 
@@ -62,7 +53,10 @@ public class CrudItemList<ItemType extends Item> extends RelativeLayout {
     private final FloatMenu floatingMenu;
     private final ItemList<SelectableItem<ItemType>> itemList;
 
-    private ListChangeListener<ItemType> listChangeListener;
+    private ListChangeListener<ItemType> listChangeListener =
+            new ListChangeListener.DefaultListChangeListener<>();
+    private ItemEditListener<ItemType> itemEditListener =
+            new ItemEditListener.DefaultItemEditListener<>();
 
     public CrudItemList(Context context) {
         this(context, null);
@@ -110,9 +104,7 @@ public class CrudItemList<ItemType extends Item> extends RelativeLayout {
                 throttleBuffer.call(new Runnable() {
                     @Override
                     public void run() {
-                        if (listChangeListener != null) {
-                            listChangeListener.onChange(items);
-                        }
+                    listChangeListener.onChange(items);
                     }
                 });
             }
@@ -134,8 +126,8 @@ public class CrudItemList<ItemType extends Item> extends RelativeLayout {
 
         a.recycle();
 
-        setLeftHanded(leftHanded);
-        setSortable(sortable);
+        setLeftHanded(false);
+        setSortable(true);
 
         floatingMenu.setOnCloseListener(new AnimationListener() {
             @Override
@@ -200,7 +192,7 @@ public class CrudItemList<ItemType extends Item> extends RelativeLayout {
         collectionManager.setItemConsumer(new Consumer<ItemType>() {
             @Override
             public void accept(ItemType item) {
-                showForm(item, false, true);
+                onItemEdit(item, false);
             }
         });
 
@@ -246,27 +238,18 @@ public class CrudItemList<ItemType extends Item> extends RelativeLayout {
     @Override
     protected Parcelable onSaveInstanceState() {
         Bundle bundle = new Bundle();
-        bundle.putParcelable("superState", super.onSaveInstanceState());
-        bundle.putBoolean("leftHanded", leftHanded);
-        bundle.putBoolean("sortable", sortable);
-        bundle.putSerializable("editableItem", editableItem);
+        bundle.putParcelable(
+                "superState", Icepick.saveInstanceState(this, super.onSaveInstanceState()));
         bundle.putSerializable("selectedItems", collectionManager.saveState());
-        bundle.putBoolean("isNew", isNew);
         return bundle;
     }
 
     @Override
     protected void onRestoreInstanceState(Parcelable state) {
         Bundle localState = (Bundle) state;
-        super.onRestoreInstanceState(localState.getParcelable("superState"));
-        setLeftHanded(localState.getBoolean("leftHanded", false));
-        setSortable(localState.getBoolean("sortable", true));
+        super.onRestoreInstanceState(
+                Icepick.restoreInstanceState(this, localState.getParcelable("superState")));
         collectionManager.loadState(localState.getSerializable("selectedItems"));
-        showForm(
-                (ItemType) localState.getSerializable("editableItem"),
-                localState.getBoolean("isNew", false),
-                false
-        );
     }
 
     @Override
@@ -302,7 +285,6 @@ public class CrudItemList<ItemType extends Item> extends RelativeLayout {
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                editableItem = null;
                 formPlaceholder.removeAllViews();
                 formPlaceholder.setVisibility(GONE);
             }
@@ -316,43 +298,8 @@ public class CrudItemList<ItemType extends Item> extends RelativeLayout {
 
     }
 
-    private void showForm(ItemType editableItem, boolean isNew, boolean withAnimations) {
-        if (editableItem == null || formPlaceholder.getChildCount() != 0) {
-            return;
-        }
-        this.editableItem = editableItem;
-        this.isNew = isNew;
-
-        floatingMenu.close();
-        ItemFormSupplier<ItemType> binder = formBinders.get(editableItem.getType());
-        ItemForm<ItemType> form = binder.supply(getContext());
-        form.populate(editableItem);
-        form.setCreateMenu(isNew);
-        form.configureListeners(new ItemForm.ItemConsumer<ItemType>() {
-            @Override
-            public void consume(ItemType item) {
-                collectionManager.setItem(item);
-                close();
-            }
-        }, new Runnable() {  // cancel
-            @Override
-            public void run() {
-                close();
-            }
-        });
-
-        form.setCancelButtonBgColor(createCloseBgColor);
-        form.setCancelButtonFgColor(createCloseFgColor);
-        form.setOkButtonBgColor(openBgColor);
-        form.setOkButtonFgColor(openFgColor);
-
-        formPlaceholder.addView(form);
-        formPlaceholder.setAlpha(1.0f);
-        formPlaceholder.setVisibility(VISIBLE);
-        Animation fadeIn = new AlphaAnimation(0, 1);
-        fadeIn.setDuration(withAnimations ? ANIMATION_DURATION : 0);
-        formPlaceholder.startAnimation(fadeIn);
-
+    private void onItemEdit(ItemType editableItem, boolean isNew) {
+        itemEditListener.onEdit(editableItem, isNew);
     }
 
     /**
@@ -361,17 +308,14 @@ public class CrudItemList<ItemType extends Item> extends RelativeLayout {
      * @param itemType type of the Items
      * @param itemViewBinder row renderer for the items of a given type
      * @param menuItemViewId id of the clickable item in creation menu
-     * @param itemFormSupplier supplier of the form to edit items of a given type
      * @param newItemSupplier supplier of blank new items
      */
     public void registerItemType(
             Enum itemType,
             SelectableItemViewBinder<ItemType> itemViewBinder,
             int menuItemViewId,
-            ItemFormSupplier<ItemType> itemFormSupplier,
             final NewItemSupplier<ItemType> newItemSupplier
             ) {
-        formBinders.put(itemType, itemFormSupplier);
         itemList.registerItemViewBinder(itemType,
                 new ClickableItemViewBinder<>(itemViewBinder, collectionManager));
         View itemCreationTrigger = findViewById(menuItemViewId);
@@ -380,7 +324,7 @@ public class CrudItemList<ItemType extends Item> extends RelativeLayout {
                     new OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            showForm(newItemSupplier.supply(), true, true);
+                            onItemEdit(newItemSupplier.supply(), true);
                         }
                     });
         }
@@ -399,7 +343,6 @@ public class CrudItemList<ItemType extends Item> extends RelativeLayout {
      * @param sortable if false - move up and down buttons are disabled
      */
     public void setSortable(boolean sortable) {
-        this.sortable = sortable;
         contextualMenu.setSortable(sortable);
     }
 
@@ -458,5 +401,13 @@ public class CrudItemList<ItemType extends Item> extends RelativeLayout {
     public void setOpenFgColor(int openFgColor) {
         this.openFgColor = openFgColor;
         setUpColors();
+    }
+
+    /**
+     * @param itemEditListener a listener for the cases when a new item has to be created or when
+     *                         the existing one has to be edited
+     */
+    public void setItemEditListener(ItemEditListener<ItemType> itemEditListener) {
+        this.itemEditListener = itemEditListener;
     }
 }

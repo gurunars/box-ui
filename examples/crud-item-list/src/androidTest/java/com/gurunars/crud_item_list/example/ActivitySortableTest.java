@@ -177,8 +177,6 @@ public class ActivitySortableTest {
         restart();
         onView(withId(R.id.edit)).perform(click());
         restart();
-        onView(withId(R.id.save)).perform(click());
-        restart();
         atIndex(3).check(matches(withText("4 @ 2 [wolf] | false")));
     }
 
@@ -187,8 +185,6 @@ public class ActivitySortableTest {
         onView(withId(R.id.openFab)).perform(click());
         restart();
         onView(withId(R.id.lion)).perform(click());
-        restart();
-        onView(withId(R.id.save)).perform(click());
         restart();
         atIndex(4).check(matches(withText("5 @ 1 [lion] | false")));
     }

@@ -104,6 +104,28 @@ crudItemList.setListChangeListener(new ListChangeListener<AnimalItem>() {
 
 ```
 
+Set a callable to be invoked whenever a new item has to be added or an existing
+one has to be changed:
+
+```java
+
+crudItemList.setItemEditListener(new ItemEditListener<AnimalItem>() {
+            @Override
+            public void onEdit(AnimalItem editableItem, boolean isNew) {
+                editableItem.setVersion(editableItem.getVersion() + 1);
+                List<AnimalItem> items = ItemSetter.setItem(model.getItems(), editableItem);
+                model.setItems(items);
+                crudItemList.setItems(items);
+            }
+        });
+
+```
+
+NOTE: as a matter of convenience - there is an ItemSetter.setItem static method
+that replaces the item in a collection if its id was found or appends a new
+entry otherwise. It is responsibility of the handler to apply the changes
+to the view after modifying the payload though.
+
 First, configure the view to be shown when all the items are removed from the
 list.
 
@@ -131,56 +153,7 @@ crudItemList.setEmptyViewBinder(new EmptyBinder());
 
 ```
 
-Second, configure the views to render individual items in rows and forms.
-
-Extend ItemForm:
-
-```java
-
-class AnimalItemForm extends ItemForm<AnimalItem> {
-
-    private TextView title, currentVersion, nextVersion;
-
-    private AnimalItem.Type itemType;
-    private AnimalItem animalItem;
-
-    public AnimalItemForm(Context context) {
-        super(context);
-        setBackgroundColor(context.getResources().getColor(R.color.White));
-    }
-
-    @Override
-    protected AnimalItem getItem() {
-        AnimalItem item = new AnimalItem(animalItem.getId(), (AnimalItem.Type) animalItem.getType());
-        item.setVersion(animalItem.getVersion() + 1);
-        return item;
-    }
-
-    @Override
-    protected void render(ViewGroup contentPoint) {
-        inflate(getContext(), R.layout.animal_item_form, contentPoint);
-        title = (TextView) findViewById(R.id.title);
-        currentVersion = (TextView) findViewById(R.id.currentVersion);
-        nextVersion = (TextView) findViewById(R.id.nextVersion);
-    }
-
-    public void setItemType(AnimalItem.Type itemType) {
-        this.itemType = itemType;
-    }
-
-    @Override
-    public void populate(AnimalItem item) {
-        animalItem = item;
-        title.setText(getContext().getString(R.string.id) + ":" + item.getId());
-        currentVersion.setText(getContext().getString(R.string.current_version)
-                + ":" + item.getVersion());
-        nextVersion.setText(getContext().getString(R.string.next_version)
-                + ":" + (item.getVersion()+1));
-    }
-
-}
-
-```
+Second, configure the views to render individual items in rows.
 
 Implement item view binder:
 
@@ -231,31 +204,9 @@ class AnimalRowBinder implements SelectableItemViewBinder<AnimalItem> {
 
 ```
 
-Implement FormSupplir:
-
-```java
-
-class AnimalFormSupplier implements ItemFormSupplier<AnimalItem> {
-
-    private AnimalItem.Type type;
-
-    AnimalFormSupplier(AnimalItem.Type type) {
-        this.type = type;
-    }
-
-    @Override
-    public ItemForm<AnimalItem> supply(Context context) {
-        AnimalItemForm form = new AnimalItemForm(context);
-        form.setItemType(type);
-        return form;
-    }
-
-}
-
-```
-
 And assign it to the item list for each item type together with a supplier of
-new items and the id of the :
+new items and the id of the menu item that is supposed to trigger new item
+creation chain of events:
 
 ```java
 
@@ -263,7 +214,6 @@ private void confItemType(int menuItemId, final AnimalItem.Type type) {
     crudItemList.registerItemType(type,
             new AnimalRowBinder(),
             menuItemId,
-            new AnimalFormSupplier(type),
             new NewItemSupplier<AnimalItem>() {
                 @Override
                 public AnimalItem supply() {

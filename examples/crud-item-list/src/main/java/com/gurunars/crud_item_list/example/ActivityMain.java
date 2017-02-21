@@ -11,6 +11,8 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.gurunars.crud_item_list.CrudItemList;
+import com.gurunars.crud_item_list.ItemEditListener;
+import com.gurunars.crud_item_list.ItemSetter;
 import com.gurunars.crud_item_list.ListChangeListener;
 import com.gurunars.crud_item_list.NewItemSupplier;
 
@@ -46,7 +48,6 @@ public class ActivityMain extends AppCompatActivity {
         crudItemList.registerItemType(type,
                 new AnimalRowBinder(),
                 id,
-                new AnimalFormSupplier(type),
                 new NewItemSupplier<AnimalItem>() {
                     @Override
                     public AnimalItem supply() {
@@ -71,6 +72,15 @@ public class ActivityMain extends AppCompatActivity {
         });
         crudItemList.setEmptyViewBinder(new EmptyBinder());
         crudItemList.setCreationMenu(View.inflate(this, R.layout.create_layout, null));
+        crudItemList.setItemEditListener(new ItemEditListener<AnimalItem>() {
+            @Override
+            public void onEdit(AnimalItem editableItem, boolean isNew) {
+                editableItem.setVersion(editableItem.getVersion() + 1);
+                List<AnimalItem> items = ItemSetter.setItem(model.getItems(), editableItem);
+                model.setItems(items);
+                crudItemList.setItems(items);
+            }
+        });
 
         confItemType(R.id.lion, AnimalItem.Type.LION);
         confItemType(R.id.tiger, AnimalItem.Type.TIGER);
