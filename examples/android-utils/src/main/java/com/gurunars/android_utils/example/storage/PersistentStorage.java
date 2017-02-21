@@ -1,4 +1,4 @@
-package com.gurunars.android_utils.storage;
+package com.gurunars.android_utils.example.storage;
 
 import android.app.Activity;
 import android.content.Context;

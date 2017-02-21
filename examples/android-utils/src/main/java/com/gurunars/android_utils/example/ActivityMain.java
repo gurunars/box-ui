@@ -7,7 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
 
-import com.gurunars.android_utils.storage.PersistentStorage;
+import com.gurunars.android_utils.example.storage.PersistentStorage;
 import com.gurunars.android_utils.ui.AutoBg;
 import com.gurunars.android_utils.ui.ColoredShapeDrawable;
 
@@ -18,7 +18,6 @@ public class ActivityMain extends AppCompatActivity {
 
     private TextView payloadView;
     private PersistentStorage<TestPayload> storage;
-
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
