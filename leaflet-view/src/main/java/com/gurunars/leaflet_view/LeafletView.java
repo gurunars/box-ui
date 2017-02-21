@@ -22,7 +22,7 @@ public class LeafletView<ViewT extends View, PageT extends Page> extends LinearL
 
     private ViewPager viewPager;
     private ViewGroup emptyHolder;
-    private ConcreteLeafletAdapter<ViewT, PageT> leafletAdapter;
+    private LeafletAdapter<ViewT, PageT> leafletAdapter;
 
     public LeafletView(Context context) {
         this(context, null);
@@ -41,7 +41,7 @@ public class LeafletView<ViewT extends View, PageT extends Page> extends LinearL
     }
 
     private void configureAdapter() {
-        leafletAdapter = new ConcreteLeafletAdapter<>(viewPager, emptyHolder);
+        leafletAdapter = new LeafletAdapter<>(viewPager, emptyHolder);
         leafletAdapter.setNoPageRenderer(new NoPageRenderer() {
             @Override
             public View renderNoPage() {

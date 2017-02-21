@@ -365,7 +365,7 @@ public class CrudItemList<ItemType extends Item> extends RelativeLayout {
      * @param newItemSupplier supplier of blank new items
      */
     public void registerItemType(
-            final Enum itemType,
+            Enum itemType,
             SelectableItemViewBinder<ItemType> itemViewBinder,
             int menuItemViewId,
             ItemFormSupplier<ItemType> itemFormSupplier,

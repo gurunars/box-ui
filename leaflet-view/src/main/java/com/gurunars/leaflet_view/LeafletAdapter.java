@@ -19,7 +19,7 @@ import java.util.List;
 
 import butterknife.ButterKnife;
 
-class ConcreteLeafletAdapter<ViewT extends View, PageT extends Page> extends PagerAdapter {
+class LeafletAdapter<ViewT extends View, PageT extends Page> extends PagerAdapter {
 
     private Kryo kryo = new Kryo();
     private ViewPager pager;
@@ -29,7 +29,7 @@ class ConcreteLeafletAdapter<ViewT extends View, PageT extends Page> extends Pag
     private NoPageRenderer noPageRenderer;
     private ViewGroup emptyHolder;
 
-    ConcreteLeafletAdapter(
+    LeafletAdapter(
             ViewPager pager,
             ViewGroup emptyHolder) {
         this.pager = pager;
