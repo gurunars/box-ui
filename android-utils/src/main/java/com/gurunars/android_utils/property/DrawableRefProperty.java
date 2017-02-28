@@ -5,7 +5,7 @@ import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 
-public class DrawableRefProperty extends ContextualStateProperty implements SerializableProperty<Integer> {
+public class DrawableRefProperty extends ContextualProperty implements SerializableProperty<Integer> {
 
     private @DrawableRes int value;
 

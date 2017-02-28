@@ -3,7 +3,7 @@ package com.gurunars.android_utils.property;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 
-public class StringProperty extends ContextualStateProperty implements SerializableProperty<String> {
+public class StringProperty extends ContextualProperty implements SerializableProperty<String> {
 
     private String value;
     private Reference valueRef;

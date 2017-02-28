@@ -3,10 +3,10 @@ package com.gurunars.android_utils.property;
 import android.content.Context;
 
 
-public abstract class ContextualStateProperty {
+public abstract class ContextualProperty {
     private ContextualReloadable reloadable;
 
-    protected ContextualStateProperty(ContextualReloadable reloadable) {
+    protected ContextualProperty(ContextualReloadable reloadable) {
         this.reloadable = reloadable;
     }
 

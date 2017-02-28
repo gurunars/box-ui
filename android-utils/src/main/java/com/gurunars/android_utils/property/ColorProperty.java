@@ -4,10 +4,9 @@ import android.graphics.Color;
 import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
 import android.support.annotation.NonNull;
-import android.support.annotation.StringRes;
 import android.support.v4.content.ContextCompat;
 
-public class ColorProperty extends ContextualStateProperty implements SerializableProperty<Integer> {
+public class ColorProperty extends ContextualProperty implements SerializableProperty<Integer> {
 
     private @ColorInt int value=-1;
     private Reference valueRef;
