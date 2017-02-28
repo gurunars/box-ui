@@ -6,7 +6,7 @@ import android.graphics.drawable.shapes.Shape;
 /**
  * Drawable with customizable shape and color.
  */
-public class ColoredShapeDrawable extends ShapeDrawable {
+public final class ColoredShapeDrawable extends ShapeDrawable {
 
     public ColoredShapeDrawable(Shape shape, int color) {
         super(shape);

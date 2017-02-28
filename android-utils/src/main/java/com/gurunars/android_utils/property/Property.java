@@ -4,13 +4,21 @@ import android.support.annotation.NonNull;
 
 import java.io.Serializable;
 
-public class Property<ValueType extends Serializable> implements SerializableProperty<ValueType> {
+public final class Property<ValueType extends Serializable> implements SerializableProperty<ValueType> {
+    private String name;
     private ValueType value;
     private Reloadable reloadable;
 
-    public Property(Reloadable reloadable, ValueType defaultValue) {
+    public Property(Reloadable reloadable, String name, ValueType defaultValue) {
         this.reloadable = reloadable;
         this.value = defaultValue;
+        this.name = name;
+    }
+
+    @NonNull
+    @Override
+    public String getName() {
+        return name;
     }
 
     @NonNull

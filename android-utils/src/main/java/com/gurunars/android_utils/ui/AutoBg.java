@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class AutoBg {
+public final class AutoBg {
 
     private static class AutoBgDrawable extends InsetDrawable {
 

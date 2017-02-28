@@ -6,7 +6,7 @@ import android.support.annotation.ColorRes;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 
-public class ColorProperty extends ContextualProperty implements SerializableProperty<Integer> {
+public final class ColorProperty extends ContextualProperty implements SerializableProperty<Integer> {
 
     private @ColorInt int value=-1;
     private Reference valueRef;
@@ -23,18 +23,18 @@ public class ColorProperty extends ContextualProperty implements SerializablePro
         }
     }
 
-    public ColorProperty(ContextualReloadable reloadable, Reference defaultValue) {
-        super(reloadable);
+    public ColorProperty(@NonNull ContextualReloadable reloadable,@NonNull String name,@NonNull Reference defaultValue) {
+        super(reloadable, name);
         valueRef = defaultValue;
     }
 
-    public ColorProperty(ContextualReloadable reloadable, @ColorInt int defaultValue) {
-        super(reloadable);
+    public ColorProperty(@NonNull ContextualReloadable reloadable,@NonNull String name,@ColorInt int defaultValue) {
+        super(reloadable, name);
         value = defaultValue;
     }
 
-    public ColorProperty(ContextualReloadable reloadable, String defaultValue) {
-        super(reloadable);
+    public ColorProperty(@NonNull ContextualReloadable reloadable,@NonNull String name,@NonNull String defaultValue) {
+        super(reloadable, name);
         value = Color.parseColor(defaultValue);
     }
 

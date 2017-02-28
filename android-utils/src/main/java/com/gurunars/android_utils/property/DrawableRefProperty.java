@@ -5,12 +5,12 @@ import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 
-public class DrawableRefProperty extends ContextualProperty implements SerializableProperty<Integer> {
+public final class DrawableRefProperty extends ContextualProperty implements SerializableProperty<Integer> {
 
     private @DrawableRes int value;
 
-    public DrawableRefProperty(ContextualReloadable reloadable, @DrawableRes int defaultValue) {
-        super(reloadable);
+    public DrawableRefProperty(@NonNull ContextualReloadable reloadable,@NonNull String name, @DrawableRes int defaultValue) {
+        super(reloadable, name);
         value = defaultValue;
     }
 

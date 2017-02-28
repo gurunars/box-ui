@@ -3,7 +3,7 @@ package com.gurunars.android_utils.property;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 
-public class StringProperty extends ContextualProperty implements SerializableProperty<String> {
+public final class StringProperty extends ContextualProperty implements SerializableProperty<String> {
 
     private String value;
     private Reference valueRef;
@@ -20,13 +20,13 @@ public class StringProperty extends ContextualProperty implements SerializablePr
         }
     }
 
-    public StringProperty(ContextualReloadable reloadable, Reference defaultValue) {
-        super(reloadable);
+    public StringProperty(@NonNull ContextualReloadable reloadable,@NonNull String name,@NonNull Reference defaultValue) {
+        super(reloadable, name);
         valueRef = defaultValue;
     }
 
-    public StringProperty(ContextualReloadable reloadable, String defaultValue) {
-        super(reloadable);
+    public StringProperty(@NonNull ContextualReloadable reloadable,@NonNull String name,@NonNull String defaultValue) {
+        super(reloadable, name);
         value = defaultValue;
     }
 
