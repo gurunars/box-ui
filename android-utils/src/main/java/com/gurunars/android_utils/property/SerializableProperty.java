@@ -4,9 +4,9 @@ import android.support.annotation.NonNull;
 
 import java.io.Serializable;
 
-public interface SerializableProperty<ItemType extends Serializable> {
+public interface SerializableProperty<ValueType extends Serializable> {
 
-    @NonNull ItemType get();
-    void set(@NonNull ItemType value);
+    @NonNull ValueType get();
+    void set(@NonNull ValueType value);
 
 }

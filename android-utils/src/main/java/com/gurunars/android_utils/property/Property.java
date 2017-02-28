@@ -1,8 +1,10 @@
 package com.gurunars.android_utils.property;
 
+import android.support.annotation.NonNull;
+
 import java.io.Serializable;
 
-public class Property<ValueType extends Serializable> {
+public class Property<ValueType extends Serializable> implements SerializableProperty<ValueType> {
     private ValueType value;
     private Reloadable reloadable;
 
@@ -11,11 +13,12 @@ public class Property<ValueType extends Serializable> {
         this.value = defaultValue;
     }
 
+    @NonNull
     public ValueType get() {
         return value;
     }
 
-    public void set(ValueType value) {
+    public void set(@NonNull ValueType value) {
         this.value = value;
         this.reloadable.reload();
     }

@@ -38,6 +38,7 @@ public class ColorProperty extends ContextualProperty implements SerializablePro
         value = Color.parseColor(defaultValue);
     }
 
+    @Override
     public @NonNull @ColorInt Integer get() {
         if (value == -1) {
             value = ContextCompat.getColor(getContext(), valueRef.getValue());
@@ -50,6 +51,7 @@ public class ColorProperty extends ContextualProperty implements SerializablePro
         reload();
     }
 
+    @Override
     public void set(@NonNull @ColorInt Integer value) {
         this.value = value;
         reload();
