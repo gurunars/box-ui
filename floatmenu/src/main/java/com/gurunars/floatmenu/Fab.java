@@ -22,21 +22,42 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
+import com.gurunars.android_utils.property.ColorProperty;
+import com.gurunars.android_utils.property.ContextualReloadable;
+import com.gurunars.android_utils.property.DrawableRefProperty;
+import com.gurunars.android_utils.property.Property;
 import com.gurunars.android_utils.ui.AutoBg;
 import com.gurunars.android_utils.ui.ColoredShapeDrawable;
 
 import icepick.Icepick;
-import icepick.State;
 
-class Fab extends FrameLayout {
+final class Fab extends FrameLayout implements ContextualReloadable {
 
     private final static int ICON_PADDING = 100;
 
-    @State int openIconBgColor, openIconFgColor, closeIconBgColor, closeIconFgColor;
-    @State int currentBgColor, currentIcon, currentFgColor;
-    @State int closeIcon = R.drawable.ic_menu_close;
-    @State int openIcon = R.drawable.ic_menu;
-    @State int rotationDuration = 400;
+    public final DrawableRefProperty openIcon =
+            new DrawableRefProperty(this, "openIcon", R.drawable.ic_menu);
+    public final ColorProperty openIconBgColor =
+            new ColorProperty(this, "openIconBgColor", Color.RED);
+    public final ColorProperty openIconFgColor =
+            new ColorProperty(this, "openIconFgColor", Color.WHITE);
+
+    public final DrawableRefProperty closeIcon
+            = new DrawableRefProperty(this, "closeIcon", R.drawable.ic_menu_close);
+    public final ColorProperty closeIconBgColor
+            = new ColorProperty(this, "closeIconBgColor", Color.RED);
+    public final ColorProperty closeIconFgColor
+            = new ColorProperty(this, "closeIconFgColor", Color.WHITE);
+
+    public final Property<Integer> rotationDuration
+            = new Property<>(this, "rotationDuration", 400);
+
+    private final DrawableRefProperty currentIcon
+            = new DrawableRefProperty(this, "currentIcon", R.drawable.ic_menu);
+    private final ColorProperty currentBgColor
+            = new ColorProperty(this, "currentBgColor", Color.RED);
+    private final ColorProperty currentFgColor
+            = new ColorProperty(this, "currentFgColor", Color.WHITE);
 
     private ImageView actualImageView;
 
@@ -51,8 +72,6 @@ class Fab extends FrameLayout {
     public Fab(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         setLayerType(View.LAYER_TYPE_SOFTWARE, null);
-        openIconBgColor = closeIconBgColor = Color.RED;
-        openIconFgColor = closeIconFgColor = Color.WHITE;
         actualImageView = new ImageView(getContext());
         actualImageView.setLayoutParams(
                 new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
@@ -62,14 +81,14 @@ class Fab extends FrameLayout {
     }
 
     private void reloadUi() {
-        currentIcon = isActivated() ? closeIcon : openIcon;
+        currentIcon.set(isActivated() ? closeIcon.get() : openIcon.get());
         // Bg
-        setBackground(new ColoredShapeDrawable(new OvalShape(), currentBgColor));
+        setBackground(new ColoredShapeDrawable(new OvalShape(), currentBgColor.get()));
         AutoBg.apply(this, 6);
         // Icon
-        Drawable fg = ResourcesCompat.getDrawable(getResources(), currentIcon, null);
+        Drawable fg = ResourcesCompat.getDrawable(getResources(), currentIcon.get(), null);
         assert fg != null;
-        fg.setColorFilter(currentFgColor, PorterDuff.Mode.SRC_IN);
+        fg.setColorFilter(currentFgColor.get(), PorterDuff.Mode.SRC_IN);
         actualImageView.setImageDrawable(new InsetDrawable(fg, ICON_PADDING));
         // Content description
         setContentDescription(
@@ -81,44 +100,10 @@ class Fab extends FrameLayout {
         requestLayout();
     }
 
-    public void setRotationDuration(int durationInMillis) {
-        this.rotationDuration = durationInMillis;
-    }
-
-    public void setOpenIconBgColor(int openIconBgColor) {
-        this.openIconBgColor = openIconBgColor;
-        loadFromState();
-    }
-
-    public void setOpenIconFgColor(int openIconFgColor) {
-        this.openIconFgColor = openIconFgColor;
-        loadFromState();
-    }
-
-    public void setCloseIconBgColor(int closeIconBgColor) {
-        this.closeIconBgColor = closeIconBgColor;
-        loadFromState();
-    }
-
-    public void setCloseIconFgColor(int closeIconFgColor) {
-        this.closeIconFgColor = closeIconFgColor;
-        loadFromState();
-    }
-
-    public void setOpenIcon(int icon) {
-        this.openIcon = icon;
-        loadFromState();
-    }
-
-    public void setCloseIcon(int icon) {
-        this.closeIcon = icon;
-        loadFromState();
-    }
-
     private void loadFromState() {
-        currentIcon = isActivated() ? closeIcon : openIcon;
-        currentBgColor = isActivated() ? closeIconBgColor : openIconBgColor;
-        currentFgColor = isActivated() ? closeIconFgColor : openIconFgColor;
+        currentIcon.set(isActivated() ? closeIcon.get() : openIcon.get());
+        currentBgColor.set(isActivated() ? closeIconBgColor.get() : openIconBgColor.get());
+        currentFgColor.set(isActivated() ? closeIconFgColor.get() : openIconFgColor.get());
         actualImageView.setRotation(isActivated() ? 360 : 0);
         reloadUi();
     }
@@ -159,7 +144,7 @@ class Fab extends FrameLayout {
         bgColorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
-                currentBgColor = (int) animation.getAnimatedValue();
+                currentBgColor.set((int) animation.getAnimatedValue());
             }
         });
 
@@ -170,7 +155,7 @@ class Fab extends FrameLayout {
         fgColorAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
-                currentFgColor = (int) animation.getAnimatedValue();
+                currentFgColor.set((int) animation.getAnimatedValue());
             }
         });
 
@@ -184,7 +169,7 @@ class Fab extends FrameLayout {
 
         AnimatorSet animatorSet = new AnimatorSet();
         animatorSet.setStartDelay(0);
-        animatorSet.setDuration(rotationDuration);
+        animatorSet.setDuration(rotationDuration.get());
         animatorSet.playTogether(rotation, bgColorAnimation, fgColorAnimation, uiUpdateAnimaton);
         animatorSet.addListener(new AnimatorListenerAdapter() {
 
@@ -197,7 +182,7 @@ class Fab extends FrameLayout {
                         Fab.super.setActivated(isActive);
                         reloadUi();
                     }
-                }, rotationDuration / 2);
+                }, rotationDuration.get() / 2);
             }
 
             @Override
@@ -207,6 +192,11 @@ class Fab extends FrameLayout {
             }
         });
         animatorSet.start();
+
+    }
+
+    @Override
+    public void reload() {
 
     }
 }
