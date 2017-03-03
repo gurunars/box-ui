@@ -61,6 +61,14 @@ class TitledPage implements Page {
     }
 
     @Override
+    public View render(Context context, PageTransitionObservable transitionObservable) {
+        ViewGroup layout = (ViewGroup) LayoutInflater.from(context).inflate(R.layout.page_view, null);
+        TextView textView = ButterKnife.findById(layout, R.id.pageTitle);
+        textView.setText(title);
+        return layout;
+    }
+
+    @Override
     public String toString() {
         return title;
     }
@@ -69,7 +77,11 @@ class TitledPage implements Page {
 
 ```
 
-Note, you must impl
+Note, the render method gets a **transitionObservable** parameter that can
+be use to subscribe to **enter** and **leave** events for individual pages.
+The listener is meant to control the state of individual page views returned
+by the method. For the notifications of external components use **LeafletView**
+level ability to configure a transition listener (see below).
 
 Afterwards add the following to your layouts:
 
@@ -82,48 +94,42 @@ Afterwards add the following to your layouts:
 
 ```
 
-Configure renderers for individual pages and for the cases when there are no
-pages:
+Configure renderer for the cases when there are no pages:
 
 ```java
 
-LeafletView<View, TitledPage> leafletView = (LeafletView<View, TitledPage>) findViewById(R.id.leafletView);
+LeafletView leafletView = (LeafletView) findViewById(R.id.leafletView);
 
-leafletView.setPageRenderer(new PageRenderer<View, TitledPage>() {
+leafletView.setNoPage(new NoPage() {
     @Override
-    public View renderPage(TitledPage page) {
-        View viewGroup = LayoutInflater.from(ActivityMain.this).inflate(
-                R.layout.page_view, leafletView, false);
-        TextView textView = (TextView) viewGroup.findViewById(
-                R.id.pageTitle);
-        textView.setText(page.toString());
-        viewGroup.setTag(page);
-        return viewGroup;
-    }
-
-    @Override
-    public void enter(View pageView) {
-        setTitle(pageView.getTag().toString());
-    }
-
-    @Override
-    public void leave(View pageView) {
-
+    public View render(Context context, PageTransitionObservable transitionObservable) {
+        transitionObservable.addOnEnterListener(new Runnable() {
+            @Override
+            public void run() {
+                setTitle(R.string.empty);
+            }
+        });
+        return LayoutInflater.from(context).inflate(R.layout.no_page_view, null);
     }
 });
 
-leafletView.setNoPageRenderer(new NoPageRenderer() {
+```
+
+And set page transition listener for the components that are external with
+respect to the page:
+
+```java
+
+leafletView.setPageTransitionListener(new PageTransitionListener<TitledPage>() {
     @Override
-    public View renderNoPage() {
-        return LayoutInflater.from(ActivityMain.this).
-                inflate(R.layout.no_page_view, leafletView, false);
+    public void onEnter(TitledPage page) {
+        setTitle(page.getTitle());
     }
 
     @Override
-    public void enter() {
-        setTitle(R.string.empty);
+    public void onLeave(TitledPage page) {
+        setTitle(null);
     }
-
 });
 
 ```

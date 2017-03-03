@@ -20,9 +20,10 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.gurunars.leaflet_view.PageTransitionListener;
 import com.gurunars.leaflet_view.LeafletView;
-import com.gurunars.leaflet_view.NoPageRenderer;
-import com.gurunars.leaflet_view.PageRenderer;
+import com.gurunars.leaflet_view.NoPage;
+import com.gurunars.leaflet_view.PageTransitionObservable;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -35,7 +36,8 @@ import butterknife.ButterKnife;
 public class ActivityMain extends AppCompatActivity {
 
     private List<TitledPage> pages = new ArrayList<>();
-    private LeafletView<View, TitledPage> leafletView;
+    private LeafletView leafletView;
+    private TitledPage currentPage;
 
     private void updateAdapter() {
         Collections.sort(pages, new Comparator<TitledPage>() {
@@ -52,41 +54,30 @@ public class ActivityMain extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         leafletView = ButterKnife.findById(this, R.id.leafletView);
-        leafletView.setPageRenderer(new PageRenderer<View, TitledPage>() {
+        leafletView.setNoPage(new NoPage() {
             @Override
-            public View renderPage(TitledPage page) {
-                View viewGroup = LayoutInflater.from(ActivityMain.this).inflate(
-                        R.layout.page_view, leafletView, false);
-                TextView textView = (TextView) viewGroup.findViewById(
-                        R.id.pageTitle);
-                textView.setText(page.toString());
-                viewGroup.setTag(page);
-                return viewGroup;
-            }
-
-            @Override
-            public void enter(View pageView) {
-                setTitle(pageView.getTag().toString());
-            }
-
-            @Override
-            public void leave(View pageView) {
-
+            public View render(Context context, PageTransitionObservable transitionObservable) {
+                transitionObservable.addOnEnterListener(new Runnable() {
+                    @Override
+                    public void run() {
+                        setTitle(R.string.empty);
+                    }
+                });
+                return LayoutInflater.from(context).inflate(R.layout.no_page_view, null);
             }
         });
-
-        leafletView.setNoPageRenderer(new NoPageRenderer() {
+        leafletView.setPageTransitionListener(new PageTransitionListener<TitledPage>() {
             @Override
-            public View renderNoPage() {
-                return LayoutInflater.from(ActivityMain.this).
-                        inflate(R.layout.no_page_view, leafletView, false);
+            public void onEnter(TitledPage page) {
+                setTitle(page.getTitle());
+                currentPage = page;
             }
 
             @Override
-            public void enter() {
-                setTitle(R.string.empty);
+            public void onLeave(TitledPage page) {
+                setTitle(null);
+                currentPage = null;
             }
-
         });
 
         load();
@@ -175,7 +166,6 @@ public class ActivityMain extends AppCompatActivity {
         final EditText input = new EditText(this);
         input.setId(R.id.pageTitle);
         input.setInputType(InputType.TYPE_CLASS_TEXT);
-        TitledPage currentPage = leafletView.getCurrentPage();
         if (currentPage == null) {
             return;
         }
@@ -185,14 +175,13 @@ public class ActivityMain extends AppCompatActivity {
         builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                TitledPage page = leafletView.getCurrentPage();
-                page.setTitle(input.getText().toString());
+                currentPage.setTitle(input.getText().toString());
                 // NOTE: surely equals method could have been implemented
                 // however the idea is to demo that these methods are not important -
                 // only getId method is
                 for (int i=0; i < pages.size(); i++) {
-                    if (pages.get(i).getId() == page.getId()) {
-                        pages.set(i, page);
+                    if (pages.get(i).getId() == currentPage.getId()) {
+                        pages.set(i, currentPage);
                     }
                 }
                 updateAdapter();
@@ -205,9 +194,11 @@ public class ActivityMain extends AppCompatActivity {
     private void deletePage() {
         // NOTE: surely equals method could have been implemented
         // however the idea is to demo that these methods are not important - only getId method is
-        TitledPage page = leafletView.getCurrentPage();
+        if (currentPage == null) {
+            return;
+        }
         for (int i=0; i < pages.size(); i++) {
-            if (pages.get(i).getId() == page.getId()) {
+            if (pages.get(i).getId() == currentPage.getId()) {
                 pages.remove(i);
             }
         }
