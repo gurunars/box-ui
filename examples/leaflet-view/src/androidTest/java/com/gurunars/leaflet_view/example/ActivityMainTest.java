@@ -1,5 +1,6 @@
 package com.gurunars.leaflet_view.example;
 
+import android.content.pm.ActivityInfo;
 import android.support.test.filters.LargeTest;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
@@ -20,6 +21,7 @@ import static android.support.test.espresso.Espresso.openActionBarOverflowOrOpti
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.replaceText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.matcher.ViewMatchers.hasSibling;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
@@ -117,6 +119,42 @@ public class ActivityMainTest {
         onView(withText("Go to page")).perform(click());
         onView(withText("Page title 1")).perform(click());
         onView(nthChildOf(withId(R.id.action_bar), 0)).check(matches(withText("Page title 1")));
+    }
+
+    private void goToPage(String title) {
+        openActionBarOverflowOrOptionsMenu(getInstrumentation().getTargetContext());
+        onView(withText("Go to page")).perform(click());
+        onView(withText(title)).perform(click());
+    }
+
+    private void restart() {
+        mActivityRule.getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        mActivityRule.getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+    }
+
+    @Test
+    public void enteredEditTextInPages_shouldBeRetainedAfterPageDestruction() {
+        createPage("Page title 1");
+        createPage("Page title 2");
+        createPage("Page title 3");
+        createPage("Page title 4");
+        createPage("Page title 5");
+        createPage("Page title 6");
+        onView(allOf(hasSibling(withText("Page title 1")), withId(R.id.textEdit))).perform(replaceText("Text to retain"));
+        goToPage("Page title 6");
+        // Should be empty on page 6
+        onView(allOf(hasSibling(withText("Page title 6")), withId(R.id.textEdit))).check(matches(withText("")));
+        goToPage("Page title 1");
+        // Should have retained entered title
+        onView(allOf(hasSibling(withText("Page title 1")), withId(R.id.textEdit))).check(matches(withText("Text to retain")));
+    }
+
+    @Test
+    public void enteredEditTextInPages_shouldBeRetainedAfterOrientationChange() {
+        createPage("Page title 1");
+        onView(allOf(hasSibling(withText("Page title 1")), withId(R.id.textEdit))).perform(replaceText("Text to retain"));
+        restart();
+        onView(allOf(hasSibling(withText("Page title 1")), withId(R.id.textEdit))).check(matches(withText("Text to retain")));
     }
 
     @Before

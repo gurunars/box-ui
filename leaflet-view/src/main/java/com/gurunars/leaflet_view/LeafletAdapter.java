@@ -1,5 +1,7 @@
 package com.gurunars.leaflet_view;
 
+import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.view.PagerAdapter;
@@ -11,10 +13,12 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.esotericsoftware.kryo.Kryo;
+import com.gurunars.android_utils.functional.Finder;
 
 import org.objenesis.strategy.StdInstantiatorStrategy;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import butterknife.ButterKnife;
@@ -24,10 +28,27 @@ class LeafletAdapter<ViewT extends View, PageT extends Page> extends PagerAdapte
     private Kryo kryo = new Kryo();
     private ViewPager pager;
     private PageRenderer<ViewT, PageT> pageRenderer;
-    private List<PageHolder<PageT>> pages = new ArrayList<>();
+
+    private List<PageT> pages = new ArrayList<>();
+    private List<PageT> previousPages = new ArrayList<>();
+
     private SparseArray<ViewT> mapping = new SparseArray<>();
     private NoPageRenderer noPageRenderer;
     private ViewGroup emptyHolder;
+    private HashMap<Long, SparseArray<Parcelable>> childState = new HashMap<>();
+
+    private Finder.Equator<Page> pageEquator = new Finder.Equator<Page>() {
+        @Override
+        public boolean equal(Page one, Page two) {
+            if (one == two) {
+                return true;
+            } else if (one == null || two == null) {
+                return false;
+            } else {
+                return one.getClass().equals(two.getClass()) && one.getId() == two.getId();
+            }
+        }
+    };
 
     LeafletAdapter(
             ViewPager pager,
@@ -49,9 +70,10 @@ class LeafletAdapter<ViewT extends View, PageT extends Page> extends PagerAdapte
 
     void setPages(List<PageT> pages) {
         PageT oldCurrent = getCurrentPage();
-        this.pages = this.kryo.copy(PageHolder.wrap(pages));
+        this.previousPages = this.pages;
+        this.pages = this.kryo.copy(pages);
         notifyDataSetChanged();
-        if (oldCurrent != null && this.pages.contains(new PageHolder<>(oldCurrent))) {
+        if (oldCurrent != null && Finder.contains(pages, oldCurrent, pageEquator)) {
             goTo(oldCurrent);
         } else {
             goTo(getCurrentPage());
@@ -59,7 +81,7 @@ class LeafletAdapter<ViewT extends View, PageT extends Page> extends PagerAdapte
     }
 
     PageT getCurrentPage() {
-        return pages.isEmpty() ? null : pages.get(Math.min(pager.getCurrentItem(), pages.size() - 1)).getPage();
+        return pages.isEmpty() ? null : pages.get(Math.min(pager.getCurrentItem(), pages.size() - 1));
     }
 
     void goTo(PageT page) {
@@ -70,7 +92,7 @@ class LeafletAdapter<ViewT extends View, PageT extends Page> extends PagerAdapte
             emptyHolder.addView(noPageRenderer.renderNoPage());
             noPageRenderer.enter();
         } else {
-            int desiredIndex = pages.indexOf(new PageHolder<>(page));
+            int desiredIndex = Finder.indexOf(pages, page, pageEquator);
             if (desiredIndex != pager.getCurrentItem()) {
                 pager.setCurrentItem(desiredIndex, true);
             }
@@ -112,7 +134,7 @@ class LeafletAdapter<ViewT extends View, PageT extends Page> extends PagerAdapte
     @Nullable
     @Override
     public Object instantiateItem(@NonNull ViewGroup collection, int position) {
-        PageT page = pages.get(position).getPage();
+        PageT page = pages.get(position);
         ViewT view = mapping.get(position);
         View actual = view;
 
@@ -129,12 +151,13 @@ class LeafletAdapter<ViewT extends View, PageT extends Page> extends PagerAdapte
             collection.addView(actual);
         }
 
-        actual.setId(position);
+        loadItemState(position);
         return view;
     }
 
     @Override
     public void destroyItem(@NonNull ViewGroup collection, int position, Object view) {
+        saveItemState(position);
         collection.removeView((View) view);
         mapping.remove(position);
     }
@@ -151,7 +174,67 @@ class LeafletAdapter<ViewT extends View, PageT extends Page> extends PagerAdapte
 
     @Override
     public int getItemPosition(Object object) {
-        int pos = pages.indexOf(object);
-        return pos == -1 ? POSITION_NONE : pos;
+        int pos = -1;
+        if (object instanceof Page) {
+            pos = Finder.indexOf(pages, (Page) object, pageEquator);
+        }
+        if (pos == -1) {
+            return POSITION_NONE;
+        }
+        int prevPost = Finder.indexOf(previousPages, (Page) object, pageEquator);
+        return pos == prevPost ? POSITION_UNCHANGED : pos;
+    }
+
+    @Override
+    public Parcelable saveState() {
+        // We want to store state for the views currently kept in RAM
+        for (int i=0; i<mapping.size(); i++) {
+            saveItemState(mapping.keyAt(i));
+        }
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("state", childState);
+        return bundle;
+    }
+
+    @Override
+    public void restoreState(Parcelable state, ClassLoader loader) {
+        if (state == null) {
+            return;
+        }
+        Bundle bundle = (Bundle) state;
+        HashMap<Long, SparseArray<Parcelable>> tmp = (HashMap<Long, SparseArray<Parcelable>>)
+                bundle.getSerializable("state");
+        if (tmp != null) {
+            childState = tmp;
+        }
+    }
+
+    private void saveItemState(int position) {
+        SparseArray<Parcelable> viewState = new SparseArray<>();
+        View view = mapping.get(position);
+        view.saveHierarchyState(viewState);
+
+        if (pages.isEmpty()) {
+            childState.put(0L, viewState);
+        } else {
+            childState.put(pages.get(position).getId(), viewState);
+        }
+
+    }
+
+    private void loadItemState(int position) {
+        SparseArray<Parcelable> viewState;
+
+        if (pages.isEmpty()) {
+            viewState = childState.get(0L);
+        } else {
+            viewState = childState.get(pages.get(position).getId());
+        }
+
+        if (viewState == null) {
+            return;
+        }
+        View view = mapping.get(position);
+        view.restoreHierarchyState(viewState);
     }
 }
