@@ -157,7 +157,9 @@ class LeafletAdapter<ViewT extends View, PageT extends Page> extends PagerAdapte
 
     @Override
     public void destroyItem(@NonNull ViewGroup collection, int position, Object view) {
-        saveItemState(position);
+        //It would be nice to have an infinite state storage - but it would lead to state size
+        //explosion
+        //saveItemState(position);
         collection.removeView((View) view);
         mapping.remove(position);
     }

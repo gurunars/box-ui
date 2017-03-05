@@ -133,7 +133,7 @@ public class ActivityMainTest {
     }
 
     @Test
-    public void enteredEditTextInPages_shouldBeRetainedAfterPageDestruction() {
+    public void enteredEditTextInPages_shouldNotBeRetainedWhenNavigatingAway() {
         createPage("Page title 1");
         createPage("Page title 2");
         createPage("Page title 3");
@@ -146,7 +146,7 @@ public class ActivityMainTest {
         onView(allOf(hasSibling(withText("Page title 6")), withId(R.id.textEdit))).check(matches(withText("")));
         goToPage("Page title 1");
         // Should have retained entered title
-        onView(allOf(hasSibling(withText("Page title 1")), withId(R.id.textEdit))).check(matches(withText("Text to retain")));
+        onView(allOf(hasSibling(withText("Page title 1")), withId(R.id.textEdit))).check(matches(withText("")));
     }
 
     @Test
