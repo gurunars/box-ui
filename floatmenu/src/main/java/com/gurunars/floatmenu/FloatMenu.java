@@ -44,7 +44,7 @@ public class FloatMenu extends FrameLayout {
 
         inflate(context, R.layout.float_menu, this);
 
-        onCloseListener = onOpenListener = new AnimationListener.DefaultAnimationListener();
+        onCloseListener = onOpenListener = new AnimationListener.Default();
 
         contentPane = ButterKnife.findById(this, R.id.contentPane);
         menuPane = ButterKnife.findById(this, R.id.menuPane);

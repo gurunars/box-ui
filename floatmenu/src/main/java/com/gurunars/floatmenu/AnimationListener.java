@@ -17,7 +17,7 @@ public interface AnimationListener {
      */
     void onFinish();
 
-    class DefaultAnimationListener implements AnimationListener {
+    class Default implements AnimationListener {
         @Override
         public void onStart(int projectedDuration) {
 
