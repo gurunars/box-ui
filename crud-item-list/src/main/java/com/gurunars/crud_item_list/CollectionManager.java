@@ -20,18 +20,18 @@ class CollectionManager<ItemType extends Item> implements Serializable {
 
     private Kryo kryo = new Kryo();
 
-    private List<ItemType> items = new ArrayList<>();
-    private Set<ItemType> selectedItems = new HashSet<>();
+    private List<ItemHolder<ItemType>> items = new ArrayList<>();
+    private Set<ItemHolder<ItemType>> selectedItems = new HashSet<>();
 
-    private final MoverUp<ItemType> moverUp = new MoverUp<>();
-    private final MoverDown<ItemType> moverDown = new MoverDown<>();
-    private final Deleter<ItemType> deleter = new Deleter<>();
+    private final MoverUp<ItemHolder<ItemType>> moverUp = new MoverUp<>();
+    private final MoverDown<ItemHolder<ItemType>> moverDown = new MoverDown<>();
+    private final Deleter<ItemHolder<ItemType>> deleter = new Deleter<>();
 
-    private final CheckerMoveDown<ItemType> checkerMoveDown = new CheckerMoveDown<>();
-    private final CheckerMoveUp<ItemType> checkerMoveUp = new CheckerMoveUp<>();
-    private final CheckerSelectAll<ItemType> checkerSelectAll = new CheckerSelectAll<>();
-    private final CheckerDelete<ItemType> checkerDelete = new CheckerDelete<>();
-    private final CheckerEdit<ItemType> checkerEdit = new CheckerEdit<>();
+    private final CheckerMoveDown<ItemHolder<ItemType>> checkerMoveDown = new CheckerMoveDown<>();
+    private final CheckerMoveUp<ItemHolder<ItemType>> checkerMoveUp = new CheckerMoveUp<>();
+    private final CheckerSelectAll<ItemHolder<ItemType>> checkerSelectAll = new CheckerSelectAll<>();
+    private final CheckerDelete<ItemHolder<ItemType>> checkerDelete = new CheckerDelete<>();
+    private final CheckerEdit<ItemHolder<ItemType>> checkerEdit = new CheckerEdit<>();
 
     private final Consumer<List<SelectableItem<ItemType>>> stateChangeHandler;
     private final Consumer<List<ItemType>> collectionChangeHandler;
@@ -47,8 +47,8 @@ class CollectionManager<ItemType extends Item> implements Serializable {
 
     private List<SelectableItem<ItemType>> getSelectableItems() {
         List<SelectableItem<ItemType>> rval = new ArrayList<>();
-        for (ItemType item: items) {
-            rval.add(new ConcreteSelectableItem<>(item, selectedItems.contains(item)));
+        for (ItemHolder<ItemType> item: items) {
+            rval.add(new ConcreteSelectableItem<>(item.getRaw(), selectedItems.contains(item)));
         }
         return rval;
     }
@@ -78,8 +78,8 @@ class CollectionManager<ItemType extends Item> implements Serializable {
     }
 
     private void cleanSelection() {
-        Set<ItemType> newSelection = new HashSet<>(selectedItems);
-        for (ItemType cursor: selectedItems) {
+        Set<ItemHolder<ItemType>> newSelection = new HashSet<>(selectedItems);
+        for (ItemHolder<ItemType> cursor: selectedItems) {
             if (!items.contains(cursor)) {
                 newSelection.remove(cursor);
             }
@@ -96,17 +96,20 @@ class CollectionManager<ItemType extends Item> implements Serializable {
         if (selectedItems.size() == 0) {
             return;
         }
-        if (selectedItems.contains(item)) {
-            selectedItems.remove(item);
+
+        ItemHolder<ItemType> holder = new ItemHolder<>(item);
+
+        if (selectedItems.contains(holder)) {
+            selectedItems.remove(holder);
         } else {
-            selectedItems.add(item);
+            selectedItems.add(holder);
         }
         changed();
     }
 
     void itemLongClick(ItemType item) {
         if (selectedItems.size() == 0) {
-            selectedItems.add(item);
+            selectedItems.add(new ItemHolder<>(item));
         }
         changed();
     }
@@ -121,14 +124,14 @@ class CollectionManager<ItemType extends Item> implements Serializable {
     }
 
     void setItems(List<ItemType> items) {
-        this.items = kryo.copy(new ArrayList<>(items));
+        this.items = kryo.copy(new ArrayList<>(ItemHolder.wrap(items)));
         changed();
     }
 
-    private void changeDataSet(BiFunction<List<ItemType>, Set<ItemType>, List<ItemType>> changer) {
+    private void changeDataSet(BiFunction<List<ItemHolder<ItemType>>, Set<ItemHolder<ItemType>>, List<ItemHolder<ItemType>>> changer) {
         items = changer.apply(items, selectedItems);
         changed();
-        collectionChangeHandler.accept(items);
+        collectionChangeHandler.accept(ItemHolder.unwrap(items));
     }
 
     void deleteSelected() {
@@ -153,9 +156,9 @@ class CollectionManager<ItemType extends Item> implements Serializable {
             return;
         }
 
-        Iterator<ItemType> iterator = selectedItems.iterator();
+        Iterator<ItemHolder<ItemType>> iterator = selectedItems.iterator();
         if (iterator.hasNext()) {
-            itemConsumer.accept(kryo.copy(iterator.next()));
+            itemConsumer.accept(kryo.copy(iterator.next().getRaw()));
         }
     }
 
@@ -164,13 +167,13 @@ class CollectionManager<ItemType extends Item> implements Serializable {
     }
 
     void loadState(Serializable state) {
-        selectedItems = (HashSet<ItemType>) state;
+        selectedItems = (HashSet<ItemHolder<ItemType>>) state;
         changed();
     }
 
-    private void addOrUpdate(ItemType item) {
+    private void addOrUpdate(ItemHolder<ItemType> item) {
         for (int i=0; i < items.size(); i++) {
-            ItemType cursor = items.get(i);
+            ItemHolder<ItemType> cursor = items.get(i);
             if (cursor.getId() == item.getId()) {
                 items.set(i, item);
                 return;
@@ -180,10 +183,10 @@ class CollectionManager<ItemType extends Item> implements Serializable {
     }
 
     void setItem(ItemType item) {
-        addOrUpdate(item);
+        addOrUpdate(new ItemHolder<>(item));
         selectedItems.clear();
         changed();
-        collectionChangeHandler.accept(items);
+        collectionChangeHandler.accept(ItemHolder.unwrap(items));
     }
 
 }
