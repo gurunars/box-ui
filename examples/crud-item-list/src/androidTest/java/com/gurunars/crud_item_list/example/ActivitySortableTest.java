@@ -177,7 +177,7 @@ public class ActivitySortableTest {
         restart();
         onView(withId(R.id.edit)).perform(click());
         restart();
-        atIndex(3).check(matches(withText("4 @ 2 [wolf] | false")));
+        atIndex(3).check(matches(withText("4 @ 2 [wolf] | true")));
     }
 
     @Test

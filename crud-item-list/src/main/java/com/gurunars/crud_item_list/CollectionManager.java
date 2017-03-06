@@ -80,8 +80,10 @@ class CollectionManager<ItemType extends Item> implements Serializable {
     private void cleanSelection() {
         Set<ItemHolder<ItemType>> newSelection = new HashSet<>(selectedItems);
         for (ItemHolder<ItemType> cursor: selectedItems) {
-            if (!items.contains(cursor)) {
-                newSelection.remove(cursor);
+            newSelection.remove(cursor);
+            if (items.contains(cursor)) {
+                // This is to replace the item's payload with a new one
+                newSelection.add(items.get(items.indexOf(cursor)));
             }
         }
         selectedItems = newSelection;
