@@ -2,7 +2,9 @@ package com.gurunars.item_list;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.annotation.Nonnull;
 import javax.inject.Inject;
@@ -32,12 +34,21 @@ class Differ<ItemType extends Item> implements BiFunction<List<ItemType>, List<I
     private
     FetcherPermutations<ItemType> fetcherPermutations = new FetcherPermutations<>();
 
+    private void verifyNoDuplicates(List<ItemHolder<ItemType>> items) {
+        Set<ItemHolder<ItemType>> set = new HashSet<>(items);
+        if (set.size() != items.size()) {
+            throw new RuntimeException("The list of items contains duplicates");
+        }
+    }
+
     @Nonnull
     @Override
     public List<Change<ItemType>> apply(List<ItemType> source, List<ItemType> target) {
 
         List<ItemHolder<ItemType>> sourceList = ItemHolder.wrap(source);
         List<ItemHolder<ItemType>> targetList = ItemHolder.wrap(target);
+
+        verifyNoDuplicates(sourceList);
 
         List<ItemHolder<ItemType>> removed = diffFetcher.apply(sourceList, targetList);
         Collections.reverse(removed);  // remove in a reverse order to prevent index recalculation

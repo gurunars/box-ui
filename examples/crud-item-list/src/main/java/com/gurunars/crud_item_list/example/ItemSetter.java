@@ -1,10 +1,10 @@
-package com.gurunars.crud_item_list;
+package com.gurunars.crud_item_list.example;
 
 import com.gurunars.item_list.Item;
 
 import java.util.List;
 
-public class ItemSetter {
+class ItemSetter {
 
     /**
      * Helper function to replace the existing item in the list if its id was found or create a
@@ -17,7 +17,7 @@ public class ItemSetter {
      * @param <ItemType> type of the items in a collection
      * @return the list that was passed in with changed payload
      */
-    public static <ItemType extends Item> List<ItemType> setItem(List<ItemType> items, ItemType item) {
+    static <ItemType extends Item> List<ItemType> setItem(List<ItemType> items, ItemType item) {
         for (int i = 0; i < items.size(); i++) {
             ItemType cursor = items.get(i);
             if (cursor.getId() == item.getId()) {

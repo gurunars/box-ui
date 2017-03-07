@@ -12,7 +12,6 @@ import android.view.View;
 
 import com.gurunars.crud_item_list.CrudItemList;
 import com.gurunars.crud_item_list.ItemEditListener;
-import com.gurunars.crud_item_list.ItemSetter;
 import com.gurunars.crud_item_list.ListChangeListener;
 import com.gurunars.crud_item_list.NewItemSupplier;
 

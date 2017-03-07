@@ -50,11 +50,6 @@ class ItemHolder<ItemType extends Item> implements Item {
         return Long.valueOf(getId()).hashCode();
     }
 
-    @Override
-    public String toString() {
-        return item.getClass() + "(" + getId() + ")";
-    }
-
     ItemType getRaw() {
         return item;
     }

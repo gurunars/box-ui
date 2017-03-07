@@ -300,16 +300,4 @@ public class CollectionManagerTest {
         collectionManager.moveSelectionDown();
     }
 
-    @Test
-    public void addingItem_shouldIncrementItemCount() {
-        collectionManager.setItem(new AnimalItem(9, AnimalItem.Type.WOLF));
-        assertEquals(selectableItems.size(), 9);
-    }
-
-    @Test
-    public void updatingItem_shouldNotIncrementItemCount() {
-        collectionManager.setItem(new AnimalItem(5, AnimalItem.Type.WOLF));
-        assertEquals(selectableItems.size(), 8);
-    }
-
 }

@@ -173,22 +173,4 @@ class CollectionManager<ItemType extends Item> implements Serializable {
         changed();
     }
 
-    private void addOrUpdate(ItemHolder<ItemType> item) {
-        for (int i=0; i < items.size(); i++) {
-            ItemHolder<ItemType> cursor = items.get(i);
-            if (cursor.getId() == item.getId()) {
-                items.set(i, item);
-                return;
-            }
-        }
-        items.add(item);
-    }
-
-    void setItem(ItemType item) {
-        addOrUpdate(new ItemHolder<>(item));
-        selectedItems.clear();
-        changed();
-        collectionChangeHandler.accept(ItemHolder.unwrap(items));
-    }
-
 }
