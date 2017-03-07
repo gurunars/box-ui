@@ -34,7 +34,7 @@ class ConcreteSelectableItem<ItemType extends Item> implements SelectableItem<It
 
     @Override
     public int hashCode() {
-        return (int) getId();
+        return Long.valueOf(getId()).hashCode();
     }
 
     @Override
