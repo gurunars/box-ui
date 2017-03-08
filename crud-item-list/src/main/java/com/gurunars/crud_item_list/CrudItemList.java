@@ -87,12 +87,6 @@ public class CrudItemList<ItemType extends Item> extends RelativeLayout {
                 itemList.setItems(selectableItems);
                 if (collectionManager.hasSelection()) {
                     setUpContextualMenu();
-                    contextualMenu.setUpContextualButtons(
-                            collectionManager.canEdit(),
-                            collectionManager.canMoveUp(),
-                            collectionManager.canMoveDown(),
-                            collectionManager.canDelete(),
-                            collectionManager.canSelectAll());
                     floatingMenu.open();
                 } else {
                     floatingMenu.close();
@@ -141,51 +135,6 @@ public class CrudItemList<ItemType extends Item> extends RelativeLayout {
             @Override
             public void onFinish() {
                 setUpCreationMenu();
-            }
-        });
-
-        contextualMenu.setMenuListener(new ContextualMenu.MenuListener() {
-            @Override
-            public void delete() {
-                collectionManager.deleteSelected();
-            }
-
-            @Override
-            public void edit() {
-                collectionManager.triggerConsumption();
-            }
-
-            @Override
-            public void moveUp(boolean isActive) {
-                if (isActive) {
-                    scheduledRunner.start(new Runnable() {
-                        @Override
-                        public void run() {
-                            collectionManager.moveSelectionUp();
-                        }
-                    });
-                } else {
-                    scheduledRunner.stop();
-                }
-            }
-
-            @Override
-            public void moveDown(boolean isActive) {
-                if (isActive) {
-                    scheduledRunner.start(new Runnable() {
-                        @Override
-                        public void run() {
-                            collectionManager.moveSelectionDown();
-                        }
-                    });
-                } else {
-                    scheduledRunner.stop();
-                }
-            }
-
-            @Override
-            public void selectAll() {
-                collectionManager.selectAll();
             }
         });
 

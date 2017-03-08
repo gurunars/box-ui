@@ -23,16 +23,6 @@ class CollectionManager<ItemType extends Item> {
     private List<ItemHolder<ItemType>> items = new ArrayList<>();
     private Set<ItemHolder<ItemType>> selectedItems = new HashSet<>();
 
-    private final MoverUp<ItemHolder<ItemType>> moverUp = new MoverUp<>();
-    private final MoverDown<ItemHolder<ItemType>> moverDown = new MoverDown<>();
-    private final Deleter<ItemHolder<ItemType>> deleter = new Deleter<>();
-
-    private final CheckerMoveDown<ItemHolder<ItemType>> checkerMoveDown = new CheckerMoveDown<>();
-    private final CheckerMoveUp<ItemHolder<ItemType>> checkerMoveUp = new CheckerMoveUp<>();
-    private final CheckerSelectAll<ItemHolder<ItemType>> checkerSelectAll = new CheckerSelectAll<>();
-    private final CheckerDelete<ItemHolder<ItemType>> checkerDelete = new CheckerDelete<>();
-    private final CheckerEdit<ItemHolder<ItemType>> checkerEdit = new CheckerEdit<>();
-
     private final Consumer<List<SelectableItem<ItemType>>> stateChangeHandler;
     private final Consumer<List<ItemType>> collectionChangeHandler;
     private Consumer<ItemType> itemConsumer;
@@ -55,26 +45,6 @@ class CollectionManager<ItemType extends Item> {
 
     boolean hasSelection() {
         return !selectedItems.isEmpty();
-    }
-
-    boolean canEdit() {
-        return checkerEdit.apply(items, selectedItems);
-    }
-
-    boolean canMoveUp() {
-        return checkerMoveUp.apply(items, selectedItems);
-    }
-
-    boolean canMoveDown() {
-        return checkerMoveDown.apply(items, selectedItems);
-    }
-
-    boolean canDelete() {
-        return checkerDelete.apply(items, selectedItems);
-    }
-
-    boolean canSelectAll() {
-        return checkerSelectAll.apply(items, selectedItems);
     }
 
     private void cleanSelection() {
@@ -130,38 +100,10 @@ class CollectionManager<ItemType extends Item> {
         changed();
     }
 
-    private void changeDataSet(BiFunction<List<ItemHolder<ItemType>>, Set<ItemHolder<ItemType>>, List<ItemHolder<ItemType>>> changer) {
-        items = changer.apply(items, selectedItems);
+    private void changeDataSet(Action<ItemType> action) {
+        items = action.perform(items, selectedItems);
         changed();
         collectionChangeHandler.accept(ItemHolder.unwrap(items));
-    }
-
-    void deleteSelected() {
-        changeDataSet(deleter);
-    }
-
-    void moveSelectionUp() {
-        changeDataSet(moverUp);
-    }
-
-    void moveSelectionDown() {
-        changeDataSet(moverDown);
-    }
-
-    void selectAll() {
-        selectedItems.addAll(items);
-        changed();
-    }
-
-    void triggerConsumption() {
-        if (itemConsumer == null) {
-            return;
-        }
-
-        Iterator<ItemHolder<ItemType>> iterator = selectedItems.iterator();
-        if (iterator.hasNext()) {
-            itemConsumer.accept(kryo.copy(iterator.next().getRaw()));
-        }
     }
 
     Serializable saveState() {
@@ -171,24 +113,6 @@ class CollectionManager<ItemType extends Item> {
     void loadState(Serializable state) {
         selectedItems = (HashSet<ItemHolder<ItemType>>) state;
         changed();
-    }
-
-    private void addOrUpdate(ItemHolder<ItemType> item) {
-        for (int i=0; i < items.size(); i++) {
-            ItemHolder<ItemType> cursor = items.get(i);
-            if (cursor.getId() == item.getId()) {
-                items.set(i, item);
-                return;
-            }
-        }
-        items.add(item);
-    }
-
-    void setItem(ItemType item) {
-        addOrUpdate(new ItemHolder<>(item));
-        selectedItems.clear();
-        changed();
-        collectionChangeHandler.accept(ItemHolder.unwrap(items));
     }
 
 }
