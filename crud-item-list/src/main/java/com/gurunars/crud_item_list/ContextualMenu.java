@@ -5,8 +5,6 @@ import android.content.Context;
 import android.os.Parcelable;
 import android.support.annotation.IdRes;
 import android.util.AttributeSet;
-import android.view.MotionEvent;
-import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 
@@ -16,9 +14,6 @@ import java.util.List;
 import icepick.Icepick;
 import icepick.State;
 
-import static android.view.KeyEvent.ACTION_DOWN;
-import static android.view.MotionEvent.ACTION_CANCEL;
-import static android.view.MotionEvent.ACTION_UP;
 import static android.widget.RelativeLayout.ALIGN_PARENT_LEFT;
 import static android.widget.RelativeLayout.ALIGN_PARENT_RIGHT;
 import static android.widget.RelativeLayout.LEFT_OF;
@@ -26,19 +21,6 @@ import static android.widget.RelativeLayout.RIGHT_OF;
 
 class ContextualMenu extends FrameLayout {
 
-    private interface MoveAction {
-        void perform(boolean isActive);
-    }
-
-    interface MenuListener {
-        void delete();
-        void edit();
-        void moveUp(boolean isActive);
-        void moveDown(boolean isActive);
-        void selectAll();
-    }
-
-    private MenuListener menuListener;
     private List<CircularIconButton> buttons;
 
     @State int iconBgColor;
@@ -121,95 +103,8 @@ class ContextualMenu extends FrameLayout {
         }
     }
 
-    public void setMenuListener(MenuListener menuListener) {
-        this.menuListener = menuListener;
-    }
-
     private CircularIconButton getButton(int id) {
         return (CircularIconButton) findViewById(id);
-    }
-
-    private void configureDeleteButton(boolean canDelete) {
-        CircularIconButton delete = getButton(R.id.delete);
-        delete.setEnabled(canDelete);
-        delete.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                menuListener.delete();
-            }
-        });
-    }
-
-    private void configureEditButton(boolean canEdit) {
-        CircularIconButton edit = getButton(R.id.edit);
-        edit.setEnabled(canEdit);
-        edit.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                menuListener.edit();
-            }
-        });
-    }
-
-    private void configureMoveButton(int buttonId, boolean isActive, final MoveAction action) {
-        CircularIconButton moveDown = getButton(buttonId);
-        moveDown.setEnabled(isActive);
-        if (!isActive) {  // cancel the action if the button is deactivated
-            action.perform(false);
-        }
-        moveDown.setOnTouchListener(new OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                int motion = event.getActionMasked();
-                if (motion == ACTION_DOWN) {
-                    v.getParent().requestDisallowInterceptTouchEvent(true);
-                    action.perform(true);
-                } else if (motion == ACTION_UP || motion == ACTION_CANCEL) {
-                    v.getParent().requestDisallowInterceptTouchEvent(false);
-                    action.perform(false);
-                }
-                return true;
-            }
-        });
-    }
-
-    private void configureMoveUpButton(boolean canMoveUp) {
-        configureMoveButton(R.id.moveUp, canMoveUp, new MoveAction() {
-            @Override
-            public void perform(boolean isActive) {
-                menuListener.moveUp(isActive);
-            }
-        });
-    }
-
-    private void configureMoveDownButton(boolean canMoveDown) {
-        configureMoveButton(R.id.moveDown, canMoveDown, new MoveAction() {
-            @Override
-            public void perform(boolean isActive) {
-                menuListener.moveDown(isActive);
-            }
-        });
-    }
-
-    private void configureSelectAllButton(boolean canSelectAll) {
-        CircularIconButton selectAllB = getButton(R.id.selectAll);
-        selectAllB.setEnabled(canSelectAll);
-        selectAllB.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                menuListener.selectAll();
-            }
-        });
-    }
-
-    public void setUpContextualButtons(
-            boolean canEdit, boolean canMoveUp, boolean canMoveDown, boolean canDelete,
-            boolean canSelectAll) {
-        configureDeleteButton(canDelete);
-        configureEditButton(canEdit);
-        configureMoveUpButton(canMoveUp);
-        configureMoveDownButton(canMoveDown);
-        configureSelectAllButton(canSelectAll);
     }
 
     @Override public Parcelable onSaveInstanceState() {

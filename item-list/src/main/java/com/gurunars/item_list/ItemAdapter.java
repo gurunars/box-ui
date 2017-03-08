@@ -13,13 +13,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-class ItemAdapter<ItemType extends Item> extends RecyclerView.Adapter<BindableViewHolder<ItemType>> {
+class ItemAdapter<PayloadType extends Payload> extends RecyclerView.Adapter<BindableViewHolder<PayloadType>> {
 
     private Kryo kryo = new Kryo();
-    private List<ItemType> items = new ArrayList<>();
-    private List<ItemType> previousList = new ArrayList<>();
+    private List<Item<PayloadType>> items = new ArrayList<>();
+    private List<Item<PayloadType>> previousList = new ArrayList<>();
 
-    private Differ<ItemType> differ = new Differ<>();
+    private Differ<Item<PayloadType>> differ = new Differ<>();
 
     private Scroller scroller;
     private EmptyViewBinder emptyViewBinder;
@@ -30,11 +30,12 @@ class ItemAdapter<ItemType extends Item> extends RecyclerView.Adapter<BindableVi
         setEmptyViewBinder(new ItemViewBinderEmpty());
     }
 
-    private ItemViewBinder<ItemType> defaultViewBinder = new ItemViewBinderString<>();
+    private ItemViewBinder<PayloadType> defaultViewBinder = new ItemViewBinderString<>();
+    private ItemViewBinder<PayloadType> footer = new ItemViewBinderFooter<>();
 
-    private SparseArray<ItemViewBinder<ItemType>> itemViewBinderMap =
-            new SparseArray<ItemViewBinder<ItemType>>() {{
-        put(ItemViewBinderFooter.FOOTER_TYPE, new ItemViewBinderFooter<ItemType>());
+    private SparseArray<ItemViewBinder<PayloadType>> itemViewBinderMap =
+            new SparseArray<ItemViewBinder<PayloadType>>() {{
+        put(ItemViewBinderFooter.FOOTER_TYPE, footer);
     }};
 
     void setEmptyViewBinder(@NonNull EmptyViewBinder emptyViewBinder) {
@@ -42,11 +43,11 @@ class ItemAdapter<ItemType extends Item> extends RecyclerView.Adapter<BindableVi
     }
 
     void registerItemViewBinder(@NonNull Enum anEnum,
-                                @NonNull ItemViewBinder<ItemType> itemViewBinder) {
+                                @NonNull ItemViewBinder<PayloadType> itemViewBinder) {
         itemViewBinderMap.put(anEnum.ordinal(), itemViewBinder);
     }
 
-    void setItems(@NonNull List<ItemType> newItems) {
+    void setItems(@NonNull List<Item<PayloadType>> newItems) {
         // make sure that item lists are passed by value
         previousList = kryo.copy(items);
         newItems = kryo.copy(newItems);
@@ -57,7 +58,7 @@ class ItemAdapter<ItemType extends Item> extends RecyclerView.Adapter<BindableVi
         } else {
             int position = -1;
 
-            for (Change<ItemType> change: differ.apply(items, newItems)){
+            for (Change<Item<PayloadType>> change: differ.apply(items, newItems)){
                 position = change.apply(this, scroller, items, position);
             }
 
@@ -68,26 +69,26 @@ class ItemAdapter<ItemType extends Item> extends RecyclerView.Adapter<BindableVi
     }
 
     @Override
-    public BindableViewHolder<ItemType> onCreateViewHolder(@NonNull ViewGroup parent,
+    public BindableViewHolder<PayloadType> onCreateViewHolder(@NonNull ViewGroup parent,
                                                            int viewType) {
         if (viewType == ItemViewBinderEmpty.EMPTY_TYPE) {
             return new BindableViewHolder<>(parent, emptyViewBinder);
         } else {
-            ItemViewBinder<ItemType> itemViewBinder = this.itemViewBinderMap.get(viewType);
-            return new BindableViewHolder<>(parent, itemViewBinder != null ?
-                    itemViewBinder : defaultViewBinder);
+            ItemViewBinder<PayloadType> itemViewBinder = this.itemViewBinderMap.get(viewType);
+            return new BindableViewHolder<>(parent, itemViewBinder == null ? defaultViewBinder :
+                    itemViewBinder);
         }
     }
 
     @Override
-    public void onBindViewHolder(@NonNull BindableViewHolder<ItemType> holder, int position) {
+    public void onBindViewHolder(@NonNull BindableViewHolder<PayloadType> holder, int position) {
         if (position == items.size()) {
             return;  // nothing to bind
         }
 
-        ItemType item = items.get(position);
-        ItemType previousItem = null;
-        for (ItemType cursor: previousList) {
+        Item<PayloadType> item = items.get(position);
+        Item<PayloadType> previousItem = null;
+        for (Item<PayloadType> cursor: previousList) {
             if (item.getId() == cursor.getId()) {
                 previousItem = cursor;
                 break;
@@ -106,7 +107,7 @@ class ItemAdapter<ItemType extends Item> extends RecyclerView.Adapter<BindableVi
         if (position == items.size()) {
             return ItemViewBinderFooter.FOOTER_TYPE;
         }
-        return items.get(position).getType().ordinal();
+        return items.get(position).getPayload().getType().ordinal();
     }
 
     @Override

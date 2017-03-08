@@ -51,7 +51,6 @@ Set in layouts:
 ```xml
 
     <com.gurunars.crud_item_list.CrudItemList
-        app:itemDivider="@drawable/custom_divider"
         app:actionIconFgColor="@color/Yellow"
         app:actionIconBgColor="@color/Blue"
         app:contextualCloseBgColor="@color/Black"
@@ -68,7 +67,6 @@ Set in layouts:
 
 The following layout attributes are available:
 
-* **itemDivider** - Drawable to be used as a divider
 * **actionIconFgColor** - icon fill of the contextual menu action buttons
 * **actionIconBgColor** - background of the contextual menu action buttons
 * **contextualCloseFgColor** - icon fill of the contextual menu close button
@@ -95,10 +93,12 @@ Set a callable to be invoked whenever the collection in the list is changed:
 
 ```java
 
-crudItemList.setListChangeListener(new ListChangeListener<AnimalItem>() {
+crudItemList.setListChangeListener(new ListChangeListener<AnimalPayload>() {
     @Override
-    public void onChange(List<AnimalItem> items) {
-        model.setItems(items);
+    public void onChange(List<Item<AnimalPayload>> items) {
+        for (Item<AnimalPayload> item: items) {
+            model.updateItem(item);
+        }
     }
 });
 
@@ -109,15 +109,14 @@ one has to be changed:
 
 ```java
 
-crudItemList.setItemEditListener(new ItemEditListener<AnimalItem>() {
-            @Override
-            public void onEdit(AnimalItem editableItem, boolean isNew) {
-                editableItem.setVersion(editableItem.getVersion() + 1);
-                List<AnimalItem> items = ItemSetter.setItem(model.getItems(), editableItem);
-                model.setItems(items);
-                crudItemList.setItems(items);
-            }
-        });
+crudItemList.setItemEditListener(new ItemEditListener<AnimalPayload>() {
+    @Override
+    public void onEdit(Item<AnimalPayload> editableItem, boolean isNew) {
+        editableItem.getPayload().update();
+        model.updateItem(editableItem);
+        crudItemList.setItems(model.getItems());
+    }
+});
 
 ```
 
@@ -159,7 +158,7 @@ Implement item view binder:
 
 ```java
 
-class AnimalRowBinder implements SelectableItemViewBinder<AnimalItem> {
+class AnimalRowBinder implements com.gurunars.item_list.ItemViewBinder<SelectablePayload<AnimalPayload>> {
 
     @Override
     public View getView(Context context) {
@@ -170,12 +169,11 @@ class AnimalRowBinder implements SelectableItemViewBinder<AnimalItem> {
     }
 
     @Override
-    public void bind(View itemView, SelectableItem<AnimalItem> item,
-                     @Nullable SelectableItem<AnimalItem> previousItem) {
+    public void bind(View itemView, Item<SelectablePayload<AnimalPayload>> item, @Nullable Item<SelectablePayload<AnimalPayload>> previousItem) {
         TextView view = (TextView) itemView;
 
         view.setBackgroundColor(ContextCompat.getColor(view.getContext(),
-                item.isSelected() ? com.gurunars.crud_item_list.R.color.Red :
+                item.getPayload().isSelected() ? com.gurunars.crud_item_list.R.color.Red :
                         com.gurunars.crud_item_list.R.color.White));
         view.setText(item.toString());
         view.setContentDescription("I"+item.getId());
@@ -210,16 +208,15 @@ creation chain of events:
 
 ```java
 
-private void confItemType(int menuItemId, final AnimalItem.Type type) {
-    crudItemList.registerItemType(type,
-            new AnimalRowBinder(),
-            menuItemId,
-            new NewItemSupplier<AnimalItem>() {
-                @Override
-                public AnimalItem supply() {
-                    return new AnimalItem(model.getMaxItemId()+1, type);
-                }
-            });
+private void confItemType(@IdRes int id, final AnimalPayload.Type type) {
+    creationMenu.findViewById(id).setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            model.createItem(new AnimalPayload(type));
+            crudItemList.setItems(model.getItems());
+        }
+    });
+    crudItemList.registerItemType(type, new AnimalRowBinder());
 }
 
 
@@ -248,7 +245,7 @@ The ItemList will handling animations and selection retention on its own.
 
 ```java
 
-crudItemList.setItems(new ArrayList<AnimalItem>());
+crudItemList.setItems(new ArrayList<Item<AnimalPayload>>());
 
 ```
 

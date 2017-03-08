@@ -7,22 +7,42 @@ import java.io.Serializable;
  *
  * "equals" method MUST be implemented to compare items subclasses by value.
  */
-public interface Item extends Serializable, Cloneable {
+public final class Item<PayloadType extends Serializable> implements Serializable {
 
-    /**
-     * @return value to be used when deciding which view to use to render the items in a
-     *         RecyclerView
-     */
-    Enum getType();
+    private final long id;
+    private final PayloadType payload;
+
+    public Item(long id, PayloadType payload) {
+        this.id = id;
+        this.payload = payload;
+    }
 
     /**
      * @return value to differentiate one item from another within a RecyclerView
      */
-    long getId();
+    public final long getId() {
+        return id;
+    }
 
-    /**
-     * @param other another Item
-     * @return true if the items are identical by value, false otherwise
-     */
-    boolean equals(Object other);
+    public final PayloadType getPayload() {
+        return payload;
+    }
+
+    @Override
+    public final boolean equals(Object other) {
+        return
+            other != null &&
+            this.getClass() == other.getClass() &&
+            getId() == ((Item) other).getId();
+    }
+
+    @Override
+    public final int hashCode() {
+        return Long.valueOf(getId()).hashCode();
+    }
+
+    @Override
+    public final String toString() {
+        return "#" + id + "{" + payload.toString() + "}";
+    }
 }

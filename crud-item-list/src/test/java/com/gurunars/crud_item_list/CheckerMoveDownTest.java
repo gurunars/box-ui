@@ -11,22 +11,22 @@ import static junit.framework.Assert.assertTrue;
 
 public class CheckerMoveDownTest {
 
-    private final CheckerMoveDown<String> moveDownChecker = new CheckerMoveDown<>();
+    private final ActionMoveDown<String> moveDownChecker = new ActionMoveDown<>();
     private final List<String> all = Arrays.asList("one", "two", "three", "four");
 
     @Test
     public void selectingLastItem_leadsToFalse() throws Exception {
-        assertFalse(moveDownChecker.apply(all, Sets.newSet("four")));
+        assertFalse(moveDownChecker.canPerform(all, Sets.newSet("four")));
     }
 
     @Test
     public void selectingInterruptedChunk_leadsToFalse() throws Exception {
-        assertFalse(moveDownChecker.apply(all, Sets.newSet("one", "three")));
+        assertFalse(moveDownChecker.canPerform(all, Sets.newSet("one", "three")));
     }
 
     @Test
     public void selectingSolidChunkBeforeLast_leadsToTrue() throws Exception {
-        assertTrue(moveDownChecker.apply(all, Sets.newSet("one", "two", "three")));
+        assertTrue(moveDownChecker.canPerform(all, Sets.newSet("one", "two", "three")));
     }
 
 }

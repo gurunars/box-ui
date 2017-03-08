@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.gurunars.item_list.EmptyViewBinder;
+import com.gurunars.item_list.Item;
 import com.gurunars.item_list.ItemList;
 import com.gurunars.item_list.ItemViewBinder;
 
@@ -26,7 +27,7 @@ import butterknife.ButterKnife;
 
 public class ActivityMain extends AppCompatActivity {
 
-    static class AnimalBinder implements ItemViewBinder<AnimalItem> {
+    static class AnimalBinder implements ItemViewBinder<AnimalPayload> {
 
         @Override
         public View getView(Context context) {
@@ -34,6 +35,14 @@ public class ActivityMain extends AppCompatActivity {
             int padding = context.getResources().getDimensionPixelOffset(R.dimen.padding);
             text.setPadding(padding, padding, padding, padding);
             return text;
+        }
+
+        @Override
+        public void bind(View itemView, Item<AnimalPayload> item, @Nullable Item<AnimalPayload> previousItem) {
+            ((TextView) itemView).setText(item.toString());
+            if (previousItem != null) {
+                animateUpdate(itemView);
+            }
         }
 
         private void animateUpdate(final View view) {
@@ -50,14 +59,6 @@ public class ActivityMain extends AppCompatActivity {
             anim.start();
         }
 
-        @Override
-        public void bind(View itemView, AnimalItem item, @Nullable AnimalItem previousItem) {
-            ((TextView) itemView).setText(item.toString() + " [" +
-                    item.getType().name().toLowerCase() + "]");
-            if (previousItem != null) {
-                animateUpdate(itemView);
-            }
-        }
     }
 
     static class EmptyBinder implements EmptyViewBinder {
@@ -72,12 +73,12 @@ public class ActivityMain extends AppCompatActivity {
 
     }
 
-    private ItemList<AnimalItem> itemList;
-    private List<AnimalItem> items = new ArrayList<>();
+    private ItemList<AnimalPayload> itemList;
+    private List<Item<AnimalPayload>> items = new ArrayList<>();
     private int count = 0;
 
-    private void add(AnimalItem.Type type) {
-        items.add(new AnimalItem(count, type));
+    private void add(AnimalPayload.Type type) {
+        items.add(new Item<>(count, new AnimalPayload(0, type)));
         count++;
     }
 
@@ -88,7 +89,7 @@ public class ActivityMain extends AppCompatActivity {
 
         itemList = ButterKnife.findById(this, R.id.itemList);
 
-        for (AnimalItem.Type type: AnimalItem.Type.values()) {
+        for (AnimalPayload.Type type: AnimalPayload.Type.values()) {
             itemList.registerItemViewBinder(type, new AnimalBinder());
         }
 
@@ -137,10 +138,10 @@ public class ActivityMain extends AppCompatActivity {
     }
 
     private @StringRes int create() {
-        add(AnimalItem.Type.TIGER);
-        add(AnimalItem.Type.WOLF);
-        add(AnimalItem.Type.MONKEY);
-        add(AnimalItem.Type.LION);
+        add(AnimalPayload.Type.TIGER);
+        add(AnimalPayload.Type.WOLF);
+        add(AnimalPayload.Type.MONKEY);
+        add(AnimalPayload.Type.LION);
         itemList.setItems(items);
         return R.string.did_create;
     }
@@ -158,7 +159,7 @@ public class ActivityMain extends AppCompatActivity {
     private @StringRes int update() {
         for (int i=0; i < items.size(); i++) {
             if (i % 2 != 0) {
-                items.get(i).update();
+                items.get(i).getPayload().update();
             }
         }
         itemList.setItems(items);
@@ -169,7 +170,7 @@ public class ActivityMain extends AppCompatActivity {
         if (items.size() <= 0) {
             return R.string.no_action;
         }
-        AnimalItem item = items.get(items.size()-1);
+        Item<AnimalPayload> item = items.get(items.size()-1);
         items.remove(items.size()-1);
         items.add(0, item);
         itemList.setItems(items);
@@ -180,7 +181,7 @@ public class ActivityMain extends AppCompatActivity {
         if (items.size() <= 0) {
             return R.string.no_action;
         }
-        AnimalItem item = items.get(0);
+        Item<AnimalPayload> item = items.get(0);
         items.remove(0);
         items.add(item);
         itemList.setItems(items);

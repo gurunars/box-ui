@@ -12,17 +12,17 @@ import static org.junit.Assert.assertTrue;
 
 public class CheckerDeleteTest {
 
-    private final CheckerDelete<String> checkerDelete = new CheckerDelete<>();
+    private final ActionMoveDown<String> checkerDelete = new ActionMoveDown<>();
     private final List<String> all = Arrays.asList("one", "two");
 
     @Test
     public void selection_leadsToTrue() throws Exception {
-        assertTrue(checkerDelete.apply(all, Sets.newSet("one")));
+        assertTrue(checkerDelete.canPerform(all, Sets.newSet("one")));
     }
 
     @Test
     public void noSelection_leadsToFalse() throws Exception {
-        assertFalse(checkerDelete.apply(all, new HashSet<String>()));
+        assertFalse(checkerDelete.canPerform(all, new HashSet<String>()));
     }
 
 }

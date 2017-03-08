@@ -1,10 +1,9 @@
 package com.gurunars.crud_item_list.example;
 
 import android.os.Bundle;
+import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -13,9 +12,8 @@ import android.view.View;
 import com.gurunars.crud_item_list.CrudItemList;
 import com.gurunars.crud_item_list.ItemEditListener;
 import com.gurunars.crud_item_list.ListChangeListener;
-import com.gurunars.crud_item_list.NewItemSupplier;
+import com.gurunars.item_list.Item;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.ButterKnife;
@@ -23,36 +21,35 @@ import butterknife.ButterKnife;
 
 public class ActivityMain extends AppCompatActivity {
 
-    private CrudItemList<AnimalItem> crudItemList;
+    private CrudItemList<AnimalPayload> crudItemList;
     private Model model;
+    private View creationMenu;
 
     private void initData(boolean force) {
         if (model.wasInited() && !force) {
             crudItemList.setItems(model.getItems());
             return;
         }
-        List<AnimalItem> items = new ArrayList<>();
-        for (int i=0; i < 1; i++) {
-            items.add(new AnimalItem((AnimalItem.Type.LION)));
-            items.add(new AnimalItem((AnimalItem.Type.TIGER)));
-            items.add(new AnimalItem((AnimalItem.Type.MONKEY)));
-            items.add(new AnimalItem((AnimalItem.Type.WOLF)));
-        }
         model.clear();
-        model.setItems(items);
+        for (int i=0; i < 1; i++) {
+            model.createItem(new AnimalPayload(AnimalPayload.Type.LION));
+            model.createItem(new AnimalPayload(AnimalPayload.Type.TIGER));
+            model.createItem(new AnimalPayload(AnimalPayload.Type.MONKEY));
+            model.createItem(new AnimalPayload(AnimalPayload.Type.WOLF));
+        }
+
         crudItemList.setItems(model.getItems());
     }
 
-    private void confItemType(int id, final AnimalItem.Type type) {
-        crudItemList.registerItemType(type,
-                new AnimalRowBinder(),
-                id,
-                new NewItemSupplier<AnimalItem>() {
-                    @Override
-                    public AnimalItem supply() {
-                        return new AnimalItem(model.getMaxItemId()+1, type);
-                    }
-                });
+    private void confItemType(@IdRes int id, final AnimalPayload.Type type) {
+        creationMenu.findViewById(id).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                model.createItem(new AnimalPayload(type));
+                crudItemList.setItems(model.getItems());
+            }
+        });
+        crudItemList.registerItemType(type, new AnimalRowBinder());
     }
 
     @Override
@@ -61,30 +58,35 @@ public class ActivityMain extends AppCompatActivity {
         model = new Model(this);
         setContentView(R.layout.crud_list);
 
+        creationMenu = View.inflate(this, R.layout.create_layout, null);
+
         crudItemList = ButterKnife.findById(this, R.id.customView);
 
-        crudItemList.setListChangeListener(new ListChangeListener<AnimalItem>() {
+        crudItemList.setListChangeListener(new ListChangeListener<AnimalPayload>() {
             @Override
-            public void onChange(List<AnimalItem> items) {
-                model.setItems(items);
+            public void onChange(List<Item<AnimalPayload>> items) {
+                for (Item<AnimalPayload> item: items) {
+                    model.updateItem(item);
+                }
             }
+
         });
         crudItemList.setEmptyViewBinder(new EmptyBinder());
-        crudItemList.setCreationMenu(View.inflate(this, R.layout.create_layout, null));
-        crudItemList.setItemEditListener(new ItemEditListener<AnimalItem>() {
+        crudItemList.setCreationMenu(creationMenu);
+        crudItemList.setItemEditListener(new ItemEditListener<AnimalPayload>() {
             @Override
-            public void onEdit(AnimalItem editableItem, boolean isNew) {
-                editableItem.setVersion(editableItem.getVersion() + 1);
-                List<AnimalItem> items = ItemSetter.setItem(model.getItems(), editableItem);
-                model.setItems(items);
-                crudItemList.setItems(items);
+            public void onEdit(Item<AnimalPayload> editableItem, boolean isNew) {
+                editableItem.getPayload().update();
+                model.updateItem(editableItem);
+                crudItemList.setItems(model.getItems());
             }
+
         });
 
-        confItemType(R.id.lion, AnimalItem.Type.LION);
-        confItemType(R.id.tiger, AnimalItem.Type.TIGER);
-        confItemType(R.id.monkey, AnimalItem.Type.MONKEY);
-        confItemType(R.id.wolf, AnimalItem.Type.WOLF);
+        confItemType(R.id.lion, AnimalPayload.Type.LION);
+        confItemType(R.id.tiger, AnimalPayload.Type.TIGER);
+        confItemType(R.id.monkey, AnimalPayload.Type.MONKEY);
+        confItemType(R.id.wolf, AnimalPayload.Type.WOLF);
 
         initData(false);
 
@@ -101,20 +103,12 @@ public class ActivityMain extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int i = item.getItemId();
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
-        LinearLayoutManager lm = (LinearLayoutManager) recyclerView.getLayoutManager();
         switch (i) {
             case R.id.leftHanded:
                 crudItemList.setLeftHanded(true);
                 break;
             case R.id.rightHanded:
                 crudItemList.setLeftHanded(false);
-                break;
-            case R.id.toTop:
-                lm.scrollToPositionWithOffset(0, 0);
-                break;
-            case R.id.toBottom:
-                lm.scrollToPositionWithOffset(79, 0);
                 break;
             case R.id.reset:
                 initData(true);
@@ -135,15 +129,13 @@ public class ActivityMain extends AppCompatActivity {
     }
 
     private void addMany() {
-        List<AnimalItem> items = new ArrayList<>();
-        for (int i=0; i < 20; i++) {
-            items.add(new AnimalItem((AnimalItem.Type.LION)));
-            items.add(new AnimalItem((AnimalItem.Type.TIGER)));
-            items.add(new AnimalItem((AnimalItem.Type.MONKEY)));
-            items.add(new AnimalItem((AnimalItem.Type.WOLF)));
-        }
         model.clear();
-        model.setItems(items);
+        for (int i=0; i < 20; i++) {
+            model.createItem(new AnimalPayload(AnimalPayload.Type.LION));
+            model.createItem(new AnimalPayload(AnimalPayload.Type.TIGER));
+            model.createItem(new AnimalPayload(AnimalPayload.Type.MONKEY));
+            model.createItem(new AnimalPayload(AnimalPayload.Type.WOLF));
+        }
         crudItemList.setItems(model.getItems());
     }
 

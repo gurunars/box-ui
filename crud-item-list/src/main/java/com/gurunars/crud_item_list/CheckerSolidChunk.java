@@ -4,7 +4,7 @@ import java.util.List;
 
 import java8.util.function.Function;
 
-class CheckerSolidChunk implements Function<List<Integer>, Boolean> {
+final class CheckerSolidChunk implements Function<List<Integer>, Boolean> {
 
     @Override
     public Boolean apply(List<Integer> positions) {

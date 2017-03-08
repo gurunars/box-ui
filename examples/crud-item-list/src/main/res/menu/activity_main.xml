@@ -14,14 +14,6 @@
         android:title="@string/rightHanded"
         app:showAsAction="never" />
 
-    <item android:id="@+id/toBottom"
-        android:title="@string/toBottom"
-        app:showAsAction="never" />
-
-    <item android:id="@+id/toTop"
-        android:title="@string/toTop"
-        app:showAsAction="never" />
-
     <item android:id="@+id/lock"
         android:icon="@drawable/ic_lock"
         android:title="@string/lock"

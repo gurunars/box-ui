@@ -14,8 +14,8 @@ class FetcherPermutations<ItemType extends Item> {
             new FetcherComplexPermutation<>();
 
     List<? extends Change<ItemType>> get(
-            List<ItemHolder<ItemType>> intersectionSourceOrder,
-            List<ItemHolder<ItemType>> intersectionTargetOrder) {
+            List<ItemType> intersectionSourceOrder,
+            List<ItemType> intersectionTargetOrder) {
 
         List<ChangeMove<ItemType>> moves = fetcherUnidirectionalPermutations.get(
                 intersectionSourceOrder, intersectionTargetOrder, false);

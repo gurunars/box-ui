@@ -11,12 +11,14 @@ import java.util.List;
 import butterknife.ButterKnife;
 
 /**
+ * A wrapper around RecyclerView with reasonable default item change animations and a
+ * composition based solution as a mean to bind data to item list views.
  *
- * @param <ItemType> subclass of the Item instances of which are used to populate the views
+ * @param <PayloadType> Item payload type
  */
-public class ItemList<ItemType extends Item> extends FrameLayout {
+public class ItemList<PayloadType extends Payload> extends FrameLayout {
 
-    private ItemAdapter<ItemType> itemAdapter;
+    private ItemAdapter<PayloadType> itemAdapter;
     private LinearLayoutManager layoutManager;
 
     public ItemList(Context context) {
@@ -30,7 +32,7 @@ public class ItemList<ItemType extends Item> extends FrameLayout {
     public ItemList(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
-        inflate(context, R.layout.item_list_view, this);
+        inflate(context, R.layout.item_list, this);
 
         RecyclerView recyclerView = ButterKnife.findById(this, R.id.recyclerView);
         layoutManager = new LinearLayoutManager(context);
@@ -64,7 +66,7 @@ public class ItemList<ItemType extends Item> extends FrameLayout {
      *
      * @param items a new collection to be shown
      */
-    public void setItems(List<ItemType> items) {
+    public void setItems(List<Item<PayloadType>> items) {
         itemAdapter.setItems(items);
     }
 
@@ -74,7 +76,7 @@ public class ItemList<ItemType extends Item> extends FrameLayout {
      * @param itemType type of the Item
      * @param itemViewBinder renderer for the items of a given type
      */
-    public void registerItemViewBinder(Enum itemType, ItemViewBinder<ItemType> itemViewBinder) {
+    public void registerItemViewBinder(Enum itemType, ItemViewBinder<PayloadType> itemViewBinder) {
         itemAdapter.registerItemViewBinder(itemType, itemViewBinder);
     }
 

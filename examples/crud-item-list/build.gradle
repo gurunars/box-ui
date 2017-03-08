@@ -3,6 +3,7 @@ apply from: '../all-examples.gradle'
 
 dependencies {
     androidTestCompile 'junit:junit:4.12'
+    androidTestCompile project(':test-utils')
     androidTestCompile 'com.android.support.test:rules:0.5'
     androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2'
     compile 'com.google.code.gson:gson:2.7'

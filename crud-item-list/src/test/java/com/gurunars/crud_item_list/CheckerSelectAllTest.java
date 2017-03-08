@@ -11,17 +11,17 @@ import static org.junit.Assert.assertTrue;
 
 public class CheckerSelectAllTest {
 
-    private final CheckerSelectAll<String> checkerSelectAll = new CheckerSelectAll<>();
+    private final ActionSelectAll<String> checkerSelectAll = new ActionSelectAll<>();
     private final List<String> all = Arrays.asList("one", "two");
 
     @Test
     public void noSelection_leadsToTrue() throws Exception {
-        assertTrue(checkerSelectAll.apply(all, new HashSet<String>()));
+        assertTrue(checkerSelectAll.canPerform(all, new HashSet<String>()));
     }
 
     @Test
     public void selectionOfAll_leadsToFalse() throws Exception {
-        assertFalse(checkerSelectAll.apply(all, new HashSet<>(all)));
+        assertFalse(checkerSelectAll.canPerform(all, new HashSet<>(all)));
     }
 
 }

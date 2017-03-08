@@ -11,18 +11,18 @@ class FetcherUnidirectionalPermutations<ItemType extends Item> {
     private final static int moveThreshold = 5;
 
     @Nullable
-    List<ChangeMove<ItemType>> get(List<ItemHolder<ItemType>> remainedOrderOneOriginal,
-                                   List<ItemHolder<ItemType>> remainedOrderTwo,
+    List<ChangeMove<ItemType>> get(List<ItemType> remainedOrderOneOriginal,
+                                   List<ItemType> remainedOrderTwo,
                                    boolean reverse) {
         List<ChangeMove<ItemType>> changes = new ArrayList<>();
-        List<ItemHolder<ItemType>> remainedOrderOne = new ArrayList<>(remainedOrderOneOriginal);
+        List<ItemType> remainedOrderOne = new ArrayList<>(remainedOrderOneOriginal);
         int from = reverse ? remainedOrderOne.size() - 1 : 0;
         while (from < remainedOrderOne.size() && from >= 0) {
-            ItemHolder<ItemType> item = remainedOrderOne.get(from);
+            ItemType item = remainedOrderOne.get(from);
             int to = remainedOrderTwo.indexOf(item);
 
             if (from != to) {
-                changes.add(new ChangeMove<>(item.getRaw(), from, to));
+                changes.add(new ChangeMove<>(item, from, to));
                 if (changes.size() > moveThreshold) {
                     return null;
                 }

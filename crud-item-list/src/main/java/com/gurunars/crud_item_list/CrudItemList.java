@@ -2,35 +2,37 @@ package com.gurunars.crud_item_list;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.annotation.IdRes;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AlphaAnimation;
-import android.view.animation.Animation;
 import android.widget.RelativeLayout;
 
 import com.gurunars.floatmenu.AnimationListener;
 import com.gurunars.floatmenu.FloatMenu;
 import com.gurunars.item_list.EmptyViewBinder;
 import com.gurunars.item_list.Item;
-import com.gurunars.item_list.ItemList;
+import com.gurunars.item_list.ItemViewBinder;
+import com.gurunars.item_list.Payload;
+import com.gurunars.item_list.SelectableItemList;
+import com.gurunars.item_list.SelectablePayload;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
-import butterknife.ButterKnife;
-import icepick.Icepick;
 import icepick.State;
 import java8.util.function.Consumer;
 
 /**
  * Widget to be used for manipulating a collection of items.
  */
-public class CrudItemList<ItemType extends Item> extends RelativeLayout {
-
-    private static int ANIMATION_DURATION = 400;
+public class CrudItemList<PayloadType extends Payload> extends RelativeLayout {
 
     @State int actionIconFgColor;
     @State int actionIconBgColor;
@@ -41,22 +43,34 @@ public class CrudItemList<ItemType extends Item> extends RelativeLayout {
     @State int openBgColor;
     @State int openFgColor;
 
-    private final CollectionManager<ItemType> collectionManager;
+    private ContextualMenu contextualMenu;
+    private View creationMenu;
 
     private final UiThrottleBuffer throttleBuffer = new UiThrottleBuffer();
-    private final ScheduledRunner scheduledRunner = new ScheduledRunner();
-
-    private final ViewGroup creationMenuPlaceholder;
-    private final ViewGroup formPlaceholder;
-    private final ContextualMenu contextualMenu;
 
     private final FloatMenu floatingMenu;
-    private final ItemList<SelectableItem<ItemType>> itemList;
+    private final SelectableItemList<PayloadType> itemList;
 
-    private ListChangeListener<ItemType> listChangeListener =
+    private ListChangeListener<PayloadType> listChangeListener =
             new ListChangeListener.DefaultListChangeListener<>();
-    private ItemEditListener<ItemType> itemEditListener =
+    private ItemEditListener<PayloadType> itemEditListener =
             new ItemEditListener.DefaultItemEditListener<>();
+
+    private List<Item<PayloadType>> items = new ArrayList<>();
+
+    private final Map<Integer, Action<Item<PayloadType>>> actions =
+        new HashMap<Integer, Action<Item<PayloadType>>>() {{
+            put(R.id.selectAll, new ActionSelectAll<Item<PayloadType>>());
+            put(R.id.delete, new ActionDelete<Item<PayloadType>>());
+            put(R.id.edit, new ActionEdit<>(new Consumer<Item<PayloadType>>() {
+                @Override
+                public void accept(Item<PayloadType> payload) {
+                    itemEditListener.onEdit(payload, false);
+                }
+            }));
+            put(R.id.moveUp, new ActionMoveUp<Item<PayloadType>>());
+            put(R.id.moveDown, new ActionMoveDown<Item<PayloadType>>());
+    }};
 
     public CrudItemList(Context context) {
         this(context, null);
@@ -66,49 +80,32 @@ public class CrudItemList<ItemType extends Item> extends RelativeLayout {
         this(context, attrs, 0);
     }
 
+    private void confView(View view, @IdRes int id) {
+        view.setLayoutParams(new ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT)
+        );
+        view.setId(id);
+    }
+
     public CrudItemList(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
-        inflate(context, R.layout.crud_item_list, this);
+        floatingMenu = new FloatMenu(context);
+        confView(floatingMenu, R.id.floatingMenu);
 
-        floatingMenu = ButterKnife.findById(this, R.id.floatingMenu);
-        floatingMenu.setAnimationDuration(ANIMATION_DURATION);
-        floatingMenu.setMenuView(inflate(context, R.layout.raw_menu_layout, null));
-        floatingMenu.setContentView(inflate(context, R.layout.raw_item_list, null));
+        itemList = new SelectableItemList<>(context);
+        confView(itemList, R.id.rawItemList);
 
-        contextualMenu = ButterKnife.findById(this, R.id.contextualMenu);
-        creationMenuPlaceholder = ButterKnife.findById(this, R.id.creationMenuPlaceholder);
-        itemList = ButterKnife.findById(this, R.id.itemList);
-        formPlaceholder = ButterKnife.findById(this, R.id.formPlaceholder);
+        contextualMenu = new ContextualMenu(context);
+        confView(contextualMenu, R.id.contextualMenu);
 
-        collectionManager = new CollectionManager<>(new Consumer<List<SelectableItem<ItemType>>>() {
-            @Override
-            public void accept(final List<SelectableItem<ItemType>> selectableItems) {
-                itemList.setItems(selectableItems);
-                if (collectionManager.hasSelection()) {
-                    setUpContextualMenu();
-                    contextualMenu.setUpContextualButtons(
-                            collectionManager.canEdit(),
-                            collectionManager.canMoveUp(),
-                            collectionManager.canMoveDown(),
-                            collectionManager.canDelete(),
-                            collectionManager.canSelectAll());
-                    floatingMenu.open();
-                } else {
-                    floatingMenu.close();
-                }
-            }
-        }, new Consumer<List<ItemType>>() {
-            @Override
-            public void accept(final List<ItemType> items) {
-                throttleBuffer.call(new Runnable() {
-                    @Override
-                    public void run() {
-                    listChangeListener.onChange(items);
-                    }
-                });
-            }
-        });
+        setCreationMenu(new View(context));
+
+        floatingMenu.setContentView(itemList);
+        floatingMenu.setMenuView(contextualMenu);
+
+        addView(floatingMenu);
 
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.CrudItemList);
 
@@ -127,15 +124,23 @@ public class CrudItemList<ItemType extends Item> extends RelativeLayout {
         a.recycle();
 
         setLeftHanded(false);
-        setSortable(true);
+
+        itemList.setSelectionChangeListener(new Runnable() {
+            @Override
+            public void run() {
+                if (itemList.getSelectedItems().isEmpty()) {
+                    floatingMenu.close();
+                } else {
+                    setUpContextualMenu();
+                    floatingMenu.open();
+                }
+            }
+        });
 
         floatingMenu.setOnCloseListener(new AnimationListener() {
             @Override
             public void onStart(int projectedDuration) {
-                if (collectionManager.hasSelection()) {
-                    scheduledRunner.stop();
-                    collectionManager.unselectAll();
-                }
+                itemList.setSelectedItems(new HashSet<Item<PayloadType>>());
             }
 
             @Override
@@ -144,70 +149,39 @@ public class CrudItemList<ItemType extends Item> extends RelativeLayout {
             }
         });
 
-        contextualMenu.setMenuListener(new ContextualMenu.MenuListener() {
-            @Override
-            public void delete() {
-                collectionManager.deleteSelected();
-            }
-
-            @Override
-            public void edit() {
-                collectionManager.triggerConsumption();
-            }
-
-            @Override
-            public void moveUp(boolean isActive) {
-                if (isActive) {
-                    scheduledRunner.start(new Runnable() {
+        for (final Map.Entry<Integer, Action<Item<PayloadType>>> entry: actions.entrySet()) {
+            contextualMenu.findViewById(entry.getKey()).setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Set<Item<PayloadType>> selectedItems = itemList.getSelectedItems();
+                    Action<Item<PayloadType>> action = entry.getValue();
+                    if (!action.canPerform(items, selectedItems)) {
+                        return;
+                    }
+                    action.perform(items, selectedItems);
+                    itemList.setItems(items);
+                    itemList.setSelectedItems(selectedItems);
+                    setUpActions();
+                    throttleBuffer.call(new Runnable() {
                         @Override
                         public void run() {
-                            collectionManager.moveSelectionUp();
+                            listChangeListener.onChange(items);
                         }
                     });
-                } else {
-                    scheduledRunner.stop();
                 }
-            }
+            });
+        }
 
-            @Override
-            public void moveDown(boolean isActive) {
-                if (isActive) {
-                    scheduledRunner.start(new Runnable() {
-                        @Override
-                        public void run() {
-                            collectionManager.moveSelectionDown();
-                        }
-                    });
-                } else {
-                    scheduledRunner.stop();
-                }
-            }
-
-            @Override
-            public void selectAll() {
-                collectionManager.selectAll();
-            }
-        });
-
-        collectionManager.setItemConsumer(new Consumer<ItemType>() {
-            @Override
-            public void accept(ItemType item) {
-                onItemEdit(item, false);
-            }
-        });
-
-        setUpColors();
+        reload();
     }
 
-    private void setUpColors() {
+    private void reload() {
         floatingMenu.setOpenIconBgColor(openBgColor);
         floatingMenu.setOpenIconFgColor(openFgColor);
-        contextualMenu.setIconBgColor(actionIconBgColor);
-        contextualMenu.setIconFgColor(actionIconFgColor);
-        if (collectionManager.hasSelection()) {
-            setUpContextualMenu();
-        } else {
+        if (itemList.getSelectedItems().isEmpty()) {
             setUpCreationMenu();
+        } else {
+            setUpContextualMenu();
         }
     }
 
@@ -219,37 +193,33 @@ public class CrudItemList<ItemType extends Item> extends RelativeLayout {
         contextualMenu.setLeftHanded(leftHanded);
     }
 
+    private void setUpActions() {
+        for (Map.Entry<Integer, Action<Item<PayloadType>>> entry: actions.entrySet()) {
+            contextualMenu.findViewById(entry.getKey()).setEnabled(
+                    entry.getValue().canPerform(items, itemList.getSelectedItems())
+            );
+        }
+    }
+
     private void setUpContextualMenu() {
-        creationMenuPlaceholder.setVisibility(GONE);
-        contextualMenu.setVisibility(VISIBLE);
+        floatingMenu.setMenuView(contextualMenu);
         floatingMenu.setCloseIconFgColor(contextualCloseFgColor);
         floatingMenu.setCloseIconBgColor(contextualCloseBgColor);
         floatingMenu.setHasOverlay(false);
+        setUpActions();
     }
 
     private void setUpCreationMenu() {
-        creationMenuPlaceholder.setVisibility(VISIBLE);
-        contextualMenu.setVisibility(GONE);
+        floatingMenu.setMenuView(creationMenu);
         floatingMenu.setCloseIconFgColor(createCloseFgColor);
         floatingMenu.setCloseIconBgColor(createCloseBgColor);
         floatingMenu.setHasOverlay(true);
     }
 
     @Override
-    protected Parcelable onSaveInstanceState() {
-        Bundle bundle = new Bundle();
-        bundle.putParcelable(
-                "superState", Icepick.saveInstanceState(this, super.onSaveInstanceState()));
-        bundle.putSerializable("selectedItems", collectionManager.saveState());
-        return bundle;
-    }
-
-    @Override
     protected void onRestoreInstanceState(Parcelable state) {
-        Bundle localState = (Bundle) state;
-        super.onRestoreInstanceState(
-                Icepick.restoreInstanceState(this, localState.getParcelable("superState")));
-        collectionManager.loadState(localState.getSerializable("selectedItems"));
+        super.onRestoreInstanceState(state);
+
     }
 
     @Override
@@ -265,8 +235,10 @@ public class CrudItemList<ItemType extends Item> extends RelativeLayout {
      *
      * @param items a new collection to be shown
      */
-    public void setItems(List<ItemType> items) {
-        collectionManager.setItems(items);
+    public void setItems(List<Item<PayloadType>> items) {
+        this.items = items;
+        itemList.setItems(items);
+        setUpActions();
     }
 
     /**
@@ -274,32 +246,6 @@ public class CrudItemList<ItemType extends Item> extends RelativeLayout {
      */
     public void close() {
         floatingMenu.close();
-
-        Animation fadeOut = new AlphaAnimation(1, 0);
-        fadeOut.setDuration(ANIMATION_DURATION);
-        fadeOut.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                formPlaceholder.removeAllViews();
-                formPlaceholder.setVisibility(GONE);
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-
-            }
-        });
-        formPlaceholder.startAnimation(fadeOut);
-
-    }
-
-    private void onItemEdit(ItemType editableItem, boolean isNew) {
-        itemEditListener.onEdit(editableItem, isNew);
     }
 
     /**
@@ -307,27 +253,11 @@ public class CrudItemList<ItemType extends Item> extends RelativeLayout {
      *
      * @param itemType type of the Items
      * @param itemViewBinder row renderer for the items of a given type
-     * @param menuItemViewId id of the clickable item in creation menu
-     * @param newItemSupplier supplier of blank new items
      */
     public void registerItemType(
             Enum itemType,
-            SelectableItemViewBinder<ItemType> itemViewBinder,
-            int menuItemViewId,
-            final NewItemSupplier<ItemType> newItemSupplier
-            ) {
-        itemList.registerItemViewBinder(itemType,
-                new ClickableItemViewBinder<>(itemViewBinder, collectionManager));
-        View itemCreationTrigger = findViewById(menuItemViewId);
-        if (itemCreationTrigger != null) {
-            itemCreationTrigger.setOnClickListener(
-                    new OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            onItemEdit(newItemSupplier.supply(), true);
-                        }
-                    });
-        }
+            ItemViewBinder<SelectablePayload<PayloadType>> itemViewBinder) {
+        itemList.registerItemViewBinder(itemType, itemViewBinder);
     }
 
     /**
@@ -340,17 +270,10 @@ public class CrudItemList<ItemType extends Item> extends RelativeLayout {
     }
 
     /**
-     * @param sortable if false - move up and down buttons are disabled
-     */
-    public void setSortable(boolean sortable) {
-        contextualMenu.setSortable(sortable);
-    }
-
-    /**
      * @param listChangeListener callback to be executed whenever the list gets changed within
      *                           the widget
      */
-    public void setListChangeListener(ListChangeListener<ItemType> listChangeListener) {
+    public void setListChangeListener(ListChangeListener<PayloadType> listChangeListener) {
         this.listChangeListener = listChangeListener;
     }
 
@@ -359,55 +282,60 @@ public class CrudItemList<ItemType extends Item> extends RelativeLayout {
      *                     menu is open
      */
     public void setCreationMenu(View creationMenu) {
-        creationMenuPlaceholder.removeAllViews();
-        creationMenuPlaceholder.addView(creationMenu);
+        this.creationMenu = creationMenu;
+        confView(creationMenu, R.id.creationMenu);
+        reload();
     }
 
     public void setActionIconFgColor(int actionIconFgColor) {
         this.actionIconFgColor = actionIconFgColor;
-        setUpColors();
+        reload();
     }
 
     public void setActionIconBgColor(int actionIconBgColor) {
         this.actionIconBgColor = actionIconBgColor;
-        setUpColors();
+        reload();
     }
 
     public void setContextualCloseFgColor(int contextualCloseFgColor) {
         this.contextualCloseFgColor = contextualCloseFgColor;
-        setUpColors();
+        reload();
     }
 
     public void setContextualCloseBgColor(int contextualCloseBgColor) {
         this.contextualCloseBgColor = contextualCloseBgColor;
-        setUpColors();
+        reload();
     }
 
     public void setCreateCloseFgColor(int createCloseFgColor) {
         this.createCloseFgColor = createCloseFgColor;
-        setUpColors();
+        reload();
     }
 
     public void setCreateCloseBgColor(int createCloseBgColor) {
         this.createCloseBgColor = createCloseBgColor;
-        setUpColors();
+        reload();
     }
 
     public void setOpenBgColor(int openBgColor) {
         this.openBgColor = openBgColor;
-        setUpColors();
+        reload();
     }
 
     public void setOpenFgColor(int openFgColor) {
         this.openFgColor = openFgColor;
-        setUpColors();
+        reload();
     }
 
     /**
      * @param itemEditListener a listener for the cases when a new item has to be created or when
      *                         the existing one has to be edited
      */
-    public void setItemEditListener(ItemEditListener<ItemType> itemEditListener) {
+    public void setItemEditListener(final ItemEditListener<PayloadType> itemEditListener) {
         this.itemEditListener = itemEditListener;
+    }
+
+    public void setSortable(boolean sortable) {
+        contextualMenu.setSortable(sortable);
     }
 }

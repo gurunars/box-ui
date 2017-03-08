@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.gurunars.item_list.Item;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +15,7 @@ class Model {
 
     private final Activity activity;
 
-    private List<AnimalItem> items = new ArrayList<>();
+    private List<Item<AnimalPayload>> items = new ArrayList<>();
     private int maxItemId = 0;
     private boolean wasInited = false;
 
@@ -32,28 +33,11 @@ class Model {
         wasInited = preferences.getBoolean("wasInited", false);
         maxItemId = preferences.getInt("maxItemId", 0);
         items = new Gson().fromJson(preferences.getString("data", "[]"),
-                new TypeToken<ArrayList<AnimalItem>>(){}.getType());
+                new TypeToken<ArrayList<Item<AnimalPayload>>>(){}.getType());
     }
 
-    List<AnimalItem> getItems() {
+    List<Item<AnimalPayload>> getItems() {
         return items;
-    }
-
-    void setItems(List<AnimalItem> items) {
-        this.items = items;
-        for (AnimalItem item: items) {
-            if (item.getId() == 0) {
-                maxItemId++;
-                item.setId(maxItemId);
-            } else {
-                maxItemId = Math.max(maxItemId, (int) item.getId());
-            }
-            // At least version 1
-            if (item.getVersion() == 0) {
-                item.setVersion(1);
-            }
-        }
-        save();
     }
 
     private void save() {
@@ -64,12 +48,25 @@ class Model {
         editor.apply();
     }
 
-    int getMaxItemId() {
-        return maxItemId;
-    }
-
     void clear() {
         maxItemId = 0;
         items.clear();
+    }
+
+    void updateItem(Item<AnimalPayload> item) {
+        for (int i = 0; i < items.size(); i++) {
+            Item<AnimalPayload> cursor = items.get(i);
+            if (cursor.getId() == item.getId()) {
+                items.set(i, item);
+                save();
+                return;
+            }
+        }
+    }
+
+    void createItem(AnimalPayload payload) {
+        maxItemId++;
+        items.add(new Item<>(maxItemId, payload));
+        save();
     }
 }
