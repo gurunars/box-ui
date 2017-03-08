@@ -16,7 +16,7 @@ import java8.util.function.BiFunction;
 import java8.util.function.Consumer;
 
 
-class CollectionManager<ItemType extends Item> implements Serializable {
+class CollectionManager<ItemType extends Item> {
 
     private Kryo kryo = new Kryo();
 
