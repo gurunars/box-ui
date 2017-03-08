@@ -6,12 +6,12 @@ import android.view.ViewGroup;
 
 import static com.gurunars.item_list.ItemViewBinderEmpty.EMPTY_TYPE;
 
-class BindableViewHolder<ItemType extends Item> extends RecyclerView.ViewHolder {
+class BindableViewHolder<PayloadType extends Payload> extends RecyclerView.ViewHolder {
 
-    private ItemViewBinder<ItemType> itemViewBinder;
+    private ItemViewBinder<PayloadType> itemViewBinder;
 
     BindableViewHolder(ViewGroup root,
-                       ItemViewBinder<ItemType> itemViewBinder) {
+                       ItemViewBinder<PayloadType> itemViewBinder) {
         super(itemViewBinder.getView(root.getContext()));
         this.itemViewBinder = itemViewBinder;
         itemView.setLayoutParams(new RecyclerView.LayoutParams(
@@ -29,7 +29,7 @@ class BindableViewHolder<ItemType extends Item> extends RecyclerView.ViewHolder 
                 ViewGroup.LayoutParams.MATCH_PARENT));
     }
 
-    void bind(ItemType item, @Nullable ItemType previousItem) {
+    void bind(Item<PayloadType> item, @Nullable Item<PayloadType> previousItem) {
         if (this.itemViewBinder != null) {
             itemViewBinder.bind(itemView, item, previousItem);
         }

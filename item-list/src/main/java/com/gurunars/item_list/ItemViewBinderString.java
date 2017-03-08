@@ -6,7 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
-class ItemViewBinderString<ItemType extends Item> implements ItemViewBinder<ItemType> {
+class ItemViewBinderString<PayloadType extends Payload> implements ItemViewBinder<PayloadType> {
 
     @Override
     public View getView(Context context) {
@@ -28,7 +28,7 @@ class ItemViewBinderString<ItemType extends Item> implements ItemViewBinder<Item
     }
 
     @Override
-    public void bind(View itemView, ItemType item, ItemType previousItem) {
+    public void bind(View itemView, Item<PayloadType> item, Item<PayloadType> previousItem) {
         ((TextView) itemView).setText(item.toString());
         if (previousItem != null) {
             animateUpdate(itemView);

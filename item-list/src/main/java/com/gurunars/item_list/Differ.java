@@ -17,25 +17,25 @@ class Differ<ItemType extends Item> implements BiFunction<List<ItemType>, List<I
     @Inject
     private
     BiFunction<
-        List<ItemHolder<ItemType>>,
-        List<ItemHolder<ItemType>>,
-        List<ItemHolder<ItemType>>> intersectionFetcher =
+        List<ItemType>,
+        List<ItemType>,
+        List<ItemType>> intersectionFetcher =
             new OrderedIntersectionFetcher<>();
 
     @Inject
     private
     BiFunction<
-        List<ItemHolder<ItemType>>,
-        List<ItemHolder<ItemType>>,
-        List<ItemHolder<ItemType>>> diffFetcher =
+        List<ItemType>,
+        List<ItemType>,
+        List<ItemType>> diffFetcher =
             new OrderedDiffFetcher<>();
 
     @Inject
     private
     FetcherPermutations<ItemType> fetcherPermutations = new FetcherPermutations<>();
 
-    private void verifyNoDuplicates(List<ItemHolder<ItemType>> items) {
-        Set<ItemHolder<ItemType>> set = new HashSet<>(items);
+    private void verifyNoDuplicates(List<ItemType> items) {
+        Set<ItemType> set = new HashSet<>(items);
         if (set.size() != items.size()) {
             throw new RuntimeException("The list of items contains duplicates");
         }
@@ -45,43 +45,41 @@ class Differ<ItemType extends Item> implements BiFunction<List<ItemType>, List<I
     @Override
     public List<Change<ItemType>> apply(List<ItemType> source, List<ItemType> target) {
 
-        List<ItemHolder<ItemType>> sourceList = ItemHolder.wrap(source);
-        List<ItemHolder<ItemType>> targetList = ItemHolder.wrap(target);
+        List<ItemType> sourceList = new ArrayList<>(source);
+        List<ItemType> targetList = new ArrayList<>(target);
 
         verifyNoDuplicates(sourceList);
 
-        List<ItemHolder<ItemType>> removed = diffFetcher.apply(sourceList, targetList);
+        List<ItemType> removed = diffFetcher.apply(sourceList, targetList);
         Collections.reverse(removed);  // remove in a reverse order to prevent index recalculation
 
         List<Change<ItemType>> changes = new ArrayList<>();
 
-        for (ItemHolder<ItemType> item: removed) {
+        for (ItemType item: removed) {
             int position = sourceList.indexOf(item);
-            changes.add(new ChangeDelete<>(item.getRaw(), position, position));
+            changes.add(new ChangeDelete<>(item, position, position));
             sourceList.remove(position);
         }
 
-        List<ItemHolder<ItemType>> added = diffFetcher.apply(targetList, sourceList);
+        List<ItemType> added = diffFetcher.apply(targetList, sourceList);
 
-        for (ItemHolder<ItemType> item: added) {
+        for (ItemType item: added) {
             int position = targetList.indexOf(item);
-            changes.add(new ChangeCreate<>(item.getRaw(), position, position));
+            changes.add(new ChangeCreate<>(item, position, position));
             sourceList.add(position, item);
         }
 
-        List<ItemHolder<ItemType>> intersectionSourceOrder =
-                intersectionFetcher.apply(sourceList, targetList);
-        List<ItemHolder<ItemType>> intersectionTargetOrder =
-                intersectionFetcher.apply(targetList, sourceList);
+        List<ItemType> intersectionSourceOrder = intersectionFetcher.apply(sourceList, targetList);
+        List<ItemType> intersectionTargetOrder = intersectionFetcher.apply(targetList, sourceList);
 
         changes.addAll(
                 fetcherPermutations.get(intersectionSourceOrder, intersectionTargetOrder));
 
-        for (ItemHolder<ItemType> item: sourceList) {
+        for (ItemType item: sourceList) {
             int index = targetList.indexOf(item);
-            ItemHolder<ItemType> newItem = targetList.get(index);
-            if (!item.getRaw().equals(newItem.getRaw())) {
-                changes.add(new ChangeUpdate<>(newItem.getRaw(), index, index));
+            ItemType newItem = targetList.get(index);
+            if (!item.getPayload().equals(newItem.getPayload())) {
+                changes.add(new ChangeUpdate<>(newItem, index, index));
             }
         }
 

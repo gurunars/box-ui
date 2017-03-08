@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item android:id="@+id/clear_selection"
+        android:title="@string/clear_selection"
+        app:showAsAction="never" />
+
+    <item android:id="@+id/reset"
+        android:title="@string/reset"
+        app:showAsAction="never" />
+
+    <item android:id="@+id/delete_selected"
+        android:title="@string/delete_selected"
+        app:showAsAction="never" />
+
+    <item android:id="@+id/create"
+        android:title="@string/create"
+        app:showAsAction="never" />
+
+    <item android:id="@+id/update_selected"
+        android:title="@string/update_selected"
+        app:showAsAction="never" />
+
+</menu>

@@ -3,6 +3,7 @@ package com.gurunars.crud_item_list;
 import org.junit.Test;
 import org.mockito.internal.util.collections.Sets;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -12,7 +13,7 @@ import static junit.framework.Assert.assertEquals;
 
 public class MoverUpTest {
 
-    private final MoverUp<String> moverUp = new MoverUp<>();
+    private final ActionMoveUp<String> moverUp = new ActionMoveUp<>();
 
     private final List<String> all = Arrays.asList(
             "one",
@@ -45,14 +46,15 @@ public class MoverUpTest {
             "ten"
     );
 
-    @Test
-    public void moveUp_isCorrect() throws Exception {
-        assertEquals(expectedOutcome, moverUp.apply(all, selected));
+    private List<String> apply(Set<String> selected) {
+        List<String> result = new ArrayList<>(all);
+        moverUp.perform(result, selected);
+        return result;
     }
 
     @Test
-    public void moveUpAll_noChanges() throws Exception {
-        assertEquals(all, moverUp.apply(all, new HashSet<>(all)));
+    public void moveUp_isCorrect() throws Exception {
+        assertEquals(expectedOutcome, apply(selected));
     }
 
 }

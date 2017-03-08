@@ -2,13 +2,11 @@
 
 A RecyclerView based widget to simplify the item list changes' animations.
 
-The way it differes from plain RecyclerView is by exposing only a single
+The way it differs from plain RecyclerView is by exposing only a single
 interface method to manipulate the payload - **setItems**. All animations
-and adapter management is done inside the view.
+and adapter management is done inside the view as an implementation detail.
 
-<img src="showcase.gif" width="320">
-
-## Usage
+## Installation
 
 Add the following to your app's **build.gradle**:
 
@@ -20,55 +18,47 @@ Add the following to your app's **build.gradle**:
         ...
     }
 
-Create a subclass of the Item:
+## Regular item List
+
+A basic list view for a regular collection of items.
+
+Showcase:
+
+<img src="showcases/item-list.gif" width="320">
+
+First, implement a payload interface:
 
 ```java
-import com.gurunars.item_list.Item;
+import com.gurunars.item_list.Payload;
 
-public class AnimalItem implements Item {
+class AnimalPayload implements Payload {
 
-    enum Type {
-        MONKEY, TIGER, WOLF, LION
-    }
-
-    private Type type;
-    private long id;
     private int version;
-
-    public void update() {
-        this.version++;
-    }
-
-    public AnimalItem(long id, Type type) {
-        this.id = id;
-        this.type = type;
-    }
+    private Type type;
 
     @Override
     public Enum getType() {
         return type;
     }
 
-    @Override
-    public long getId() {
-        return id;
+    enum Type {
+        MONKEY, TIGER, WOLF, LION
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (! (obj instanceof AnimalItem)) {
-            return false;
-        }
-        AnimalItem other = (AnimalItem) obj;
-        return id == other.id && type == other.type && version == other.version;
+    public void update() {
+        this.version++;
+    }
+
+    public AnimalPayload(int version, Type type) {
+        this.version = version;
+        this.type = type;
     }
 
     @Override
     public String toString() {
-        return "" + id + " @ " + version;
+        return "" + type + " @ " + version;
     }
 }
-
 ```
 
 Put the following into your layout file:
@@ -86,7 +76,7 @@ Implement the renderer:
 
 ```java
 
-class AnimalBinder implements ItemViewBinder<AnimalItem> {
+class AnimalBinder implements ItemViewBinder<AnimalPayload> {
 
     @Override
     public View getView(Context context) {
@@ -94,6 +84,14 @@ class AnimalBinder implements ItemViewBinder<AnimalItem> {
         int padding = context.getResources().getDimensionPixelOffset(R.dimen.padding);
         text.setPadding(padding, padding, padding, padding);
         return text;
+    }
+
+    @Override
+    public void bind(View itemView, Item<AnimalPayload> item, @Nullable Item<AnimalPayload> previousItem) {
+        ((TextView) itemView).setText(item.toString());
+        if (previousItem != null) {
+            animateUpdate(itemView);
+        }
     }
 
     private void animateUpdate(final View view) {
@@ -110,14 +108,6 @@ class AnimalBinder implements ItemViewBinder<AnimalItem> {
         anim.start();
     }
 
-    @Override
-    public void bind(View itemView, AnimalItem item, @Nullable AnimalItem previousItem) {
-        ((TextView) itemView).setText(item.toString() + " [" +
-                item.getType().name().toLowerCase() + "]");
-        if (previousItem != null) {
-            animateUpdate(itemView);  // make the view flash once on update
-        }
-    }
 }
 
 ```
@@ -163,7 +153,7 @@ itemList.registerItemViewBinder(AnimalItem.Type.MONKEY, new AnimalBinder());
 itemList.registerItemViewBinder(AnimalItem.Type.TIGER, new AnimalBinder());
 itemList.registerItemViewBinder(AnimalItem.Type.WOLF, new AnimalBinder());
 
-// set empty page rebderer
+// set empty page renderer
 
 itemList.setEmptyViewBinder(new EmptyBinder());
 
@@ -173,10 +163,10 @@ And finally set the collection to a specific set of items:
 ```java
 
 itemList.setItems(Arrays.asList(
-    new AnimalItem(0, AnimalItem.Type.LION),
-    new AnimalItem(1, AnimalItem.Type.MONKEY),
-    new AnimalItem(2, AnimalItem.Type.TIGER),
-    new AnimalItem(3, AnimalItem.Type.WOLF)
+    new Item<>(0, new AnimalPayload(0, AnimalItem.Type.LION)),
+    new Item<>(1, new AnimalPayload(0, AnimalItem.Type.MONKEY)),
+    new Item<>(2, new AnimalPayload(0, AnimalItem.Type.TIGER)),
+    new Item<>(3, new AnimalPayload(0, AnimalItem.Type.WOLF))
 ));
 
 ```
@@ -184,3 +174,101 @@ itemList.setItems(Arrays.asList(
 Note, the widget retains the collection of items in its internal state thus
 whenever you invoke setItems method again a new list is diffed against
 the old one and proper animations are invoked visualizing the changes.
+
+## Selectable item list
+
+An item list with a possibility to select items by clicking them.
+
+To initiate the selection mode the first item has to be long-clicked.
+
+In the selection mode clicking the items selects/unselects them.
+
+Showcase:
+
+<img src="showcases/selectable-item-list.gif" width="320">
+
+Payload has the same structure as the one for a regular item list.
+
+Though in your layout file put the following:
+
+```xml
+
+<com.gurunars.item_list.SelectableItemList
+    android:id="@+id/selectableItemList"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" />
+
+```
+
+Later on implement a view renderer:
+
+```java
+
+static class AnimalBinder implements ItemViewBinder<SelectablePayload<AnimalPayload>> {
+
+    @Override
+    public View getView(Context context) {
+        TextView text = new TextView(context);
+        int padding = context.getResources().getDimensionPixelOffset(R.dimen.padding);
+        text.setPadding(padding, padding, padding, padding);
+        return text;
+    }
+
+    @Override
+    public void bind(View itemView, Item<SelectablePayload<AnimalPayload>> item, @Nullable Item<SelectablePayload<AnimalPayload>> previousItem) {
+        ((TextView) itemView).setText("" + item);
+        itemView.setBackgroundColor(item.getPayload().isSelected() ? Color.RED : Color.WHITE);
+        if (previousItem != null) {
+            animateUpdate(itemView);
+        }
+    }
+
+    private void animateUpdate(final View view) {
+        view.clearAnimation();
+        ValueAnimator anim = new ValueAnimator();
+        anim.setFloatValues((float) 1.0, (float) 0.0, (float) 1.0);
+        anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                view.setAlpha((Float) animation.getAnimatedValue());
+            }
+        });
+        anim.setDuration(1300);
+        anim.start();
+    }
+
+}
+
+```
+
+The way it differs from the regular view renderer is by having **SelectablePayload**
+wrapper around your own payload.
+
+Empty view binder is exactly the same as the one for a regular list.
+
+The means to manipulate the item list are exactly the same as for a regular list
+with the exception that there are two extra methods: **setSelectedItems** and
+**getSelectedItems** to manipulate the selection externally.
+
+```java
+
+itemList.setSelectedItems(new HashSet<Item<AnimalPayload>>());
+Set<Item<AnimalPayload>> selection = itemList.getSelectedItems();
+
+```
+
+Also there is an option to add a listener for list's selection change events:
+
+```java
+
+itemList.setSelectionChangeListener(new Runnable() {
+    @Override
+    public void run() {
+        // process selection state change events
+    }
+});
+
+```
+
+which shall be called whenever the internal state of individual items gets
+changed.
