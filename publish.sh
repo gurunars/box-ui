@@ -8,7 +8,7 @@ declare -a PUBLIC_MODULES=("android-utils" "floatmenu" "item-list" "leaflet-view
 
 TMP=/tmp/pages.${PROJECT_NAME}
 
-./gradlew test connectedAndroidTest aggregateJavadoc bintrayUpload
+./gradlew test connectedAndroidTest generateReleaseJavadoc bintrayUpload
 rm -rf ${TMP}
 mkdir ${TMP}
 
