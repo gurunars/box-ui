@@ -38,5 +38,3 @@ possible.
 ## More information
 
 Check the apps in **examples** folder for a reference.
-
-Check [javadoc](https://gurunars.github.io/android-crud-ui/).

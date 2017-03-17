@@ -267,3 +267,7 @@ the left edge of the screen.
 itemList.setLeftHanded(true)
 
 ```
+
+## API
+
+Check [javadoc](https://gurunars.github.io/android-crud-ui/crud-item-list/).

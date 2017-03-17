@@ -223,3 +223,7 @@ View to be shown behind the menu pane.
     floatingMenu.setContentView(inflate(this, R.layout.content_view, null));
 
 ```
+
+## API
+
+Check [javadoc](https://gurunars.github.io/android-crud-ui/floatmenu/).

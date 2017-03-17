@@ -13,3 +13,7 @@ Add the following to your app's **build.gradle**:
         }
         ...
     }
+
+## API
+
+Check [javadoc](https://gurunars.github.io/android-crud-ui/android-utils/).

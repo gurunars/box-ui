@@ -145,3 +145,7 @@ Navigate to a particular page:
 leafletView.goTo(pageTwo);
 
 ```
+
+## API
+
+Check [javadoc](https://gurunars.github.io/android-crud-ui/leaflet-view/).

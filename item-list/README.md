@@ -272,3 +272,7 @@ itemList.setSelectionChangeListener(new Runnable() {
 
 which shall be called whenever the internal state of individual items gets
 changed.
+
+## API
+
+Check [javadoc](https://gurunars.github.io/android-crud-ui/item-list/).
