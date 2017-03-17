@@ -185,7 +185,7 @@ In the selection mode clicking the items selects/unselects them.
 
 Showcase:
 
-<img src="showcases/selectable-item-list.gif" width="320">
+<img src="showcases/selectable-items-list.gif" width="320">
 
 Payload has the same structure as the one for a regular item list.
 
