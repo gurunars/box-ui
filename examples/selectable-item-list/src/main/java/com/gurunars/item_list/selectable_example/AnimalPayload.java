@@ -1,8 +1,6 @@
 package com.gurunars.item_list.selectable_example;
 
 
-import com.gurunars.item_list.Payload;
-
 class AnimalPayload implements Payload {
 
     private int version;

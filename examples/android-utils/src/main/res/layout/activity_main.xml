@@ -5,7 +5,7 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/payload"
+        android:id="@+id/item"
         android:padding="15dp"
         android:background="#FFFFAA"
         android:layout_margin="10dp"
@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"/>
 
     <LinearLayout
-        android:layout_below="@+id/payload"
+        android:layout_below="@+id/item"
         android:orientation="horizontal"
         android:gravity="center"
         android:layout_width="match_parent"

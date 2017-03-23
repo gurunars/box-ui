@@ -1,8 +1,6 @@
 package com.gurunars.crud_item_list.example;
 
 
-import com.gurunars.item_list.Payload;
-
 class AnimalPayload implements Payload {
 
     private int version;

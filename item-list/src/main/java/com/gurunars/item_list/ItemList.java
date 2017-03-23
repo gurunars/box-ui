@@ -14,11 +14,11 @@ import butterknife.ButterKnife;
  * A wrapper around RecyclerView with reasonable default item change animations and a
  * composition based solution as a mean to bind data to item list views.
  *
- * @param <PayloadType> Item payload type
+ * @param <ItemType> Item payload type
  */
-public class ItemList<PayloadType extends Payload> extends FrameLayout {
+public class ItemList<ItemType extends Item> extends FrameLayout {
 
-    private ItemAdapter<PayloadType> itemAdapter;
+    private ItemAdapter<ItemType> itemAdapter;
     private LinearLayoutManager layoutManager;
 
     public ItemList(Context context) {
@@ -66,7 +66,7 @@ public class ItemList<PayloadType extends Payload> extends FrameLayout {
      *
      * @param items a new collection to be shown
      */
-    public void setItems(List<Item<PayloadType>> items) {
+    public void setItems(List<ItemType> items) {
         itemAdapter.setItems(items);
     }
 
@@ -76,7 +76,7 @@ public class ItemList<PayloadType extends Payload> extends FrameLayout {
      * @param itemType type of the Item
      * @param itemViewBinder renderer for the items of a given type
      */
-    public void registerItemViewBinder(Enum itemType, ItemViewBinder<PayloadType> itemViewBinder) {
+    public void registerItemViewBinder(Enum itemType, ItemViewBinder<ItemType> itemViewBinder) {
         itemAdapter.registerItemViewBinder(itemType, itemViewBinder);
     }
 

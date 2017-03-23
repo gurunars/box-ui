@@ -7,42 +7,16 @@ import java.io.Serializable;
  *
  * "equals" method MUST be implemented to compare items subclasses by value.
  */
-public final class Item<PayloadType extends Serializable> implements Serializable {
-
-    private final long id;
-    private final PayloadType payload;
-
-    public Item(long id, PayloadType payload) {
-        this.id = id;
-        this.payload = payload;
-    }
+public interface Item extends Serializable {
 
     /**
-     * @return value to differentiate one item from another within a RecyclerView
+     * @return a unique ID of a persisted item
      */
-    public final long getId() {
-        return id;
-    }
+    long getId();
 
-    public final PayloadType getPayload() {
-        return payload;
-    }
+    /**
+     * @return item type
+     */
+    Enum getType();
 
-    @Override
-    public final boolean equals(Object other) {
-        return
-            other != null &&
-            this.getClass() == other.getClass() &&
-            getId() == ((Item) other).getId();
-    }
-
-    @Override
-    public final int hashCode() {
-        return Long.valueOf(getId()).hashCode();
-    }
-
-    @Override
-    public final String toString() {
-        return "#" + id + "{" + payload.toString() + "}";
-    }
 }

@@ -8,9 +8,9 @@ import android.view.View;
 /**
  * Glue between the Item of a specific type and its view.
  *
- * @param <PayloadType> type of a payload to be passed to a view
+ * @param <ItemType> type of a payload to be passed to a view
  */
-public interface ItemViewBinder<PayloadType extends Payload> {
+public interface ItemViewBinder<ItemType extends Item> {
 
     /**
      * Return a view instance to be populated
@@ -30,5 +30,5 @@ public interface ItemViewBinder<PayloadType extends Payload> {
      * @param item payload to be used for populating the view
      * @param previousItem previous version of the item. Can be null.
      */
-    void bind(View itemView, Item<PayloadType> item, @Nullable Item<PayloadType> previousItem);
+    void bind(View itemView, ItemType item, @Nullable ItemType previousItem);
 }

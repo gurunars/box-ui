@@ -17,20 +17,20 @@ import java.io.Serializable;
  * Not for production use. Only for example applications and development purposes.
  * </p>
  *
- * @param <PayloadType> type of the payload to be stored
+ * @param <ItemType> type of the payload to be stored
  */
-public class PersistentStorage<PayloadType extends Serializable> {
+public class PersistentStorage<ItemType extends Serializable> {
 
-    public interface PayloadChangeListener<PayloadType> {
-        void onChange(PayloadType payload);
+    public interface PayloadChangeListener<ItemType> {
+        void onChange(ItemType payload);
     }
 
     private final Activity activity;
 
-    private PayloadType payload;
+    private ItemType payload;
     private String typeAlias;
-    private PayloadType defaultPayload;
-    private PayloadChangeListener<PayloadType> changeListener;
+    private ItemType defaultPayload;
+    private PayloadChangeListener<ItemType> changeListener;
 
     /**
      * @param activity Android activity to be attached to
@@ -42,8 +42,8 @@ public class PersistentStorage<PayloadType extends Serializable> {
      */
     public PersistentStorage(@NonNull Activity activity,
                              @NonNull String typeAlias,
-                             @NonNull PayloadType defaultPayload,
-                             @NonNull PayloadChangeListener<PayloadType> changeListener) {
+                             @NonNull ItemType defaultPayload,
+                             @NonNull PayloadChangeListener<ItemType> changeListener) {
         this.activity = activity;
         this.payload = defaultPayload;
         this.typeAlias = typeAlias;
@@ -55,7 +55,7 @@ public class PersistentStorage<PayloadType extends Serializable> {
 
     private void load() {
         SharedPreferences preferences = activity.getPreferences(Context.MODE_PRIVATE);
-        PayloadType loaded = StringSerializer.fromString(preferences.getString(typeAlias, null));
+        ItemType loaded = StringSerializer.fromString(preferences.getString(typeAlias, null));
 
         payload = loaded != null ? loaded : payload;
 
@@ -65,7 +65,7 @@ public class PersistentStorage<PayloadType extends Serializable> {
     /**
      * @param payload payload to persist
      */
-    public void set(@NonNull PayloadType payload) {
+    public void set(@NonNull ItemType payload) {
         this.payload = payload;
         save();
     }

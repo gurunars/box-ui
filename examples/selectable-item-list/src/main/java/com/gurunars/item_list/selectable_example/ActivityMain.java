@@ -18,7 +18,7 @@ import com.gurunars.item_list.EmptyViewBinder;
 import com.gurunars.item_list.Item;
 import com.gurunars.item_list.ItemViewBinder;
 import com.gurunars.item_list.SelectableItemList;
-import com.gurunars.item_list.SelectablePayload;
+import com.gurunars.item_list.SelectableItem;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -29,7 +29,7 @@ import butterknife.ButterKnife;
 
 public class ActivityMain extends AppCompatActivity {
 
-    static class AnimalBinder implements ItemViewBinder<SelectablePayload<AnimalPayload>> {
+    static class AnimalBinder implements ItemViewBinder<SelectableItem<AnimalPayload>> {
 
         @Override
         public View getView(Context context) {
@@ -40,7 +40,7 @@ public class ActivityMain extends AppCompatActivity {
         }
 
         @Override
-        public void bind(View itemView, Item<SelectablePayload<AnimalPayload>> item, @Nullable Item<SelectablePayload<AnimalPayload>> previousItem) {
+        public void bind(View itemView, Item<SelectableItem<AnimalPayload>> item, @Nullable Item<SelectableItem<AnimalPayload>> previousItem) {
             ((TextView) itemView).setText("" + item);
             itemView.setBackgroundColor(item.getPayload().isSelected() ? Color.RED : Color.WHITE);
         }

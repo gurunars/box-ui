@@ -4,7 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 
-class ItemViewBinderFooter<PayloadType extends Payload> implements ItemViewBinder<PayloadType> {
+class ItemViewBinderFooter<ItemType extends Item> implements ItemViewBinder<ItemType> {
 
     static final int FOOTER_TYPE = -42;
 
@@ -16,7 +16,7 @@ class ItemViewBinderFooter<PayloadType extends Payload> implements ItemViewBinde
     }
 
     @Override
-    public void bind(View itemView, Item<PayloadType> item, Item<PayloadType> previousItem) {
+    public void bind(View itemView, ItemType item, ItemType previousItem) {
 
     }
 }

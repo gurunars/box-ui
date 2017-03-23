@@ -15,9 +15,8 @@ import com.gurunars.floatmenu.FloatMenu;
 import com.gurunars.item_list.EmptyViewBinder;
 import com.gurunars.item_list.Item;
 import com.gurunars.item_list.ItemViewBinder;
-import com.gurunars.item_list.Payload;
 import com.gurunars.item_list.SelectableItemList;
-import com.gurunars.item_list.SelectablePayload;
+import com.gurunars.item_list.SelectableItem;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,7 +31,7 @@ import java8.util.function.Consumer;
 /**
  * Widget to be used for manipulating a collection of items.
  */
-public class CrudItemList<PayloadType extends Payload> extends RelativeLayout {
+public class CrudItemList<ItemType extends Item> extends RelativeLayout {
 
     @State int actionIconFgColor;
     @State int actionIconBgColor;
@@ -49,27 +48,27 @@ public class CrudItemList<PayloadType extends Payload> extends RelativeLayout {
     private final UiThrottleBuffer throttleBuffer = new UiThrottleBuffer();
 
     private final FloatMenu floatingMenu;
-    private final SelectableItemList<PayloadType> itemList;
+    private final SelectableItemList<ItemType> itemList;
 
-    private ListChangeListener<PayloadType> listChangeListener =
+    private ListChangeListener<ItemType> listChangeListener =
             new ListChangeListener.DefaultListChangeListener<>();
-    private ItemEditListener<PayloadType> itemEditListener =
+    private ItemEditListener<ItemType> itemEditListener =
             new ItemEditListener.DefaultItemEditListener<>();
 
-    private List<Item<PayloadType>> items = new ArrayList<>();
+    private List<SelectableItem<ItemType>> items = new ArrayList<>();
 
-    private final Map<Integer, Action<Item<PayloadType>>> actions =
-        new HashMap<Integer, Action<Item<PayloadType>>>() {{
-            put(R.id.selectAll, new ActionSelectAll<Item<PayloadType>>());
-            put(R.id.delete, new ActionDelete<Item<PayloadType>>());
-            put(R.id.edit, new ActionEdit<>(new Consumer<Item<PayloadType>>() {
+    private final Map<Integer, Action<ItemType>> actions =
+        new HashMap<Integer, Action<ItemType>>() {{
+            put(R.id.selectAll, new ActionSelectAll<ItemType>());
+            put(R.id.delete, new ActionDelete<ItemType>());
+            put(R.id.edit, new ActionEdit<>(new Consumer<ItemType>() {
                 @Override
-                public void accept(Item<PayloadType> payload) {
+                public void accept(ItemType payload) {
                     itemEditListener.onEdit(payload, false);
                 }
             }));
-            put(R.id.moveUp, new ActionMoveUp<Item<PayloadType>>());
-            put(R.id.moveDown, new ActionMoveDown<Item<PayloadType>>());
+            put(R.id.moveUp, new ActionMoveUp<ItemType>());
+            put(R.id.moveDown, new ActionMoveDown<ItemType>());
     }};
 
     public CrudItemList(Context context) {
@@ -140,7 +139,7 @@ public class CrudItemList<PayloadType extends Payload> extends RelativeLayout {
         floatingMenu.setOnCloseListener(new AnimationListener() {
             @Override
             public void onStart(int projectedDuration) {
-                itemList.setSelectedItems(new HashSet<Item<PayloadType>>());
+                itemList.setSelectedItems(new HashSet<ItemType>());
             }
 
             @Override
@@ -149,12 +148,12 @@ public class CrudItemList<PayloadType extends Payload> extends RelativeLayout {
             }
         });
 
-        for (final Map.Entry<Integer, Action<Item<PayloadType>>> entry: actions.entrySet()) {
+        for (final Map.Entry<Integer, Action<ItemType>> entry: actions.entrySet()) {
             contextualMenu.findViewById(entry.getKey()).setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Set<Item<PayloadType>> selectedItems = itemList.getSelectedItems();
-                    Action<Item<PayloadType>> action = entry.getValue();
+                    Set<ItemType> selectedItems = itemList.getSelectedItems();
+                    Action<ItemType> action = entry.getValue();
                     if (!action.canPerform(items, selectedItems)) {
                         return;
                     }
@@ -194,7 +193,7 @@ public class CrudItemList<PayloadType extends Payload> extends RelativeLayout {
     }
 
     private void setUpActions() {
-        for (Map.Entry<Integer, Action<Item<PayloadType>>> entry: actions.entrySet()) {
+        for (Map.Entry<Integer, Action<ItemType>> entry: actions.entrySet()) {
             contextualMenu.findViewById(entry.getKey()).setEnabled(
                     entry.getValue().canPerform(items, itemList.getSelectedItems())
             );
@@ -235,7 +234,7 @@ public class CrudItemList<PayloadType extends Payload> extends RelativeLayout {
      *
      * @param items a new collection to be shown
      */
-    public void setItems(List<Item<PayloadType>> items) {
+    public void setItems(List<ItemType> items) {
         this.items = items;
         itemList.setItems(items);
         setUpActions();
@@ -256,7 +255,7 @@ public class CrudItemList<PayloadType extends Payload> extends RelativeLayout {
      */
     public void registerItemType(
             Enum itemType,
-            ItemViewBinder<SelectablePayload<PayloadType>> itemViewBinder) {
+            ItemViewBinder<SelectableItem<ItemType>> itemViewBinder) {
         itemList.registerItemViewBinder(itemType, itemViewBinder);
     }
 
@@ -273,7 +272,7 @@ public class CrudItemList<PayloadType extends Payload> extends RelativeLayout {
      * @param listChangeListener callback to be executed whenever the list gets changed within
      *                           the widget
      */
-    public void setListChangeListener(ListChangeListener<PayloadType> listChangeListener) {
+    public void setListChangeListener(ListChangeListener<ItemType> listChangeListener) {
         this.listChangeListener = listChangeListener;
     }
 
@@ -331,7 +330,7 @@ public class CrudItemList<PayloadType extends Payload> extends RelativeLayout {
      * @param itemEditListener a listener for the cases when a new item has to be created or when
      *                         the existing one has to be edited
      */
-    public void setItemEditListener(final ItemEditListener<PayloadType> itemEditListener) {
+    public void setItemEditListener(final ItemEditListener<ItemType> itemEditListener) {
         this.itemEditListener = itemEditListener;
     }
 

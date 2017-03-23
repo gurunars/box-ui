@@ -13,28 +13,28 @@ import java.util.Set;
 import java8.util.function.Consumer;
 
 
-class CollectionManager<PayloadType extends Payload> implements Serializable {
+class CollectionManager<ItemType extends Item> implements Serializable {
 
     private Kryo kryo = new Kryo();
 
-    private List<Item<PayloadType>> items = new ArrayList<>();
-    private Set<Item<PayloadType>> selectedItems = new HashSet<>();
+    private List<ItemType> items = new ArrayList<>();
+    private Set<ItemType> selectedItems = new HashSet<>();
 
-    private final Consumer<List<Item<SelectablePayload<PayloadType>>>> stateChangeHandler;
+    private final Consumer<List<Item<SelectableItem<ItemType>>>> stateChangeHandler;
     private final Runnable selectionChangeListener;
 
     CollectionManager(
-            Consumer<List<Item<SelectablePayload<PayloadType>>>> stateChangeHandler,
+            Consumer<List<Item<SelectableItem<ItemType>>>> stateChangeHandler,
             Runnable selectionChangeListener ) {
         this.stateChangeHandler = stateChangeHandler;
         this.selectionChangeListener = selectionChangeListener;
         this.kryo.setInstantiatorStrategy(new Kryo.DefaultInstantiatorStrategy(new StdInstantiatorStrategy()));
     }
 
-    private void changed(List<Item<PayloadType>> newItems, Set<Item<PayloadType>> newSelection) {
+    private void changed(List<ItemType> newItems, Set<ItemType> newSelection) {
         this.items = newItems;
-        Set<Item<PayloadType>> filteredSelection = new HashSet<>(newSelection);
-        for (Item<PayloadType> cursor: filteredSelection) {
+        Set<ItemType> filteredSelection = new HashSet<>(newSelection);
+        for (ItemType cursor: filteredSelection) {
             newSelection.remove(cursor);
             if (items.contains(cursor)) {
                 // This is to replace the item's payload with a new one
@@ -43,10 +43,10 @@ class CollectionManager<PayloadType extends Payload> implements Serializable {
         }
         boolean selectionChanged = !selectedItems.equals(filteredSelection);
         selectedItems = newSelection;
-        List<Item<SelectablePayload<PayloadType>>> selectableItems = new ArrayList<>();
-        for (Item<PayloadType> item: items) {
+        List<Item<SelectableItem<ItemType>>> selectableItems = new ArrayList<>();
+        for (ItemType item: items) {
             selectableItems.add(new Item<>(item.getId(),
-                    new SelectablePayload<>(item.getPayload(), selectedItems.contains(item))));
+                    new SelectableItem<>(item.getPayload(), selectedItems.contains(item))));
         }
         stateChangeHandler.accept(selectableItems);
         if (selectionChanged) {
@@ -54,18 +54,18 @@ class CollectionManager<PayloadType extends Payload> implements Serializable {
         }
     }
 
-    private Item<PayloadType> getItem(Item<SelectablePayload<PayloadType>> item) {
+    private ItemType getItem(Item<SelectableItem<ItemType>> item) {
         return new Item<>(item.getId(), item.getPayload().getPayload());
     }
 
-    void itemClick(Item<SelectablePayload<PayloadType>> selectableItem) {
+    void itemClick(Item<SelectableItem<ItemType>> selectableItem) {
         if (selectedItems.size() == 0) {
             return;
         }
 
-        Item<PayloadType> item = getItem(selectableItem);
+        ItemType item = getItem(selectableItem);
 
-        Set<Item<PayloadType>> newSelectedItems = new HashSet<>(selectedItems);
+        Set<ItemType> newSelectedItems = new HashSet<>(selectedItems);
 
         if (newSelectedItems.contains(item)) {
             newSelectedItems.remove(item);
@@ -75,24 +75,24 @@ class CollectionManager<PayloadType extends Payload> implements Serializable {
         changed(items, newSelectedItems);
     }
 
-    void itemLongClick(Item<SelectablePayload<PayloadType>>selectableItem) {
+    void itemLongClick(Item<SelectableItem<ItemType>>selectableItem) {
         if (selectedItems.size() != 0) {
             return;
         }
-        Set<Item<PayloadType>> newSelectedItems = new HashSet<>(selectedItems);
+        Set<ItemType> newSelectedItems = new HashSet<>(selectedItems);
         newSelectedItems.add(getItem(selectableItem));
         changed(items, newSelectedItems);
     }
 
-    void setItems(List<Item<PayloadType>> items) {
+    void setItems(List<ItemType> items) {
         changed(kryo.copy(new ArrayList<>(items)), kryo.copy(new HashSet<>(selectedItems)));
     }
 
-    void setSelectedItems(Set<Item<PayloadType>> selectedItems) {
+    void setSelectedItems(Set<ItemType> selectedItems) {
         changed(items, kryo.copy(new HashSet<>(selectedItems)));
     }
 
-    Set<Item<PayloadType>> getSelectedItems() {
+    Set<ItemType> getSelectedItems() {
         return kryo.copy(selectedItems);
     }
 

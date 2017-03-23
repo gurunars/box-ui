@@ -18,12 +18,12 @@ import java8.util.function.Consumer;
  *
  * Items can be selected via long clicking and consequentially clicking them.
  *
- * @param <PayloadType> class describing item payload
+ * @param <ItemType> class describing item payload
  */
-public class SelectableItemList<PayloadType extends Payload> extends FrameLayout {
+public class SelectableItemList<ItemType extends Item> extends FrameLayout {
 
-    private ItemList<SelectablePayload<PayloadType>> itemList;
-    private CollectionManager<PayloadType> collectionManager;
+    private ItemList<SelectableItem<ItemType>> itemList;
+    private CollectionManager<ItemType> collectionManager;
     private Runnable selectionChangeListener;
 
     public SelectableItemList(Context context) {
@@ -39,9 +39,9 @@ public class SelectableItemList<PayloadType extends Payload> extends FrameLayout
         inflate(context, R.layout.selectable_item_list, this);
         itemList = ButterKnife.findById(this, R.id.itemList);
 
-        collectionManager = new CollectionManager<>(new Consumer<List<Item<SelectablePayload<PayloadType>>>>() {
+        collectionManager = new CollectionManager<>(new Consumer<List<Item<SelectableItem<ItemType>>>>() {
             @Override
-            public void accept(List<Item<SelectablePayload<PayloadType>>> items) {
+            public void accept(List<Item<SelectableItem<ItemType>>> items) {
                 itemList.setItems(items);
             }
         }, new Runnable() {
@@ -62,7 +62,7 @@ public class SelectableItemList<PayloadType extends Payload> extends FrameLayout
      *
      * @param items a new collection to be shown
      */
-    public void setItems(List<Item<PayloadType>> items) {
+    public void setItems(List<ItemType> items) {
         collectionManager.setItems(items);
     }
 
@@ -72,7 +72,7 @@ public class SelectableItemList<PayloadType extends Payload> extends FrameLayout
      *
      * @param selectedItems collection of items to be marked as selected
      */
-    public void setSelectedItems(Set<Item<PayloadType>> selectedItems) {
+    public void setSelectedItems(Set<ItemType> selectedItems) {
         collectionManager.setSelectedItems(selectedItems);
     }
 
@@ -84,7 +84,7 @@ public class SelectableItemList<PayloadType extends Payload> extends FrameLayout
      *                       an isSelected flag
      */
     public void registerItemViewBinder(Enum itemType,
-                                       ItemViewBinder<SelectablePayload<PayloadType>> itemViewBinder) {
+                                       ItemViewBinder<SelectableItem<ItemType>> itemViewBinder) {
         itemList.registerItemViewBinder(itemType,
                 new ClickableItemViewBinder<>(itemViewBinder, collectionManager));
     }
@@ -101,7 +101,7 @@ public class SelectableItemList<PayloadType extends Payload> extends FrameLayout
     /**
      * @return a set of items selected ATM
      */
-    public Set<Item<PayloadType>> getSelectedItems() {
+    public Set<ItemType> getSelectedItems() {
         return collectionManager.getSelectedItems();
     }
 
@@ -127,6 +127,6 @@ public class SelectableItemList<PayloadType extends Payload> extends FrameLayout
     protected void onRestoreInstanceState(Parcelable state) {
         Bundle localState = (Bundle) state;
         super.onRestoreInstanceState(localState.getParcelable("superState"));
-        collectionManager.setSelectedItems((HashSet<Item<PayloadType>>) localState.getSerializable("selectedItems"));
+        collectionManager.setSelectedItems((HashSet<ItemType>) localState.getSerializable("selectedItems"));
     }
 }

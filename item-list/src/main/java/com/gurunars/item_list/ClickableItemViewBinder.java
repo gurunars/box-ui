@@ -4,19 +4,14 @@ import android.content.Context;
 import android.support.annotation.Nullable;
 import android.view.View;
 
-import com.gurunars.item_list.Item;
-import com.gurunars.item_list.ItemViewBinder;
-import com.gurunars.item_list.Payload;
-import com.gurunars.item_list.SelectablePayload;
+class ClickableItemViewBinder<ItemType extends Item> implements ItemViewBinder<SelectableItem<ItemType>> {
 
-class ClickableItemViewBinder<PayloadType extends Payload> implements ItemViewBinder<SelectablePayload<PayloadType>> {
-
-    private final ItemViewBinder<SelectablePayload<PayloadType>> itemViewBinder;
-    private final CollectionManager<PayloadType> collectionManager;
+    private final ItemViewBinder<SelectableItem<ItemType>> itemViewBinder;
+    private final CollectionManager<SelectableItem<ItemType>> collectionManager;
 
     ClickableItemViewBinder(
-            ItemViewBinder<SelectablePayload<PayloadType>> itemViewBinder,
-            CollectionManager<PayloadType> collectionManager) {
+            ItemViewBinder<SelectableItem<ItemType>> itemViewBinder,
+            CollectionManager<SelectableItem<ItemType>> collectionManager) {
         this.itemViewBinder = itemViewBinder;
         this.collectionManager = collectionManager;
     }
@@ -27,8 +22,7 @@ class ClickableItemViewBinder<PayloadType extends Payload> implements ItemViewBi
     }
 
     @Override
-    public void bind(View itemView, final Item<SelectablePayload<PayloadType>> item,
-                     @Nullable Item<SelectablePayload<PayloadType>> previousItem) {
+    public void bind(View itemView, final SelectableItem<ItemType> item, @Nullable SelectableItem<ItemType> previousItem) {
         itemViewBinder.bind(itemView, item, previousItem);
 
         itemView.setOnClickListener(new View.OnClickListener() {
