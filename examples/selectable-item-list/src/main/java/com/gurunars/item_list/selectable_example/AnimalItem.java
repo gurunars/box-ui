@@ -37,4 +37,18 @@ class AnimalItem implements Item {
     public String toString() {
         return "#" + id + "{" + type + " @ " + version + "}";
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof AnimalItem) {
+            AnimalItem other = (AnimalItem) obj;
+            return version == other.version && type == other.type;
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return Long.valueOf(id).hashCode();
+    }
 }

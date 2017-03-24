@@ -1,6 +1,5 @@
 package com.gurunars.item_list.example;
 
-
 import com.gurunars.item_list.Item;
 
 class AnimalItem implements Item {
@@ -36,5 +35,19 @@ class AnimalItem implements Item {
     @Override
     public String toString() {
         return "#" + id + "{" + type + " @ " + version + "}";
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof AnimalItem) {
+            AnimalItem other = (AnimalItem) obj;
+            return version == other.version && type == other.type;
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return Long.valueOf(id).hashCode();
     }
 }
