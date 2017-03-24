@@ -16,15 +16,12 @@ import static junit.framework.Assert.assertEquals;
 
 public class CollectionManagerTest {
 
-    private List<SelectableItem<AnimalPayload>> selectableItems;
+    private List<SelectableItem<AnimalItem>> selectableItems;
 
-    private CollectionManager<AnimalPayload> manager = new CollectionManager<>(new Consumer<List<Item<SelectableItem<AnimalPayload>>>>() {
+    private CollectionManager<AnimalItem> manager = new CollectionManager<>(new Consumer<List<SelectableItem<AnimalItem>>>() {
         @Override
-        public void accept(List<Item<SelectableItem<AnimalPayload>>> items) {
-            CollectionManagerTest.this.selectableItems = new ArrayList<>();
-            for (Item<SelectableItem<AnimalPayload>> item : items) {
-                selectableItems.add(item.getPayload());
-            }
+        public void accept(List<SelectableItem<AnimalItem>> selectableItems) {
+            CollectionManagerTest.this.selectableItems = selectableItems;
         }
     }, new Runnable() {
         @Override
@@ -36,14 +33,14 @@ public class CollectionManagerTest {
     @Before
     public void before() {
         manager.setItems(Arrays.asList(
-                new Item<>(0, new AnimalPayload(0, AnimalPayload.Type.LION)),
-                new Item<>(1, new AnimalPayload(0, AnimalPayload.Type.TIGER)),
-                new Item<>(2, new AnimalPayload(0, AnimalPayload.Type.WOLF)),
-                new Item<>(3, new AnimalPayload(0, AnimalPayload.Type.MONKEY)),
-                new Item<>(4, new AnimalPayload(0, AnimalPayload.Type.LION)),
-                new Item<>(5, new AnimalPayload(0, AnimalPayload.Type.TIGER)),
-                new Item<>(6, new AnimalPayload(0, AnimalPayload.Type.WOLF)),
-                new Item<>(7, new AnimalPayload(0, AnimalPayload.Type.MONKEY))
+                new AnimalItem(0, AnimalItem.Type.LION),
+                new AnimalItem(1, AnimalItem.Type.TIGER),
+                new AnimalItem(2, AnimalItem.Type.WOLF),
+                new AnimalItem(3, AnimalItem.Type.MONKEY),
+                new AnimalItem(4, AnimalItem.Type.LION),
+                new AnimalItem(5, AnimalItem.Type.TIGER),
+                new AnimalItem(6, AnimalItem.Type.WOLF),
+                new AnimalItem(7, AnimalItem.Type.MONKEY)
         ));
         selectableItems = new ArrayList<>();
     }
@@ -51,35 +48,35 @@ public class CollectionManagerTest {
     @Test
     public void selectingItems_shouldGenerateProperListOfSelectableItems() {
         manager.setSelectedItems(Sets.newSet(
-                new Item<>(0, new AnimalPayload(0, AnimalPayload.Type.LION)),
-                new Item<>(1, new AnimalPayload(0, AnimalPayload.Type.TIGER)),
-                new Item<>(2, new AnimalPayload(0, AnimalPayload.Type.WOLF))
+                new AnimalItem(0, AnimalItem.Type.LION),
+                new AnimalItem(1, AnimalItem.Type.TIGER),
+                new AnimalItem(2, AnimalItem.Type.WOLF)
         ));
         assertEquals(Arrays.asList(
-                new SelectableItem<>(new AnimalPayload(0, AnimalPayload.Type.LION), true),
-                new SelectableItem<>(new AnimalPayload(0, AnimalPayload.Type.TIGER), true),
-                new SelectableItem<>(new AnimalPayload(0, AnimalPayload.Type.WOLF), true),
-                new SelectableItem<>(new AnimalPayload(0, AnimalPayload.Type.MONKEY), false),
-                new SelectableItem<>(new AnimalPayload(0, AnimalPayload.Type.LION), false),
-                new SelectableItem<>(new AnimalPayload(0, AnimalPayload.Type.TIGER), false),
-                new SelectableItem<>(new AnimalPayload(0, AnimalPayload.Type.WOLF), false),
-                new SelectableItem<>(new AnimalPayload(0, AnimalPayload.Type.MONKEY), false)
+                new SelectableItem<>(new AnimalItem(0, AnimalItem.Type.LION), true),
+                new SelectableItem<>(new AnimalItem(1, AnimalItem.Type.TIGER), true),
+                new SelectableItem<>(new AnimalItem(2, AnimalItem.Type.WOLF), true),
+                new SelectableItem<>(new AnimalItem(3, AnimalItem.Type.MONKEY), false),
+                new SelectableItem<>(new AnimalItem(4, AnimalItem.Type.LION), false),
+                new SelectableItem<>(new AnimalItem(5, AnimalItem.Type.TIGER), false),
+                new SelectableItem<>(new AnimalItem(6, AnimalItem.Type.WOLF), false),
+                new SelectableItem<>(new AnimalItem(7, AnimalItem.Type.MONKEY), false)
         ), selectableItems);
     }
 
     @Test
     public void selectingNonexistentItems_shouldRemoveNonExsistentItemsFromSelection() {
         manager.setSelectedItems(Sets.newSet(
-                new Item<>(0, new AnimalPayload(0, AnimalPayload.Type.LION)),
-                new Item<>(1, new AnimalPayload(0, AnimalPayload.Type.TIGER)),
-                new Item<>(2, new AnimalPayload(0, AnimalPayload.Type.WOLF)),
-                new Item<>(18, new AnimalPayload(0, AnimalPayload.Type.TIGER)),
-                new Item<>(19, new AnimalPayload(0, AnimalPayload.Type.WOLF))
+                new AnimalItem(0, AnimalItem.Type.LION),
+                new AnimalItem(1, AnimalItem.Type.TIGER),
+                new AnimalItem(2, AnimalItem.Type.WOLF),
+                new AnimalItem(18, AnimalItem.Type.TIGER),
+                new AnimalItem(19, AnimalItem.Type.WOLF)
         ));
         assertEquals(Sets.newSet(
-                new Item<>(0, new AnimalPayload(0, AnimalPayload.Type.LION)),
-                new Item<>(1, new AnimalPayload(0, AnimalPayload.Type.TIGER)),
-                new Item<>(2, new AnimalPayload(0, AnimalPayload.Type.WOLF))
+                new AnimalItem(0, AnimalItem.Type.LION),
+                new AnimalItem(1, AnimalItem.Type.TIGER),
+                new AnimalItem(2, AnimalItem.Type.WOLF)
             ),
                 manager.getSelectedItems()
         );
@@ -88,22 +85,22 @@ public class CollectionManagerTest {
     @Test
     public void removingTheItemsFromMainCollection_shouldRemoveItemsFromSelection() {
         manager.setSelectedItems(Sets.newSet(
-                new Item<>(0, new AnimalPayload(0, AnimalPayload.Type.LION)),
-                new Item<>(1, new AnimalPayload(0, AnimalPayload.Type.TIGER)),
-                new Item<>(2, new AnimalPayload(0, AnimalPayload.Type.WOLF))
+                new AnimalItem(0, AnimalItem.Type.LION),
+                new AnimalItem(1, AnimalItem.Type.TIGER),
+                new AnimalItem(2, AnimalItem.Type.WOLF)
         ));
         manager.setItems(Arrays.asList(
-                //new Item<>(0, new AnimalPayload(0, AnimalPayload.Type.LION)),
-                new Item<>(1, new AnimalPayload(0, AnimalPayload.Type.TIGER)),
-                //new Item<>(2, new AnimalPayload(0, AnimalPayload.Type.WOLF)),
-                new Item<>(3, new AnimalPayload(0, AnimalPayload.Type.MONKEY)),
-                new Item<>(4, new AnimalPayload(0, AnimalPayload.Type.LION)),
-                new Item<>(5, new AnimalPayload(0, AnimalPayload.Type.TIGER)),
-                new Item<>(6, new AnimalPayload(0, AnimalPayload.Type.WOLF)),
-                new Item<>(7, new AnimalPayload(0, AnimalPayload.Type.MONKEY))
+                //new AnimalItem(0, AnimalItem.Type.LION),
+                new AnimalItem(1, AnimalItem.Type.TIGER),
+                //new AnimalItem(2, AnimalItem.Type.WOLF),
+                new AnimalItem(3, AnimalItem.Type.MONKEY),
+                new AnimalItem(4, AnimalItem.Type.LION),
+                new AnimalItem(5, AnimalItem.Type.TIGER),
+                new AnimalItem(6, AnimalItem.Type.WOLF),
+                new AnimalItem(7, AnimalItem.Type.MONKEY)
         ));
         assertEquals(Sets.newSet(
-                new Item<>(1, new AnimalPayload(0, AnimalPayload.Type.TIGER))
+                new AnimalItem(1, AnimalItem.Type.TIGER)
             ),
                 manager.getSelectedItems()
         );
@@ -111,54 +108,46 @@ public class CollectionManagerTest {
 
     @Test
     public void onlyInitialLongClick_shouldSelectItem() {
-        manager.itemLongClick(new Item<>(0,
-                new SelectableItem<>(new AnimalPayload(0, AnimalPayload.Type.LION), false)));
-        manager.itemLongClick(new Item<>(0,
-                new SelectableItem<>(new AnimalPayload(0, AnimalPayload.Type.LION), false)));
-        manager.itemLongClick(new Item<>(1,
-                new SelectableItem<>(new AnimalPayload(0, AnimalPayload.Type.TIGER), false)));
-        manager.itemLongClick(new Item<>(2,
-                new SelectableItem<>(new AnimalPayload(0, AnimalPayload.Type.WOLF), false)));
+        manager.itemLongClick(new SelectableItem<>(new AnimalItem(0, AnimalItem.Type.LION), false));
+        manager.itemLongClick(new SelectableItem<>(new AnimalItem(0, AnimalItem.Type.LION), false));
+        manager.itemLongClick(new SelectableItem<>(new AnimalItem(1, AnimalItem.Type.TIGER), false));
+        manager.itemLongClick(new SelectableItem<>(new AnimalItem(2, AnimalItem.Type.WOLF), false));
         assertEquals(Sets.newSet(
-                new Item<>(0, new AnimalPayload(0, AnimalPayload.Type.LION))
+                new AnimalItem(0, AnimalItem.Type.LION)
         ), manager.getSelectedItems());
     }
 
     @Test
     public void anyClickOnUnselectedItemAfterLongClick_shouldSelectItem() {
-        manager.itemLongClick(new Item<>(0,
-                new SelectableItem<>(new AnimalPayload(0, AnimalPayload.Type.LION), false)));
-        manager.itemClick(new Item<>(1,
-                new SelectableItem<>(new AnimalPayload(0, AnimalPayload.Type.TIGER), false)));
-        manager.itemClick(new Item<>(2,
-                new SelectableItem<>(new AnimalPayload(0, AnimalPayload.Type.WOLF), false)));
-        manager.itemClick(new Item<>(3,
-                new SelectableItem<>(new AnimalPayload(0, AnimalPayload.Type.MONKEY), false)));
+        manager.itemLongClick(new SelectableItem<>(new AnimalItem(0, AnimalItem.Type.LION), false));
+        manager.itemClick(new SelectableItem<>(new AnimalItem(1, AnimalItem.Type.TIGER), false));
+        manager.itemClick(new SelectableItem<>(new AnimalItem(2, AnimalItem.Type.WOLF), false));
+        manager.itemClick(new SelectableItem<>(new AnimalItem(3, AnimalItem.Type.MONKEY), false));
         assertEquals(Sets.newSet(
-                new Item<>(0, new AnimalPayload(0, AnimalPayload.Type.LION)),
-                new Item<>(1, new AnimalPayload(0, AnimalPayload.Type.TIGER)),
-                new Item<>(2, new AnimalPayload(0, AnimalPayload.Type.WOLF)),
-                new Item<>(3, new AnimalPayload(0, AnimalPayload.Type.MONKEY))
+                new AnimalItem(0, AnimalItem.Type.LION),
+                new AnimalItem(1, AnimalItem.Type.TIGER),
+                new AnimalItem(2, AnimalItem.Type.WOLF),
+                new AnimalItem(3, AnimalItem.Type.MONKEY)
         ), manager.getSelectedItems());
     }
 
     @Test
     public void anyClickOnSelectedItem_shouldUnselectIt() {
-        Set<Item<AnimalPayload>> toSelect = Sets.newSet(
-                new Item<>(0, new AnimalPayload(0, AnimalPayload.Type.LION)),
-                new Item<>(1, new AnimalPayload(0, AnimalPayload.Type.TIGER)),
-                new Item<>(2, new AnimalPayload(0, AnimalPayload.Type.WOLF)),
-                new Item<>(3, new AnimalPayload(0, AnimalPayload.Type.MONKEY)),
-                new Item<>(4, new AnimalPayload(0, AnimalPayload.Type.LION)),
-                new Item<>(5, new AnimalPayload(0, AnimalPayload.Type.TIGER)),
-                new Item<>(6, new AnimalPayload(0, AnimalPayload.Type.WOLF)),
-                new Item<>(7, new AnimalPayload(0, AnimalPayload.Type.MONKEY))
+        Set<AnimalItem> toSelect = Sets.newSet(
+                new AnimalItem(0, AnimalItem.Type.LION),
+                new AnimalItem(1, AnimalItem.Type.TIGER),
+                new AnimalItem(2, AnimalItem.Type.WOLF),
+                new AnimalItem(3, AnimalItem.Type.MONKEY),
+                new AnimalItem(4, AnimalItem.Type.LION),
+                new AnimalItem(5, AnimalItem.Type.TIGER),
+                new AnimalItem(6, AnimalItem.Type.WOLF),
+                new AnimalItem(7, AnimalItem.Type.MONKEY)
         );
         manager.setSelectedItems(toSelect);
-        for (Item<AnimalPayload> item: toSelect) {
-            manager.itemClick(new Item<>(item.getId(), new SelectableItem<>(item.getPayload(), true)));
+        for (AnimalItem item: toSelect) {
+            manager.itemClick(new SelectableItem<>(item, true));
         }
-        assertEquals(new HashSet<Item<AnimalPayload>>(), manager.getSelectedItems());
+        assertEquals(new HashSet<AnimalItem>(), manager.getSelectedItems());
     }
 
 }

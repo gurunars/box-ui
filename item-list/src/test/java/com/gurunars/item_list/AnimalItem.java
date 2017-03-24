@@ -31,6 +31,14 @@ class AnimalItem implements Item {
         this.id = id;
     }
 
+    AnimalItem(long id, int version) {
+        this(id, version, Type.MONKEY);
+    }
+
+    AnimalItem(long id, Type type) {
+        this(id, 0, type);
+    }
+
     @Override
     public String toString() {
         return "#" + id + "{" + type + " @ " + version + "}";
