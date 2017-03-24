@@ -1,13 +1,7 @@
 # Crud Item List
 
-Widget to be used for manipulating a collection of items.
-
-- Handles item list animations automatically. I.e. it detects which items were
-  changed, which were moved, which were created and which were removed
-  completely.
-- It follows composition rather than inheritance approach. Data source is kept
-  separately from the individual item renderers.
-- It has its own set of controls meant to manipulate the list.
+Widget to be used for manipulating a collection of items via its own set of
+GUI controls meant to manipulate the list.
 
 ## Show cases
 
@@ -112,7 +106,7 @@ one has to be changed:
 crudItemList.setItemEditListener(new ItemEditListener<AnimalItem>() {
     @Override
     public void onEdit(Item<AnimalItem> editableItem, boolean isNew) {
-        editableItem.getPayload().update();
+        editableItem.update();
         model.updateItem(editableItem);
         crudItemList.setItems(model.getItems());
     }
@@ -158,7 +152,7 @@ Implement item view binder:
 
 ```java
 
-class AnimalRowBinder implements com.gurunars.item_list.ItemViewBinder<TextView, SelectableItem<AnimalItem>> {
+class AnimalRowBinder extends ItemViewBinder<TextView, SelectableItem<AnimalItem>> {
 
     @Override
     public TextView getView(Context context) {
@@ -171,8 +165,7 @@ class AnimalRowBinder implements com.gurunars.item_list.ItemViewBinder<TextView,
     @Override
     public void bind(TextView view, SelectableItem<AnimalItem> item, @Nullable SelectableItem<AnimalItem> previousItem) {
         view.setBackgroundColor(ContextCompat.getColor(view.getContext(),
-                item.getPayload().isSelected() ? com.gurunars.crud_item_list.R.color.Red :
-                        com.gurunars.crud_item_list.R.color.White));
+                item.isSelected() ? R.color.Red : R.color.White));
         view.setText(item.toString());
         view.setContentDescription("I"+item.getId());
 
@@ -185,7 +178,7 @@ class AnimalRowBinder implements com.gurunars.item_list.ItemViewBinder<TextView,
     private void animate(final View view) {
         view.clearAnimation();
         ValueAnimator anim = new ValueAnimator();
-        anim.setFloatValues((float) 1.0, (float) 0.0, (float) 1.0);
+        anim.setFloatValues(1.0F, 0.0F, 1.0F);
         anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
@@ -243,7 +236,7 @@ The ItemList will handling animations and selection retention on its own.
 
 ```java
 
-crudItemList.setItems(new ArrayList<Item<AnimalItem>>());
+crudItemList.setItems(new ArrayList<AnimalItem>());
 
 ```
 
