@@ -24,12 +24,9 @@ public final class CircularIconButton extends ImageButton {
 
     private final static int ICON_PADDING = 50;
 
-    @State
-    private int backgroundColor;
-    @State
-    private int foregroundColor;
-    @State
-    private int innerDrawable;
+    @State int backgroundColor;
+    @State int foregroundColor;
+    @State int innerDrawable;
 
     public CircularIconButton(Context context) {
         this(context, null);

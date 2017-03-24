@@ -6,10 +6,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-class ItemViewBinderString<ItemType extends Item> implements ItemViewBinder<ItemType> {
+class ItemViewBinderString<ItemType extends Item> implements ItemViewBinder<TextView, ItemType> {
 
     @Override
-    public View getView(Context context) {
+    public TextView getView(Context context) {
         TextView view = new TextView(context);
         view.setLayoutParams(new ViewGroup.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
@@ -32,8 +32,8 @@ class ItemViewBinderString<ItemType extends Item> implements ItemViewBinder<Item
     }
 
     @Override
-    public void bind(View itemView, ItemType item, ItemType previousItem) {
-        ((TextView) itemView).setText(item.toString());
+    public void bind(TextView itemView, ItemType item, ItemType previousItem) {
+        itemView.setText(item.toString());
         if (previousItem != null) {
             animateUpdate(itemView);
         }

@@ -255,7 +255,7 @@ public final class CrudItemList<ItemType extends Item> extends RelativeLayout {
      */
     public void registerItemType(
             Enum itemType,
-            ItemViewBinder<SelectableItem<ItemType>> itemViewBinder) {
+            ItemViewBinder<? extends View, SelectableItem<ItemType>> itemViewBinder) {
         itemList.registerItemViewBinder(itemType, itemViewBinder);
     }
 
