@@ -2,7 +2,7 @@ package com.gurunars.crud_item_list.example;
 
 import com.gurunars.item_list.Item;
 
-class AnimalItem extends Item {
+class AnimalItem extends Item<AnimalItem.Type> {
 
     private int version;
 

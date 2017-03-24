@@ -7,13 +7,13 @@ import java.io.Serializable;
  *
  * "equals" method MUST be implemented to compare items subclasses by value.
  */
-public abstract class Item implements Serializable {
+public abstract class Item<ItemTypeClass extends Enum> implements Serializable {
 
 
     private final long id;
-    private final Enum type;
+    private final ItemTypeClass type;
 
-    protected Item(long id, Enum type) {
+    protected Item(long id, ItemTypeClass type) {
         this.id = id;
         this.type = type;
     }
@@ -28,7 +28,7 @@ public abstract class Item implements Serializable {
     /**
      * @return item type
      */
-    public final Enum getType() {
+    public final ItemTypeClass getType() {
         return type;
     }
 

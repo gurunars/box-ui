@@ -3,7 +3,7 @@ package com.gurunars.item_list.selectable_example;
 
 import com.gurunars.item_list.Item;
 
-class AnimalItem extends Item {
+class AnimalItem extends Item<AnimalItem.Type> {
 
     private int version;
 

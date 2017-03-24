@@ -1,7 +1,7 @@
 package com.gurunars.item_list;
 
 
-class AnimalItem extends Item {
+class AnimalItem extends Item<AnimalItem.Type> {
 
     private int version;
 

@@ -177,7 +177,7 @@ public class ActivitySortableTest {
         restart();
         onView(withId(R.id.edit)).perform(click());
         restart();
-        atIndex(3).check(matches(withText("#4{WOLF @ 2}|true")));
+        atIndex(3).check(matches(withText("#4{WOLF @ 1}|true")));
     }
 
     @Test
@@ -186,7 +186,7 @@ public class ActivitySortableTest {
         restart();
         onView(withId(R.id.lion)).perform(click());
         restart();
-        atIndex(4).check(matches(withText("#5{LION @ 1}|false")));
+        atIndex(4).check(matches(withText("#5{LION @ 0}|false")));
     }
 
     @Test
@@ -218,8 +218,8 @@ public class ActivitySortableTest {
         atIndex(1).perform(longClick());
         onView(withId(R.id.moveUp)).perform(click());
         onView(withId(R.id.reset)).perform(click());
-        atIndex(0).check(matches(withText("#1{LION @ 1}|false")));
-        atIndex(1).check(matches(withText("#2{TIGER @ 1}|true")));
+        atIndex(0).check(matches(withText("#1{LION @ 0}|false")));
+        atIndex(1).check(matches(withText("#2{TIGER @ 0}|true")));
     }
 
     @Test
@@ -227,8 +227,8 @@ public class ActivitySortableTest {
         atIndex(2).perform(longClick());
         onView(withId(R.id.moveDown)).perform(click());
         onView(withId(R.id.reset)).perform(click());
-        atIndex(2).check(matches(withText("#3{MONKEY @ 1}|true")));
-        atIndex(3).check(matches(withText("#4{WOLF @ 1}|false")));
+        atIndex(2).check(matches(withText("#3{MONKEY @ 0}|true")));
+        atIndex(3).check(matches(withText("#4{WOLF @ 0}|false")));
     }
 
     @Before
