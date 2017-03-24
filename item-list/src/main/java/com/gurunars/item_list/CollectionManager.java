@@ -17,8 +17,8 @@ class CollectionManager<ItemType extends Item> implements Serializable {
 
     private Kryo kryo = new Kryo();
 
-    private List<ItemType> items = new ArrayList<>();
-    private Set<ItemType> selectedItems = new HashSet<>();
+    private List<ItemHolder<ItemType>> items = new ArrayList<>();
+    private Set<ItemHolder<ItemType>> selectedItems = new HashSet<>();
 
     private final Consumer<List<SelectableItem<ItemType>>> stateChangeHandler;
     private final Runnable selectionChangeListener;
@@ -31,10 +31,10 @@ class CollectionManager<ItemType extends Item> implements Serializable {
         this.kryo.setInstantiatorStrategy(new Kryo.DefaultInstantiatorStrategy(new StdInstantiatorStrategy()));
     }
 
-    private void changed(List<ItemType> newItems, Set<ItemType> newSelection) {
+    private void changed(List<ItemHolder<ItemType>> newItems, Set<ItemHolder<ItemType>> newSelection) {
         this.items = newItems;
-        Set<ItemType> filteredSelection = new HashSet<>(newSelection);
-        for (ItemType cursor: filteredSelection) {
+        Set<ItemHolder<ItemType>> filteredSelection = new HashSet<>(newSelection);
+        for (ItemHolder<ItemType> cursor: filteredSelection) {
             newSelection.remove(cursor);
             if (items.contains(cursor)) {
                 // This is to replace the item's payload with a new one
@@ -44,8 +44,8 @@ class CollectionManager<ItemType extends Item> implements Serializable {
         boolean selectionChanged = !selectedItems.equals(filteredSelection);
         selectedItems = newSelection;
         List<SelectableItem<ItemType>> selectableItems = new ArrayList<>();
-        for (ItemType item: items) {
-            selectableItems.add(new SelectableItem<>(item, selectedItems.contains(item)));
+        for (ItemHolder<ItemType> item: items) {
+            selectableItems.add(new SelectableItem<>(item.getRaw(), selectedItems.contains(item)));
         }
         stateChangeHandler.accept(selectableItems);
         if (selectionChanged) {
@@ -58,9 +58,9 @@ class CollectionManager<ItemType extends Item> implements Serializable {
             return;
         }
 
-        ItemType item = selectableItem.getItem();
+        ItemHolder<ItemType> item = new ItemHolder<>(selectableItem.getItem());
 
-        Set<ItemType> newSelectedItems = new HashSet<>(selectedItems);
+        Set<ItemHolder<ItemType>> newSelectedItems = new HashSet<>(selectedItems);
 
         if (newSelectedItems.contains(item)) {
             newSelectedItems.remove(item);
@@ -74,21 +74,21 @@ class CollectionManager<ItemType extends Item> implements Serializable {
         if (selectedItems.size() != 0) {
             return;
         }
-        Set<ItemType> newSelectedItems = new HashSet<>(selectedItems);
-        newSelectedItems.add(selectableItem.getItem());
+        Set<ItemHolder<ItemType>> newSelectedItems = new HashSet<>(selectedItems);
+        newSelectedItems.add(new ItemHolder<>(selectableItem.getItem()));
         changed(items, newSelectedItems);
     }
 
     void setItems(List<ItemType> items) {
-        changed(kryo.copy(new ArrayList<>(items)), kryo.copy(new HashSet<>(selectedItems)));
+        changed(ItemHolder.wrap(kryo.copy(new ArrayList<>(items))), kryo.copy(new HashSet<>(selectedItems)));
     }
 
     void setSelectedItems(Set<ItemType> selectedItems) {
-        changed(items, kryo.copy(new HashSet<>(selectedItems)));
+        changed(items, ItemHolder.wrap(kryo.copy(new HashSet<>(selectedItems))));
     }
 
     Set<ItemType> getSelectedItems() {
-        return kryo.copy(selectedItems);
+        return ItemHolder.unwrap(kryo.copy(selectedItems));
     }
 
 }

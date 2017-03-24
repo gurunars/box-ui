@@ -110,7 +110,12 @@ public class ActivityMain extends AppCompatActivity {
     private int updateSelected() {
         for (AnimalItem item: itemList.getSelectedItems()) {
             item.update();
-            items.set(items.indexOf(item), item);
+            for (int i=0; i < items.size(); i++) {
+                if(item.getId() == items.get(i).getId()) {
+                    items.set(i, item);
+                    break;
+                }
+            }
         }
         itemList.setItems(items);
         return R.string.did_update_selected;

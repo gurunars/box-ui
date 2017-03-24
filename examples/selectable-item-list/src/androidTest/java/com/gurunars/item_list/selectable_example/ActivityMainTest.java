@@ -48,10 +48,10 @@ public class ActivityMainTest {
     public void longClickingOneAndClickingAnother_shouldSelectTwoItems() {
         selectTwo();
         assertList(
-            "#0{TIGER @ 0|true}",
-            "#1{WOLF @ 0|true}",
-            "#2{MONKEY @ 0|false}",
-            "#3{LION @ 0|false}"
+            "#0{TIGER @ 0}|true",
+            "#1{WOLF @ 0}|true",
+            "#2{MONKEY @ 0}|false",
+            "#3{LION @ 0}|false"
         );
     }
 
@@ -60,8 +60,8 @@ public class ActivityMainTest {
         selectTwo();
         clickMenu("Delete selected");
         assertList(
-                "#2{MONKEY @ 0|false}",
-                "#3{LION @ 0|false}"
+                "#2{MONKEY @ 0}|false",
+                "#3{LION @ 0}|false"
         );
     }
 
@@ -70,10 +70,10 @@ public class ActivityMainTest {
         selectTwo();
         clickMenu("Update selected");
         assertList(
-                "#0{TIGER @ 1|true}",
-                "#1{WOLF @ 1|true}",
-                "#2{MONKEY @ 0|false}",
-                "#3{LION @ 0|false}"
+                "#0{TIGER @ 1}|true",
+                "#1{WOLF @ 1}|true",
+                "#2{MONKEY @ 0}|false",
+                "#3{LION @ 0}|false"
         );
     }
 
@@ -82,14 +82,14 @@ public class ActivityMainTest {
         selectTwo();
         clickMenu("Create items");
         assertList(
-                "#0{TIGER @ 0|true}",
-                "#1{WOLF @ 0|true}",
-                "#2{MONKEY @ 0|false}",
-                "#3{LION @ 0|false}",
-                "#4{TIGER @ 0|false}",
-                "#5{WOLF @ 0|false}",
-                "#6{MONKEY @ 0|false}",
-                "#7{LION @ 0|false}"
+                "#0{TIGER @ 0}|true",
+                "#1{WOLF @ 0}|true",
+                "#2{MONKEY @ 0}|false",
+                "#3{LION @ 0}|false",
+                "#4{TIGER @ 0}|false",
+                "#5{WOLF @ 0}|false",
+                "#6{MONKEY @ 0}|false",
+                "#7{LION @ 0}|false"
         );
     }
 

@@ -2,7 +2,9 @@ package com.gurunars.item_list;
 
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 class ItemHolder<ItemType extends Item> implements Item {
 
@@ -18,6 +20,22 @@ class ItemHolder<ItemType extends Item> implements Item {
 
     static <ItemType extends Item> List<ItemType> unwrap(List<ItemHolder<ItemType>> items) {
         List<ItemType> unwrapped = new ArrayList<>();
+        for (ItemHolder<ItemType> cursor: items) {
+            unwrapped.add(cursor.item);
+        }
+        return unwrapped;
+    }
+
+    static <ItemType extends Item> Set<ItemHolder<ItemType>> wrap(Set<ItemType> items) {
+        Set<ItemHolder<ItemType>> wrapped = new HashSet<>();
+        for (ItemType cursor: items) {
+            wrapped.add(new ItemHolder<>(cursor));
+        }
+        return wrapped;
+    }
+
+    static <ItemType extends Item> Set<ItemType> unwrap(Set<ItemHolder<ItemType>> items) {
+        Set<ItemType> unwrapped = new HashSet<>();
         for (ItemHolder<ItemType> cursor: items) {
             unwrapped.add(cursor.item);
         }
