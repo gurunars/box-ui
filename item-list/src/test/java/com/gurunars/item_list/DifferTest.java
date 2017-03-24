@@ -10,31 +10,31 @@ import static org.junit.Assert.assertEquals;
 
 public class DifferTest {
 
-    private Differ<Item<Integer>> differ = new Differ<>();
+    private Differ<AnimalItem> differ = new Differ<>();
 
     @Test
     public void itemCreate_shouldProduceSingleItemListWithCreation() throws Exception {
         assertEquals(
                 Collections.singletonList(
-                        new ChangeCreate<>(new Item<>(7, 1), 6, 6)),
+                        new ChangeCreate<>(new ItemHolder<>(new AnimalItem(7, 1)), 6, 6)),
                 differ.apply(
-                        Arrays.asList(
-                                new Item<>(1, 1),
-                                new Item<>(2, 1),
-                                new Item<>(3, 1),
-                                new Item<>(4, 1),
-                                new Item<>(5, 1),
-                                new Item<>(6, 1)
-                        ),
-                        Arrays.asList(
-                                new Item<>(1, 1),
-                                new Item<>(2, 1),
-                                new Item<>(3, 1),
-                                new Item<>(4, 1),
-                                new Item<>(5, 1),
-                                new Item<>(6, 1),
-                                new Item<>(7, 1)
-                        ))
+                        ItemHolder.wrap(Arrays.asList(
+                                new AnimalItem(1, 1),
+                                new AnimalItem(2, 1),
+                                new AnimalItem(3, 1),
+                                new AnimalItem(4, 1),
+                                new AnimalItem(5, 1),
+                                new AnimalItem(6, 1)
+                        )),
+                        ItemHolder.wrap(Arrays.asList(
+                                new AnimalItem(1, 1),
+                                new AnimalItem(2, 1),
+                                new AnimalItem(3, 1),
+                                new AnimalItem(4, 1),
+                                new AnimalItem(5, 1),
+                                new AnimalItem(6, 1),
+                                new AnimalItem(7, 1)
+                        )))
         );
 
     }
@@ -43,23 +43,23 @@ public class DifferTest {
     public void itemDelete_shouldProduceSingleItemListWithRemoval() throws Exception {
         assertEquals(
                 Collections.singletonList(
-                        new ChangeDelete<>(new Item<>(3, 1), 2, 2)),
+                        new ChangeDelete<>(new ItemHolder<>(new AnimalItem(3, 1)), 2, 2)),
                 differ.apply(
-                        Arrays.asList(
-                                new Item<>(1, 1),
-                                new Item<>(2, 1),
-                                new Item<>(3, 1),
-                                new Item<>(4, 1),
-                                new Item<>(5, 1),
-                                new Item<>(6, 1)
-                        ),
-                        Arrays.asList(
-                                new Item<>(1, 1),
-                                new Item<>(2, 1),
-                                new Item<>(4, 1),
-                                new Item<>(5, 1),
-                                new Item<>(6, 1)
-                        ))
+                        ItemHolder.wrap(Arrays.asList(
+                                new AnimalItem(1, 1),
+                                new AnimalItem(2, 1),
+                                new AnimalItem(3, 1),
+                                new AnimalItem(4, 1),
+                                new AnimalItem(5, 1),
+                                new AnimalItem(6, 1)
+                        )),
+                                ItemHolder.wrap(Arrays.asList(
+                                new AnimalItem(1, 1),
+                                new AnimalItem(2, 1),
+                                new AnimalItem(4, 1),
+                                new AnimalItem(5, 1),
+                                new AnimalItem(6, 1)
+                        )))
         );
 
     }
@@ -68,24 +68,24 @@ public class DifferTest {
     public void moveUp_shouldProduceSingleItemList() throws Exception {
         assertEquals(
                 Collections.singletonList(
-                        new ChangeMove<>(new Item<>(5, 1), 4, 1)),
+                        new ChangeMove<>(new ItemHolder<>(new AnimalItem(5, 1)), 4, 1)),
                 differ.apply(
-                        Arrays.asList(
-                                new Item<>(1, 1),
-                                new Item<>(2, 1),
-                                new Item<>(3, 1),
-                                new Item<>(4, 1),
-                                new Item<>(5, 1),
-                                new Item<>(6, 1)
-                        ),
-                        Arrays.asList(
-                                new Item<>(1, 1),
-                                new Item<>(5, 1),  // moved up
-                                new Item<>(2, 1),
-                                new Item<>(3, 1),
-                                new Item<>(4, 1),
-                                new Item<>(6, 1)
-                        ))
+                        ItemHolder.wrap(Arrays.asList(
+                                new AnimalItem(1, 1),
+                                new AnimalItem(2, 1),
+                                new AnimalItem(3, 1),
+                                new AnimalItem(4, 1),
+                                new AnimalItem(5, 1),
+                                new AnimalItem(6, 1)
+                        )),
+                        ItemHolder.wrap(Arrays.asList(
+                                new AnimalItem(1, 1),
+                                new AnimalItem(5, 1),  // moved up
+                                new AnimalItem(2, 1),
+                                new AnimalItem(3, 1),
+                                new AnimalItem(4, 1),
+                                new AnimalItem(6, 1)
+                        )))
         );
 
     }
@@ -94,24 +94,24 @@ public class DifferTest {
     public void moveDown_shouldProduceSingleItemList() throws Exception {
         assertEquals(
                 Collections.singletonList(
-                        new ChangeMove<>(new Item<>(2, 1), 1, 4)),
+                        new ChangeMove<>(new ItemHolder<>(new AnimalItem(2, 1)), 1, 4)),
                 differ.apply(
-                        Arrays.asList(
-                                new Item<>(1, 1),
-                                new Item<>(2, 1),
-                                new Item<>(3, 1),
-                                new Item<>(4, 1),
-                                new Item<>(5, 1),
-                                new Item<>(6, 1)
-                        ),
-                        Arrays.asList(
-                                new Item<>(1, 1),
-                                new Item<>(3, 1),
-                                new Item<>(4, 1),
-                                new Item<>(5, 1),
-                                new Item<>(2, 1), // moved down
-                                new Item<>(6, 1)
-                        ))
+                        ItemHolder.wrap(Arrays.asList(
+                                new AnimalItem(1, 1),
+                                new AnimalItem(2, 1),
+                                new AnimalItem(3, 1),
+                                new AnimalItem(4, 1),
+                                new AnimalItem(5, 1),
+                                new AnimalItem(6, 1)
+                        )),
+                        ItemHolder.wrap(Arrays.asList(
+                                new AnimalItem(1, 1),
+                                new AnimalItem(3, 1),
+                                new AnimalItem(4, 1),
+                                new AnimalItem(5, 1),
+                                new AnimalItem(2, 1), // moved down
+                                new AnimalItem(6, 1)
+                        )))
         );
     }
 
@@ -119,24 +119,24 @@ public class DifferTest {
     public void itemEdit_shouldProduceSingleItemListWithUpdate() throws Exception {
         assertEquals(
                 Collections.singletonList(
-                        new ChangeUpdate<>(new Item<>(3, 2), 2, 2)),
+                        new ChangeUpdate<>(new ItemHolder<>(new AnimalItem(3, 2)), 2, 2)),
                 differ.apply(
-                        Arrays.asList(
-                                new Item<>(1, 1),
-                                new Item<>(2, 1),
-                                new Item<>(3, 1),
-                                new Item<>(4, 1),
-                                new Item<>(5, 1),
-                                new Item<>(6, 1)
-                        ),
-                        Arrays.asList(
-                                new Item<>(1, 1),
-                                new Item<>(2, 1),
-                                new Item<>(3, 2), // updated
-                                new Item<>(4, 1),
-                                new Item<>(5, 1),
-                                new Item<>(6, 1)
-                        ))
+                        ItemHolder.wrap(Arrays.asList(
+                                new AnimalItem(1, 1),
+                                new AnimalItem(2, 1),
+                                new AnimalItem(3, 1),
+                                new AnimalItem(4, 1),
+                                new AnimalItem(5, 1),
+                                new AnimalItem(6, 1)
+                        )),
+                        ItemHolder.wrap(Arrays.asList(
+                                new AnimalItem(1, 1),
+                                new AnimalItem(2, 1),
+                                new AnimalItem(3, 2), // updated
+                                new AnimalItem(4, 1),
+                                new AnimalItem(5, 1),
+                                new AnimalItem(6, 1)
+                        )))
         );
 
     }
@@ -146,30 +146,30 @@ public class DifferTest {
 
         assertEquals(
                 Arrays.asList(
-                        new ChangeDelete<>(new Item<>(5, 1), 4, 4),
-                        new ChangeDelete<>(new Item<>(2, 1), 1, 1),
-                        new ChangeCreate<>(new Item<>(7, 2), 0, 0),
-                        new ChangeCreate<>(new Item<>(9, 1), 4, 4),
-                        new ChangeMove<>(new Item<>(1, 1), 1, 3),
-                        new ChangeMove<>(new Item<>(3, 1), 1, 2),
-                        new ChangeUpdate<>(new Item<>(1, 2), 3, 3),
-                        new ChangeUpdate<>(new Item<>(3, 2), 2, 2)
+                        new ChangeDelete<>(new ItemHolder<>(new AnimalItem(5, 1)), 4, 4),
+                        new ChangeDelete<>(new ItemHolder<>(new AnimalItem(2, 1)), 1, 1),
+                        new ChangeCreate<>(new ItemHolder<>(new AnimalItem(7, 2)), 0, 0),
+                        new ChangeCreate<>(new ItemHolder<>(new AnimalItem(9, 1)), 4, 4),
+                        new ChangeMove<>(new ItemHolder<>(new AnimalItem(1, 1)), 1, 3),
+                        new ChangeMove<>(new ItemHolder<>(new AnimalItem(3, 1)), 1, 2),
+                        new ChangeUpdate<>(new ItemHolder<>(new AnimalItem(1, 2)), 3, 3),
+                        new ChangeUpdate<>(new ItemHolder<>(new AnimalItem(3, 2)), 2, 2)
                 ),
                 differ.apply(
-                        Arrays.asList(
-                                new Item<>(1, 1),
-                                new Item<>(2, 1),
-                                new Item<>(3, 1),
-                                new Item<>(4, 1),
-                                new Item<>(5, 1)
-                        ),
-                        Arrays.asList(
-                                new Item<>(7, 2),
-                                new Item<>(4, 1),
-                                new Item<>(3, 2),
-                                new Item<>(1, 2),
-                                new Item<>(9, 1)
-                        ))
+                        ItemHolder.wrap(Arrays.asList(
+                                new AnimalItem(1, 1),
+                                new AnimalItem(2, 1),
+                                new AnimalItem(3, 1),
+                                new AnimalItem(4, 1),
+                                new AnimalItem(5, 1)
+                        )),
+                        ItemHolder.wrap(Arrays.asList(
+                                new AnimalItem(7, 2),
+                                new AnimalItem(4, 1),
+                                new AnimalItem(3, 2),
+                                new AnimalItem(1, 2),
+                                new AnimalItem(9, 1)
+                        )))
         );
 
     }
@@ -178,38 +178,38 @@ public class DifferTest {
     public void tooManyMoves_resultInComplexPermutation() {
 
         assertEquals(
-                Collections.singletonList(new ChangeComplexPermutation<>(1, Arrays.asList(
-                        new Item<>(7, 1),
-                        new Item<>(5, 1),
-                        new Item<>(8, 1),
-                        new Item<>(6, 1),
-                        new Item<>(4, 1),
-                        new Item<>(2, 1),
-                        new Item<>(3, 1)
-                ))),
+                Collections.singletonList(new ChangeComplexPermutation<>(1, ItemHolder.wrap(Arrays.asList(
+                        new AnimalItem(7, 1),
+                        new AnimalItem(5, 1),
+                        new AnimalItem(8, 1),
+                        new AnimalItem(6, 1),
+                        new AnimalItem(4, 1),
+                        new AnimalItem(2, 1),
+                        new AnimalItem(3, 1)
+                )))),
                 differ.apply(
-                        Arrays.asList(
-                                new Item<>(1, 1),
-                                new Item<>(2, 1),
-                                new Item<>(3, 1),
-                                new Item<>(4, 1),
-                                new Item<>(5, 1),
-                                new Item<>(6, 1),
-                                new Item<>(7, 1),
-                                new Item<>(8, 1),
-                                new Item<>(9, 1)
-                        ),
-                        Arrays.asList(
-                                new Item<>(1, 1),
-                                new Item<>(7, 1),
-                                new Item<>(5, 1),
-                                new Item<>(8, 1),
-                                new Item<>(6, 1),
-                                new Item<>(4, 1),
-                                new Item<>(2, 1),
-                                new Item<>(3, 1),
-                                new Item<>(9, 1)
-                        ))
+                        ItemHolder.wrap(Arrays.asList(
+                                new AnimalItem(1, 1),
+                                new AnimalItem(2, 1),
+                                new AnimalItem(3, 1),
+                                new AnimalItem(4, 1),
+                                new AnimalItem(5, 1),
+                                new AnimalItem(6, 1),
+                                new AnimalItem(7, 1),
+                                new AnimalItem(8, 1),
+                                new AnimalItem(9, 1)
+                        )),
+                        ItemHolder.wrap(Arrays.asList(
+                                new AnimalItem(1, 1),
+                                new AnimalItem(7, 1),
+                                new AnimalItem(5, 1),
+                                new AnimalItem(8, 1),
+                                new AnimalItem(6, 1),
+                                new AnimalItem(4, 1),
+                                new AnimalItem(2, 1),
+                                new AnimalItem(3, 1),
+                                new AnimalItem(9, 1)
+                        )))
         );
 
     }

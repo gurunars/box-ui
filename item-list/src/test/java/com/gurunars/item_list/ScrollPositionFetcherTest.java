@@ -14,22 +14,22 @@ public class ScrollPositionFetcherTest {
 
     private ScrollPositionFetcher fetcher = new ScrollPositionFetcher();
     private Scroller scroller = Mockito.mock(Scroller.class);
-    private List<Item<Integer>> items = Arrays.asList(
-            new Item<>(0, 0),
-            new Item<>(1, 0),
-            new Item<>(2, 0),
-            new Item<>(3, 0),
-            new Item<>(4, 0),
-            new Item<>(5, 0),
-            new Item<>(6, 0),
-            new Item<>(7, 0),
-            new Item<>(8, 0),
-            new Item<>(9, 0),
-            new Item<>(10, 0),
-            new Item<>(11, 0),
-            new Item<>(12, 0),
-            new Item<>(13, 0),
-            new Item<>(14, 0)
+    private List<AnimalItem> items = Arrays.asList(
+            new AnimalItem(0, 0),
+            new AnimalItem(1, 0),
+            new AnimalItem(2, 0),
+            new AnimalItem(3, 0),
+            new AnimalItem(4, 0),
+            new AnimalItem(5, 0),
+            new AnimalItem(6, 0),
+            new AnimalItem(7, 0),
+            new AnimalItem(8, 0),
+            new AnimalItem(9, 0),
+            new AnimalItem(10, 0),
+            new AnimalItem(11, 0),
+            new AnimalItem(12, 0),
+            new AnimalItem(13, 0),
+            new AnimalItem(14, 0)
     );
 
     @Before
