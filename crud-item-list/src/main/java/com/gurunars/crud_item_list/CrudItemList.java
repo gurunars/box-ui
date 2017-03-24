@@ -55,7 +55,7 @@ public class CrudItemList<ItemType extends Item> extends RelativeLayout {
     private ItemEditListener<ItemType> itemEditListener =
             new ItemEditListener.DefaultItemEditListener<>();
 
-    private List<SelectableItem<ItemType>> items = new ArrayList<>();
+    private List<ItemType> items = new ArrayList<>();
 
     private final Map<Integer, Action<ItemType>> actions =
         new HashMap<Integer, Action<ItemType>>() {{

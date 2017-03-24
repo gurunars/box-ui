@@ -31,12 +31,8 @@ class ItemAdapter<ItemType extends Item> extends RecyclerView.Adapter<BindableVi
     }
 
     private ItemViewBinder<ItemType> defaultViewBinder = new ItemViewBinderString<>();
-    private ItemViewBinder<ItemType> footer = new ItemViewBinderFooter<>();
 
-    private SparseArray<ItemViewBinder<ItemType>> itemViewBinderMap =
-            new SparseArray<ItemViewBinder<ItemType>>() {{
-        put(ItemViewBinderFooter.FOOTER_TYPE, footer);
-    }};
+    private SparseArray<ItemViewBinder<ItemType>> itemViewBinderMap = new SparseArray<>();
 
     void setEmptyViewBinder(@NonNull EmptyViewBinder emptyViewBinder) {
         this.emptyViewBinder = emptyViewBinder;
@@ -101,15 +97,12 @@ class ItemAdapter<ItemType extends Item> extends RecyclerView.Adapter<BindableVi
         if (items.size() == 0) {
             return ItemViewBinderEmpty.EMPTY_TYPE;
         }
-        if (position == items.size()) {
-            return ItemViewBinderFooter.FOOTER_TYPE;
-        }
         return items.get(position).getType().ordinal();
     }
 
     @Override
     public int getItemCount() {
-        return items.size() + 1;
+        return Math.max(1, items.size());
     }
 
 }

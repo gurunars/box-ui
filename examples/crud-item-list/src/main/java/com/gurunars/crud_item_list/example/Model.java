@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.gurunars.item_list.Item;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +14,7 @@ class Model {
 
     private final Activity activity;
 
-    private List<Item<AnimalPayload>> items = new ArrayList<>();
+    private List<AnimalItem> items = new ArrayList<>();
     private int maxItemId = 0;
     private boolean wasInited = false;
 
@@ -33,10 +32,10 @@ class Model {
         wasInited = preferences.getBoolean("wasInited", false);
         maxItemId = preferences.getInt("maxItemId", 0);
         items = new Gson().fromJson(preferences.getString("data", "[]"),
-                new TypeToken<ArrayList<Item<AnimalPayload>>>(){}.getType());
+                new TypeToken<ArrayList<AnimalItem>>(){}.getType());
     }
 
-    List<Item<AnimalPayload>> getItems() {
+    List<AnimalItem> getItems() {
         return items;
     }
 
@@ -53,9 +52,9 @@ class Model {
         items.clear();
     }
 
-    void updateItem(Item<AnimalPayload> item) {
+    void updateItem(AnimalItem item) {
         for (int i = 0; i < items.size(); i++) {
-            Item<AnimalPayload> cursor = items.get(i);
+            AnimalItem cursor = items.get(i);
             if (cursor.getId() == item.getId()) {
                 items.set(i, item);
                 save();
@@ -64,9 +63,9 @@ class Model {
         }
     }
 
-    void createItem(AnimalPayload payload) {
+    void createItem(AnimalItem payload) {
         maxItemId++;
-        items.add(new Item<>(maxItemId, payload));
+        items.add(new AnimalItem(maxItemId, payload.getVersion(), (AnimalItem.Type) payload.getType()));
         save();
     }
 }

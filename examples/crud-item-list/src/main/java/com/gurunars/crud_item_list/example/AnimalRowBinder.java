@@ -7,10 +7,9 @@ import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.TextView;
 
-import com.gurunars.item_list.Item;
 import com.gurunars.item_list.SelectableItem;
 
-class AnimalRowBinder implements com.gurunars.item_list.ItemViewBinder<SelectableItem<AnimalPayload>> {
+class AnimalRowBinder implements com.gurunars.item_list.ItemViewBinder<SelectableItem<AnimalItem>> {
 
     @Override
     public View getView(Context context) {
@@ -21,11 +20,11 @@ class AnimalRowBinder implements com.gurunars.item_list.ItemViewBinder<Selectabl
     }
 
     @Override
-    public void bind(View itemView, Item<SelectableItem<AnimalPayload>> item, @Nullable Item<SelectableItem<AnimalPayload>> previousItem) {
+    public void bind(View itemView, SelectableItem<AnimalItem> item, @Nullable SelectableItem<AnimalItem> previousItem) {
         TextView view = (TextView) itemView;
 
         view.setBackgroundColor(ContextCompat.getColor(view.getContext(),
-                item.getPayload().isSelected() ? com.gurunars.crud_item_list.R.color.Red :
+                item.isSelected() ? com.gurunars.crud_item_list.R.color.Red :
                         com.gurunars.crud_item_list.R.color.White));
         view.setText(item.toString());
         view.setContentDescription("I"+item.getId());

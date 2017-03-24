@@ -21,7 +21,7 @@ import butterknife.ButterKnife;
 
 public class ActivityMain extends AppCompatActivity {
 
-    private CrudItemList<AnimalPayload> crudItemList;
+    private CrudItemList<AnimalItem> crudItemList;
     private Model model;
     private View creationMenu;
 
@@ -32,20 +32,20 @@ public class ActivityMain extends AppCompatActivity {
         }
         model.clear();
         for (int i=0; i < 1; i++) {
-            model.createItem(new AnimalPayload(AnimalPayload.Type.LION));
-            model.createItem(new AnimalPayload(AnimalPayload.Type.TIGER));
-            model.createItem(new AnimalPayload(AnimalPayload.Type.MONKEY));
-            model.createItem(new AnimalPayload(AnimalPayload.Type.WOLF));
+            model.createItem(new AnimalItem(AnimalItem.Type.LION));
+            model.createItem(new AnimalItem(AnimalItem.Type.TIGER));
+            model.createItem(new AnimalItem(AnimalItem.Type.MONKEY));
+            model.createItem(new AnimalItem(AnimalItem.Type.WOLF));
         }
 
         crudItemList.setItems(model.getItems());
     }
 
-    private void confItemType(@IdRes int id, final AnimalPayload.Type type) {
+    private void confItemType(@IdRes int id, final AnimalItem.Type type) {
         creationMenu.findViewById(id).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                model.createItem(new AnimalPayload(type));
+                model.createItem(new AnimalItem(type));
                 crudItemList.setItems(model.getItems());
             }
         });
@@ -62,10 +62,10 @@ public class ActivityMain extends AppCompatActivity {
 
         crudItemList = ButterKnife.findById(this, R.id.customView);
 
-        crudItemList.setListChangeListener(new ListChangeListener<AnimalPayload>() {
+        crudItemList.setListChangeListener(new ListChangeListener<AnimalItem>() {
             @Override
-            public void onChange(List<Item<AnimalPayload>> items) {
-                for (Item<AnimalPayload> item: items) {
+            public void onChange(List<AnimalItem> items) {
+                for (AnimalItem item: items) {
                     model.updateItem(item);
                 }
             }
@@ -73,20 +73,20 @@ public class ActivityMain extends AppCompatActivity {
         });
         crudItemList.setEmptyViewBinder(new EmptyBinder());
         crudItemList.setCreationMenu(creationMenu);
-        crudItemList.setItemEditListener(new ItemEditListener<AnimalPayload>() {
+        crudItemList.setItemEditListener(new ItemEditListener<AnimalItem>() {
             @Override
-            public void onEdit(Item<AnimalPayload> editableItem, boolean isNew) {
-                editableItem.getPayload().update();
+            public void onEdit(AnimalItem editableItem, boolean isNew) {
+                editableItem.update();
                 model.updateItem(editableItem);
                 crudItemList.setItems(model.getItems());
             }
 
         });
 
-        confItemType(R.id.lion, AnimalPayload.Type.LION);
-        confItemType(R.id.tiger, AnimalPayload.Type.TIGER);
-        confItemType(R.id.monkey, AnimalPayload.Type.MONKEY);
-        confItemType(R.id.wolf, AnimalPayload.Type.WOLF);
+        confItemType(R.id.lion, AnimalItem.Type.LION);
+        confItemType(R.id.tiger, AnimalItem.Type.TIGER);
+        confItemType(R.id.monkey, AnimalItem.Type.MONKEY);
+        confItemType(R.id.wolf, AnimalItem.Type.WOLF);
 
         initData(false);
 
@@ -131,10 +131,10 @@ public class ActivityMain extends AppCompatActivity {
     private void addMany() {
         model.clear();
         for (int i=0; i < 20; i++) {
-            model.createItem(new AnimalPayload(AnimalPayload.Type.LION));
-            model.createItem(new AnimalPayload(AnimalPayload.Type.TIGER));
-            model.createItem(new AnimalPayload(AnimalPayload.Type.MONKEY));
-            model.createItem(new AnimalPayload(AnimalPayload.Type.WOLF));
+            model.createItem(new AnimalItem(AnimalItem.Type.LION));
+            model.createItem(new AnimalItem(AnimalItem.Type.TIGER));
+            model.createItem(new AnimalItem(AnimalItem.Type.MONKEY));
+            model.createItem(new AnimalItem(AnimalItem.Type.WOLF));
         }
         crudItemList.setItems(model.getItems());
     }
