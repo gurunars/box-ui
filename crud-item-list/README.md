@@ -163,7 +163,8 @@ class AnimalRowBinder extends ItemViewBinder<TextView, SelectableItem<AnimalItem
     }
 
     @Override
-    public void bind(TextView view, SelectableItem<AnimalItem> item, @Nullable SelectableItem<AnimalItem> previousItem) {
+    public void bind(TextView view, SelectableItem<AnimalItem> item,
+            @Nullable SelectableItem<AnimalItem> previousItem) {
         view.setBackgroundColor(ContextCompat.getColor(view.getContext(),
                 item.isSelected() ? R.color.Red : R.color.White));
         view.setText(item.toString());
@@ -200,7 +201,8 @@ creation chain of events:
 ```java
 
 private void confItemType(@IdRes int id, final AnimalItem.Type type) {
-    creationMenu.findViewById(id).setOnClickListener(new View.OnClickListener() {
+    creationMenu.findViewById(id).setOnClickListener(
+            new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             model.createItem(new AnimalItem(type));

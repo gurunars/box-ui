@@ -37,7 +37,8 @@ class AnimalItem extends Item<AnimalItem.Type> {
 
     @Override
     public boolean payloadsEqual(Item other) {
-        return other instanceof AnimalItem && version == ((AnimalItem) other).version;
+        return other instanceof AnimalItem && version ==
+            ((AnimalItem) other).version;
     }
 
     enum Type {
@@ -81,13 +82,15 @@ class AnimalBinder implements ItemViewBinder<TextView, AnimalItem> {
     @Override
     public TextView getView(Context context) {
         TextView text = new TextView(context);
-        int padding = context.getResources().getDimensionPixelOffset(R.dimen.padding);
+        int padding = context.getResources().getDimensionPixelOffset(
+            R.dimen.padding);
         text.setPadding(padding, padding, padding, padding);
         return text;
     }
 
     @Override
-    public void bind(TextView itemView, AnimalItem item, @Nullable AnimalItem previousItem) {
+    public void bind(TextView itemView, AnimalItem item,
+            @Nullable AnimalItem previousItem) {
         itemView.setText(item.toString());
         if (previousItem != null) {
             animateUpdate(itemView);
@@ -205,20 +208,24 @@ Later on implement a view renderer:
 
 ```java
 
-static class AnimalBinder implements ItemViewBinder<TextView, SelectableItem<AnimalPayload>> {
+static class AnimalBinder implements ItemViewBinder<TextView,
+        SelectableItem<AnimalPayload>> {
 
     @Override
     public TextView getView(Context context) {
         TextView text = new TextView(context);
-        int padding = context.getResources().getDimensionPixelOffset(R.dimen.padding);
+        int padding = context.getResources().getDimensionPixelOffset(
+            R.dimen.padding);
         text.setPadding(padding, padding, padding, padding);
         return text;
     }
 
     @Override
-    public void bind(TextView itemView, SelectableItem<AnimalPayload> item, @Nullable SelectableItem<AnimalPayload> previousItem) {
+    public void bind(TextView itemView, SelectableItem<AnimalPayload> item,
+            @Nullable SelectableItem<AnimalPayload> previousItem) {
         itemView.setText("" + item);
-        itemView.setBackgroundColor(item.getPayload().isSelected() ? Color.RED : Color.WHITE);
+        itemView.setBackgroundColor(item.getPayload().isSelected() ?
+            Color.RED : Color.WHITE);
         if (previousItem != null) {
             animateUpdate(itemView);
         }
@@ -247,9 +254,9 @@ The way it differs from the regular view renderer is by having
 
 Empty view binder is exactly the same as the one for a regular list.
 
-The means to manipulate the item list are exactly the same as for a regular list
-with the exception that there are two extra methods: **setSelectedItems** and
-**getSelectedItems** to manipulate the selection externally.
+The means to manipulate the item list are exactly the same as for a regular
+list with the exception that there are two extra methods: **setSelectedItems**
+and **getSelectedItems** to manipulate the selection externally.
 
 ```java
 
