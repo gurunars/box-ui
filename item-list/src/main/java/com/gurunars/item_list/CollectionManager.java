@@ -20,11 +20,11 @@ class CollectionManager<ItemType extends Item> implements Serializable {
     private List<ItemType> items = new ArrayList<>();
     private Set<ItemType> selectedItems = new HashSet<>();
 
-    private final Consumer<List<Item<SelectableItem<ItemType>>>> stateChangeHandler;
+    private final Consumer<List<SelectableItem<ItemType>>> stateChangeHandler;
     private final Runnable selectionChangeListener;
 
     CollectionManager(
-            Consumer<List<Item<SelectableItem<ItemType>>>> stateChangeHandler,
+            Consumer<List<SelectableItem<ItemType>>> stateChangeHandler,
             Runnable selectionChangeListener ) {
         this.stateChangeHandler = stateChangeHandler;
         this.selectionChangeListener = selectionChangeListener;
@@ -43,10 +43,9 @@ class CollectionManager<ItemType extends Item> implements Serializable {
         }
         boolean selectionChanged = !selectedItems.equals(filteredSelection);
         selectedItems = newSelection;
-        List<Item<SelectableItem<ItemType>>> selectableItems = new ArrayList<>();
+        List<SelectableItem<ItemType>> selectableItems = new ArrayList<>();
         for (ItemType item: items) {
-            selectableItems.add(new Item<>(item.getId(),
-                    new SelectableItem<>(item.getPayload(), selectedItems.contains(item))));
+            selectableItems.add(new SelectableItem<>(item, selectedItems.contains(item)));
         }
         stateChangeHandler.accept(selectableItems);
         if (selectionChanged) {
@@ -54,16 +53,12 @@ class CollectionManager<ItemType extends Item> implements Serializable {
         }
     }
 
-    private ItemType getItem(Item<SelectableItem<ItemType>> item) {
-        return new Item<>(item.getId(), item.getPayload().getPayload());
-    }
-
-    void itemClick(Item<SelectableItem<ItemType>> selectableItem) {
+    void itemClick(SelectableItem<ItemType> selectableItem) {
         if (selectedItems.size() == 0) {
             return;
         }
 
-        ItemType item = getItem(selectableItem);
+        ItemType item = selectableItem.getItem();
 
         Set<ItemType> newSelectedItems = new HashSet<>(selectedItems);
 
@@ -75,12 +70,12 @@ class CollectionManager<ItemType extends Item> implements Serializable {
         changed(items, newSelectedItems);
     }
 
-    void itemLongClick(Item<SelectableItem<ItemType>>selectableItem) {
+    void itemLongClick(SelectableItem<ItemType> selectableItem) {
         if (selectedItems.size() != 0) {
             return;
         }
         Set<ItemType> newSelectedItems = new HashSet<>(selectedItems);
-        newSelectedItems.add(getItem(selectableItem));
+        newSelectedItems.add(selectableItem.getItem());
         changed(items, newSelectedItems);
     }
 

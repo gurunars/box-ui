@@ -12,7 +12,7 @@ import javax.inject.Inject;
 import java8.util.function.BiFunction;
 
 
-class Differ<ItemType extends Item> implements BiFunction<List<ItemType>, List<ItemType>, List<Change<ItemHolder<ItemType>>>> {
+class Differ<ItemType extends Item> implements BiFunction<List<ItemHolder<ItemType>>, List<ItemHolder<ItemType>>, List<Change<ItemHolder<ItemType>>>> {
 
     @Inject
     private
@@ -43,10 +43,10 @@ class Differ<ItemType extends Item> implements BiFunction<List<ItemType>, List<I
 
     @Nonnull
     @Override
-    public List<Change<ItemHolder<ItemType>>> apply(List<ItemType> source, List<ItemType> target) {
+    public List<Change<ItemHolder<ItemType>>> apply(List<ItemHolder<ItemType>> source, List<ItemHolder<ItemType>> target) {
 
-        List<ItemHolder<ItemType>> sourceList = ItemHolder.wrap(source);
-        List<ItemHolder<ItemType>> targetList = ItemHolder.wrap(target);
+        List<ItemHolder<ItemType>> sourceList = new ArrayList<>(source);
+        List<ItemHolder<ItemType>> targetList = new ArrayList<>(target);
 
         verifyNoDuplicates(sourceList);
 

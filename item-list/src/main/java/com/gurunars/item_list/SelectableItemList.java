@@ -39,9 +39,9 @@ public class SelectableItemList<ItemType extends Item> extends FrameLayout {
         inflate(context, R.layout.selectable_item_list, this);
         itemList = ButterKnife.findById(this, R.id.itemList);
 
-        collectionManager = new CollectionManager<>(new Consumer<List<Item<SelectableItem<ItemType>>>>() {
+        collectionManager = new CollectionManager<>(new Consumer<List<SelectableItem<ItemType>>>() {
             @Override
-            public void accept(List<Item<SelectableItem<ItemType>>> items) {
+            public void accept(List<SelectableItem<ItemType>> items) {
                 itemList.setItems(items);
             }
         }, new Runnable() {

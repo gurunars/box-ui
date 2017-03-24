@@ -7,11 +7,11 @@ import android.view.View;
 class ClickableItemViewBinder<ItemType extends Item> implements ItemViewBinder<SelectableItem<ItemType>> {
 
     private final ItemViewBinder<SelectableItem<ItemType>> itemViewBinder;
-    private final CollectionManager<SelectableItem<ItemType>> collectionManager;
+    private final CollectionManager<ItemType> collectionManager;
 
     ClickableItemViewBinder(
             ItemViewBinder<SelectableItem<ItemType>> itemViewBinder,
-            CollectionManager<SelectableItem<ItemType>> collectionManager) {
+            CollectionManager<ItemType> collectionManager) {
         this.itemViewBinder = itemViewBinder;
         this.collectionManager = collectionManager;
     }

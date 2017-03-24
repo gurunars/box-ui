@@ -16,8 +16,8 @@ import java.util.List;
 class ItemAdapter<ItemType extends Item> extends RecyclerView.Adapter<BindableViewHolder<ItemType>> {
 
     private Kryo kryo = new Kryo();
-    private List<ItemType> items = new ArrayList<>();
-    private List<ItemType> previousList = new ArrayList<>();
+    private List<ItemHolder<ItemType>> items = new ArrayList<>();
+    private List<ItemHolder<ItemType>> previousList = new ArrayList<>();
 
     private Differ<ItemType> differ = new Differ<>();
 
@@ -53,12 +53,12 @@ class ItemAdapter<ItemType extends Item> extends RecyclerView.Adapter<BindableVi
         newItems = kryo.copy(newItems);
 
         if (items.isEmpty()) {
-            this.items = newItems;
+            this.items = ItemHolder.wrap(newItems);
             notifyDataSetChanged();
         } else {
             int position = -1;
 
-            for (Change<ItemType> change: differ.apply(items, newItems)){
+            for (Change<ItemHolder<ItemType>> change: differ.apply(items, ItemHolder.wrap(newItems))){
                 position = change.apply(this, scroller, items, position);
             }
 
@@ -86,16 +86,13 @@ class ItemAdapter<ItemType extends Item> extends RecyclerView.Adapter<BindableVi
             return;  // nothing to bind
         }
 
-        ItemType item = items.get(position);
-        ItemType previousItem = null;
-        for (ItemType cursor: previousList) {
-            if (item.getId() == cursor.getId()) {
-                previousItem = cursor;
-                break;
-            }
-        }
+        ItemHolder<ItemType> item = items.get(position);
 
-        holder.bind(item, previousItem);
+        int previousIndex = previousList.indexOf(item);
+
+        ItemType previousItem = previousIndex >= 0 ? previousList.get(previousIndex).getRaw() : null;
+
+        holder.bind(item.getRaw(), previousItem);
 
     }
 
@@ -107,7 +104,7 @@ class ItemAdapter<ItemType extends Item> extends RecyclerView.Adapter<BindableVi
         if (position == items.size()) {
             return ItemViewBinderFooter.FOOTER_TYPE;
         }
-        return items.get(position).getPayload().getType().ordinal();
+        return items.get(position).getType().ordinal();
     }
 
     @Override

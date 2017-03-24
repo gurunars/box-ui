@@ -4,13 +4,18 @@ import android.animation.ValueAnimator;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
 class ItemViewBinderString<ItemType extends Item> implements ItemViewBinder<ItemType> {
 
     @Override
     public View getView(Context context) {
-        return LayoutInflater.from(context).inflate(R.layout.string, null);
+        TextView view = new TextView(context);
+        view.setLayoutParams(new ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT));
+        return view;
     }
 
     private void animateUpdate(final View view) {
