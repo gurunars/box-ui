@@ -9,10 +9,10 @@ import android.widget.TextView;
 
 import com.gurunars.item_list.SelectableItem;
 
-class AnimalRowBinder implements com.gurunars.item_list.ItemViewBinder<SelectableItem<AnimalItem>> {
+class AnimalRowBinder implements com.gurunars.item_list.ItemViewBinder<TextView, SelectableItem<AnimalItem>> {
 
     @Override
-    public View getView(Context context) {
+    public TextView getView(Context context) {
         TextView text = new TextView(context);
         int padding = context.getResources().getDimensionPixelOffset(R.dimen.padding);
         text.setPadding(padding, padding, padding, padding);
@@ -20,9 +20,8 @@ class AnimalRowBinder implements com.gurunars.item_list.ItemViewBinder<Selectabl
     }
 
     @Override
-    public void bind(View itemView, SelectableItem<AnimalItem> item, @Nullable SelectableItem<AnimalItem> previousItem) {
-        TextView view = (TextView) itemView;
-
+    public void bind(TextView view, SelectableItem<AnimalItem> item,
+                     @Nullable SelectableItem<AnimalItem> previousItem) {
         view.setBackgroundColor(ContextCompat.getColor(view.getContext(),
                 item.isSelected() ? com.gurunars.crud_item_list.R.color.Red :
                         com.gurunars.crud_item_list.R.color.White));
@@ -31,7 +30,7 @@ class AnimalRowBinder implements com.gurunars.item_list.ItemViewBinder<Selectabl
 
         // Animate created and updated items
         if (previousItem == null) {
-            animate(itemView);
+            animate(view);
         }
     }
 

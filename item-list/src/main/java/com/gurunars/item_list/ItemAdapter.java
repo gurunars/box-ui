@@ -3,6 +3,7 @@ package com.gurunars.item_list;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.SparseArray;
+import android.view.View;
 import android.view.ViewGroup;
 
 import com.esotericsoftware.kryo.Kryo;
@@ -13,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-class ItemAdapter<ItemType extends Item> extends RecyclerView.Adapter<BindableViewHolder<ItemType>> {
+class ItemAdapter<ItemType extends Item> extends RecyclerView.Adapter<BindableViewHolder<? extends View, ItemType>> {
 
     private Kryo kryo = new Kryo();
     private List<ItemType> items = new ArrayList<>();
@@ -30,16 +31,16 @@ class ItemAdapter<ItemType extends Item> extends RecyclerView.Adapter<BindableVi
         setEmptyViewBinder(new ItemViewBinderEmpty());
     }
 
-    private ItemViewBinder<ItemType> defaultViewBinder = new ItemViewBinderString<>();
+    private ItemViewBinder<? extends View, ItemType> defaultViewBinder = new ItemViewBinderString<>();
 
-    private SparseArray<ItemViewBinder<ItemType>> itemViewBinderMap = new SparseArray<>();
+    private SparseArray<ItemViewBinder<? extends View, ItemType>> itemViewBinderMap = new SparseArray<>();
 
     void setEmptyViewBinder(@NonNull EmptyViewBinder emptyViewBinder) {
         this.emptyViewBinder = emptyViewBinder;
     }
 
     void registerItemViewBinder(@NonNull Enum anEnum,
-                                @NonNull ItemViewBinder<ItemType> itemViewBinder) {
+                                @NonNull ItemViewBinder<? extends View, ItemType> itemViewBinder) {
         itemViewBinderMap.put(anEnum.ordinal(), itemViewBinder);
     }
 
@@ -65,19 +66,19 @@ class ItemAdapter<ItemType extends Item> extends RecyclerView.Adapter<BindableVi
     }
 
     @Override
-    public BindableViewHolder<ItemType> onCreateViewHolder(@NonNull ViewGroup parent,
+    public BindableViewHolder<? extends View, ItemType> onCreateViewHolder(@NonNull ViewGroup parent,
                                                            int viewType) {
         if (viewType == ItemViewBinderEmpty.EMPTY_TYPE) {
             return new BindableViewHolder<>(parent, emptyViewBinder);
         } else {
-            ItemViewBinder<ItemType> itemViewBinder = this.itemViewBinderMap.get(viewType);
+            ItemViewBinder<? extends View, ItemType> itemViewBinder = this.itemViewBinderMap.get(viewType);
             return new BindableViewHolder<>(parent, itemViewBinder == null ? defaultViewBinder :
                     itemViewBinder);
         }
     }
 
     @Override
-    public void onBindViewHolder(@NonNull BindableViewHolder<ItemType> holder, int position) {
+    public void onBindViewHolder(@NonNull BindableViewHolder<? extends View, ItemType> holder, int position) {
         if (position == items.size()) {
             return;  // nothing to bind
         }

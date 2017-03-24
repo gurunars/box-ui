@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.AttributeSet;
+import android.view.View;
 import android.widget.FrameLayout;
 
 import java.util.HashSet;
@@ -84,7 +85,7 @@ public final class SelectableItemList<ItemType extends Item> extends FrameLayout
      *                       an isSelected flag
      */
     public void registerItemViewBinder(Enum itemType,
-                                       ItemViewBinder<SelectableItem<ItemType>> itemViewBinder) {
+                                       ItemViewBinder<? extends View, SelectableItem<ItemType>> itemViewBinder) {
         itemList.registerItemViewBinder(itemType,
                 new ClickableItemViewBinder<>(itemViewBinder, collectionManager));
     }

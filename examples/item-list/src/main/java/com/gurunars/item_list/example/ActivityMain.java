@@ -26,10 +26,10 @@ import butterknife.ButterKnife;
 
 public class ActivityMain extends AppCompatActivity {
 
-    static class AnimalBinder implements ItemViewBinder<AnimalItem> {
+    static class AnimalBinder implements ItemViewBinder<TextView, AnimalItem> {
 
         @Override
-        public View getView(Context context) {
+        public TextView getView(Context context) {
             TextView text = new TextView(context);
             int padding = context.getResources().getDimensionPixelOffset(R.dimen.padding);
             text.setPadding(padding, padding, padding, padding);
@@ -37,8 +37,8 @@ public class ActivityMain extends AppCompatActivity {
         }
 
         @Override
-        public void bind(View itemView, AnimalItem item, @Nullable AnimalItem previousItem) {
-            ((TextView) itemView).setText(item.toString());
+        public void bind(TextView itemView, AnimalItem item, @Nullable AnimalItem previousItem) {
+            itemView.setText(item.toString());
             if (previousItem != null) {
                 animateUpdate(itemView);
             }

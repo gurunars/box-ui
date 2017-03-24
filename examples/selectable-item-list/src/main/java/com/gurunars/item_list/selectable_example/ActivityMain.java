@@ -28,10 +28,10 @@ import butterknife.ButterKnife;
 
 public class ActivityMain extends AppCompatActivity {
 
-    static class AnimalBinder implements ItemViewBinder<SelectableItem<AnimalItem>> {
+    static class AnimalBinder implements ItemViewBinder<TextView, SelectableItem<AnimalItem>> {
 
         @Override
-        public View getView(Context context) {
+        public TextView getView(Context context) {
             TextView text = new TextView(context);
             int padding = context.getResources().getDimensionPixelOffset(R.dimen.padding);
             text.setPadding(padding, padding, padding, padding);
@@ -39,8 +39,8 @@ public class ActivityMain extends AppCompatActivity {
         }
 
         @Override
-        public void bind(View itemView, SelectableItem<AnimalItem> item, @Nullable SelectableItem<AnimalItem> previousItem) {
-            ((TextView) itemView).setText("" + item);
+        public void bind(TextView itemView, SelectableItem<AnimalItem> item, @Nullable SelectableItem<AnimalItem> previousItem) {
+            itemView.setText("" + item);
             itemView.setBackgroundColor(item.isSelected() ? Color.RED : Color.WHITE);
         }
 

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
+import android.view.View;
 import android.widget.FrameLayout;
 
 import java.util.List;
@@ -76,7 +77,7 @@ public final class ItemList<ItemType extends Item> extends FrameLayout {
      * @param itemType type of the Item
      * @param itemViewBinder renderer for the items of a given type
      */
-    public void registerItemViewBinder(Enum itemType, ItemViewBinder<ItemType> itemViewBinder) {
+    public void registerItemViewBinder(Enum itemType, ItemViewBinder<? extends View, ItemType> itemViewBinder) {
         itemAdapter.registerItemViewBinder(itemType, itemViewBinder);
     }
 

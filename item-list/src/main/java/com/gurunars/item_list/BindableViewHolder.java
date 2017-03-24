@@ -2,16 +2,17 @@ package com.gurunars.item_list;
 
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.view.ViewGroup;
 
 import static com.gurunars.item_list.ItemViewBinderEmpty.EMPTY_TYPE;
 
-class BindableViewHolder<ItemType extends Item> extends RecyclerView.ViewHolder {
+class BindableViewHolder<ViewType extends View, ItemType extends Item> extends RecyclerView.ViewHolder {
 
-    private ItemViewBinder<ItemType> itemViewBinder;
+    private ItemViewBinder<ViewType, ItemType> itemViewBinder;
 
     BindableViewHolder(ViewGroup root,
-                       ItemViewBinder<ItemType> itemViewBinder) {
+                       ItemViewBinder<ViewType, ItemType> itemViewBinder) {
         super(itemViewBinder.getView(root.getContext()));
         this.itemViewBinder = itemViewBinder;
         itemView.setLayoutParams(new RecyclerView.LayoutParams(
@@ -31,7 +32,7 @@ class BindableViewHolder<ItemType extends Item> extends RecyclerView.ViewHolder 
 
     void bind(ItemType item, @Nullable ItemType previousItem) {
         if (this.itemViewBinder != null) {
-            itemViewBinder.bind(itemView, item, previousItem);
+            itemViewBinder.bind((ViewType) itemView, item, previousItem);
         }
     }
 }
