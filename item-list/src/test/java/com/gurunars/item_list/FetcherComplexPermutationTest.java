@@ -8,27 +8,27 @@ import static org.junit.Assert.assertEquals;
 
 public class FetcherComplexPermutationTest {
 
-    private FetcherComplexPermutation<ItemHolder<AnimalItem>> fetcher = new FetcherComplexPermutation<>();
+    private FetcherComplexPermutation<AnimalItem> fetcher = new FetcherComplexPermutation<>();
 
     @Test
     public void getNormal() {
         assertEquals(fetcher.apply(
-                ItemHolder.wrap(Arrays.asList(
+                Arrays.asList(
                         new AnimalItem(1, 1),
                         new AnimalItem(2, 1),
                         new AnimalItem(3, 1),
+                        new AnimalItem(4, 1)
+                ),
+                Arrays.asList(
+                        new AnimalItem(1, 1),
+                        new AnimalItem(3, 1),
+                        new AnimalItem(2, 1),
                         new AnimalItem(4, 1)
                 )),
-                ItemHolder.wrap(Arrays.asList(
-                        new AnimalItem(1, 1),
-                        new AnimalItem(3, 1),
-                        new AnimalItem(2, 1),
-                        new AnimalItem(4, 1)
-                ))),
-                new ChangeComplexPermutation<>(1, ItemHolder.wrap(Arrays.asList(
+                new ChangeComplexPermutation<>(1, Arrays.asList(
                         new AnimalItem(3, 1),
                         new AnimalItem(2, 1)
-                )))
+                ))
         );
     }
 }

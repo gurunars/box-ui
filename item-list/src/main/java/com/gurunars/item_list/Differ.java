@@ -12,30 +12,30 @@ import javax.inject.Inject;
 import java8.util.function.BiFunction;
 
 
-class Differ<ItemType extends Item> implements BiFunction<List<ItemHolder<ItemType>>, List<ItemHolder<ItemType>>, List<Change<ItemHolder<ItemType>>>> {
+class Differ<ItemType extends Item> implements BiFunction<List<ItemType>, List<ItemType>, List<Change<ItemType>>> {
 
     @Inject
     private
     BiFunction<
-        List<ItemHolder<ItemType>>,
-        List<ItemHolder<ItemType>>,
-        List<ItemHolder<ItemType>>> intersectionFetcher =
+        List<ItemType>,
+        List<ItemType>,
+        List<ItemType>> intersectionFetcher =
             new OrderedIntersectionFetcher<>();
 
     @Inject
     private
     BiFunction<
-        List<ItemHolder<ItemType>>,
-        List<ItemHolder<ItemType>>,
-        List<ItemHolder<ItemType>>> diffFetcher =
+        List<ItemType>,
+        List<ItemType>,
+        List<ItemType>> diffFetcher =
             new OrderedDiffFetcher<>();
 
     @Inject
     private
-    FetcherPermutations<ItemHolder<ItemType>> fetcherPermutations = new FetcherPermutations<>();
+    FetcherPermutations<ItemType> fetcherPermutations = new FetcherPermutations<>();
 
-    private void verifyNoDuplicates(List<ItemHolder<ItemType>> items) {
-        Set<ItemHolder<ItemType>> set = new HashSet<>(items);
+    private void verifyNoDuplicates(List<ItemType> items) {
+        Set<ItemType> set = new HashSet<>(items);
         if (set.size() != items.size()) {
             throw new RuntimeException("The list of items contains duplicates");
         }
@@ -43,43 +43,43 @@ class Differ<ItemType extends Item> implements BiFunction<List<ItemHolder<ItemTy
 
     @Nonnull
     @Override
-    public List<Change<ItemHolder<ItemType>>> apply(List<ItemHolder<ItemType>> source, List<ItemHolder<ItemType>> target) {
+    public List<Change<ItemType>> apply(List<ItemType> source, List<ItemType> target) {
 
-        List<ItemHolder<ItemType>> sourceList = new ArrayList<>(source);
-        List<ItemHolder<ItemType>> targetList = new ArrayList<>(target);
+        List<ItemType> sourceList = new ArrayList<>(source);
+        List<ItemType> targetList = new ArrayList<>(target);
 
         verifyNoDuplicates(sourceList);
 
-        List<ItemHolder<ItemType>> removed = diffFetcher.apply(sourceList, targetList);
+        List<ItemType> removed = diffFetcher.apply(sourceList, targetList);
         Collections.reverse(removed);  // remove in a reverse order to prevent index recalculation
 
-        List<Change<ItemHolder<ItemType>>> changes = new ArrayList<>();
+        List<Change<ItemType>> changes = new ArrayList<>();
 
-        for (ItemHolder<ItemType> item: removed) {
+        for (ItemType item: removed) {
             int position = sourceList.indexOf(item);
             changes.add(new ChangeDelete<>(item, position, position));
             sourceList.remove(position);
         }
 
-        List<ItemHolder<ItemType>> added = diffFetcher.apply(targetList, sourceList);
+        List<ItemType> added = diffFetcher.apply(targetList, sourceList);
 
-        for (ItemHolder<ItemType> item: added) {
+        for (ItemType item: added) {
             int position = targetList.indexOf(item);
             changes.add(new ChangeCreate<>(item, position, position));
             sourceList.add(position, item);
         }
 
-        List<ItemHolder<ItemType>> intersectionSourceOrder =
+        List<ItemType> intersectionSourceOrder =
                 intersectionFetcher.apply(sourceList, targetList);
-        List<ItemHolder<ItemType>> intersectionTargetOrder =
+        List<ItemType> intersectionTargetOrder =
                 intersectionFetcher.apply(targetList, sourceList);
 
         changes.addAll(fetcherPermutations.get(intersectionSourceOrder, intersectionTargetOrder));
 
-        for (ItemHolder<ItemType> item: sourceList) {
+        for (ItemType item: sourceList) {
             int index = targetList.indexOf(item);
-            ItemHolder<ItemType> newItem = targetList.get(index);
-            if (!item.getRaw().equals(newItem.getRaw())) {
+            ItemType newItem = targetList.get(index);
+            if (!item.payloadsEqual(newItem)) {
                 changes.add(new ChangeUpdate<>(newItem, index, index));
             }
         }

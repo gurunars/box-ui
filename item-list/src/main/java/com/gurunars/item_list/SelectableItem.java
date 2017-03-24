@@ -5,12 +5,13 @@ package com.gurunars.item_list;
  *
  * @param <ItemType> type of the actual item.
  */
-public final class SelectableItem<ItemType extends Item> implements Item {
+public final class SelectableItem<ItemType extends Item> extends Item {
 
     private final ItemType item;
     private boolean selected;
 
     SelectableItem(ItemType item, boolean selected) {
+        super(item.getId(), item.getType());
         this.item = item;
         this.selected = selected;
     }
@@ -30,27 +31,12 @@ public final class SelectableItem<ItemType extends Item> implements Item {
     }
 
     @Override
-    public int hashCode() {
-        return item.hashCode();
-    }
-
-    @Override
-    public boolean equals(Object obj) {
+    public boolean payloadsEqual(Item obj) {
         if (obj instanceof SelectableItem) {
             SelectableItem other = (SelectableItem) obj;
-            return item.equals(other.item) && selected == other.selected;
+            return item.payloadsEqual(other.item) && selected == other.selected;
         }
         return false;
-    }
-
-    @Override
-    public long getId() {
-        return item.getId();
-    }
-
-    @Override
-    public Enum getType() {
-        return item.getType();
     }
 
     @Override

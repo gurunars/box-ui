@@ -1,20 +1,13 @@
 package com.gurunars.item_list;
 
 
-class AnimalItem implements Item {
+class AnimalItem extends Item {
 
-    private final long id;
     private int version;
-    private Type type;
 
     @Override
-    public long getId() {
-        return id;
-    }
-
-    @Override
-    public Enum getType() {
-        return type;
+    public boolean payloadsEqual(Item other) {
+        return other instanceof AnimalItem && version == ((AnimalItem) other).version;
     }
 
     enum Type {
@@ -26,9 +19,8 @@ class AnimalItem implements Item {
     }
 
     AnimalItem(long id, int version, Type type) {
+        super(id, type);
         this.version = version;
-        this.type = type;
-        this.id = id;
     }
 
     AnimalItem(long id, int version) {
@@ -41,20 +33,7 @@ class AnimalItem implements Item {
 
     @Override
     public String toString() {
-        return "#" + id + "{" + type + " @ " + version + "}";
+        return "#" + getId() + "{" + getType() + " @ " + version + "}";
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (obj instanceof AnimalItem) {
-            AnimalItem other = (AnimalItem) obj;
-            return version == other.version && type == other.type;
-        }
-        return false;
-    }
-
-    @Override
-    public int hashCode() {
-        return Long.valueOf(id).hashCode();
-    }
 }

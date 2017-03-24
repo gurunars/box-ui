@@ -16,8 +16,8 @@ import java.util.List;
 class ItemAdapter<ItemType extends Item> extends RecyclerView.Adapter<BindableViewHolder<ItemType>> {
 
     private Kryo kryo = new Kryo();
-    private List<ItemHolder<ItemType>> items = new ArrayList<>();
-    private List<ItemHolder<ItemType>> previousList = new ArrayList<>();
+    private List<ItemType> items = new ArrayList<>();
+    private List<ItemType> previousList = new ArrayList<>();
 
     private Differ<ItemType> differ = new Differ<>();
 
@@ -53,12 +53,12 @@ class ItemAdapter<ItemType extends Item> extends RecyclerView.Adapter<BindableVi
         newItems = kryo.copy(newItems);
 
         if (items.isEmpty()) {
-            this.items = ItemHolder.wrap(newItems);
+            this.items = newItems;
             notifyDataSetChanged();
         } else {
             int position = -1;
 
-            for (Change<ItemHolder<ItemType>> change: differ.apply(items, ItemHolder.wrap(newItems))){
+            for (Change<ItemType> change: differ.apply(items, newItems)){
                 position = change.apply(this, scroller, items, position);
             }
 
@@ -86,13 +86,13 @@ class ItemAdapter<ItemType extends Item> extends RecyclerView.Adapter<BindableVi
             return;  // nothing to bind
         }
 
-        ItemHolder<ItemType> item = items.get(position);
+        ItemType item = items.get(position);
 
         int previousIndex = previousList.indexOf(item);
 
-        ItemType previousItem = previousIndex >= 0 ? previousList.get(previousIndex).getRaw() : null;
+        ItemType previousItem = previousIndex >= 0 ? previousList.get(previousIndex) : null;
 
-        holder.bind(item.getRaw(), previousItem);
+        holder.bind(item, previousItem);
 
     }
 
