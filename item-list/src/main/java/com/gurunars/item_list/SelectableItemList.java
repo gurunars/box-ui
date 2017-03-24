@@ -20,7 +20,7 @@ import java8.util.function.Consumer;
  *
  * @param <ItemType> class describing item payload
  */
-public class SelectableItemList<ItemType extends Item> extends FrameLayout {
+public final class SelectableItemList<ItemType extends Item> extends FrameLayout {
 
     private ItemList<SelectableItem<ItemType>> itemList;
     private CollectionManager<ItemType> collectionManager;

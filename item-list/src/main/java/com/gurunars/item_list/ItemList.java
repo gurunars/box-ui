@@ -16,7 +16,7 @@ import butterknife.ButterKnife;
  *
  * @param <ItemType> Item payload type
  */
-public class ItemList<ItemType extends Item> extends FrameLayout {
+public final class ItemList<ItemType extends Item> extends FrameLayout {
 
     private ItemAdapter<ItemType> itemAdapter;
     private LinearLayoutManager layoutManager;

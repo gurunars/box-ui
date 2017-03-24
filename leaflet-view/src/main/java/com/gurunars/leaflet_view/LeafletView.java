@@ -18,7 +18,7 @@ import butterknife.ButterKnife;
  * @param <ViewT> View subclass to be used to render individual pages
  * @param <PageT> Page subclass to be used to populate the pages
  */
-public class LeafletView<ViewT extends View, PageT extends Page> extends LinearLayout {
+public final class LeafletView<ViewT extends View, PageT extends Page> extends LinearLayout {
 
     private ViewPager viewPager;
     private ViewGroup emptyHolder;

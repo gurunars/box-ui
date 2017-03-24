@@ -19,7 +19,7 @@ import icepick.State;
 /**
  * Floating menu available via a <a href="https://material.google.com/components/buttons-floating-action-button.html">FAB</a>.
  */
-public class FloatMenu extends FrameLayout {
+public final class FloatMenu extends FrameLayout {
 
     private final Fab openFab;
     private final MenuPane menuPane;

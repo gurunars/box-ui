@@ -2,7 +2,7 @@ package com.gurunars.leaflet_view;
 
 import java.util.List;
 
-public class Finder {
+class Finder {
 
     public interface Equator<T> {
         boolean equal(T one, T two);

@@ -6,7 +6,6 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.InsetDrawable;
 import android.graphics.drawable.shapes.OvalShape;
-import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
@@ -14,13 +13,22 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
+import icepick.Icepick;
+import icepick.State;
 
-public class CircularIconButton extends ImageButton {
+
+/**
+ * Button with customizable icon, background and foreground color.
+ */
+public final class CircularIconButton extends ImageButton {
 
     private final static int ICON_PADDING = 50;
 
+    @State
     private int backgroundColor;
+    @State
     private int foregroundColor;
+    @State
     private int innerDrawable;
 
     public CircularIconButton(Context context) {
@@ -66,6 +74,11 @@ public class CircularIconButton extends ImageButton {
         setImageDrawable(new InsetDrawable(fg, ICON_PADDING));
     }
 
+    public void setInnerDrawable(int innerDrawable) {
+        this.innerDrawable = innerDrawable;
+        reset();
+    }
+
     @Override
     public void setBackgroundColor(int backgroundColor) {
         this.backgroundColor = backgroundColor;
@@ -85,21 +98,12 @@ public class CircularIconButton extends ImageButton {
 
     @Override
     protected Parcelable onSaveInstanceState() {
-        Bundle bundle = new Bundle();
-        bundle.putParcelable("superState", super.onSaveInstanceState());
-        bundle.putInt("backgroundColor", backgroundColor);
-        bundle.putInt("foregroundColor", foregroundColor);
-        bundle.putInt("innerDrawable", innerDrawable);
-        return bundle;
+        return Icepick.saveInstanceState(this, super.onSaveInstanceState());
     }
 
     @Override
     protected void onRestoreInstanceState(Parcelable state) {
-        Bundle localState = (Bundle) state;
-        super.onRestoreInstanceState(localState.getParcelable("superState"));
-        backgroundColor = localState.getInt("backgroundColor");
-        foregroundColor = localState.getInt("foregroundColor");
-        innerDrawable = localState.getInt("innerDrawable");
+        super.onRestoreInstanceState(Icepick.restoreInstanceState(this, state));
         reset();
     }
 }

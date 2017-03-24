@@ -31,7 +31,7 @@ import java8.util.function.Consumer;
 /**
  * Widget to be used for manipulating a collection of items.
  */
-public class CrudItemList<ItemType extends Item> extends RelativeLayout {
+public final class CrudItemList<ItemType extends Item> extends RelativeLayout {
 
     @State int actionIconFgColor;
     @State int actionIconBgColor;
