@@ -13,7 +13,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.esotericsoftware.kryo.Kryo;
-import com.gurunars.android_utils.functional.Finder;
 
 import org.objenesis.strategy.StdInstantiatorStrategy;
 

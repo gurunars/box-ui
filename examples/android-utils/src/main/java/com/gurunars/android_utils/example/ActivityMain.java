@@ -8,8 +8,8 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.gurunars.android_utils.example.storage.PersistentStorage;
-import com.gurunars.android_utils.ui.AutoBg;
-import com.gurunars.android_utils.ui.ColoredShapeDrawable;
+import com.gurunars.android_utils.AutoBg;
+import com.gurunars.android_utils.ColoredShapeDrawable;
 
 import butterknife.ButterKnife;
 

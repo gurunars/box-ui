@@ -1,4 +1,4 @@
-package com.gurunars.android_utils.ui;
+package com.gurunars.android_utils;
 
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.Shape;

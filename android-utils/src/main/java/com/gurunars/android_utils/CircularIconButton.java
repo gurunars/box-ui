@@ -1,4 +1,4 @@
-package com.gurunars.android_utils.ui;
+package com.gurunars.android_utils;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -13,8 +13,6 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-
-import com.gurunars.android_utils.R;
 
 
 public class CircularIconButton extends ImageButton {

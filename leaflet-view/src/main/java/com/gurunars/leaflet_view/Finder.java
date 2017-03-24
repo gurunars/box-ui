@@ -1,4 +1,4 @@
-package com.gurunars.android_utils.functional;
+package com.gurunars.leaflet_view;
 
 import java.util.List;
 
