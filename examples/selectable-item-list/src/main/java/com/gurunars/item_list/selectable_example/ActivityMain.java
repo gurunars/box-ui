@@ -15,10 +15,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.gurunars.item_list.EmptyViewBinder;
-import com.gurunars.item_list.Item;
 import com.gurunars.item_list.ItemViewBinder;
-import com.gurunars.item_list.SelectableItemList;
 import com.gurunars.item_list.SelectableItem;
+import com.gurunars.item_list.SelectableItemList;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -29,7 +28,7 @@ import butterknife.ButterKnife;
 
 public class ActivityMain extends AppCompatActivity {
 
-    static class AnimalBinder implements ItemViewBinder<SelectableItem<AnimalPayload>> {
+    static class AnimalBinder implements ItemViewBinder<SelectableItem<AnimalItem>> {
 
         @Override
         public View getView(Context context) {
@@ -40,9 +39,9 @@ public class ActivityMain extends AppCompatActivity {
         }
 
         @Override
-        public void bind(View itemView, Item<SelectableItem<AnimalPayload>> item, @Nullable Item<SelectableItem<AnimalPayload>> previousItem) {
+        public void bind(View itemView, SelectableItem<AnimalItem> item, @Nullable SelectableItem<AnimalItem> previousItem) {
             ((TextView) itemView).setText("" + item);
-            itemView.setBackgroundColor(item.getPayload().isSelected() ? Color.RED : Color.WHITE);
+            itemView.setBackgroundColor(item.isSelected() ? Color.RED : Color.WHITE);
         }
 
     }
@@ -59,12 +58,12 @@ public class ActivityMain extends AppCompatActivity {
 
     }
 
-    private SelectableItemList<AnimalPayload> itemList;
-    private List<Item<AnimalPayload>> items = new ArrayList<>();
+    private SelectableItemList<AnimalItem> itemList;
+    private List<AnimalItem> items = new ArrayList<>();
     private int count = 0;
 
-    private void add(AnimalPayload.Type type) {
-        items.add(new Item<>(count, new AnimalPayload(0, type)));
+    private void add(AnimalItem.Type type) {
+        items.add(new AnimalItem(count, 0, type));
         count++;
     }
 
@@ -75,7 +74,7 @@ public class ActivityMain extends AppCompatActivity {
 
         itemList = ButterKnife.findById(this, R.id.selectableItemList);
 
-        for (AnimalPayload.Type type: AnimalPayload.Type.values()) {
+        for (AnimalItem.Type type: AnimalItem.Type.values()) {
             itemList.registerItemViewBinder(type, new AnimalBinder());
         }
 
@@ -109,8 +108,8 @@ public class ActivityMain extends AppCompatActivity {
     }
 
     private int updateSelected() {
-        for (Item<AnimalPayload> item: itemList.getSelectedItems()) {
-            item.getPayload().update();
+        for (AnimalItem item: itemList.getSelectedItems()) {
+            item.update();
             items.set(items.indexOf(item), item);
         }
         itemList.setItems(items);
@@ -129,15 +128,15 @@ public class ActivityMain extends AppCompatActivity {
     }
 
     private @StringRes int clearSelection() {
-        itemList.setSelectedItems(new HashSet<Item<AnimalPayload>>());
+        itemList.setSelectedItems(new HashSet<AnimalItem>());
         return R.string.did_clear_selection;
     }
 
     private @StringRes int create() {
-        add(AnimalPayload.Type.TIGER);
-        add(AnimalPayload.Type.WOLF);
-        add(AnimalPayload.Type.MONKEY);
-        add(AnimalPayload.Type.LION);
+        add(AnimalItem.Type.TIGER);
+        add(AnimalItem.Type.WOLF);
+        add(AnimalItem.Type.MONKEY);
+        add(AnimalItem.Type.LION);
         itemList.setItems(items);
         return R.string.did_create;
     }

@@ -1,10 +1,18 @@
 package com.gurunars.item_list.example;
 
 
-class AnimalPayload implements Payload {
+import com.gurunars.item_list.Item;
 
+class AnimalItem implements Item {
+
+    private final long id;
     private int version;
     private Type type;
+
+    @Override
+    public long getId() {
+        return id;
+    }
 
     @Override
     public Enum getType() {
@@ -15,17 +23,18 @@ class AnimalPayload implements Payload {
         MONKEY, TIGER, WOLF, LION
     }
 
-    public void update() {
+    void update() {
         this.version++;
     }
 
-    public AnimalPayload(int version, Type type) {
+    AnimalItem(long id, int version, Type type) {
         this.version = version;
         this.type = type;
+        this.id = id;
     }
 
     @Override
     public String toString() {
-        return "" + type + " @ " + version;
+        return "#" + id + "{" + type + " @ " + version + "}";
     }
 }

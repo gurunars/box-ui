@@ -8,6 +8,8 @@ class ItemViewBinderFooter<ItemType extends Item> implements ItemViewBinder<Item
 
     static final int FOOTER_TYPE = -42;
 
+    //http://stackoverflow.com/questions/30866106/android-add-spacing-below-last-element-in-recyclerview-with-gridlayoutmanager
+
     @Override
     public View getView(Context context) {
         View view = LayoutInflater.from(context).inflate(R.layout.footer, null);

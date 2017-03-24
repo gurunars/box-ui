@@ -18,7 +18,7 @@ public final class SelectableItem<ItemType extends Item> implements Item {
     /**
      * @return True if the item is selected
      */
-    public final boolean isSelected() {
+    public boolean isSelected() {
         return selected;
     }
 
@@ -27,10 +27,6 @@ public final class SelectableItem<ItemType extends Item> implements Item {
      */
     public ItemType getItem() {
         return item;
-    }
-
-    void setSelected(boolean selected) {
-        this.selected = selected;
     }
 
     @Override
