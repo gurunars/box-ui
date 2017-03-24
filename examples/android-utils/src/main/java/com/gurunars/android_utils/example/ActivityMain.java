@@ -22,7 +22,7 @@ public class ActivityMain extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        payloadView = ButterKnife.findById(this, R.id.payload);
+        payloadView = ButterKnife.findById(this, R.id.item);
         storage = new PersistentStorage<>(this, "payloadAlias", new TestPayload("Empty"),
                 new PersistentStorage.PayloadChangeListener<TestPayload>() {
                     @Override

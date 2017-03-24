@@ -26,7 +26,7 @@ public class ActivityMainTest {
     private void validateText(String text) {
         mActivityRule.getActivity().finish();
         mActivityRule.launchActivity(null);
-        onView(withId(R.id.payload)).check(matches(withText(text)));
+        onView(withId(R.id.item)).check(matches(withText(text)));
     }
 
     @Test

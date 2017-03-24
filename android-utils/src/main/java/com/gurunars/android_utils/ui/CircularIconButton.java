@@ -1,4 +1,4 @@
-package com.gurunars.crud_item_list;
+package com.gurunars.android_utils.ui;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -14,11 +14,10 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
-import com.gurunars.android_utils.ui.AutoBg;
-import com.gurunars.android_utils.ui.ColoredShapeDrawable;
+import com.gurunars.android_utils.R;
 
 
-class CircularIconButton extends ImageButton {
+public class CircularIconButton extends ImageButton {
 
     private final static int ICON_PADDING = 50;
 

@@ -1,11 +1,5 @@
 <resources>
 
-    <declare-styleable name="CircularIconButton">
-        <attr format="reference|color" name="backgroundColor" />
-        <attr format="reference|color" name="foregroundColor" />
-        <attr format="reference" name="innerDrawable" />
-    </declare-styleable>
-
     <declare-styleable name="CrudItemList">
         <attr name="actionIconFgColor" format="reference|color" />
         <attr name="actionIconBgColor" format="reference|color" />
