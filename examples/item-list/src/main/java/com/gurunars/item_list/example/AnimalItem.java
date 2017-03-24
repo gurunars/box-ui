@@ -24,14 +24,6 @@ class AnimalItem extends Item<AnimalItem.Type> {
         this.version = version;
     }
 
-    AnimalItem(long id, int version) {
-        this(id, version, Type.MONKEY);
-    }
-
-    AnimalItem(long id, Type type) {
-        this(id, 0, type);
-    }
-
     @Override
     public String toString() {
         return "#" + getId() + "{" + getType() + " @ " + version + "}";

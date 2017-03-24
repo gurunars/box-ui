@@ -26,38 +26,38 @@ Showcase:
 
 <img src="showcases/item-list.gif" width="320">
 
-First, implement a payload interface:
+First, implement the abstract **Item** class:
 
 ```java
-import com.gurunars.item_list.Payload;
+import com.gurunars.item_list.Item;
 
-class AnimalPayload implements Payload {
+class AnimalItem extends Item<AnimalItem.Type> {
 
     private int version;
-    private Type type;
 
     @Override
-    public Enum getType() {
-        return type;
+    public boolean payloadsEqual(Item other) {
+        return other instanceof AnimalItem && version == ((AnimalItem) other).version;
     }
 
     enum Type {
         MONKEY, TIGER, WOLF, LION
     }
 
-    public void update() {
+    void update() {
         this.version++;
     }
 
-    public AnimalPayload(int version, Type type) {
+    AnimalItem(long id, int version, Type type) {
+        super(id, type);
         this.version = version;
-        this.type = type;
     }
 
     @Override
     public String toString() {
-        return "" + type + " @ " + version;
+        return "#" + getId() + "{" + getType() + " @ " + version + "}";
     }
+
 }
 ```
 
@@ -72,14 +72,14 @@ Put the following into your layout file:
 
 ```
 
-Implement the renderer:
+Implement the view binder:
 
 ```java
 
-class AnimalBinder implements ItemViewBinder<AnimalPayload> {
+class AnimalBinder implements ItemViewBinder<TextView, AnimalItem> {
 
     @Override
-    public View getView(Context context) {
+    public TextView getView(Context context) {
         TextView text = new TextView(context);
         int padding = context.getResources().getDimensionPixelOffset(R.dimen.padding);
         text.setPadding(padding, padding, padding, padding);
@@ -87,8 +87,8 @@ class AnimalBinder implements ItemViewBinder<AnimalPayload> {
     }
 
     @Override
-    public void bind(View itemView, Item<AnimalPayload> item, @Nullable Item<AnimalPayload> previousItem) {
-        ((TextView) itemView).setText(item.toString());
+    public void bind(TextView itemView, AnimalItem item, @Nullable AnimalItem previousItem) {
+        itemView.setText(item.toString());
         if (previousItem != null) {
             animateUpdate(itemView);
         }
@@ -112,15 +112,16 @@ class AnimalBinder implements ItemViewBinder<AnimalPayload> {
 
 ```
 
-If you don't implement the renderer - the default one shall be used - a plain
+If you don't implement the binder - the default one shall be used - a plain
 text view showing the string returned by a **toString()** method of the Item
 instance.
 
-Note, bind method gets an item to render now and a previous version of the
-item. I.e. the item with the same id but with a different payload. It can be
-null in case if the item did not exists before - i.e. if it just was created.
+Note, bind method gets both a current version of the item as well as a previous
+version of it. I.e. the item with the same id but with a different payload. It
+can be null in case if the item did not exists before - i.e. if it was just
+created.
 
-Implement the empty page renderer:
+Now, implement the empty page renderer:
 
 ```java
 
@@ -163,10 +164,10 @@ And finally set the collection to a specific set of items:
 ```java
 
 itemList.setItems(Arrays.asList(
-    new Item<>(0, new AnimalPayload(0, AnimalItem.Type.LION)),
-    new Item<>(1, new AnimalPayload(0, AnimalItem.Type.MONKEY)),
-    new Item<>(2, new AnimalPayload(0, AnimalItem.Type.TIGER)),
-    new Item<>(3, new AnimalPayload(0, AnimalItem.Type.WOLF))
+    new AnimalItem(0, 0, AnimalItem.Type.LION),
+    new AnimalItem(1, 0, AnimalItem.Type.MONKEY),
+    new AnimalItem(2, 0, AnimalItem.Type.TIGER),
+    new AnimalItem(3, 0, AnimalItem.Type.WOLF)
 ));
 
 ```
@@ -204,10 +205,10 @@ Later on implement a view renderer:
 
 ```java
 
-static class AnimalBinder implements ItemViewBinder<SelectablePayload<AnimalPayload>> {
+static class AnimalBinder implements ItemViewBinder<TextView, SelectableItem<AnimalPayload>> {
 
     @Override
-    public View getView(Context context) {
+    public TextView getView(Context context) {
         TextView text = new TextView(context);
         int padding = context.getResources().getDimensionPixelOffset(R.dimen.padding);
         text.setPadding(padding, padding, padding, padding);
@@ -215,8 +216,8 @@ static class AnimalBinder implements ItemViewBinder<SelectablePayload<AnimalPayl
     }
 
     @Override
-    public void bind(View itemView, Item<SelectablePayload<AnimalPayload>> item, @Nullable Item<SelectablePayload<AnimalPayload>> previousItem) {
-        ((TextView) itemView).setText("" + item);
+    public void bind(TextView itemView, SelectableItem<AnimalPayload> item, @Nullable SelectableItem<AnimalPayload> previousItem) {
+        itemView.setText("" + item);
         itemView.setBackgroundColor(item.getPayload().isSelected() ? Color.RED : Color.WHITE);
         if (previousItem != null) {
             animateUpdate(itemView);
@@ -241,8 +242,8 @@ static class AnimalBinder implements ItemViewBinder<SelectablePayload<AnimalPayl
 
 ```
 
-The way it differs from the regular view renderer is by having **SelectablePayload**
-wrapper around your own payload.
+The way it differs from the regular view renderer is by having
+**SelectableItem** wrapper around the actual item.
 
 Empty view binder is exactly the same as the one for a regular list.
 
@@ -252,8 +253,8 @@ with the exception that there are two extra methods: **setSelectedItems** and
 
 ```java
 
-itemList.setSelectedItems(new HashSet<Item<AnimalPayload>>());
-Set<Item<AnimalPayload>> selection = itemList.getSelectedItems();
+itemList.setSelectedItems(new HashSet<AnimalItem>());
+Set<AnimalItem> selection = itemList.getSelectedItems();
 
 ```
 

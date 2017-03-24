@@ -93,10 +93,10 @@ Set a callable to be invoked whenever the collection in the list is changed:
 
 ```java
 
-crudItemList.setListChangeListener(new ListChangeListener<AnimalPayload>() {
+crudItemList.setListChangeListener(new ListChangeListener<AnimalItem>() {
     @Override
-    public void onChange(List<Item<AnimalPayload>> items) {
-        for (Item<AnimalPayload> item: items) {
+    public void onChange(List<Item<AnimalItem>> items) {
+        for (Item<AnimalItem> item: items) {
             model.updateItem(item);
         }
     }
@@ -109,9 +109,9 @@ one has to be changed:
 
 ```java
 
-crudItemList.setItemEditListener(new ItemEditListener<AnimalPayload>() {
+crudItemList.setItemEditListener(new ItemEditListener<AnimalItem>() {
     @Override
-    public void onEdit(Item<AnimalPayload> editableItem, boolean isNew) {
+    public void onEdit(Item<AnimalItem> editableItem, boolean isNew) {
         editableItem.getPayload().update();
         model.updateItem(editableItem);
         crudItemList.setItems(model.getItems());
@@ -158,10 +158,10 @@ Implement item view binder:
 
 ```java
 
-class AnimalRowBinder implements com.gurunars.item_list.ItemViewBinder<SelectablePayload<AnimalPayload>> {
+class AnimalRowBinder implements com.gurunars.item_list.ItemViewBinder<TextView, SelectableItem<AnimalItem>> {
 
     @Override
-    public View getView(Context context) {
+    public TextView getView(Context context) {
         TextView text = new TextView(context);
         int padding = context.getResources().getDimensionPixelOffset(R.dimen.padding);
         text.setPadding(padding, padding, padding, padding);
@@ -169,9 +169,7 @@ class AnimalRowBinder implements com.gurunars.item_list.ItemViewBinder<Selectabl
     }
 
     @Override
-    public void bind(View itemView, Item<SelectablePayload<AnimalPayload>> item, @Nullable Item<SelectablePayload<AnimalPayload>> previousItem) {
-        TextView view = (TextView) itemView;
-
+    public void bind(TextView view, SelectableItem<AnimalItem> item, @Nullable SelectableItem<AnimalItem> previousItem) {
         view.setBackgroundColor(ContextCompat.getColor(view.getContext(),
                 item.getPayload().isSelected() ? com.gurunars.crud_item_list.R.color.Red :
                         com.gurunars.crud_item_list.R.color.White));
@@ -180,7 +178,7 @@ class AnimalRowBinder implements com.gurunars.item_list.ItemViewBinder<Selectabl
 
         // Animate created and updated items
         if (previousItem == null) {
-            animate(itemView);
+            animate(view);
         }
     }
 
@@ -208,11 +206,11 @@ creation chain of events:
 
 ```java
 
-private void confItemType(@IdRes int id, final AnimalPayload.Type type) {
+private void confItemType(@IdRes int id, final AnimalItem.Type type) {
     creationMenu.findViewById(id).setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            model.createItem(new AnimalPayload(type));
+            model.createItem(new AnimalItem(type));
             crudItemList.setItems(model.getItems());
         }
     });
@@ -245,7 +243,7 @@ The ItemList will handling animations and selection retention on its own.
 
 ```java
 
-crudItemList.setItems(new ArrayList<Item<AnimalPayload>>());
+crudItemList.setItems(new ArrayList<Item<AnimalItem>>());
 
 ```
 
