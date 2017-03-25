@@ -39,6 +39,10 @@ class ItemAdapter<ItemType extends Item> extends RecyclerView.Adapter<BindableVi
         this.emptyViewBinder = emptyViewBinder;
     }
 
+    void setDefaultViewBinder(ItemViewBinder<? extends View, ItemType> defaultViewBinder) {
+        this.defaultViewBinder = defaultViewBinder;
+    }
+
     void registerItemViewBinder(@NonNull Enum anEnum,
                                 @NonNull ItemViewBinder<? extends View, ItemType> itemViewBinder) {
         itemViewBinderMap.put(anEnum.ordinal(), itemViewBinder);

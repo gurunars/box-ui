@@ -54,6 +54,10 @@ public final class SelectableItemList<ItemType extends Item> extends FrameLayout
             }
         });
 
+        itemList.setDefaultViewBinder(new ClickableItemViewBinder<> (
+                new SelectableItemViewBinderString<ItemType>(), collectionManager
+        ));
+
     }
 
     /**

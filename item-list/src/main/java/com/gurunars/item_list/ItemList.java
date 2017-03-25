@@ -90,4 +90,8 @@ public final class ItemList<ItemType extends Item> extends FrameLayout {
         itemAdapter.setEmptyViewBinder(emptyViewBinder);
     }
 
+    void setDefaultViewBinder(ItemViewBinder<? extends View, ItemType> itemViewBinder) {
+        itemAdapter.setDefaultViewBinder(itemViewBinder);
+    }
+
 }

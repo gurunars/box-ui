@@ -10,11 +10,10 @@ class ItemViewBinderString<ItemType extends Item> implements ItemViewBinder<Text
 
     @Override
     public TextView getView(Context context) {
-        TextView view = new TextView(context);
-        view.setLayoutParams(new ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT));
-        return view;
+        TextView text = new TextView(context);
+        int padding = context.getResources().getDimensionPixelOffset(R.dimen.padding);
+        text.setPadding(padding, padding, padding, padding);
+        return text;
     }
 
     private void animateUpdate(final View view) {
