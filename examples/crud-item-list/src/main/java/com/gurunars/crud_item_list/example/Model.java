@@ -65,7 +65,7 @@ class Model {
 
     void createItem(AnimalItem payload) {
         maxItemId++;
-        items.add(new AnimalItem(maxItemId, payload.getVersion(), (AnimalItem.Type) payload.getType()));
+        items.add(new AnimalItem(maxItemId, payload.getVersion(), payload.getType()));
         save();
     }
 }

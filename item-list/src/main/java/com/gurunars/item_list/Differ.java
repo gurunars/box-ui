@@ -45,13 +45,19 @@ class Differ<ItemType extends Item> implements BiFunction<List<ItemType>, List<I
     @Override
     public List<Change<ItemType>> apply(List<ItemType> source, List<ItemType> target) {
 
+        TmpTiming timing = new TmpTiming();
+
         List<ItemType> sourceList = new ArrayList<>(source);
         List<ItemType> targetList = new ArrayList<>(target);
 
         verifyNoDuplicates(sourceList);
 
+        timing.tick("INIT");
+
         List<ItemType> removed = diffFetcher.apply(sourceList, targetList);
         Collections.reverse(removed);  // remove in a reverse order to prevent index recalculation
+
+        timing.tick("REMOVED FIND");
 
         List<Change<ItemType>> changes = new ArrayList<>();
 
@@ -61,7 +67,11 @@ class Differ<ItemType extends Item> implements BiFunction<List<ItemType>, List<I
             sourceList.remove(position);
         }
 
+        timing.tick("REMOVED CHANGES");
+
         List<ItemType> added = diffFetcher.apply(targetList, sourceList);
+
+        timing.tick("ADDED FIND");
 
         for (ItemType item: added) {
             int position = targetList.indexOf(item);
@@ -69,12 +79,18 @@ class Differ<ItemType extends Item> implements BiFunction<List<ItemType>, List<I
             sourceList.add(position, item);
         }
 
+        timing.tick("ADDED CHANGES");
+
         List<ItemType> intersectionSourceOrder =
                 intersectionFetcher.apply(sourceList, targetList);
+        timing.tick("INTERS OD 1");
         List<ItemType> intersectionTargetOrder =
                 intersectionFetcher.apply(targetList, sourceList);
+        timing.tick("INTERS OD 2");
 
         changes.addAll(fetcherPermutations.get(intersectionSourceOrder, intersectionTargetOrder));
+
+        timing.tick("PERMUTATIONS FIND");
 
         for (ItemType item: sourceList) {
             int index = targetList.indexOf(item);
@@ -83,6 +99,8 @@ class Differ<ItemType extends Item> implements BiFunction<List<ItemType>, List<I
                 changes.add(new ChangeUpdate<>(newItem, index, index));
             }
         }
+
+        timing.tick("PERMUTATIONS CHANGES");
 
         return changes;
     }
