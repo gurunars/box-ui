@@ -16,6 +16,10 @@ class ItemViewBinderString<ItemType extends Item> implements ItemViewBinder<Text
         return text;
     }
 
+    protected boolean shouldAnimate(ItemType item, ItemType previousItem) {
+        return previousItem != null;
+    }
+
     private void animateUpdate(final View view) {
         view.clearAnimation();
         ValueAnimator anim = new ValueAnimator();
@@ -33,7 +37,7 @@ class ItemViewBinderString<ItemType extends Item> implements ItemViewBinder<Text
     @Override
     public void bind(TextView itemView, ItemType item, ItemType previousItem) {
         itemView.setText(item.toString());
-        if (previousItem != null) {
+        if (shouldAnimate(item, previousItem)) {
             animateUpdate(itemView);
         }
     }
