@@ -54,6 +54,7 @@ class ItemAdapter<ItemType extends Item> extends RecyclerView.Adapter<BindableVi
         newItems = kryo.copy(newItems);
 
         if (items.isEmpty()) {
+            this.previousList = newItems;
             this.items = newItems;
             notifyDataSetChanged();
         } else {
@@ -67,6 +68,7 @@ class ItemAdapter<ItemType extends Item> extends RecyclerView.Adapter<BindableVi
                 scroller.scrollToPosition(position);
             }
         }
+
     }
 
     @Override

@@ -214,4 +214,36 @@ public class DifferTest {
 
     }
 
+    @Test
+    public void movesDeltaOne() {
+        assertEquals(
+                Collections.singletonList(
+                        new ChangeMove<>(new AnimalItem(4, 2), 3, 4)
+                ),
+                differ.apply(
+                        Arrays.asList(
+                                new AnimalItem(1, 1),
+                                new AnimalItem(2, 1),
+                                new AnimalItem(3, 1),
+                                new AnimalItem(4, 2),
+                                new AnimalItem(5, 1),
+                                new AnimalItem(6, 1),
+                                new AnimalItem(7, 1),
+                                new AnimalItem(8, 1),
+                                new AnimalItem(9, 1)
+                        ),
+                        Arrays.asList(
+                                new AnimalItem(1, 1),
+                                new AnimalItem(2, 1),
+                                new AnimalItem(3, 1),
+                                new AnimalItem(5, 1),
+                                new AnimalItem(4, 2),
+                                new AnimalItem(6, 1),
+                                new AnimalItem(7, 1),
+                                new AnimalItem(8, 1),
+                                new AnimalItem(9, 1)
+                        ))
+        );
+    }
+
 }
