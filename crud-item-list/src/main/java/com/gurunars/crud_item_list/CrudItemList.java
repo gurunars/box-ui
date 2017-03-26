@@ -103,6 +103,7 @@ public final class CrudItemList<ItemType extends Item> extends RelativeLayout {
 
         floatingMenu.setContentView(itemList);
         floatingMenu.setMenuView(contextualMenu);
+        floatingMenu.setOpenIcon(R.drawable.ic_plus);
 
         addView(floatingMenu);
 
@@ -204,6 +205,7 @@ public final class CrudItemList<ItemType extends Item> extends RelativeLayout {
         floatingMenu.setMenuView(contextualMenu);
         floatingMenu.setCloseIconFgColor(contextualCloseFgColor);
         floatingMenu.setCloseIconBgColor(contextualCloseBgColor);
+        floatingMenu.setCloseIcon(R.drawable.ic_check);
         floatingMenu.setHasOverlay(false);
         setUpActions();
     }
@@ -212,6 +214,7 @@ public final class CrudItemList<ItemType extends Item> extends RelativeLayout {
         floatingMenu.setMenuView(creationMenu);
         floatingMenu.setCloseIconFgColor(createCloseFgColor);
         floatingMenu.setCloseIconBgColor(createCloseBgColor);
+        floatingMenu.setCloseIcon(R.drawable.ic_menu_close);
         floatingMenu.setHasOverlay(true);
     }
 
