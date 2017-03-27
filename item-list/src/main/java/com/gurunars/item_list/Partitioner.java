@@ -15,9 +15,9 @@ class Partitioner<ItemType> {
             if (sourceLastIndex < startOffset) {
                 head = new ArrayList<>(list);
             } else {
-                head = list.subList(0, startOffset);
+                head = new ArrayList<>(list.subList(0, startOffset));
                 middle = new ArrayList<>(list.subList(startOffset, sourceLastIndex));
-                tail = list.subList(sourceLastIndex, list.size());
+                tail = new ArrayList<>(list.subList(sourceLastIndex, list.size()));
             }
         }
 
