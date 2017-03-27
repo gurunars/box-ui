@@ -12,9 +12,13 @@ class Partitioner<ItemType> {
 
         Partition(List<ItemType> list, int startOffset, int endOffset) {
             int sourceLastIndex = list.size() - endOffset;
-            head = list.subList(0, startOffset);
-            middle = list.subList(startOffset, sourceLastIndex);
-            tail = list.subList(sourceLastIndex, list.size());
+            if (sourceLastIndex < startOffset) {
+                head = new ArrayList<>(list);
+            } else {
+                head = list.subList(0, startOffset);
+                middle = new ArrayList<>(list.subList(startOffset, sourceLastIndex));
+                tail = list.subList(sourceLastIndex, list.size());
+            }
         }
 
         List<ItemType> getHead() {

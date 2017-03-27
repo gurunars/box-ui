@@ -19,14 +19,6 @@ class Differ<ItemType extends Item> implements BiFunction<List<ItemType>, List<I
     BiFunction<
         List<ItemType>,
         List<ItemType>,
-        List<ItemType>> intersectionFetcher =
-            new OrderedIntersectionFetcher<>();
-
-    @Inject
-    private
-    BiFunction<
-        List<ItemType>,
-        List<ItemType>,
         List<ItemType>> diffFetcher =
             new OrderedDiffFetcher<>();
 
@@ -59,6 +51,11 @@ class Differ<ItemType extends Item> implements BiFunction<List<ItemType>, List<I
         return changes;
     }
 
+    private List<ItemType> reverse(List<ItemType> original) {
+        Collections.reverse(original);
+        return original;
+    }
+
     @Nonnull
     @Override
     public List<Change<ItemType>> apply(List<ItemType> source, List<ItemType> target) {
@@ -70,31 +67,25 @@ class Differ<ItemType extends Item> implements BiFunction<List<ItemType>, List<I
         List<ItemType> sourceMiddle = tuple.getSource().getMiddle();
         List<ItemType> targetMiddle = tuple.getTarget().getMiddle();
 
-        List<ItemType> removed = diffFetcher.apply(sourceMiddle, targetMiddle);
-        Collections.reverse(removed);  // remove in a reverse order to prevent index recalculation
-
         List<Change<ItemType>> changes = new ArrayList<>();
 
-        for (ItemType item: removed) {
+        // remove in a reverse order to prevent index recalculation
+        for (ItemType item: reverse(diffFetcher.apply(sourceMiddle, targetMiddle))) {
             int position = sourceMiddle.indexOf(item);
             int realIndex = tuple.getStartOffset() + position;
             changes.add(new ChangeDelete<>(item, realIndex, realIndex));
             sourceMiddle.remove(position);
         }
 
-        List<ItemType> added = diffFetcher.apply(targetMiddle, sourceMiddle);
-
-        for (ItemType item: added) {
+        for (ItemType item: diffFetcher.apply(targetMiddle, sourceMiddle)) {
             int position = targetMiddle.indexOf(item);
             int realIndex = tuple.getStartOffset() + position;
             changes.add(new ChangeCreate<>(item, realIndex, realIndex));
             sourceMiddle.add(position, item);
         }
 
-        List<ItemType> intersectionSourceOrder = intersectionFetcher.apply(sourceMiddle, targetMiddle);
-        List<ItemType> intersectionTargetOrder = intersectionFetcher.apply(targetMiddle, sourceMiddle);
-
-        changes.addAll(fetcherPermutations.get(intersectionSourceOrder, intersectionTargetOrder));
+        // Fetch permutations in both
+        changes.addAll(fetcherPermutations.get(sourceMiddle, targetMiddle));
 
         changes.addAll(getUpdates(
                 tuple.getSource().getHead(),
@@ -109,7 +100,7 @@ class Differ<ItemType extends Item> implements BiFunction<List<ItemType>, List<I
         changes.addAll(getUpdates(
                 tuple.getSource().getTail(),
                 tuple.getTarget().getTail(),
-                tuple.getEndOffset())
+                tuple.getStartOffset() + sourceMiddle.size())
         );
 
         return changes;

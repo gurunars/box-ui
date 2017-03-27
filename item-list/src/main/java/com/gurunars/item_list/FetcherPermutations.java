@@ -3,7 +3,19 @@ package com.gurunars.item_list;
 import java.util.Collections;
 import java.util.List;
 
+import javax.inject.Inject;
+
+import java8.util.function.BiFunction;
+
 class FetcherPermutations<ItemType extends Item> {
+
+    @Inject
+    private
+    BiFunction<
+            List<ItemType>,
+            List<ItemType>,
+            List<ItemType>> intersectionFetcher =
+            new OrderedIntersectionFetcher<>();
 
     private
     FetcherUnidirectionalPermutations<ItemType> fetcherUnidirectionalPermutations =
@@ -14,8 +26,12 @@ class FetcherPermutations<ItemType extends Item> {
             new FetcherComplexPermutation<>();
 
     List<? extends Change<ItemType>> get(
-            List<ItemType> intersectionSourceOrder,
-            List<ItemType> intersectionTargetOrder) {
+            List<ItemType> sourceMiddle,
+            List<ItemType> targetMiddle) {
+        List<ItemType> intersectionSourceOrder =
+                intersectionFetcher.apply(sourceMiddle, targetMiddle);
+        List<ItemType> intersectionTargetOrder =
+                intersectionFetcher.apply(targetMiddle, sourceMiddle);
 
         List<ChangeMove<ItemType>> moves = fetcherUnidirectionalPermutations.get(
                 intersectionSourceOrder, intersectionTargetOrder, false);
