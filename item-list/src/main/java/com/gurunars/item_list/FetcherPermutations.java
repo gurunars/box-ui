@@ -27,16 +27,17 @@ class FetcherPermutations<ItemType extends Item> {
 
     List<? extends Change<ItemType>> get(
             List<ItemType> sourceMiddle,
-            List<ItemType> targetMiddle) {
+            List<ItemType> targetMiddle,
+            int startOffset) {
         List<ItemType> intersectionSourceOrder =
                 intersectionFetcher.apply(sourceMiddle, targetMiddle);
         List<ItemType> intersectionTargetOrder =
                 intersectionFetcher.apply(targetMiddle, sourceMiddle);
 
         List<ChangeMove<ItemType>> moves = fetcherUnidirectionalPermutations.get(
-                intersectionSourceOrder, intersectionTargetOrder, false);
+                intersectionSourceOrder, intersectionTargetOrder, startOffset, false);
         List<ChangeMove<ItemType>> movesReverse = fetcherUnidirectionalPermutations.get(
-                intersectionSourceOrder, intersectionTargetOrder, true);
+                intersectionSourceOrder, intersectionTargetOrder, startOffset, true);
 
         if (moves == null && movesReverse == null) {
 
@@ -45,7 +46,8 @@ class FetcherPermutations<ItemType extends Item> {
                             new ChangePersist<ItemType>() :
                             fetcherComplexPermutation.apply(
                                     intersectionSourceOrder,
-                                    intersectionTargetOrder)
+                                    intersectionTargetOrder,
+                                    startOffset)
             );
         }
 

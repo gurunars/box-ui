@@ -24,7 +24,7 @@ public class FetcherComplexPermutationTest {
                         new AnimalItem(3, 1),
                         new AnimalItem(2, 1),
                         new AnimalItem(4, 1)
-                )),
+                ), 0),
                 new ChangeComplexPermutation<>(1, Arrays.asList(
                         new AnimalItem(3, 1),
                         new AnimalItem(2, 1)

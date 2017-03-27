@@ -13,6 +13,7 @@ class FetcherUnidirectionalPermutations<ItemType extends Item> {
     @Nullable
     List<ChangeMove<ItemType>> get(List<ItemType> remainedOrderOneOriginal,
                                    List<ItemType> remainedOrderTwo,
+                                   int startOffset,
                                    boolean reverse) {
         List<ChangeMove<ItemType>> changes = new ArrayList<>();
         List<ItemType> remainedOrderOne = new ArrayList<>(remainedOrderOneOriginal);
@@ -22,7 +23,7 @@ class FetcherUnidirectionalPermutations<ItemType extends Item> {
             int to = remainedOrderTwo.indexOf(item);
 
             if (from != to) {
-                changes.add(new ChangeMove<>(item, from, to));
+                changes.add(new ChangeMove<>(item, startOffset + from, startOffset + to));
                 if (changes.size() > moveThreshold) {
                     return null;
                 }

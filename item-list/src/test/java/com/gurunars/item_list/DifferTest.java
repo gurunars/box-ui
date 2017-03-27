@@ -217,7 +217,7 @@ public class DifferTest {
     @Test
     public void movesDeltaOne() {
         assertEquals(
-                Arrays.asList(
+                Collections.singletonList(
                         new ChangeMove<>(new AnimalItem(4, 2), 3, 4)
                 ),
                 differ.apply(

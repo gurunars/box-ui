@@ -1,7 +1,5 @@
 package com.gurunars.item_list;
 
-import android.util.Log;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -95,7 +93,7 @@ class Differ<ItemType extends Item> implements BiFunction<List<ItemType>, List<I
         //timing.tick("ADDITIONS");
 
         // Fetch permutations in both
-        changes.addAll(fetcherPermutations.get(sourceMiddle, targetMiddle));
+        changes.addAll(fetcherPermutations.get(sourceMiddle, targetMiddle, tuple.getStartOffset()));
 
         //timing.tick("MOVES");
 
