@@ -5,13 +5,43 @@ import java.util.List;
 
 class DifferOptimizer<ItemType> {
 
-    static class OptimizedDiff<ItemType> {
-        private List<ItemType> sourceHead = new ArrayList<>();
-        private List<ItemType> sourceMiddle = new ArrayList<>();
-        private List<ItemType> sourceTail = new ArrayList<>();
-        private List<ItemType> targetHead = new ArrayList<>();
-        private List<ItemType> targetMiddle = new ArrayList<>();
-        private List<ItemType> targetTail = new ArrayList<>();
+    static class Partition<ItemType> {
+        private List<ItemType> head = new ArrayList<>();
+        private List<ItemType> middle = new ArrayList<>();
+        private List<ItemType> tail = new ArrayList<>();
+
+        Partition(List<ItemType> list, int startOffset, int endOffset) {
+            int sourceLastIndex = (list.size() - 1) - endOffset;
+            head = list.subList(0, startOffset);
+            middle = list.subList(startOffset, sourceLastIndex);
+            tail = list.subList(sourceLastIndex, list.size());
+        }
+
+        List<ItemType> getHead() {
+            return head;
+        }
+
+        List<ItemType> getMiddle() {
+            return middle;
+        }
+
+        List<ItemType> getTail() {
+            return tail;
+        }
+    }
+
+    static class PartitionTuple<ItemType> {
+
+        private Partition<ItemType> source;
+        private Partition<ItemType> target;
+
+        Partition<ItemType> getSource() {
+            return source;
+        }
+
+        Partition<ItemType> getTarget() {
+            return target;
+        }
     }
 
     int getStartOffset(List<ItemType> source, List<ItemType> target) {
@@ -40,24 +70,14 @@ class DifferOptimizer<ItemType> {
         return endOffset;
     }
 
-    OptimizedDiff<ItemType> apply(List<ItemType> source, List<ItemType> target) {
-
+    PartitionTuple<ItemType> apply(List<ItemType> source, List<ItemType> target) {
         int startOffset = getStartOffset(source, target);
         int endOffset = getEndOffset(source, target);
 
-        int sourceLastIndex = (source.size() - 1) - endOffset;
-        int targetLastIndex = (target.size() - 1) - endOffset;
-
-        OptimizedDiff<ItemType> diff = new OptimizedDiff<>();
-
-        diff.sourceHead = source.subList(0, startOffset);
-        diff.targetHead = target.subList(0, startOffset);
-        diff.sourceTail = source.subList(sourceLastIndex, source.size());
-        diff.targetTail = target.subList(targetLastIndex, target.size());
-        diff.sourceMiddle = source.subList(startOffset, sourceLastIndex);
-        diff.targetMiddle = target.subList(startOffset, targetLastIndex);
-
-        return diff;
+        PartitionTuple<ItemType> tuple = new PartitionTuple<>();
+        tuple.source = new Partition<>(source, startOffset, endOffset);
+        tuple.target = new Partition<>(target, startOffset, endOffset);
+        return tuple;
     }
 
 }
