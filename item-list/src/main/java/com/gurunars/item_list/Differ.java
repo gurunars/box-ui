@@ -7,48 +7,23 @@ import java.util.List;
 import java.util.Set;
 
 import javax.annotation.Nonnull;
-import javax.inject.Inject;
 
 import java8.util.function.BiFunction;
 
 
 class Differ<ItemType extends Item> implements BiFunction<List<ItemType>, List<ItemType>, List<Change<ItemType>>> {
 
-    @Inject
-    private
-    BiFunction<
-        List<ItemType>,
-        List<ItemType>,
-        List<ItemType>> diffFetcher =
-            new OrderedDiffFetcher<>();
-
-    @Inject
-    private
-    FetcherPermutations<ItemType> fetcherPermutations = new FetcherPermutations<>();
-
-    @Inject
+    private BiFunction<List<ItemType>, List<ItemType>, List<ItemType>> diffFetcher = new OrderedDiffFetcher<>();
+    private FetcherPermutations<ItemType> fetcherPermutations = new FetcherPermutations<>();
     private Partitioner<ItemType> partitioner = new Partitioner<>();
+    private PlainUpdateFetcher<ItemType> plainUpdateFetcher = new PlainUpdateFetcher<>();
+    private MutatedUpdateFetcher<ItemType> mutatedUpdateFetcher = new MutatedUpdateFetcher<>();
 
     private void verifyNoDuplicates(List<ItemType> items) {
         Set<ItemType> set = new HashSet<>(items);
         if (set.size() != items.size()) {
             throw new RuntimeException("The list of items contains duplicates");
         }
-    }
-
-    private List<Change<ItemType>> getUpdates(
-            List<ItemType> sourceList, List<ItemType> targetList, int offset) {
-        List<Change<ItemType>> changes = new ArrayList<>();
-
-        for (int i=0; i < sourceList.size(); i++) {
-            ItemType newItem = targetList.get(i);
-            int realIndex = offset + i;
-            if (!sourceList.get(i).payloadsEqual(newItem)) {
-                changes.add(new ChangeUpdate<>(newItem, realIndex, realIndex));
-            }
-        }
-
-        return changes;
     }
 
     private List<ItemType> reverse(List<ItemType> original) {
@@ -97,18 +72,19 @@ class Differ<ItemType extends Item> implements BiFunction<List<ItemType>, List<I
 
         //timing.tick("MOVES");
 
-        changes.addAll(getUpdates(
+        changes.addAll(plainUpdateFetcher.get(
                 tuple.getSource().getHead(),
                 tuple.getTarget().getHead(),
                 0)
         );
 
-        changes.addAll(getUpdates(
+        changes.addAll(mutatedUpdateFetcher.get(
                 sourceMiddle,
                 targetMiddle,
                 tuple.getStartOffset())
         );
-        changes.addAll(getUpdates(
+
+        changes.addAll(plainUpdateFetcher.get(
                 tuple.getSource().getTail(),
                 tuple.getTarget().getTail(),
                 tuple.getStartOffset() + sourceMiddle.size())
@@ -118,4 +94,5 @@ class Differ<ItemType extends Item> implements BiFunction<List<ItemType>, List<I
 
         return changes;
     }
+
 }

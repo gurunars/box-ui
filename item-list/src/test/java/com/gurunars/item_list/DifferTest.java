@@ -152,8 +152,8 @@ public class DifferTest {
                         new ChangeCreate<>(new AnimalItem(9, 1), 4, 4),
                         new ChangeMove<>(new AnimalItem(1, 1), 1, 3),
                         new ChangeMove<>(new AnimalItem(3, 1), 1, 2),
-                        new ChangeUpdate<>(new AnimalItem(3, 2), 2, 2),
-                        new ChangeUpdate<>(new AnimalItem(1, 2), 3, 3)
+                        new ChangeUpdate<>(new AnimalItem(1, 2), 3, 3),
+                        new ChangeUpdate<>(new AnimalItem(3, 2), 2, 2)
                 ),
                 differ.apply(
                         Arrays.asList(
