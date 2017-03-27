@@ -44,62 +44,73 @@ class Differ<ItemType extends Item> implements BiFunction<List<ItemType>, List<I
         }
     }
 
+    private List<Change<ItemType>> getUpdates(
+            List<ItemType> sourceList, List<ItemType> targetList, int offset) {
+        List<Change<ItemType>> changes = new ArrayList<>();
+
+        for (int i=0; i < sourceList.size(); i++) {
+            ItemType newItem = targetList.get(i);
+            int realIndex = offset + i;
+            if (!sourceList.get(i).payloadsEqual(newItem)) {
+                changes.add(new ChangeUpdate<>(newItem, realIndex, realIndex));
+            }
+        }
+
+        return changes;
+    }
+
     @Nonnull
     @Override
     public List<Change<ItemType>> apply(List<ItemType> source, List<ItemType> target) {
 
-        List<ItemType> sourceList = new ArrayList<>(source);
-        List<ItemType> targetList = new ArrayList<>(target);
+        verifyNoDuplicates(target);
 
         Partitioner.PartitionTuple<ItemType> tuple = partitioner.apply(source, target);
 
-        verifyNoDuplicates(sourceList);
+        List<ItemType> sourceMiddle = tuple.getSource().getMiddle();
+        List<ItemType> targetMiddle = tuple.getTarget().getMiddle();
 
-        List<ItemType> removed = diffFetcher.apply(
-                tuple.getSource().getMiddle(),
-                tuple.getTarget().getMiddle()
-        );
+        List<ItemType> removed = diffFetcher.apply(sourceMiddle, targetMiddle);
         Collections.reverse(removed);  // remove in a reverse order to prevent index recalculation
 
         List<Change<ItemType>> changes = new ArrayList<>();
 
         for (ItemType item: removed) {
-            int position = sourceList.indexOf(item);
-            changes.add(new ChangeDelete<>(item, position, position));
-            sourceList.remove(position);
+            int position = sourceMiddle.indexOf(item);
+            int realIndex = tuple.getStartOffset() + position;
+            changes.add(new ChangeDelete<>(item, realIndex, realIndex));
+            sourceMiddle.remove(position);
         }
 
-        List<ItemType> added = diffFetcher.apply(
-                tuple.getTarget().getMiddle(),
-                tuple.getSource().getMiddle()
-        );
+        List<ItemType> added = diffFetcher.apply(targetMiddle, sourceMiddle);
 
         for (ItemType item: added) {
-            int position = targetList.indexOf(item);
-            changes.add(new ChangeCreate<>(item, position, position));
-            sourceList.add(position, item);
+            int position = targetMiddle.indexOf(item);
+            int realIndex = tuple.getStartOffset() + position;
+            changes.add(new ChangeCreate<>(item, realIndex, realIndex));
+            sourceMiddle.add(position, item);
         }
 
-        List<ItemType> intersectionSourceOrder =
-                intersectionFetcher.apply(
-                        tuple.getSource().getMiddle(),
-                        tuple.getTarget().getMiddle()
-                );
-        List<ItemType> intersectionTargetOrder =
-                intersectionFetcher.apply(
-                        tuple.getTarget().getMiddle(),
-                        tuple.getSource().getMiddle()
-                );
+        List<ItemType> intersectionSourceOrder = intersectionFetcher.apply(sourceMiddle, targetMiddle);
+        List<ItemType> intersectionTargetOrder = intersectionFetcher.apply(targetMiddle, sourceMiddle);
 
         changes.addAll(fetcherPermutations.get(intersectionSourceOrder, intersectionTargetOrder));
 
-        for (ItemType item: sourceList) {
-            int index = targetList.indexOf(item);
-            ItemType newItem = targetList.get(index);
-            if (!item.payloadsEqual(newItem)) {
-                changes.add(new ChangeUpdate<>(newItem, index, index));
-            }
-        }
+        changes.addAll(getUpdates(
+                tuple.getSource().getHead(),
+                tuple.getTarget().getHead(),
+                0)
+        );
+        changes.addAll(getUpdates(
+                sourceMiddle,
+                targetMiddle,
+                tuple.getStartOffset())
+        );
+        changes.addAll(getUpdates(
+                tuple.getSource().getTail(),
+                tuple.getTarget().getTail(),
+                tuple.getEndOffset())
+        );
 
         return changes;
     }
