@@ -2,6 +2,7 @@ package com.gurunars.item_list;
 
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -62,14 +63,45 @@ public class DifferOptimizerTest {
     @Test
     public void getPartition() throws Exception {
         DifferOptimizer.Partition<Integer> partition = new DifferOptimizer.Partition<>(
-                Arrays.asList(1,2,3,4,5,6,7,8,9,10,11,12), 4, 8
+                Arrays.asList(1,2,3,4,5,6,7,8,9,10,11,12), 4, 4
         );
 
-        assertEquals(partition.getHead(), Arrays.asList(1,2,3,4));
-        assertEquals(partition.getMiddle(), Arrays.asList(5,6,7,8));
-        assertEquals(partition.getTail(), Arrays.asList(9,10,11,12));
-
+        assertEquals(Arrays.asList(1,2,3,4), partition.getHead());
+        assertEquals(Arrays.asList(5,6,7,8), partition.getMiddle());
+        assertEquals(Arrays.asList(9,10,11,12), partition.getTail());
     }
 
+    @Test
+    public void getPartitionEmptyTail() throws Exception {
+        DifferOptimizer.Partition<Integer> partition = new DifferOptimizer.Partition<>(
+                Arrays.asList(1,2,3,4,5,6,7,8,9,10,11,12), 4, 0
+        );
+
+        assertEquals(Arrays.asList(1,2,3,4), partition.getHead());
+        assertEquals(Arrays.asList(5,6,7,8,9,10,11,12), partition.getMiddle());
+        assertEquals(new ArrayList<Integer>(), partition.getTail());
+    }
+
+    @Test
+    public void getPartitionEmptyHead() throws Exception {
+        DifferOptimizer.Partition<Integer> partition = new DifferOptimizer.Partition<>(
+                Arrays.asList(1,2,3,4,5,6,7,8,9,10,11,12), 0, 4
+        );
+
+        assertEquals(new ArrayList<Integer>(), partition.getHead());
+        assertEquals(Arrays.asList(1,2,3,4,5,6,7,8), partition.getMiddle());
+        assertEquals(Arrays.asList(9,10,11,12), partition.getTail());
+    }
+
+    @Test
+    public void getPartitionEmptyMiddle() throws Exception {
+        DifferOptimizer.Partition<Integer> partition = new DifferOptimizer.Partition<>(
+                Arrays.asList(1,2,3,4,5,6,7,8,9,10,11,12), 6, 6
+        );
+
+        assertEquals(Arrays.asList(1,2,3,4,5,6), partition.getHead());
+        assertEquals(new ArrayList<Integer>(), partition.getMiddle());
+        assertEquals(Arrays.asList(7,8,9,10,11,12), partition.getTail());
+    }
 
 }

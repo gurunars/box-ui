@@ -11,7 +11,7 @@ class DifferOptimizer<ItemType> {
         private List<ItemType> tail = new ArrayList<>();
 
         Partition(List<ItemType> list, int startOffset, int endOffset) {
-            int sourceLastIndex = (list.size() - 1) - endOffset;
+            int sourceLastIndex = list.size() - endOffset;
             head = list.subList(0, startOffset);
             middle = list.subList(startOffset, sourceLastIndex);
             tail = list.subList(sourceLastIndex, list.size());
