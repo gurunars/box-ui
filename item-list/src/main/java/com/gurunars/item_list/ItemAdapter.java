@@ -68,6 +68,7 @@ class ItemAdapter<ItemType extends Item> extends RecyclerView.Adapter<BindableVi
                 scroller.scrollToPosition(position);
             }
         }
+
     }
 
     @Override

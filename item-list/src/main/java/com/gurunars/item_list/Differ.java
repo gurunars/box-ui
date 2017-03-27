@@ -71,9 +71,6 @@ class Differ<ItemType extends Item> implements BiFunction<List<ItemType>, List<I
         List<ItemType> sourceMiddle = tuple.getSource().getMiddle();
         List<ItemType> targetMiddle = tuple.getTarget().getMiddle();
 
-        Log.e("SO", "" + tuple.getStartOffset());
-        Log.e("EO", "" + tuple.getEndOffset());
-
         List<Change<ItemType>> changes = new ArrayList<>();
 
         //timing.tick("INIT");

@@ -42,13 +42,13 @@ class CollectionManager<ItemType extends Item> implements Serializable {
                 filteredSelection.add(items.get(items.indexOf(cursor)));
             }
         }
-
         boolean selectionChanged = !selectedItems.equals(filteredSelection);
         selectedItems = filteredSelection;
         List<SelectableItem<ItemType>> selectableItems = new ArrayList<>();
         for (ItemType item: items) {
             selectableItems.add(new SelectableItem<>(item, selectedItems.contains(item)));
         }
+
         stateChangeHandler.accept(selectableItems);
         if (selectionChanged) {
             selectionChangeListener.run();
