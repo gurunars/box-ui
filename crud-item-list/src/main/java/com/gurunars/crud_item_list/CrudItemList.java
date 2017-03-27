@@ -159,8 +159,8 @@ public final class CrudItemList<ItemType extends Item> extends RelativeLayout {
                         return;
                     }
                     action.perform(items, selectedItems);
-                    itemList.setItems(items);
                     itemList.setSelectedItems(selectedItems);
+                    itemList.setItems(items);
                     setUpActions();
                     throttleBuffer.call(new Runnable() {
                         @Override

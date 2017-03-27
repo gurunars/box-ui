@@ -1,5 +1,7 @@
 package com.gurunars.item_list;
 
+import android.util.Log;
+
 import com.esotericsoftware.kryo.Kryo;
 
 import org.objenesis.strategy.StdInstantiatorStrategy;
@@ -33,16 +35,16 @@ class CollectionManager<ItemType extends Item> implements Serializable {
 
     private void changed(List<ItemType> newItems, Set<ItemType> newSelection) {
         this.items = newItems;
-        Set<ItemType> filteredSelection = new HashSet<>(newSelection);
-        for (ItemType cursor: filteredSelection) {
-            newSelection.remove(cursor);
+        Set<ItemType> filteredSelection = new HashSet<>();
+        for (ItemType cursor: newSelection) {
             if (items.contains(cursor)) {
                 // This is to replace the item's payload with a new one
-                newSelection.add(items.get(items.indexOf(cursor)));
+                filteredSelection.add(items.get(items.indexOf(cursor)));
             }
         }
+
         boolean selectionChanged = !selectedItems.equals(filteredSelection);
-        selectedItems = newSelection;
+        selectedItems = filteredSelection;
         List<SelectableItem<ItemType>> selectableItems = new ArrayList<>();
         for (ItemType item: items) {
             selectableItems.add(new SelectableItem<>(item, selectedItems.contains(item)));
@@ -84,7 +86,7 @@ class CollectionManager<ItemType extends Item> implements Serializable {
     }
 
     void setSelectedItems(Set<ItemType> selectedItems) {
-        changed(items, kryo.copy(new HashSet<>(selectedItems)));
+        changed(kryo.copy(new ArrayList<>(items)), kryo.copy(new HashSet<>(selectedItems)));
     }
 
     Set<ItemType> getSelectedItems() {
