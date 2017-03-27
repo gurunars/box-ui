@@ -34,6 +34,9 @@ class Differ<ItemType extends Item> implements BiFunction<List<ItemType>, List<I
     private
     FetcherPermutations<ItemType> fetcherPermutations = new FetcherPermutations<>();
 
+    @Inject
+    private Partitioner<ItemType> partitioner = new Partitioner<>();
+
     private void verifyNoDuplicates(List<ItemType> items) {
         Set<ItemType> set = new HashSet<>(items);
         if (set.size() != items.size()) {
@@ -45,19 +48,18 @@ class Differ<ItemType extends Item> implements BiFunction<List<ItemType>, List<I
     @Override
     public List<Change<ItemType>> apply(List<ItemType> source, List<ItemType> target) {
 
-        TmpTiming timing = new TmpTiming();
-
         List<ItemType> sourceList = new ArrayList<>(source);
         List<ItemType> targetList = new ArrayList<>(target);
 
+        Partitioner.PartitionTuple<ItemType> tuple = partitioner.apply(source, target);
+
         verifyNoDuplicates(sourceList);
 
-        timing.tick("INIT");
-
-        List<ItemType> removed = diffFetcher.apply(sourceList, targetList);
+        List<ItemType> removed = diffFetcher.apply(
+                tuple.getSource().getMiddle(),
+                tuple.getTarget().getMiddle()
+        );
         Collections.reverse(removed);  // remove in a reverse order to prevent index recalculation
-
-        timing.tick("REMOVED FIND");
 
         List<Change<ItemType>> changes = new ArrayList<>();
 
@@ -67,11 +69,10 @@ class Differ<ItemType extends Item> implements BiFunction<List<ItemType>, List<I
             sourceList.remove(position);
         }
 
-        timing.tick("REMOVED CHANGES");
-
-        List<ItemType> added = diffFetcher.apply(targetList, sourceList);
-
-        timing.tick("ADDED FIND");
+        List<ItemType> added = diffFetcher.apply(
+                tuple.getTarget().getMiddle(),
+                tuple.getSource().getMiddle()
+        );
 
         for (ItemType item: added) {
             int position = targetList.indexOf(item);
@@ -79,18 +80,18 @@ class Differ<ItemType extends Item> implements BiFunction<List<ItemType>, List<I
             sourceList.add(position, item);
         }
 
-        timing.tick("ADDED CHANGES");
-
         List<ItemType> intersectionSourceOrder =
-                intersectionFetcher.apply(sourceList, targetList);
-        timing.tick("INTERS OD 1");
+                intersectionFetcher.apply(
+                        tuple.getSource().getMiddle(),
+                        tuple.getTarget().getMiddle()
+                );
         List<ItemType> intersectionTargetOrder =
-                intersectionFetcher.apply(targetList, sourceList);
-        timing.tick("INTERS OD 2");
+                intersectionFetcher.apply(
+                        tuple.getTarget().getMiddle(),
+                        tuple.getSource().getMiddle()
+                );
 
         changes.addAll(fetcherPermutations.get(intersectionSourceOrder, intersectionTargetOrder));
-
-        timing.tick("PERMUTATIONS FIND");
 
         for (ItemType item: sourceList) {
             int index = targetList.indexOf(item);
@@ -99,8 +100,6 @@ class Differ<ItemType extends Item> implements BiFunction<List<ItemType>, List<I
                 changes.add(new ChangeUpdate<>(newItem, index, index));
             }
         }
-
-        timing.tick("PERMUTATIONS CHANGES");
 
         return changes;
     }
