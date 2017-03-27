@@ -1,5 +1,7 @@
 package com.gurunars.item_list;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -62,12 +64,19 @@ class Differ<ItemType extends Item> implements BiFunction<List<ItemType>, List<I
 
         verifyNoDuplicates(target);
 
+        TmpTiming timing = new TmpTiming();
+
         Partitioner.PartitionTuple<ItemType> tuple = partitioner.apply(source, target);
 
         List<ItemType> sourceMiddle = tuple.getSource().getMiddle();
         List<ItemType> targetMiddle = tuple.getTarget().getMiddle();
 
+        Log.e("SRC", "" + sourceMiddle);
+        Log.e("TRG", "" + targetMiddle);
+
         List<Change<ItemType>> changes = new ArrayList<>();
+
+        //timing.tick("INIT");
 
         // remove in a reverse order to prevent index recalculation
         for (ItemType item: reverse(diffFetcher.apply(sourceMiddle, targetMiddle))) {
@@ -77,6 +86,8 @@ class Differ<ItemType extends Item> implements BiFunction<List<ItemType>, List<I
             sourceMiddle.remove(position);
         }
 
+        //timing.tick("REMOVALS");
+
         for (ItemType item: diffFetcher.apply(targetMiddle, sourceMiddle)) {
             int position = targetMiddle.indexOf(item);
             int realIndex = tuple.getStartOffset() + position;
@@ -84,14 +95,22 @@ class Differ<ItemType extends Item> implements BiFunction<List<ItemType>, List<I
             sourceMiddle.add(position, item);
         }
 
+        //timing.tick("ADDITIONS");
+
         // Fetch permutations in both
         changes.addAll(fetcherPermutations.get(sourceMiddle, targetMiddle));
+
+        //timing.tick("MOVES");
 
         changes.addAll(getUpdates(
                 tuple.getSource().getHead(),
                 tuple.getTarget().getHead(),
                 0)
         );
+
+        Log.e("SRC 2", "" + sourceMiddle);
+        Log.e("TRG 2", "" + targetMiddle);
+
         changes.addAll(getUpdates(
                 sourceMiddle,
                 targetMiddle,
@@ -102,6 +121,8 @@ class Differ<ItemType extends Item> implements BiFunction<List<ItemType>, List<I
                 tuple.getTarget().getTail(),
                 tuple.getStartOffset() + sourceMiddle.size())
         );
+
+        //timing.tick("UPDATES");
 
         return changes;
     }
