@@ -30,7 +30,7 @@ public class ActivityMain extends AppCompatActivity {
             return;
         }
         model.clear();
-        for (int i=0; i < 50; i++) {
+        for (int i=0; i < 1; i++) {
             model.createItem(new AnimalItem(AnimalItem.Type.LION));
             model.createItem(new AnimalItem(AnimalItem.Type.TIGER));
             model.createItem(new AnimalItem(AnimalItem.Type.MONKEY));
