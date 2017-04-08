@@ -210,6 +210,7 @@ public final class CrudItemList<ItemType extends Item> extends RelativeLayout {
         floatingMenu.setCloseIcon(R.drawable.ic_check);
         floatingMenu.setHasOverlay(false);
         setUpActions();
+        floatingMenu.open();
     }
 
     private void setUpCreationMenu() {
