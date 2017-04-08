@@ -7,8 +7,8 @@ def buildInfo = [
     gitUrl: 'git@github.com:gurunars/android-crud-ui.git',
     name: MODULE_NAME,
     group: MODULE_GROUP,
-    version: "0.55",
-    versionCode: 55,
+    version: "0.56",
+    versionCode: 56,
     license: "Apache-2.0"
 ]
 
