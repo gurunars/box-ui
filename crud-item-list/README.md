@@ -105,7 +105,7 @@ one has to be changed:
 
 crudItemList.setItemEditListener(new ItemEditListener<AnimalItem>() {
     @Override
-    public void onEdit(Item<AnimalItem> editableItem, boolean isNew) {
+    public void onEdit(Item<AnimalItem> editableItem) {
         editableItem.update();
         model.updateItem(editableItem);
         crudItemList.setItems(model.getItems());

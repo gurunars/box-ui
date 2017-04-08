@@ -15,8 +15,8 @@ import com.gurunars.floatmenu.FloatMenu;
 import com.gurunars.item_list.EmptyViewBinder;
 import com.gurunars.item_list.Item;
 import com.gurunars.item_list.ItemViewBinder;
-import com.gurunars.item_list.SelectableItemList;
 import com.gurunars.item_list.SelectableItem;
+import com.gurunars.item_list.SelectableItemList;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -64,7 +64,7 @@ public final class CrudItemList<ItemType extends Item> extends RelativeLayout {
             put(R.id.edit, new ActionEdit<>(new Consumer<ItemType>() {
                 @Override
                 public void accept(ItemType payload) {
-                    itemEditListener.onEdit(payload, false);
+                    itemEditListener.onEdit(payload);
                 }
             }));
             put(R.id.moveUp, new ActionMoveUp<ItemType>());
@@ -132,7 +132,6 @@ public final class CrudItemList<ItemType extends Item> extends RelativeLayout {
                     floatingMenu.close();
                 } else {
                     setUpContextualMenu();
-                    floatingMenu.open();
                 }
             }
         });
@@ -208,6 +207,7 @@ public final class CrudItemList<ItemType extends Item> extends RelativeLayout {
         floatingMenu.setCloseIcon(R.drawable.ic_check);
         floatingMenu.setHasOverlay(false);
         setUpActions();
+        floatingMenu.open();
     }
 
     private void setUpCreationMenu() {

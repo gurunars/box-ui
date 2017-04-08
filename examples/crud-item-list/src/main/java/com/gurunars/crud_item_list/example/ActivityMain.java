@@ -74,7 +74,7 @@ public class ActivityMain extends AppCompatActivity {
         crudItemList.setCreationMenu(creationMenu);
         crudItemList.setItemEditListener(new ItemEditListener<AnimalItem>() {
             @Override
-            public void onEdit(AnimalItem editableItem, boolean isNew) {
+            public void onEdit(AnimalItem editableItem) {
                 editableItem.update();
                 model.updateItem(editableItem);
                 crudItemList.setItems(model.getItems());

@@ -13,14 +13,13 @@ public interface ItemEditListener<ItemType extends Item> {
 
     /**
      * @param editableItem item to be altered
-     * @param isNew flag specifying if the item is new or an existing one
      */
-    void onEdit(ItemType editableItem, boolean isNew);
+    void onEdit(ItemType editableItem);
 
     class DefaultItemEditListener<ItemType extends Item> implements ItemEditListener<ItemType> {
 
         @Override
-        public void onEdit(ItemType editableItem, boolean isNew) {
+        public void onEdit(ItemType editableItem) {
 
         }
     }
