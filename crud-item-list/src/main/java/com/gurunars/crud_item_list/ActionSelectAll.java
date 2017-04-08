@@ -6,8 +6,9 @@ import java.util.Set;
 final class ActionSelectAll<ItemType> implements Action<ItemType> {
 
     @Override
-    public void perform(List<ItemType> all, Set<ItemType> selectedItems) {
+    public boolean perform(List<ItemType> all, Set<ItemType> selectedItems) {
         selectedItems.addAll(all);
+        return true;
     }
 
     @Override

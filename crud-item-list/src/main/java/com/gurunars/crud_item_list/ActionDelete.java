@@ -6,8 +6,9 @@ import java.util.Set;
 final class ActionDelete<ItemType> implements Action<ItemType> {
 
     @Override
-    public void perform(List<ItemType> all, Set<ItemType> selectedItems) {
+    public boolean perform(List<ItemType> all, Set<ItemType> selectedItems) {
         all.removeAll(selectedItems);
+        return true;
     }
 
     @Override

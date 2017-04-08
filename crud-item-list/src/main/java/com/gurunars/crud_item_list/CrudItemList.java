@@ -158,16 +158,17 @@ public final class CrudItemList<ItemType extends Item> extends RelativeLayout {
                     if (!action.canPerform(items, selectedItems)) {
                         return;
                     }
-                    action.perform(items, selectedItems);
-                    itemList.setSelectedItems(selectedItems);
-                    itemList.setItems(items);
-                    setUpActions();
-                    throttleBuffer.call(new Runnable() {
-                        @Override
-                        public void run() {
-                            listChangeListener.onChange(items);
-                        }
-                    });
+                    if(action.perform(items, selectedItems)) {
+                        itemList.setSelectedItems(selectedItems);
+                        itemList.setItems(items);
+                        setUpActions();
+                        throttleBuffer.call(new Runnable() {
+                            @Override
+                            public void run() {
+                                listChangeListener.onChange(items);
+                            }
+                        });
+                    }
                 }
             });
         }

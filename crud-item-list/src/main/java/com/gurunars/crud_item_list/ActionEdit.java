@@ -21,11 +21,12 @@ final class ActionEdit<ItemType> implements Action<ItemType> {
     }
 
     @Override
-    public void perform(List<ItemType> all, Set<ItemType> selectedItems) {
+    public boolean perform(List<ItemType> all, Set<ItemType> selectedItems) {
         Iterator<ItemType> iterator = selectedItems.iterator();
         if (iterator.hasNext()) {
             itemConsumer.accept(kryo.copy(iterator.next()));
         }
+        return false;
     }
 
     @Override

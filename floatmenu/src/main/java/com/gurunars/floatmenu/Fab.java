@@ -39,6 +39,7 @@ class Fab extends FrameLayout {
     @State int rotationDuration = 400;
 
     private ImageView actualImageView;
+    private boolean activatedStateCursor;
 
     public Fab(Context context) {
         this(context, null);
@@ -62,7 +63,7 @@ class Fab extends FrameLayout {
     }
 
     private void reloadUi() {
-        currentIcon = isActivated() ? closeIcon : openIcon;
+        currentIcon = activatedStateCursor ? closeIcon : openIcon;
         // Bg
         setBackground(new ColoredShapeDrawable(new OvalShape(), currentBgColor));
         AutoBg.apply(this, 6);
@@ -120,6 +121,7 @@ class Fab extends FrameLayout {
         currentBgColor = isActivated() ? closeIconBgColor : openIconBgColor;
         currentFgColor = isActivated() ? closeIconFgColor : openIconFgColor;
         actualImageView.setRotation(isActivated() ? 360 : 0);
+        activatedStateCursor = isActivated();
         reloadUi();
     }
 
@@ -145,7 +147,7 @@ class Fab extends FrameLayout {
             return;
         }
 
-        final boolean originalState = isActivated();
+        super.setActivated(isActive);
 
         ObjectAnimator rotation = ObjectAnimator.ofFloat(actualImageView,
                 "rotation",
@@ -194,7 +196,7 @@ class Fab extends FrameLayout {
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        Fab.super.setActivated(isActive);
+                        activatedStateCursor = isActive;
                         reloadUi();
                     }
                 }, rotationDuration / 2);
@@ -202,7 +204,7 @@ class Fab extends FrameLayout {
 
             @Override
             public void onAnimationCancel(Animator animation) {
-                Fab.super.setActivated(originalState);
+                activatedStateCursor = isActive;
                 reloadUi();
             }
         });

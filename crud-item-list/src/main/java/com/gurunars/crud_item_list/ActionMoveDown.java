@@ -15,12 +15,13 @@ final class ActionMoveDown<ItemType> implements Action<ItemType> {
             new CheckerSolidChunk();
 
     @Override
-    public void perform(final List<ItemType> all, final Set<ItemType> selectedItems) {
+    public boolean perform(final List<ItemType> all, final Set<ItemType> selectedItems) {
         List<Integer> positions = positionFetcher.apply(all, selectedItems);
         int positionToMoveUp = positions.get(positions.size()-1) + 1;
         ItemType itemToMoveUp = all.get(positionToMoveUp);
         all.remove(positionToMoveUp);
         all.add(positions.get(0), itemToMoveUp);
+        return true;
     }
 
     @Override

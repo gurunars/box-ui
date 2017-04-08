@@ -4,6 +4,7 @@ apply from: '../all-modules.gradle'
 dependencies {
     compile 'frankiesardo:icepick:3.2.0'
     provided 'frankiesardo:icepick-processor:3.2.0'
+    compile 'com.orhanobut:logger:1.15'
     compile 'com.esotericsoftware:kryo:4.0.0'
     compile 'javax.inject:javax.inject:1'
     compile 'com.google.code.findbugs:jsr305:2.0.1'
