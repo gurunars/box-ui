@@ -133,6 +133,6 @@ public final class SelectableItemList<ItemType extends Item> extends FrameLayout
     protected void onRestoreInstanceState(Parcelable state) {
         Bundle localState = (Bundle) state;
         super.onRestoreInstanceState(localState.getParcelable("superState"));
-        collectionManager.setSelectedItems((HashSet<ItemType>) localState.getSerializable("selectedItems"));
+        setSelectedItems((HashSet<ItemType>) localState.getSerializable("selectedItems"));
     }
 }

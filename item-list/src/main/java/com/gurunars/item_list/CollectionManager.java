@@ -1,7 +1,5 @@
 package com.gurunars.item_list;
 
-import android.util.Log;
-
 import com.esotericsoftware.kryo.Kryo;
 
 import org.objenesis.strategy.StdInstantiatorStrategy;
