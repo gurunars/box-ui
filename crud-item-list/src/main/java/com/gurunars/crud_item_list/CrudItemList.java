@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import icepick.Icepick;
 import icepick.State;
 import java8.util.function.Consumer;
 
@@ -222,9 +223,13 @@ public final class CrudItemList<ItemType extends Item> extends RelativeLayout {
     }
 
     @Override
-    protected void onRestoreInstanceState(Parcelable state) {
-        super.onRestoreInstanceState(state);
+    protected Parcelable onSaveInstanceState() {
+        return Icepick.saveInstanceState(this, super.onSaveInstanceState());
+    }
 
+    @Override
+    protected void onRestoreInstanceState(Parcelable state) {
+        super.onRestoreInstanceState(Icepick.restoreInstanceState(this, state));
     }
 
     @Override
