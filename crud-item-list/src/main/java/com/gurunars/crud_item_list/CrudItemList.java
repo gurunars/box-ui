@@ -177,6 +177,9 @@ public final class CrudItemList<ItemType extends Item> extends RelativeLayout {
     private void reload() {
         floatingMenu.setOpenIconBgColor(openBgColor);
         floatingMenu.setOpenIconFgColor(openFgColor);
+        if (!floatingMenu.isOpen()) {
+            itemList.setSelectedItems(new HashSet<ItemType>());
+        }
         if (itemList.getSelectedItems().isEmpty()) {
             setUpCreationMenu();
         } else {
@@ -207,7 +210,6 @@ public final class CrudItemList<ItemType extends Item> extends RelativeLayout {
         floatingMenu.setCloseIcon(R.drawable.ic_check);
         floatingMenu.setHasOverlay(false);
         setUpActions();
-        floatingMenu.open();
     }
 
     private void setUpCreationMenu() {
