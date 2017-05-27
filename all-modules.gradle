@@ -1,35 +1,7 @@
-apply plugin: 'com.android.library'
-apply plugin: 'com.github.dcendents.android-maven'
+apply from: '../all-libs.gradle'
+
+/*
 apply plugin: 'com.jfrog.bintray'
-
-def buildInfo = [
-    siteUrl: 'https://gurunars.github.io/android-crud-ui',
-    gitUrl: 'git@github.com:gurunars/android-crud-ui.git',
-    name: MODULE_NAME,
-    group: MODULE_GROUP,
-    version: "0.56",
-    versionCode: 56,
-    license: "Apache-2.0"
-]
-
-group = buildInfo.group
-version = buildInfo.version
-
-android {
-    compileSdkVersion 25
-    buildToolsVersion '23.0.3'
-
-    lintOptions.abortOnError false
-
-    defaultConfig {
-        minSdkVersion 17
-        targetSdkVersion 25
-        versionCode buildInfo.versionCode
-        versionName buildInfo.version
-    }
-
-    return void
-}
 
 task sourcesJar(type: Jar) {
     from android.sourceSets.main.java.srcDirs
@@ -47,26 +19,13 @@ bintray {
     configurations = ['archives']
     pkg {
         repo = "maven"
-        name = buildInfo.name
-        websiteUrl = buildInfo.siteUrl
-        vcsUrl = buildInfo.gitUrl
-        licenses = [buildInfo.license]
+        name = MODULE_NAME
+        websiteUrl = siteUrl
+        vcsUrl = gitUrl
+        licenses = [license]
         publish = true
     }
 }
 
 bintrayUpload.dependsOn([build, sourcesJar])
-
-android.libraryVariants.all { variant ->
-    task("generate${variant.name.capitalize()}Javadoc", type: Javadoc) {
-        description "Generates Javadoc for $variant.name."
-        source = variant.javaCompile.source
-        group = JavaBasePlugin.DOCUMENTATION_GROUP
-        ext.androidJar = "${android.sdkDirectory}/platforms/${android.compileSdkVersion}/android.jar"
-        classpath = files(variant.javaCompile.classpath.files) + files(ext.androidJar)
-        options.links("http://docs.oracle.com/javase/7/docs/api/");
-        options.links("http://d.android.com/reference/");
-        exclude '**/BuildConfig.java'
-        exclude '**/R.java'
-    }
-}
+*/

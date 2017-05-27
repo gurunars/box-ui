@@ -1,13 +1,18 @@
 apply from: '../all-modules.gradle'
 
+description = """
+A component for creating FAB based menus
+to manipulate the app. In contrast with the toolbar it aims to simplify the
+way the app can be managed with left or right hand thumb on a large phone
+screen.
+"""
 
 dependencies {
-    compile 'com.android.support:support-annotations:25.2.0'
-    compile 'com.android.support:support-compat:25.2.0'
-    compile 'com.orhanobut:logger:1.15'
-    compile 'frankiesardo:icepick:3.2.0'
-    provided 'frankiesardo:icepick-processor:3.2.0'
-    compile 'com.jakewharton:butterknife:8.5.1'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
+    compile "org.jetbrains.anko:anko:$anko_version"
     compile project(':android-utils')
+    compile project(':databinding')
+}
+
+dokka {
+    includes = ["README.md"]
 }

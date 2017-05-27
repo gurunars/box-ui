@@ -1,8 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <item name="contextualMenu" type="id" />
-    <item name="itemList" type="id" />
+    <item name="itemListView" type="id" />
     <item name="rawItemList" type="id" />
     <item name="floatingMenu" type="id" />
     <item name="creationMenu" type="id" />
+    <item name="menuContainer" type="id" />
+    <item name="moveUp" type="id" />
+    <item name="moveDown" type="id" />
+    <item name="delete" type="id" />
+    <item name="selectAll" type="id" />
+    <item name="edit" type="id" />
+    <item name="action" type="id" />
 </resources>

@@ -1,21 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/reset"
+        android:title="@string/reset"
+        android:showAsAction="never" />
 
     <item android:id="@+id/toggleBackground"
         android:title="@string/toggleBackground"
-        app:showAsAction="never" />
+        android:showAsAction="never" />
 
     <item android:id="@+id/toggleButtonColor"
         android:title="@string/toggleButtonColor"
-        app:showAsAction="never" />
+        android:showAsAction="never" />
 
     <item android:id="@+id/toggleMenu"
         android:title="@string/toggleMenu"
-        app:showAsAction="never" />
+        android:showAsAction="never" />
 
     <item android:id="@+id/toggleHand"
         android:title="@string/toggleHand"
-        app:showAsAction="never" />
+        android:showAsAction="never" />
 
 </menu>

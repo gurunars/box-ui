@@ -1,21 +1,29 @@
 apply from: '../all-modules.gradle'
 
+description = """
+A component based on RecyclerView with a simplified interface capable of
+detecting payload changes in the collection items and triggering proper
+animations based on those changes.
+
+Apart from the animations the component handles custom empty pages and
+can optionally handle item selection.
+"""
 
 dependencies {
+    compile "org.jetbrains.anko:anko:$anko_version"
     compile 'javax.inject:javax.inject:1'
-    compile 'com.google.code.findbugs:jsr305:2.0.1'
     compile 'com.esotericsoftware:kryo:4.0.0'
-    compile 'net.sourceforge.streamsupport:streamsupport:1.5.1'
-    compile 'com.android.support:recyclerview-v7:25.2.0'
-    compile 'com.android.support:support-annotations:25.2.0'
-    compile 'com.android.support:appcompat-v7:25.2.0'
-    compile 'com.jakewharton:butterknife:8.5.1'
-    compile 'com.orhanobut:logger:1.15'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
+    compile "com.android.support:recyclerview-v7:$supportlib_version"
+    compile project(':android-utils')
+    compile project(':databinding')
     testCompile 'junit:junit:4.12'
-    testCompile 'org.mockito:mockito-core:1.10.19'
-    testCompile "org.powermock:powermock-module-junit4:1.6.4"
-    testCompile "org.powermock:powermock-module-junit4-rule:1.6.4"
-    testCompile "org.powermock:powermock-api-mockito:1.6.4"
-    testCompile "org.powermock:powermock-classloading-xstream:1.6.4"
+    testCompile "org.mockito:mockito-core:$mockito_version"
+    testCompile "org.powermock:powermock-module-junit4:1.6.6"
+    testCompile "org.powermock:powermock-module-junit4-rule:1.6.6"
+    testCompile "org.powermock:powermock-api-mockito:1.6.6"
+    testCompile "org.powermock:powermock-classloading-xstream:1.6.6"
+}
+
+dokka {
+    includes = ["README.md"]
 }

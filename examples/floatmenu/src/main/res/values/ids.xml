@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="floatingMenu" type="id" />
+    <item name="textView" type="id" />
+    <item name="button" type="id" />
+    <item name="buttonFrame" type="id" />
+    <item name="alertTitle" type="id" />
+    <item name="notificationView" type="id" />
+</resources>

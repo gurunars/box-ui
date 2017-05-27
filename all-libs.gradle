@@ -1,0 +1,34 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'org.jetbrains.dokka-android'
+apply plugin: 'com.github.dcendents.android-maven'
+
+group = MODULE_GROUP
+version = package_version
+
+android {
+    compileSdkVersion compile_sdk_version
+    buildToolsVersion build_tools_version
+
+    lintOptions.abortOnError false
+
+    defaultConfig {
+        minSdkVersion min_sdk_version
+        targetSdkVersion compile_sdk_version
+        versionCode package_version_code
+        versionName package_version
+    }
+
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+        test.java.srcDirs += 'src/test/kotlin'
+        androidTest.java.srcDirs += 'src/androidTest/kotlin'
+        main.jni.srcDirs = []
+    }
+
+    return void
+}
+
+dependencies {
+    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+}

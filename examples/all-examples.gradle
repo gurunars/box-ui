@@ -1,17 +1,36 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion '23.0.3'
+    compileSdkVersion compile_sdk_version
+    buildToolsVersion build_tools_version
 
     defaultConfig {
         testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
         applicationId APP_ID
-        minSdkVersion 17
-        targetSdkVersion 25
+        minSdkVersion min_sdk_version
+        targetSdkVersion compile_sdk_version
         versionCode 1
         versionName "1.0"
     }
 
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+        test.java.srcDirs += 'src/test/kotlin'
+        androidTest.java.srcDirs += 'src/androidTest/kotlin'
+        main.jni.srcDirs = []
+    }
+
     return void
+}
+
+dependencies {
+    androidTestCompile 'junit:junit:4.12'
+    androidTestCompile 'com.android.support.test:rules:0.5'
+    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2'
+    androidTestCompile "com.android.support:support-annotations:$supportlib_version"
+    androidTestCompile project(':test-utils')
+    compile "org.jetbrains.anko:anko:$anko_version"
+    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    compile project(':databinding')
 }
