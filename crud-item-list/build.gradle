@@ -2,6 +2,7 @@ apply from: '../all-modules.gradle'
 
 
 dependencies {
+    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     compile 'frankiesardo:icepick:3.2.0'
     provided 'frankiesardo:icepick-processor:3.2.0'
     compile 'com.orhanobut:logger:1.15'
