@@ -66,7 +66,7 @@ class Fab extends FrameLayout {
         currentIcon = activatedStateCursor ? closeIcon : openIcon;
         // Bg
         setBackground(new ColoredShapeDrawable(new OvalShape(), currentBgColor));
-        AutoBg.apply(this, 6);
+        AutoBg.INSTANCE.apply(this, 6);
         // Icon
         Drawable fg = ResourcesCompat.getDrawable(getResources(), currentIcon, null);
         assert fg != null;

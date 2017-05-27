@@ -2,14 +2,6 @@ apply from: '../all-modules.gradle'
 
 
 dependencies {
-    testCompile 'org.mockito:mockito-core:1.10.19'
-    testCompile 'junit:junit:4.12'
-    compile 'frankiesardo:icepick:3.2.0'
-    provided 'frankiesardo:icepick-processor:3.2.0'
-    compile 'javax.inject:javax.inject:1'
-    compile 'com.orhanobut:logger:1.15'
-    compile 'com.google.code.findbugs:jsr305:2.0.1'
-    compile 'com.android.support:support-annotations:25.2.0'
     compile 'com.android.support:support-v4:25.2.0'
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 }
