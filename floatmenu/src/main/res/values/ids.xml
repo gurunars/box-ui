@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="menuPane" type="id" />
+    <item name="contentPane" type="id" />
+    <item name="openFab" type="id" />
+</resources>

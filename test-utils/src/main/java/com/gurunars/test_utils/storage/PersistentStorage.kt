@@ -1,11 +1,10 @@
-package com.gurunars.android_utils.example.storage
+package com.gurunars.test_utils.storage
 
 import android.app.Activity
 import android.content.Context
-import java.io.Serializable
 
 
-class PersistentStorage<ItemType : Serializable>(
+class PersistentStorage<ItemType : Assignable<ItemType>>(
         private val activity: Activity,
         private val typeAlias: String,
         private val defaultPayload: ItemType,
@@ -16,6 +15,10 @@ class PersistentStorage<ItemType : Serializable>(
     init {
         this.payload = defaultPayload
         load()
+    }
+
+    fun patch(block: ItemType.() -> Unit) {
+        set(this.payload.assign(block))
     }
 
     private fun load() {
