@@ -10,15 +10,20 @@ import android.view.ViewGroup
 import android.widget.TextView
 import com.gurunars.android_utils.AutoBg
 import com.gurunars.android_utils.ColoredShapeDrawable
-import com.gurunars.android_utils.example.storage.PersistentStorage
+import com.gurunars.test_utils.storage.Assignable
+import com.gurunars.test_utils.storage.PersistentStorage
 import org.jetbrains.anko.*
 
 
 class ActivityMain : AppCompatActivity() {
 
-    lateinit var payloadView: TextView
+    class State : Assignable<State>() {
+        var title="Empty"
+    }
 
-    private lateinit var storage: PersistentStorage<TestPayload>
+    private lateinit var payloadView: TextView
+    private lateinit var storage: PersistentStorage<State>
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -49,7 +54,7 @@ class ActivityMain : AppCompatActivity() {
                 textView {
                     background=ColoredShapeDrawable(OvalShape(), Color.YELLOW)
                     text=getString(R.string.set)
-                    setOnClickListener { storage.set(TestPayload("Configured")) }
+                    setOnClickListener { storage.patch { title="Configured" } }
                 }.lparams()
 
                 textView {
@@ -73,7 +78,7 @@ class ActivityMain : AppCompatActivity() {
             } }
         }
 
-        storage = PersistentStorage(this, "payloadAlias", TestPayload("Empty"), { payloadView.text = it.title })
+        storage = PersistentStorage(this, "payloadAlias", State(), { payloadView.text = it.title })
 
     }
 

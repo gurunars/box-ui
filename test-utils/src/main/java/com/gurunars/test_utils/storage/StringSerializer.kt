@@ -1,4 +1,4 @@
-package com.gurunars.android_utils.example.storage
+package com.gurunars.test_utils.storage
 
 
 import android.util.Base64
@@ -11,6 +11,7 @@ import java.io.IOException
 import java.io.ObjectInputStream
 import java.io.ObjectOutputStream
 import java.io.Serializable
+import java.lang.Exception
 
 internal object StringSerializer {
 
