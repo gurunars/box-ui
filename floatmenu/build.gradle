@@ -2,8 +2,6 @@ apply from: '../all-modules.gradle'
 
 
 dependencies {
-    compile 'com.android.support:support-annotations:25.2.0'
-    compile 'com.android.support:support-compat:25.2.0'
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     compile "org.jetbrains.anko:anko:$anko_version"
     compile project(':android-utils')
