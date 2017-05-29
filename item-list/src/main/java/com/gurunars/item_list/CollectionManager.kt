@@ -1,12 +1,9 @@
 package com.gurunars.item_list
 
 import com.esotericsoftware.kryo.Kryo
-
 import org.objenesis.strategy.StdInstantiatorStrategy
-
 import java.io.Serializable
-import java.util.ArrayList
-import java.util.HashSet
+import java.util.*
 
 
 internal class CollectionManager<ItemType : Item>(
@@ -23,11 +20,19 @@ internal class CollectionManager<ItemType : Item>(
     }
 
     private fun changed(newItems: List<ItemType>, newSelection: Set<ItemType>) {
-        this.items = newItems
-        val filteredSelection = newSelection.filter { items.contains(it) }.map { items[items.indexOf(it)] }.toHashSet()
+        this.items = kryo.copy(ArrayList(newItems))
+
+        fun indexOfItem(items: Collection<ItemType>, item: ItemType): Int {
+            return items.indexOfFirst { item.getId() == it.getId() }
+        }
+
+        val filteredSelection = kryo.copy(HashSet(newSelection))
+                .filter { indexOfItem(items, it) != -1 }
+                .map { items[indexOfItem(items, it)] }
+                .toHashSet()
         val selectionChanged = selectedItems != filteredSelection
         selectedItems = filteredSelection
-        stateChangeHandler(items.map { SelectableItem(it, selectedItems.contains(it)) })
+        stateChangeHandler(items.map { item -> SelectableItem(item, indexOfItem(selectedItems, item) != -1) })
         if (selectionChanged) {
             selectionChangeListener.run()
         }
@@ -39,30 +44,21 @@ internal class CollectionManager<ItemType : Item>(
         }
 
         val item = selectableItem.item
+        changed(items,
+                if (selectedItems.contains(item))
+                    selectedItems - item
+                else
+                    selectedItems + item)
+    }
 
-        val newSelectedItems = HashSet(selectedItems)
-
-        if (newSelectedItems.contains(item)) {
-            newSelectedItems.remove(item)
-        } else {
-            newSelectedItems.add(item)
+    fun itemLongClick(selectableItem: SelectableItem<ItemType>): Boolean {
+        if (selectedItems.isEmpty()) {
+            changed(items, selectedItems + hashSetOf(selectableItem.item))
         }
-        changed(items, newSelectedItems)
+        return true
     }
 
-    fun itemLongClick(selectableItem: SelectableItem<ItemType>) {
-        if (selectedItems.isNotEmpty()) {
-            return
-        }
-        val newSelectedItems = HashSet(selectedItems)
-        newSelectedItems.add(selectableItem.item)
-        changed(items, newSelectedItems)
-    }
-
-    fun setItems(items: List<ItemType>) {
-        changed(kryo.copy(ArrayList(items)), kryo.copy(HashSet(selectedItems)))
-    }
-
-    fun setSelectedItems(value: Set<ItemType>) = changed(kryo.copy(ArrayList(items)), kryo.copy(HashSet(value)))
-    fun getSelectedItems() = kryo.copy(selectedItems)
+    fun setItems(items: List<ItemType>) { changed(items, selectedItems) }
+    fun setSelectedItems(value: Set<ItemType>) = changed(items, value)
+    fun getSelectedItems(): Set<ItemType> = kryo.copy(selectedItems)
 }

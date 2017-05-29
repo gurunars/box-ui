@@ -13,11 +13,9 @@ internal class ClickableItemViewBinder<ViewType : View, ItemType : Item>(
 
     override fun bind(itemView: ViewType, item: SelectableItem<ItemType>, previousItem: SelectableItem<ItemType>?) {
         itemViewBinder.bind(itemView, item, previousItem)
-
-        itemView.setOnClickListener { collectionManager.itemClick(item) }
-        itemView.setOnLongClickListener {
-            collectionManager.itemLongClick(item)
-            true
+        itemView.apply {
+            setOnClickListener { collectionManager.itemClick(item) }
+            setOnLongClickListener { collectionManager.itemLongClick(item) }
         }
     }
 

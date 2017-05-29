@@ -23,19 +23,7 @@ class ItemList<ItemType : Item> constructor(context: Context) : FrameLayout(cont
     init {
         llm = LinearLayoutManager(context)
         llm.orientation = LinearLayoutManager.VERTICAL
-        itemAdapter = ItemAdapter<ItemType>(object : Scroller {
-            override fun scrollToPosition(position: Int) {
-                llm.scrollToPosition(position)
-            }
-
-            override fun findFirstVisibleItemPosition(): Int {
-                return llm.findFirstVisibleItemPosition()
-            }
-
-            override fun findLastVisibleItemPosition(): Int {
-                return llm.findLastVisibleItemPosition()
-            }
-        })
+        itemAdapter = ItemAdapter<ItemType>()
 
         recyclerView {
             id=R.id.recyclerView

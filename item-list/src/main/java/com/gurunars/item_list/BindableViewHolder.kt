@@ -4,6 +4,8 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
 import com.gurunars.item_list.ItemViewBinderEmpty.Companion.EMPTY_TYPE
+import org.jetbrains.anko.matchParent
+import org.jetbrains.anko.wrapContent
 
 
 internal class BindableViewHolder<ViewType : View, ItemType : Item> : RecyclerView.ViewHolder {
@@ -13,18 +15,16 @@ internal class BindableViewHolder<ViewType : View, ItemType : Item> : RecyclerVi
     constructor(root: ViewGroup,
                 itemViewBinder: ItemViewBinder<ViewType, ItemType>) : super(itemViewBinder.getView(root.context)) {
         this.itemViewBinder = itemViewBinder
-        itemView.layoutParams = RecyclerView.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT)
+        itemView.layoutParams = RecyclerView.LayoutParams(matchParent, wrapContent)
     }
 
     constructor(root: ViewGroup,
                 emptyViewBinder: EmptyViewBinder) : super(emptyViewBinder.getView(root.context)) {
         this.itemViewBinder = null
-        itemView.setTag(EMPTY_TYPE, EMPTY_TYPE)
-        itemView.layoutParams = RecyclerView.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT)
+        itemView.apply {
+            setTag(EMPTY_TYPE, EMPTY_TYPE)
+            layoutParams = RecyclerView.LayoutParams(matchParent, matchParent)
+        }
     }
 
     fun bind(item: ItemType, previousItem: ItemType?) {

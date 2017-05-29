@@ -1,21 +1,24 @@
 package com.gurunars.item_list
 
+internal data class AnimalItem(private val id: Long, private val version: Int, private val type: AnimalItem.Type) : Item {
 
-internal class AnimalItem @JvmOverloads constructor(id: Long, private var version: Int, type: AnimalItem.Type = AnimalItem.Type.MONKEY) : Item(id, type) {
+    constructor(id: Long, type: AnimalItem.Type) : this(id,0,type)
+
+    override fun getType(): Enum<*> {
+        return type
+    }
+
+    override fun getId(): Long {
+        return id
+    }
 
     override fun payloadsEqual(other: Item): Boolean {
-        return other is AnimalItem && version == (other as AnimalItem).version
+        return other is AnimalItem && version == other.version
     }
 
     internal enum class Type {
         MONKEY, TIGER, WOLF, LION
     }
-
-    fun update() {
-        this.version++
-    }
-
-    constructor(id: Long, type: Type) : this(id, 0, type) {}
 
     override fun toString(): String {
         return "#$id{$type @ $version}"

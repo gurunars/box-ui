@@ -91,7 +91,7 @@ class ActivityMain : AppCompatActivity() {
         for (item in itemList.selectedItems) {
             item.update()
             for (i in items.indices) {
-                if (item.id == items[i].id) {
+                if (item.getId() == items[i].getId()) {
                     items[i] = item
                     break
                 }
@@ -102,7 +102,7 @@ class ActivityMain : AppCompatActivity() {
     }
 
     private fun deleteSelected(): Int {
-        items.removeAll(itemList.selectedItems)
+        items.retainAll(items.filter { item -> itemList.selectedItems.indexOfFirst { item.getId() == it.getId() } == -1 })
         itemList.setItems(items)
         return R.string.did_delete_selected
     }

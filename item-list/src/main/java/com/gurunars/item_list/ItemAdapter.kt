@@ -1,26 +1,43 @@
 package com.gurunars.item_list
 
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.util.SparseArray
 import android.view.View
 import android.view.ViewGroup
-
 import com.esotericsoftware.kryo.Kryo
-
 import org.objenesis.strategy.StdInstantiatorStrategy
 
-import java.util.ArrayList
+import android.support.v7.util.DiffUtil
 
-
-internal class ItemAdapter<ItemType : Item>(private val scroller: Scroller) : RecyclerView.Adapter<BindableViewHolder<out View, ItemType>>() {
+internal class ItemAdapter<ItemType : Item> : RecyclerView.Adapter<BindableViewHolder<out View, ItemType>>() {
 
     private val kryo = Kryo()
-    private var items: MutableList<ItemType> = ArrayList()
+    private var items: List<ItemType> = ArrayList()
     private var previousList: List<ItemType> = ArrayList()
 
-    private val differ = Differ<ItemType>()
     private lateinit var emptyViewBinder: EmptyViewBinder
+
+    private class ItemCallback<out ItemType: Item>(
+            val previousList: List<ItemType>,
+            val currentList: List<ItemType>): DiffUtil.Callback() {
+
+        override fun getOldListSize(): Int {
+            return previousList.size
+        }
+
+        override fun getNewListSize(): Int {
+            return currentList.size
+        }
+
+        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+            return previousList[oldItemPosition].payloadsEqual(currentList.get(newItemPosition))
+        }
+
+        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+            return previousList[oldItemPosition].getId() == currentList.get(newItemPosition).getId()
+        }
+
+    }
 
     init {
         this.kryo.instantiatorStrategy = Kryo.DefaultInstantiatorStrategy(StdInstantiatorStrategy())
@@ -47,34 +64,16 @@ internal class ItemAdapter<ItemType : Item>(private val scroller: Scroller) : Re
     fun setItems(newItems: List<ItemType>) {
         // make sure that item lists are passed by value
         previousList = kryo.copy(items)
-        val newItemsCopy = kryo.copy(newItems)
-
-        if (items.isEmpty()) {
-            this.previousList = newItemsCopy
-            this.items = newItemsCopy.toMutableList()
-            notifyDataSetChanged()
-        } else {
-            var position = -1
-
-            for (change in differ.apply(items, newItemsCopy)) {
-                position = change.apply(this, scroller, items, position)
-            }
-
-            if (position >= 0) {
-                scroller.scrollToPosition(position)
-            }
-        }
-
+        this.items = kryo.copy(newItems)
+        DiffUtil.calculateDiff(ItemCallback(previousList, this.items)).dispatchUpdatesTo(this)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup,
                                     viewType: Int): BindableViewHolder<out View, ItemType> {
-        if (viewType == ItemViewBinderEmpty.EMPTY_TYPE) {
-            return BindableViewHolder(parent, emptyViewBinder)
-        } else {
-            val itemViewBinder = this.itemViewBinderMap.get(viewType)
-            return BindableViewHolder(parent, itemViewBinder ?: defaultViewBinder)
-        }
+        return if (viewType == ItemViewBinderEmpty.EMPTY_TYPE)
+            BindableViewHolder(parent, emptyViewBinder)
+        else
+            BindableViewHolder(parent, this.itemViewBinderMap.get(viewType) ?: defaultViewBinder)
     }
 
     override fun onBindViewHolder(holder: BindableViewHolder<out View, ItemType>, position: Int) {
@@ -83,20 +82,13 @@ internal class ItemAdapter<ItemType : Item>(private val scroller: Scroller) : Re
         }
 
         val item = items[position]
-
         val previousIndex = previousList.indexOf(item)
-
         val previousItem = if (previousIndex >= 0) previousList[previousIndex] else null
-
         holder.bind(item, previousItem)
-
     }
 
     override fun getItemViewType(position: Int): Int {
-        if (items.isEmpty()) {
-            return ItemViewBinderEmpty.EMPTY_TYPE
-        }
-        return items[position].type.ordinal
+        return if (items.isEmpty()) ItemViewBinderEmpty.EMPTY_TYPE else items[position].getType().ordinal
     }
 
     override fun getItemCount(): Int {

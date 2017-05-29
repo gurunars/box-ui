@@ -102,7 +102,6 @@ class CollectionManagerTest {
                 AnimalItem(0, AnimalItem.Type.LION)
         ), manager.getSelectedItems())
     }
-
     @Test
     fun anyClickOnUnselectedItemAfterLongClick_shouldSelectItem() {
         manager.itemLongClick(SelectableItem(AnimalItem(0, AnimalItem.Type.LION), false))
