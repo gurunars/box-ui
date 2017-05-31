@@ -15,26 +15,20 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import com.gurunars.android_utils.AutoBg
 import com.gurunars.android_utils.ColoredShapeDrawable
+import com.gurunars.android_utils.BindableField
 import org.jetbrains.anko.matchParent
 
 internal class Fab constructor(context: Context) : FrameLayout(context) {
 
-    var openIcon: Icon = Icon(icon = R.drawable.ic_menu)
-        set(value) {
-            field = value
-            reload()
-        }
-    var closeIcon: Icon = Icon(icon = R.drawable.ic_menu_close)
-        set(value) {
-            field = value
-            reload()
-        }
-
-    private var rotationDuration = 400
-
     private val argbEvaluator = ArgbEvaluator()
     private val floatEvaluator = FloatEvaluator()
-    private var animatedValue = 1f
+    private val animatedValue = BindableField(1f)
+    private var withAnimation = false
+
+    val rotationDuration = BindableField(400)
+    val openIcon = BindableField(Icon(icon = R.drawable.ic_menu))
+    val closeIcon = BindableField(Icon(icon = R.drawable.ic_menu_close))
+    val isActivated = BindableField(false)
 
     private val actualImageView = ImageView(context).apply {
         layoutParams = LayoutParams(matchParent, matchParent)
@@ -43,18 +37,46 @@ internal class Fab constructor(context: Context) : FrameLayout(context) {
     init {
         setLayerType(View.LAYER_TYPE_SOFTWARE, null)
         addView(actualImageView)
-        reload()
+
+        setOnClickListener {
+            isActivated.set(!isActivated.get())
+        }
+
+        openIcon.bind { updateIcon() }
+        closeIcon.bind { updateIcon() }
+        animatedValue.bind { updateIcon() }
+        isActivated.bind {
+            if (withAnimation) {
+                ValueAnimator.ofFloat(0f, 1f).apply {
+                    startDelay = 0
+                    duration = rotationDuration.get().toLong()
+                    addUpdateListener { this@Fab.animatedValue.set(it.animatedValue as Float) }
+                    start()
+                }
+            } else {
+                updateIcon()
+            }
+        }
+        withAnimation = true
     }
 
-    private fun reload() {
+    private fun updateIcon() {
+        isClickable = animatedValue.get() == 1f
+
         // Configs
-        val sourceIcon: Icon = if (isActivated) openIcon else closeIcon
-        val targetIcon: Icon = if (isActivated) closeIcon else openIcon
+        val sourceIcon: Icon = if (isActivated.get()) openIcon.get() else closeIcon.get()
+        val targetIcon: Icon = if (isActivated.get()) closeIcon.get() else openIcon.get()
 
         val currentIcon = Icon(
-                bgColor=argbEvaluator.evaluate(animatedValue, sourceIcon.bgColor, targetIcon.bgColor) as Int,
-                fgColor=argbEvaluator.evaluate(animatedValue, sourceIcon.fgColor, targetIcon.fgColor) as Int,
-                icon=if (animatedValue < 0.5f) sourceIcon.icon else targetIcon.icon
+                bgColor=argbEvaluator.evaluate(
+                        animatedValue.get(),
+                        sourceIcon.bgColor,
+                        targetIcon.bgColor) as Int,
+                fgColor=argbEvaluator.evaluate(
+                        animatedValue.get(),
+                        sourceIcon.fgColor,
+                        targetIcon.fgColor) as Int,
+                icon=if (animatedValue.get() < 0.5f) sourceIcon.icon else targetIcon.icon
         )
 
         // Bg
@@ -67,9 +89,9 @@ internal class Fab constructor(context: Context) : FrameLayout(context) {
                     setColorFilter(currentIcon.fgColor, PorterDuff.Mode.SRC_IN)
                 }, 100
         ))
-        actualImageView.rotation = floatEvaluator.evaluate(animatedValue,
-                if (isActivated) 0f else 360f,
-                if (isActivated) 360f else 0f
+        actualImageView.rotation = floatEvaluator.evaluate(animatedValue.get(),
+                if (isActivated.get()) 0f else 360f,
+                if (isActivated.get()) 360f else 0f
         )
 
         // Content description
@@ -81,40 +103,18 @@ internal class Fab constructor(context: Context) : FrameLayout(context) {
     }
 
     override fun onSaveInstanceState(): Parcelable {
-        val bundle = Bundle()
-        bundle.putParcelable("superState", super.onSaveInstanceState())
-        bundle.putBoolean("isActivated", isActivated)
-        return bundle
+        return Bundle().apply {
+            putParcelable("superState", super.onSaveInstanceState())
+            putBoolean("isActivated", isActivated.get())
+        }
     }
 
     override fun onRestoreInstanceState(state: Parcelable) {
+        withAnimation = false
         val localState = state as Bundle
         super.onRestoreInstanceState(localState.getParcelable("superState"))
-        super.setActivated(localState.getBoolean("isActivated"))
-        this.animatedValue = 1f
-        reload()
-    }
-
-    override fun setActivated(isActive: Boolean) {
-        if (isActivated == isActive) {
-            return
-        }
-
-        super.setActivated(isActive)
-
-        ValueAnimator.ofFloat(0f, 1f).apply {
-            startDelay = 0
-            duration = rotationDuration.toLong()
-            addUpdateListener {
-                this@Fab.animatedValue = it.animatedValue as Float
-                reload()
-            }
-            start()
-        }
-    }
-
-    fun setRotionDuration(duration: Int) {
-        this.rotationDuration = duration
+        isActivated.set(localState.getBoolean("isActivated"))
+        withAnimation = true
     }
 
 }

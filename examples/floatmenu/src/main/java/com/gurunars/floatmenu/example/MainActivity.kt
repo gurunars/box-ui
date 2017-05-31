@@ -9,7 +9,6 @@ import android.view.MenuItem
 import android.view.View.inflate
 import android.view.ViewGroup
 import android.widget.TextView
-import com.gurunars.floatmenu.AnimationListener
 import com.gurunars.floatmenu.FloatMenu
 import com.gurunars.floatmenu.Icon
 import com.gurunars.floatmenu.floatMenu
@@ -32,11 +31,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var storage: PersistentStorage<State>
 
     private fun toggleButton() {
-        if (floatingMenu.isOpen) {
-            floatingMenu.close()
-        } else {
-            floatingMenu.open()
-        }
+        floatingMenu.isOpen.set(!floatingMenu.isOpen.get())
     }
 
     private fun toggleButtonColor() { storage.patch { flag=!flag } }
@@ -67,30 +62,19 @@ class MainActivity : AppCompatActivity() {
             floatingMenu=floatMenu {
                 id=R.id.floatingMenu
 
-                setCloseIcon(Icon(
+                closeIcon.set(Icon(
                     bgColor=color(R.color.White),
                     fgColor=color(R.color.Black),
                     icon=R.drawable.ic_menu_close
                 ))
 
-                setHasOverlay(true)
-
-                fun textSetter(textId: Int): AnimationListener {
-                    return object : AnimationListener {
-                        override fun onStart(projectedDuration: Int) {
-                            status.setText(textId)
-                        }
-                        override fun onFinish() {}
-                    }
-                }
-
-                setOnCloseListener(textSetter(R.string.menuClosed))
-                setOnOpenListener(textSetter(R.string.menuOpen))
+                hasOverlay.set(true)
 
                 setContentView(inflate(this@MainActivity, R.layout.content_view, null))
                 setMenuView(inflate(this@MainActivity, R.layout.menu_view, null))
 
                 status= findViewById(R.id.status) as TextView
+                isOpen.bind { status.setText(if (it) R.string.menuOpen else R.string.menuClosed) }
             }.lparams {
                 width=matchParent
                 height=matchParent
@@ -98,10 +82,9 @@ class MainActivity : AppCompatActivity() {
         }
 
         storage = PersistentStorage(this, "FloatMenu", State()) {
-            floatingMenu.setHasOverlay(it.hasOverlay)
-            floatingMenu.setLeftHanded(it.isLeftHanded)
-
-            floatingMenu.setOpenIcon(Icon(
+            floatingMenu.hasOverlay.set(it.hasOverlay)
+            floatingMenu.isLeftHanded.set(it.isLeftHanded)
+            floatingMenu.openIcon.set(Icon(
                 bgColor=color(if (it.flag) R.color.DarkRed else R.color.RosyBrown),
                 fgColor=color(if (it.flag) R.color.White else R.color.Black),
                 icon=R.drawable.ic_menu

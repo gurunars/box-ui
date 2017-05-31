@@ -1,12 +1,11 @@
 package com.gurunars.floatmenu
 
-import android.animation.Animator
-import android.animation.AnimatorListenerAdapter
 import android.content.Context
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.RelativeLayout
+import com.gurunars.android_utils.BindableField
 import org.jetbrains.anko.*
 
 /**
@@ -18,15 +17,14 @@ class FloatMenu constructor(context: Context) : FrameLayout(context) {
     private lateinit var menuPane: MenuPane
     private lateinit var contentPane: ViewGroup
 
-    private var animationDuration = 400
-    private var isLeftHanded: Boolean = false
-    private var onCloseListener: AnimationListener? = null
-    private var onOpenListener: AnimationListener? = null
+    val isLeftHanded = BindableField(false)
+    val animationDuration = BindableField(400)
+    val isOpen = BindableField(false)
+    val openIcon = BindableField(Icon(icon = R.drawable.ic_menu))
+    val closeIcon = BindableField(Icon(icon = R.drawable.ic_menu_close))
+    val hasOverlay = BindableField(true)
 
     init {
-        onOpenListener = AnimationListener.Default()
-        onCloseListener = onOpenListener
-
         relativeLayout {
             layoutParams = LayoutParams(matchParent, matchParent)
             contentPane=frameLayout {
@@ -39,81 +37,36 @@ class FloatMenu constructor(context: Context) : FrameLayout(context) {
                 isClickable=true
                 id=R.id.menuPane
                 visibility=View.GONE
+                animationDuration.bind(this@FloatMenu.animationDuration)
+                isVisible.bind(isOpen)
+                hasOverlay.bind(this@FloatMenu.hasOverlay)
             }.lparams {
                 width=matchParent
                 height=matchParent
             }
             openFab=fab {
-                setRotionDuration(animationDuration)
+                val fab = this
+                this@FloatMenu.isLeftHanded.bind { fab.contentDescription = "LH:" + it }
                 id=R.id.openFab
+                animationDuration.bind(rotationDuration)
+                isActivated.bind(isOpen)
+                this@FloatMenu.openIcon.bind(openIcon)
+                this@FloatMenu.closeIcon.bind(closeIcon)
             }.lparams {
                 margin=dip(16)
                 width=dip(60)
                 height=dip(60)
                 alignParentBottom()
-                alignParentRight()
+                val fab = this
+                this@FloatMenu.isLeftHanded.bind {
+                    fab.removeRule(RelativeLayout.ALIGN_PARENT_LEFT)
+                    fab.removeRule(RelativeLayout.ALIGN_PARENT_RIGHT)
+                    if(it) fab.alignParentLeft() else fab.alignParentRight()
+                    requestLayout()
+                }
             }
         }
 
-        openFab.setOnClickListener { setFloatingMenuVisibility(!openFab.isActivated) }
-
-        setLeftHanded(false)
-
-    }
-
-    private fun setFloatingMenuVisibility(visible: Boolean) {
-
-        if (isOpen == visible) {
-            return
-        }
-
-        openFab.isClickable = false
-        openFab.isActivated = visible
-        menuPane.isActivated = visible
-
-        val listener = if (visible) onOpenListener else onCloseListener
-        val targetVisibility = if (visible) View.VISIBLE else View.GONE
-        val sourceAlpha = if (visible) 0.0f else 1.0f
-        val targetAlpha = if (visible) 1.0f else 0.0f
-
-        listener?.onStart(animationDuration)
-        menuPane.visibility = View.VISIBLE
-        menuPane.alpha = sourceAlpha
-        menuPane.animate()
-                .alpha(targetAlpha)
-                .setDuration(animationDuration.toLong())
-                .setListener(object : AnimatorListenerAdapter() {
-
-                    override fun onAnimationEnd(animation: Animator) {
-                        menuPane.visibility = targetVisibility
-                        listener?.onFinish()
-                        openFab.isClickable = true
-                    }
-
-                    override fun onAnimationCancel(animation: Animator) {
-                        onAnimationEnd(animation)
-                    }
-                })
-    }
-
-    /**
-     * @return true if the menu is opened.
-     */
-    val isOpen: Boolean
-        get() = menuPane.visibility == View.VISIBLE
-
-    /*
-     * Collapse the menu.
-     */
-    fun close() {
-        setFloatingMenuVisibility(false)
-    }
-
-    /**
-     * Expand the menu.
-     */
-    fun open() {
-        setFloatingMenuVisibility(true)
     }
 
     /**
@@ -125,74 +78,11 @@ class FloatMenu constructor(context: Context) : FrameLayout(context) {
     }
 
     /**
-     * @param onCloseListener actions to be triggered before and after the menu is closed
-     */
-    fun setOnCloseListener(onCloseListener: AnimationListener) {
-        this.onCloseListener = onCloseListener
-    }
-
-    /**
-     * @param onOpenListener actions to be triggered before and after the menu is open
-     */
-    fun setOnOpenListener(onOpenListener: AnimationListener) {
-        this.onOpenListener = onOpenListener
-    }
-
-    /**
      * @param menuView view to be shown in the menu area (clickable when the menu is open)
      */
     fun setMenuView(menuView: View) {
         menuPane.removeAllViews()
         menuPane.addView(menuView)
-    }
-
-    /**
-     * @param hasOverlay false to disable a shaded background, true to enable it. If overlay is
-     * * disabled the clicks go through the view group to the view in the back. If it is enabled the
-     * * clicks are intercepted by the group.
-     */
-    fun setHasOverlay(hasOverlay: Boolean) {
-        menuPane.isClickable = hasOverlay
-    }
-
-    /**
-     * @param leftHanded if true - FAB shall be in the bottom left corner, if false - in the bottom right.
-     */
-    fun setLeftHanded(leftHanded: Boolean) {
-        contentDescription = "LH:" + leftHanded
-        this.isLeftHanded = leftHanded
-        val layout = openFab.layoutParams as RelativeLayout.LayoutParams
-        layout.removeRule(if (isLeftHanded)
-            RelativeLayout.ALIGN_PARENT_RIGHT
-        else
-            RelativeLayout.ALIGN_PARENT_LEFT)
-        layout.addRule(if (isLeftHanded)
-            RelativeLayout.ALIGN_PARENT_LEFT
-        else
-            RelativeLayout.ALIGN_PARENT_RIGHT)
-        openFab.layoutParams = layout
-    }
-
-    /**
-     * @param durationInMillis FAB rotation and menu appearence duration in milliseconds.
-     */
-    fun setAnimationDuration(durationInMillis: Int) {
-        this.animationDuration = durationInMillis
-        openFab.setRotionDuration(durationInMillis)
-    }
-
-    /**
-     * @param icon - to be shown in the button clicking which opens the menu.
-     */
-    fun setOpenIcon(icon: Icon) {
-        openFab.openIcon = icon
-    }
-
-    /**
-     * @param icon - to be shown in the button clicking which closes the menu.
-     */
-    fun setCloseIcon(icon: Icon) {
-        openFab.closeIcon = icon
     }
 
 }
