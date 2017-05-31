@@ -53,9 +53,8 @@ internal class Fab constructor(context: Context) : FrameLayout(context) {
                     addUpdateListener { this@Fab.animatedValue.set(it.animatedValue as Float) }
                     start()
                 }
-            } else {
-                updateIcon()
             }
+            updateIcon()
         }
         withAnimation = true
     }

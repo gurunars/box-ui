@@ -36,9 +36,8 @@ internal class MenuPane constructor(context: Context) : FrameLayout(context) {
                     addUpdateListener { this@MenuPane.animatedValue.set(it.animatedValue as Float) }
                     start()
                 }
-            } else {
-                updateVisibility()
             }
+            updateVisibility()
         }
         animatedValue.bind {
             val visible = isVisible.get()
