@@ -30,7 +30,7 @@ internal class Fab constructor(context: Context) : FrameLayout(context) {
             reload()
         }
 
-    var rotationDuration = 400
+    private var rotationDuration = 400
 
     private val argbEvaluator = ArgbEvaluator()
     private val floatEvaluator = FloatEvaluator()
@@ -111,6 +111,10 @@ internal class Fab constructor(context: Context) : FrameLayout(context) {
             }
             start()
         }
+    }
+
+    fun setRotionDuration(duration: Int) {
+        this.rotationDuration = duration
     }
 
 }

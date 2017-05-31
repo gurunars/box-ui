@@ -18,8 +18,8 @@ class FloatMenu constructor(context: Context) : FrameLayout(context) {
     private lateinit var menuPane: MenuPane
     private lateinit var contentPane: ViewGroup
 
+    private var animationDuration = 400
     private var isLeftHanded: Boolean = false
-
     private var onCloseListener: AnimationListener? = null
     private var onOpenListener: AnimationListener? = null
 
@@ -36,6 +36,7 @@ class FloatMenu constructor(context: Context) : FrameLayout(context) {
                 height=matchParent
             }
             menuPane=menuPane {
+                isClickable=true
                 id=R.id.menuPane
                 visibility=View.GONE
             }.lparams {
@@ -43,6 +44,7 @@ class FloatMenu constructor(context: Context) : FrameLayout(context) {
                 height=matchParent
             }
             openFab=fab {
+                setRotionDuration(animationDuration)
                 id=R.id.openFab
             }.lparams {
                 margin=dip(16)
@@ -55,8 +57,6 @@ class FloatMenu constructor(context: Context) : FrameLayout(context) {
 
         openFab.setOnClickListener { setFloatingMenuVisibility(!openFab.isActivated) }
 
-        setAnimationDuration(DURATION_IN_MILLIS)
-        setHasOverlay(true)
         setLeftHanded(false)
 
     }
@@ -76,12 +76,12 @@ class FloatMenu constructor(context: Context) : FrameLayout(context) {
         val sourceAlpha = if (visible) 0.0f else 1.0f
         val targetAlpha = if (visible) 1.0f else 0.0f
 
-        listener?.onStart(openFab.rotationDuration)
+        listener?.onStart(animationDuration)
         menuPane.visibility = View.VISIBLE
         menuPane.alpha = sourceAlpha
         menuPane.animate()
                 .alpha(targetAlpha)
-                .setDuration(openFab.rotationDuration.toLong())
+                .setDuration(animationDuration.toLong())
                 .setListener(object : AnimatorListenerAdapter() {
 
                     override fun onAnimationEnd(animation: Animator) {
@@ -177,7 +177,8 @@ class FloatMenu constructor(context: Context) : FrameLayout(context) {
      * @param durationInMillis FAB rotation and menu appearence duration in milliseconds.
      */
     fun setAnimationDuration(durationInMillis: Int) {
-        openFab.rotationDuration = durationInMillis
+        this.animationDuration = durationInMillis
+        openFab.setRotionDuration(durationInMillis)
     }
 
     /**
@@ -192,10 +193,6 @@ class FloatMenu constructor(context: Context) : FrameLayout(context) {
      */
     fun setCloseIcon(icon: Icon) {
         openFab.closeIcon = icon
-    }
-
-    companion object {
-        private val DURATION_IN_MILLIS = 400
     }
 
 }
