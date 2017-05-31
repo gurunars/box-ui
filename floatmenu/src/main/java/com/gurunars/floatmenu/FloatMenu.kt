@@ -177,21 +177,21 @@ class FloatMenu constructor(context: Context) : FrameLayout(context) {
      * @param durationInMillis FAB rotation and menu appearence duration in milliseconds.
      */
     fun setAnimationDuration(durationInMillis: Int) {
-        openFab.setRotationDuration(durationInMillis)
+        openFab.rotationDuration = durationInMillis
     }
 
     /**
      * @param icon - to be shown in the button clicking which opens the menu.
      */
     fun setOpenIcon(icon: Icon) {
-        openFab.setOpenIcon(icon)
+        openFab.openIcon = icon
     }
 
     /**
      * @param icon - to be shown in the button clicking which closes the menu.
      */
     fun setCloseIcon(icon: Icon) {
-        openFab.setCloseIcon(icon)
+        openFab.closeIcon = icon
     }
 
     companion object {
