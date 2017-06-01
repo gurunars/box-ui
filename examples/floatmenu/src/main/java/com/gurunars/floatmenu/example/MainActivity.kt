@@ -96,11 +96,13 @@ class MainActivity : AppCompatActivity() {
                         verticalLayout {
                             gravity=Gravity.CENTER_HORIZONTAL
                             button {
+                                id=R.id.button
                                 setOnClickListener { show("Button Clicked") }
                                 text=getString(R.string.click_me)
                                 padding=dip(10)
                             }.lparams()
                             frameLayout {
+                                id=R.id.buttonFrame
                                 setOnClickListener { show("Button Frame Clicked") }
                                 isClickable=true
                                 backgroundColor=ContextCompat.getColor(context, R.color.AliceBlue)

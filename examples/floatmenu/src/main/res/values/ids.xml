@@ -2,4 +2,6 @@
 <resources>
     <item name="floatingMenu" type="id" />
     <item name="textView" type="id" />
+    <item name="button" type="id" />
+    <item name="buttonFrame" type="id" />
 </resources>
