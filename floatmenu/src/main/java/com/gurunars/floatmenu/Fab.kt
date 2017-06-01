@@ -15,7 +15,7 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import com.gurunars.android_utils.AutoBg
 import com.gurunars.android_utils.ColoredShapeDrawable
-import com.gurunars.android_utils.BindableField
+import com.gurunars.databinding.BindableField
 import org.jetbrains.anko.matchParent
 
 internal class Fab constructor(context: Context) : FrameLayout(context) {

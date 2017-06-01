@@ -5,7 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.RelativeLayout
-import com.gurunars.android_utils.BindableField
+import com.gurunars.databinding.BindableField
 import org.jetbrains.anko.*
 
 /**
