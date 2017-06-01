@@ -1,4 +1,4 @@
-package com.gurunars.test_utils.storage
+package com.gurunars.storage
 
 
 import android.util.Base64

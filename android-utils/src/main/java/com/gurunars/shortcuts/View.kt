@@ -4,35 +4,35 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 
-private fun View.params(width: Int, height: Int) {
+inline fun ViewGroup.LayoutParams.fullScreen() {
+    width = ViewGroup.LayoutParams.MATCH_PARENT
+    height = ViewGroup.LayoutParams.MATCH_PARENT
+}
+
+inline fun ViewGroup.LayoutParams.asRow() {
+    width = ViewGroup.LayoutParams.MATCH_PARENT
+    height = ViewGroup.LayoutParams.WRAP_CONTENT
+}
+
+inline fun ViewGroup.fullScreen() {
+    val width = ViewGroup.LayoutParams.MATCH_PARENT
+    val height = ViewGroup.LayoutParams.MATCH_PARENT
+
     layoutParams = layoutParams ?: ViewGroup.LayoutParams(width, height)
     layoutParams.width = width
     layoutParams.height = height
 }
 
-fun ViewGroup.LayoutParams.fullScreen() {
-    width = ViewGroup.LayoutParams.MATCH_PARENT
-    height = ViewGroup.LayoutParams.MATCH_PARENT
+inline fun ViewGroup.asRow() {
+    val width = ViewGroup.LayoutParams.MATCH_PARENT
+    val height = ViewGroup.LayoutParams.WRAP_CONTENT
+
+    layoutParams = layoutParams ?: ViewGroup.LayoutParams(width, height)
+    layoutParams.width = width
+    layoutParams.height = height
 }
 
-fun ViewGroup.LayoutParams.asRow() {
-    width = ViewGroup.LayoutParams.MATCH_PARENT
-    height = ViewGroup.LayoutParams.WRAP_CONTENT
-}
-
-fun ViewGroup.fullScreen() {
-    params(
-        ViewGroup.LayoutParams.MATCH_PARENT,
-        ViewGroup.LayoutParams.MATCH_PARENT)
-}
-
-fun ViewGroup.asRow() {
-    params(
-        ViewGroup.LayoutParams.MATCH_PARENT,
-        ViewGroup.LayoutParams.WRAP_CONTENT)
-}
-
-fun FrameLayout.setToOneView(view: View) {
+inline fun FrameLayout.setToOneView(view: View) {
     removeAllViews()
     addView(view)
 }

@@ -12,31 +12,18 @@ import com.gurunars.floatmenu.Icon
 import com.gurunars.floatmenu.floatMenu
 import com.gurunars.shortcuts.asRow
 import com.gurunars.shortcuts.fullScreen
-import com.gurunars.test_utils.storage.Assignable
-import com.gurunars.test_utils.storage.PersistentStorage
+import com.gurunars.storage.PersistentStorage
 import org.jetbrains.anko.*
 
 
 class MainActivity : AppCompatActivity() {
+    private val storage= PersistentStorage(this, "main")
 
-    class State : Assignable<State>() {
-        var hasOverlay=true
-        var isLeftHanded=false
-        var flag=true
-    }
+    private val buttonColorFlag = storage.storageField("buttonColorFlag", false)
+    private val hasOverlay = storage.storageField("hasOverlay", true)
+    private val isLeftHanded = storage.storageField("isLeftHanded", true)
 
     private lateinit var floatingMenu: FloatMenu
-    private lateinit var storage: PersistentStorage<State>
-
-    private fun toggleButton() {
-        floatingMenu.isOpen.set(!floatingMenu.isOpen.get())
-    }
-
-    private fun toggleButtonColor() { storage.patch { flag=!flag } }
-
-    private fun toggleBackground() { storage.patch { hasOverlay=!hasOverlay } }
-
-    private fun toggleHand() { storage.patch { isLeftHanded=!isLeftHanded } }
 
     private fun show(value: String) {
         AlertDialog.Builder(this@MainActivity)
@@ -48,6 +35,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        storage.load()
 
         fun color(colorId: Int): Int {
             return ContextCompat.getColor(this, colorId)
@@ -64,7 +52,16 @@ class MainActivity : AppCompatActivity() {
                     icon=R.drawable.ic_menu_close
                 ))
 
-                hasOverlay.set(true)
+                buttonColorFlag.bind {
+                    openIcon.set(Icon(
+                        bgColor=color(if (it) R.color.DarkRed else R.color.RosyBrown),
+                        fgColor=color(if (it) R.color.White else R.color.Black),
+                        icon=R.drawable.ic_menu
+                    ))
+                }
+
+                hasOverlay.bind(this@MainActivity.hasOverlay)
+                isLeftHanded.bind(this@MainActivity.isLeftHanded)
 
                 contentView.set(UI(false) {
                     relativeLayout {
@@ -115,16 +112,6 @@ class MainActivity : AppCompatActivity() {
             }.lparams { fullScreen() }
         }
 
-        storage = PersistentStorage(this, "FloatMenu", State()) {
-            floatingMenu.hasOverlay.set(it.hasOverlay)
-            floatingMenu.isLeftHanded.set(it.isLeftHanded)
-            floatingMenu.openIcon.set(Icon(
-                bgColor=color(if (it.flag) R.color.DarkRed else R.color.RosyBrown),
-                fgColor=color(if (it.flag) R.color.White else R.color.Black),
-                icon=R.drawable.ic_menu
-            ))
-        }
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -137,19 +124,19 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.toggleBackground -> {
-                toggleBackground()
+                hasOverlay.set(!hasOverlay.get())
                 return true
             }
             R.id.toggleButtonColor -> {
-                toggleButtonColor()
+                buttonColorFlag.set(!buttonColorFlag.get())
                 return true
             }
             R.id.toggleMenu -> {
-                toggleButton()
+                floatingMenu.isOpen.set(!floatingMenu.isOpen.get())
                 return true
             }
             R.id.toggleHand -> {
-                toggleHand()
+                isLeftHanded.set(!isLeftHanded.get())
                 return true
             }
             else -> return super.onOptionsItemSelected(item)

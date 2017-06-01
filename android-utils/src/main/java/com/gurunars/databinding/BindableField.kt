@@ -1,9 +1,7 @@
 package com.gurunars.databinding
 
-import android.util.Log
 
-
-class BindableField<Type>(private var value: Type) {
+open class BindableField<Type>(private var value: Type) {
 
     interface Binding {
         fun unbind()
