@@ -4,18 +4,16 @@ import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
+import android.view.Gravity
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View.inflate
 import android.view.ViewGroup
-import android.widget.TextView
 import com.gurunars.floatmenu.FloatMenu
 import com.gurunars.floatmenu.Icon
 import com.gurunars.floatmenu.floatMenu
 import com.gurunars.test_utils.storage.Assignable
 import com.gurunars.test_utils.storage.PersistentStorage
-import org.jetbrains.anko.frameLayout
-import org.jetbrains.anko.matchParent
+import org.jetbrains.anko.*
 
 
 class MainActivity : AppCompatActivity() {
@@ -27,7 +25,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private lateinit var floatingMenu: FloatMenu
-    private lateinit var status: TextView
     private lateinit var storage: PersistentStorage<State>
 
     private fun toggleButton() {
@@ -40,14 +37,12 @@ class MainActivity : AppCompatActivity() {
 
     private fun toggleHand() { storage.patch { isLeftHanded=!isLeftHanded } }
 
-    private fun bind(viewId: Int, value: String) {
-        findViewById(viewId).setOnClickListener {
-            AlertDialog.Builder(this@MainActivity)
-                    .setTitle(value)
-                    .setPositiveButton(android.R.string.yes, null)
-                    .setIcon(android.R.drawable.ic_dialog_alert)
-                    .show()
-        }
+    private fun show(value: String) {
+        AlertDialog.Builder(this@MainActivity)
+                .setTitle(value)
+                .setPositiveButton(android.R.string.yes, null)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -70,11 +65,55 @@ class MainActivity : AppCompatActivity() {
 
                 hasOverlay.set(true)
 
-                setContentView(inflate(this@MainActivity, R.layout.content_view, null))
-                setMenuView(inflate(this@MainActivity, R.layout.menu_view, null))
+                setContentView(UI(false) {
+                    relativeLayout {
+                        layoutParams=ViewGroup.LayoutParams(matchParent, matchParent)
 
-                status= findViewById(R.id.status) as TextView
-                isOpen.bind { status.setText(if (it) R.string.menuOpen else R.string.menuClosed) }
+                        textView {
+                            id=R.id.textView
+                            text=getString(R.string.appName)
+                            isClickable=true
+                        }.lparams {
+                            centerVertically()
+                            centerHorizontally()
+                        }
+
+                        textView {
+                            isOpen.bind { setText(if (it) R.string.menuOpen else R.string.menuClosed) }
+                            isClickable=true
+                        }.lparams {
+                            below(R.id.textView)
+                            centerVertically()
+                            centerHorizontally()
+                        }
+
+                    }
+                }.view)
+
+                setMenuView(UI(false) {
+                    scrollView {
+                        layoutParams=ViewGroup.LayoutParams(matchParent, matchParent)
+                        verticalLayout {
+                            gravity=Gravity.CENTER_HORIZONTAL
+                            button {
+                                setOnClickListener { show("Button Clicked") }
+                                text=getString(R.string.click_me)
+                                padding=dip(10)
+                            }.lparams()
+                            frameLayout {
+                                setOnClickListener { show("Button Frame Clicked") }
+                                isClickable=true
+                                backgroundColor=ContextCompat.getColor(context, R.color.AliceBlue)
+                                padding=dip(30)
+                            }.lparams {
+                                topMargin=dip(10)
+                            }
+                        }.lparams {
+                            width=matchParent
+                            height=wrapContent
+                        }
+                    }
+                }.view)
             }.lparams {
                 width=matchParent
                 height=matchParent
@@ -90,10 +129,6 @@ class MainActivity : AppCompatActivity() {
                 icon=R.drawable.ic_menu
             ))
         }
-
-        bind(R.id.textView, "Text Clicked")
-        bind(R.id.button, "Button Clicked")
-        bind(R.id.buttonFrame, "Button Frame Clicked")
 
     }
 
