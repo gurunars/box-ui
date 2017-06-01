@@ -48,7 +48,6 @@ class BindableField<Type>(private var value: Type) {
         this.value = value
         if (this.value != previousValue) {
             listeners.forEach {
-                Log.e("SET", "" + value)
                 it(value)
             }
         }
@@ -58,4 +57,7 @@ class BindableField<Type>(private var value: Type) {
         return this.value
     }
 
+    fun unbindFromAll() {
+        bindings.toList().forEach { it.unbind() }
+    }
 }

@@ -10,18 +10,18 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
-import com.gurunars.databinding.BindableField
+import com.gurunars.databinding.bindableField
 
 
 internal class MenuPane constructor(context: Context) : FrameLayout(context) {
 
     private val floatEvaluator = FloatEvaluator()
-    private val animatedValue = BindableField(1f)
+    private val animatedValue = bindableField(1f)
     private var withAnimation = false
 
-    val hasOverlay = BindableField(true)
-    val isVisible = BindableField(false)
-    val animationDuration = BindableField(400)
+    val hasOverlay = bindableField(true)
+    val isVisible = bindableField(false)
+    val animationDuration = bindableField(400)
 
     init {
         hasOverlay.bind {

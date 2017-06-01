@@ -5,7 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.RelativeLayout
-import com.gurunars.databinding.BindableField
+import com.gurunars.databinding.bindableField
 import org.jetbrains.anko.*
 
 /**
@@ -17,12 +17,12 @@ class FloatMenu constructor(context: Context) : FrameLayout(context) {
     private lateinit var menuPane: MenuPane
     private lateinit var contentPane: ViewGroup
 
-    val isLeftHanded = BindableField(false)
-    val animationDuration = BindableField(400)
-    val isOpen = BindableField(false)
-    val openIcon = BindableField(Icon(icon = R.drawable.ic_menu))
-    val closeIcon = BindableField(Icon(icon = R.drawable.ic_menu_close))
-    val hasOverlay = BindableField(true)
+    val isLeftHanded = bindableField(false)
+    val animationDuration = bindableField(400)
+    val isOpen = bindableField(false)
+    val openIcon = bindableField(Icon(icon = R.drawable.ic_menu))
+    val closeIcon = bindableField(Icon(icon = R.drawable.ic_menu_close))
+    val hasOverlay = bindableField(true)
 
     init {
         relativeLayout {
