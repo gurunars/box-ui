@@ -2,10 +2,11 @@ package com.gurunars.floatmenu
 
 import android.content.Context
 import android.view.View
-import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.RelativeLayout
 import com.gurunars.databinding.bindableField
+import com.gurunars.shortcuts.fullScreen
+import com.gurunars.shortcuts.setToOneView
 import org.jetbrains.anko.*
 
 /**
@@ -13,41 +14,35 @@ import org.jetbrains.anko.*
  */
 class FloatMenu constructor(context: Context) : FrameLayout(context) {
 
-    private lateinit var openFab: Fab
-    private lateinit var menuPane: MenuPane
-    private lateinit var contentPane: ViewGroup
-
     val isLeftHanded = bindableField(false)
     val animationDuration = bindableField(400)
     val isOpen = bindableField(false)
     val openIcon = bindableField(Icon(icon = R.drawable.ic_menu))
     val closeIcon = bindableField(Icon(icon = R.drawable.ic_menu_close))
     val hasOverlay = bindableField(true)
+    val contentView = bindableField(View(context))
+    val menuView = bindableField(View(context))
 
     init {
         relativeLayout {
-            layoutParams = LayoutParams(matchParent, matchParent)
-            contentPane=frameLayout {
+            fullScreen()
+            frameLayout {
                 id=R.id.contentPane
-            }.lparams {
-                width=matchParent
-                height=matchParent
-            }
-            menuPane=menuPane {
-                isClickable=true
+                contentView.bind { setToOneView(it) }
+            }.fullScreen()
+            menuPane {
                 id=R.id.menuPane
+                isClickable=true
                 visibility=View.GONE
                 animationDuration.bind(this@FloatMenu.animationDuration)
                 isVisible.bind(isOpen)
                 hasOverlay.bind(this@FloatMenu.hasOverlay)
-            }.lparams {
-                width=matchParent
-                height=matchParent
-            }
-            openFab=fab {
+                menuView.bind { setToOneView(it) }
+            }.fullScreen()
+            fab {
+                id=R.id.openFab
                 val fab = this
                 this@FloatMenu.isLeftHanded.bind { fab.contentDescription = "LH:" + it }
-                id=R.id.openFab
                 animationDuration.bind(rotationDuration)
                 isActivated.bind(isOpen)
                 this@FloatMenu.openIcon.bind(openIcon)
@@ -67,22 +62,6 @@ class FloatMenu constructor(context: Context) : FrameLayout(context) {
             }
         }
 
-    }
-
-    /**
-     * @param contentView view to be shown in the content area (clickable when the menu is closed)
-     */
-    fun setContentView(contentView: View) {
-        contentPane.removeAllViews()
-        contentPane.addView(contentView)
-    }
-
-    /**
-     * @param menuView view to be shown in the menu area (clickable when the menu is open)
-     */
-    fun setMenuView(menuView: View) {
-        menuPane.removeAllViews()
-        menuPane.addView(menuView)
     }
 
 }

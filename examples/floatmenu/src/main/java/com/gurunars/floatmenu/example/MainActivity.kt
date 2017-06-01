@@ -7,10 +7,11 @@ import android.support.v7.app.AppCompatActivity
 import android.view.Gravity
 import android.view.Menu
 import android.view.MenuItem
-import android.view.ViewGroup
 import com.gurunars.floatmenu.FloatMenu
 import com.gurunars.floatmenu.Icon
 import com.gurunars.floatmenu.floatMenu
+import com.gurunars.shortcuts.asRow
+import com.gurunars.shortcuts.fullScreen
 import com.gurunars.test_utils.storage.Assignable
 import com.gurunars.test_utils.storage.PersistentStorage
 import org.jetbrains.anko.*
@@ -53,7 +54,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         frameLayout {
-            layoutParams=ViewGroup.LayoutParams(matchParent, matchParent)
+            fullScreen()
             floatingMenu=floatMenu {
                 id=R.id.floatingMenu
 
@@ -65,17 +66,16 @@ class MainActivity : AppCompatActivity() {
 
                 hasOverlay.set(true)
 
-                setContentView(UI(false) {
+                contentView.set(UI(false) {
                     relativeLayout {
-                        layoutParams=ViewGroup.LayoutParams(matchParent, matchParent)
-
+                        fullScreen()
                         textView {
                             id=R.id.textView
                             text=getString(R.string.appName)
                             isClickable=true
                         }.lparams {
-                            centerVertically()
                             centerHorizontally()
+                            centerVertically()
                         }
 
                         textView {
@@ -83,16 +83,15 @@ class MainActivity : AppCompatActivity() {
                             isClickable=true
                         }.lparams {
                             below(R.id.textView)
-                            centerVertically()
                             centerHorizontally()
+                            centerVertically()
                         }
-
                     }
                 }.view)
 
-                setMenuView(UI(false) {
+                menuView.set(UI(false) {
                     scrollView {
-                        layoutParams=ViewGroup.LayoutParams(matchParent, matchParent)
+                        fullScreen()
                         verticalLayout {
                             gravity=Gravity.CENTER_HORIZONTAL
                             button {
@@ -110,16 +109,10 @@ class MainActivity : AppCompatActivity() {
                             }.lparams {
                                 topMargin=dip(10)
                             }
-                        }.lparams {
-                            width=matchParent
-                            height=wrapContent
-                        }
+                        }.asRow()
                     }
                 }.view)
-            }.lparams {
-                width=matchParent
-                height=matchParent
-            }
+            }.lparams { fullScreen() }
         }
 
         storage = PersistentStorage(this, "FloatMenu", State()) {

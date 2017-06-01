@@ -9,6 +9,5 @@ internal fun ViewManager.fab(theme: Int = 0, init: Fab.() -> Unit) = ankoView({ 
 internal fun ViewManager.menuPane(theme: Int = 0) = menuPane(theme) {}
 internal fun ViewManager.menuPane(theme: Int = 0, init: MenuPane.() -> Unit) = ankoView({ MenuPane(it) }, theme, init)
 
-
 fun ViewManager.floatMenu(theme: Int = 0) = floatMenu(theme) {}
 fun ViewManager.floatMenu(theme: Int = 0, init: FloatMenu.() -> Unit) = ankoView({ FloatMenu(it) }, theme, init)
