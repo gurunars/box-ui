@@ -20,9 +20,7 @@ class PersistentStorage(
             val loadedValue: Type? = StringSerializer.fromString<Type>(
                 storage.activity.getPreferences(Context.MODE_PRIVATE)
                 .getString(storage.storageName+"/"+name, null))
-            if (loadedValue != null) {
-                set(loadedValue)
-            }
+            if (loadedValue != null) set(loadedValue)
         }
         fun save() {
             if (!storage.wasLoaded) return
