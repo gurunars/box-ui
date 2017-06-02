@@ -16,7 +16,7 @@ import com.gurunars.storage.PersistentStorage
 import org.jetbrains.anko.*
 
 
-class MainActivity : AppCompatActivity() {
+class ActivityMain : AppCompatActivity() {
     private val storage= PersistentStorage(this, "main")
 
     private val buttonColorFlag = storage.storageField("buttonColorFlag", false)
@@ -26,7 +26,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var floatingMenu: FloatMenu
 
     private fun show(value: String) {
-        AlertDialog.Builder(this@MainActivity)
+        AlertDialog.Builder(this@ActivityMain)
                 .setTitle(value)
                 .setPositiveButton(android.R.string.yes, null)
                 .setIcon(android.R.drawable.ic_dialog_alert)
@@ -55,8 +55,8 @@ class MainActivity : AppCompatActivity() {
                     ))
                 }
 
-                hasOverlay.bind(this@MainActivity.hasOverlay)
-                isLeftHanded.bind(this@MainActivity.isLeftHanded)
+                hasOverlay.bind(this@ActivityMain.hasOverlay)
+                isLeftHanded.bind(this@ActivityMain.isLeftHanded)
 
                 contentView.set(UI(false) {
                     relativeLayout {

@@ -3,7 +3,6 @@ package com.gurunars.android_utils.example
 import android.graphics.Color
 import android.graphics.drawable.shapes.OvalShape
 import android.os.Bundle
-import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.view.Gravity
 import android.widget.TextView
@@ -32,7 +31,7 @@ class ActivityMain : AppCompatActivity() {
                 padding=dip(15)
                 gravity=Gravity.CENTER
                 backgroundColor=Color.parseColor("#FFFFAA")
-                title.bind { setText(it) }
+                title.bind { text = it }
             }.lparams {
                 width=matchParent
                 margin=dip(10)

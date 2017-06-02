@@ -23,7 +23,6 @@ internal class Fab constructor(context: Context) : FrameLayout(context) {
     private val argbEvaluator = ArgbEvaluator()
     private val floatEvaluator = FloatEvaluator()
     private val animatedValue = bindableField(1f)
-    private var withAnimation = false
 
     val rotationDuration = bindableField(400)
     val openIcon = bindableField(Icon(icon = R.drawable.ic_menu))

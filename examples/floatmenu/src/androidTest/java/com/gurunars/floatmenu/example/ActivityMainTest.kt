@@ -22,11 +22,11 @@ import android.support.test.espresso.matcher.ViewMatchers.withText
 
 @RunWith(AndroidJUnit4::class)
 @LargeTest
-class MainActivityTest {
+class ActivityMainTest {
 
     @Rule
     var mActivityRule = ActivityTestRule(
-            MainActivity::class.java)
+            ActivityMain::class.java)
 
     private fun restart() {
         mActivityRule.activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
