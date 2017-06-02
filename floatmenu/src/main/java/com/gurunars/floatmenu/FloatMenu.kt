@@ -4,8 +4,10 @@ import android.content.Context
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.RelativeLayout
+import com.gurunars.databinding.BindableField
 import com.gurunars.databinding.bindableField
 import com.gurunars.shortcuts.fullScreen
+import com.gurunars.shortcuts.l
 import com.gurunars.shortcuts.setToOneView
 import org.jetbrains.anko.*
 

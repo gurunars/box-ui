@@ -49,9 +49,7 @@ open class BindableField<Type>(private var value: Type) {
     fun set(value: Type) {
         if (this.value != value) {
             this.value = value
-            listeners.forEach {
-                it(value)
-            }
+            listeners.forEach { it(value) }
         }
     }
 

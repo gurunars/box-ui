@@ -16,6 +16,7 @@ import android.widget.ImageView
 import com.gurunars.android_utils.AutoBg
 import com.gurunars.android_utils.ColoredShapeDrawable
 import com.gurunars.databinding.bindableField
+import com.gurunars.shortcuts.l
 import org.jetbrains.anko.matchParent
 
 internal class Fab constructor(context: Context) : FrameLayout(context) {
@@ -38,9 +39,7 @@ internal class Fab constructor(context: Context) : FrameLayout(context) {
         setLayerType(View.LAYER_TYPE_SOFTWARE, null)
         addView(actualImageView)
 
-        setOnClickListener {
-            isActivated.set(!isActivated.get())
-        }
+        setOnClickListener { isActivated.set(!isActivated.get()) }
 
         openIcon.bind { updateIcon() }
         closeIcon.bind { updateIcon() }
@@ -56,7 +55,10 @@ internal class Fab constructor(context: Context) : FrameLayout(context) {
             }
             updateIcon()
         }
-        withAnimation = true
+        addOnAttachStateChangeListener(object: View.OnAttachStateChangeListener {
+            override fun onViewAttachedToWindow(v: View?) { withAnimation = true }
+            override fun onViewDetachedFromWindow(v: View?) { withAnimation = false }
+        })
     }
 
     private fun updateIcon() {
@@ -109,11 +111,9 @@ internal class Fab constructor(context: Context) : FrameLayout(context) {
     }
 
     override fun onRestoreInstanceState(state: Parcelable) {
-        withAnimation = false
         val localState = state as Bundle
         super.onRestoreInstanceState(localState.getParcelable("superState"))
         isActivated.set(localState.getBoolean("isActivated"))
-        withAnimation = true
     }
 
 }

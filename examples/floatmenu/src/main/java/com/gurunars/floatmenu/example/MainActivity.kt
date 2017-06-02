@@ -35,7 +35,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        storage.load()
 
         fun color(colorId: Int): Int {
             return ContextCompat.getColor(this, colorId)
@@ -111,6 +110,8 @@ class MainActivity : AppCompatActivity() {
                 }.view)
             }.lparams { fullScreen() }
         }
+
+//        storage.load()
 
     }
 

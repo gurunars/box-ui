@@ -47,7 +47,10 @@ internal class MenuPane constructor(context: Context) : FrameLayout(context) {
             )
             updateVisibility()
         }
-        withAnimation=true
+        addOnAttachStateChangeListener(object: View.OnAttachStateChangeListener {
+            override fun onViewAttachedToWindow(v: View?) { withAnimation = true }
+            override fun onViewDetachedFromWindow(v: View?) { withAnimation = false }
+        })
     }
 
     private fun updateVisibility() {
@@ -92,7 +95,6 @@ internal class MenuPane constructor(context: Context) : FrameLayout(context) {
     override fun onSaveInstanceState(): Parcelable {
         val bundle = Bundle()
         bundle.putParcelable("superState", super.onSaveInstanceState())
-        bundle.putBoolean("hasOverlay", hasOverlay.get())
         bundle.putBoolean("visible", isVisible.get())
         return bundle
     }
@@ -100,10 +102,7 @@ internal class MenuPane constructor(context: Context) : FrameLayout(context) {
     override fun onRestoreInstanceState(state: Parcelable) {
         val localState = state as Bundle
         super.onRestoreInstanceState(localState.getParcelable<Parcelable>("superState"))
-        withAnimation=false
-        hasOverlay.set(localState.getBoolean("isClickable"))
         isVisible.set(localState.getBoolean("visible"))
-        withAnimation=true
     }
 
 }
