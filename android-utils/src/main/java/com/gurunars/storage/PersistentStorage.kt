@@ -18,6 +18,7 @@ class PersistentStorage(
     }
 
     private val fields = mutableMapOf<String, PersistentField<*>>()
+    private var wasLoaded = false
 
     private fun<ItemType: Serializable> load(name: String): ItemType? {
         val preferences = activity.getPreferences(Context.MODE_PRIVATE)
@@ -26,6 +27,7 @@ class PersistentStorage(
     }
 
     private fun<ItemType: Serializable> save(name: String, value: ItemType) {
+        if (!wasLoaded) return
         val editor = activity.getPreferences(Context.MODE_PRIVATE).edit()
         editor.putString(storageName+"/"+name, StringSerializer.toString(value))
         editor.apply()
@@ -47,6 +49,7 @@ class PersistentStorage(
             }
             field?.bind { save(name, it) }
         }
+        wasLoaded = true
     }
 
 }

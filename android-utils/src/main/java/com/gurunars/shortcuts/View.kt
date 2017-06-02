@@ -39,5 +39,5 @@ inline fun FrameLayout.setToOneView(view: View) {
 }
 
 inline fun View.color(colorId: Int): Int {
-    return ContextCompat.getColor(context, android.R.color.holo_green_light)
+    return ContextCompat.getColor(context, colorId)
 }
