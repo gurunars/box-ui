@@ -18,6 +18,6 @@ fun<Type> View.bindableField(value: Type): BindableField<Type> {
 
 fun<Type> BindingRegistry.bindableField(value: Type): BindableField<Type> {
     val field = BindableField(value)
-    this.registerFieldForUnbinding(field)
+    this.add(field)
     return field
 }

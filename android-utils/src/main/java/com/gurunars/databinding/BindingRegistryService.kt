@@ -1,8 +1,14 @@
 package com.gurunars.databinding
 
-class BindingRegistryService(val fields: MutableList<BindableField<*>>) : BindingRegistry {
+class BindingRegistryService : BindingRegistry {
 
-    override fun registerFieldForUnbinding(field: BindableField<*>) {
+    override fun forEach(predicate: (field: BindableField<*>) -> Unit) {
+        return fields.forEach(predicate)
+    }
+
+    private val fields = mutableListOf<BindableField<*>>()
+
+    override fun add(field: BindableField<*>) {
         fields.add(field)
     }
 

@@ -1,5 +1,6 @@
 package com.gurunars.databinding
 
 interface BindingRegistry {
-    fun registerFieldForUnbinding(field: BindableField<*>)
+    fun add(field: BindableField<*>)
+    fun forEach(predicate: (field: BindableField<*>) -> Unit)
 }

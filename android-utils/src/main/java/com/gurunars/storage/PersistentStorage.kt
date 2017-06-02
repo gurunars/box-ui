@@ -3,6 +3,7 @@ package com.gurunars.storage
 import android.app.Activity
 import android.content.Context
 import com.gurunars.databinding.BindableField
+import com.gurunars.databinding.BindingRegistryService
 import java.io.Serializable
 
 
@@ -11,43 +12,45 @@ class PersistentStorage(
         private val storageName: String
 ) {
 
-    internal class PersistentField<Type: Serializable>(defaultValue: Type): BindableField<Type>(defaultValue) {
-        fun setVal(value: Serializable) = set(value as Type)
+    internal class PersistentField<Type: Serializable>(
+            val storage: PersistentStorage,
+            val name: String,
+            defaultValue: Type): BindableField<Type>(defaultValue) {
+        fun load() {
+            val loadedValue: Type? = StringSerializer.fromString<Type>(
+                storage.activity.getPreferences(Context.MODE_PRIVATE)
+                .getString(storage.storageName+"/"+name, null))
+            if (loadedValue != null) {
+                set(loadedValue)
+            }
+        }
+        fun save() {
+            if (!storage.wasLoaded) return
+            val editor = storage.activity.getPreferences(Context.MODE_PRIVATE).edit()
+            editor.putString(storage.storageName+"/"+name, StringSerializer.toString(get()))
+            editor.apply()
+        }
     }
 
-    private val fields = mutableMapOf<String, PersistentField<*>>()
+    private val registry = BindingRegistryService()
+
     private var wasLoaded = false
 
-    private fun<ItemType: Serializable> load(name: String): ItemType? =
-        StringSerializer.fromString<ItemType>(activity.getPreferences(Context.MODE_PRIVATE)
-            .getString(storageName+"/"+name, null))
-
-    private fun<ItemType: Serializable> save(name: String, value: ItemType) {
-        if (!wasLoaded) return
-        val editor = activity.getPreferences(Context.MODE_PRIVATE).edit()
-        editor.putString(storageName+"/"+name, StringSerializer.toString(value))
-        editor.apply()
-    }
-
     fun<Type: Serializable> storageField(name: String, defaultValue: Type): BindableField<Type> {
-        val field = PersistentField(defaultValue)
-        fields.put(name, field)
+        val field = PersistentField(this, name, defaultValue)
+        registry.add(field)
         return field
     }
 
     fun load() {
-        fields.keys.forEach {
-            val name = it
-            val field = fields.get(name)
-            val loadedValue: Serializable? = load(name)
-            if (loadedValue != null) {
-                field?.setVal(loadedValue)
-            }
-            field?.bind { save(name, it) }
+        registry.forEach {
+            val field = it as PersistentField<*>
+            field.load()
+            field.bind { field.save() }
         }
         wasLoaded = true
     }
 
-    fun unbindAll() = fields.values.forEach { it.unbindFromAll() }
+    fun unbindAll() = registry.unbindAll()
 
 }

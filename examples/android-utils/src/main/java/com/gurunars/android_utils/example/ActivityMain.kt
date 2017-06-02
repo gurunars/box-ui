@@ -71,8 +71,16 @@ class ActivityMain : AppCompatActivity() {
             } }
         }
 
-        storage.load()
+    }
 
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
+        storage.load()
+    }
+
+    override fun onDetachedFromWindow() {
+        super.onDetachedFromWindow()
+        storage.unbindAll()
     }
 
 }
