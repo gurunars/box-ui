@@ -1,5 +1,6 @@
 package com.gurunars.shortcuts
 
+import android.support.v4.content.ContextCompat
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
@@ -35,4 +36,8 @@ inline fun ViewGroup.asRow() {
 inline fun FrameLayout.setToOneView(view: View) {
     removeAllViews()
     addView(view)
+}
+
+inline fun View.color(colorId: Int): Int {
+    return ContextCompat.getColor(context, android.R.color.holo_green_light)
 }

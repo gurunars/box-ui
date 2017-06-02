@@ -16,7 +16,6 @@ import android.widget.ImageView
 import com.gurunars.android_utils.AutoBg
 import com.gurunars.android_utils.ColoredShapeDrawable
 import com.gurunars.databinding.bindableField
-import com.gurunars.shortcuts.l
 import org.jetbrains.anko.matchParent
 
 internal class Fab constructor(context: Context) : FrameLayout(context) {
@@ -45,7 +44,7 @@ internal class Fab constructor(context: Context) : FrameLayout(context) {
         closeIcon.bind { updateIcon() }
         animatedValue.bind { updateIcon() }
         isActivated.bind {
-            if (withAnimation) {
+            if (isAttachedToWindow) {
                 ValueAnimator.ofFloat(0f, 1f).apply {
                     startDelay = 0
                     duration = rotationDuration.get().toLong()
@@ -55,10 +54,6 @@ internal class Fab constructor(context: Context) : FrameLayout(context) {
             }
             updateIcon()
         }
-        addOnAttachStateChangeListener(object: View.OnAttachStateChangeListener {
-            override fun onViewAttachedToWindow(v: View?) { withAnimation = true }
-            override fun onViewDetachedFromWindow(v: View?) { withAnimation = false }
-        })
     }
 
     private fun updateIcon() {

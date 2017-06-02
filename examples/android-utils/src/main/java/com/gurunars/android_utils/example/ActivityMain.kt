@@ -6,35 +6,33 @@ import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.view.Gravity
-import android.view.ViewGroup
 import android.widget.TextView
 import com.gurunars.android_utils.AutoBg
 import com.gurunars.android_utils.ColoredShapeDrawable
-import com.gurunars.test_utils.storage.Assignable
-import com.gurunars.test_utils.storage.PersistentStorage
+import com.gurunars.shortcuts.color
+import com.gurunars.shortcuts.fullScreen
+import com.gurunars.storage.PersistentStorage
 import org.jetbrains.anko.*
 
 
 class ActivityMain : AppCompatActivity() {
 
-    class State : Assignable<State>() {
-        var title="Empty"
-    }
+    private val storage = PersistentStorage(this, "main")
 
-    private lateinit var payloadView: TextView
-    private lateinit var storage: PersistentStorage<State>
+    private val title = storage.storageField("title", "Empty")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         relativeLayout {
             gravity=Gravity.CENTER
-            layoutParams=ViewGroup.LayoutParams(matchParent, matchParent)
-            payloadView=textView {
+            fullScreen()
+            textView {
                 id=R.id.payloadView
                 padding=dip(15)
                 gravity=Gravity.CENTER
                 backgroundColor=Color.parseColor("#FFFFAA")
+                title.bind { setText(it) }
             }.lparams {
                 width=matchParent
                 margin=dip(10)
@@ -45,29 +43,25 @@ class ActivityMain : AppCompatActivity() {
 
                 textView {
                     isEnabled=false
-                    backgroundColor=ContextCompat.getColor(
-                            this@ActivityMain,
-                            android.R.color.holo_blue_light)
+                    backgroundColor=color(android.R.color.holo_blue_light)
                     text=getString(R.string.disabled)
                 }.lparams()
 
                 textView {
                     background=ColoredShapeDrawable(OvalShape(), Color.YELLOW)
                     text=getString(R.string.set)
-                    setOnClickListener { storage.patch { title="Configured" } }
+                    setOnClickListener { title.set("Configured") }
                 }.lparams()
 
                 textView {
-                    backgroundColor=ContextCompat.getColor(
-                            this@ActivityMain,
-                            android.R.color.holo_green_light)
+                    backgroundColor=color(android.R.color.holo_green_light)
                     text=getString(R.string.clear)
-                    setOnClickListener { storage.clear() }
+                    setOnClickListener { title.set("Empty") }
                 }.lparams()
 
             }.lparams {
                 width=matchParent
-                below(payloadView)
+                below(R.id.payloadView)
             }.applyRecursively { view -> when(view) {
                 is TextView -> { view.apply {
                     isClickable=true
@@ -78,7 +72,7 @@ class ActivityMain : AppCompatActivity() {
             } }
         }
 
-        storage = PersistentStorage(this, "payloadAlias", State(), { payloadView.text = it.title })
+        storage.load()
 
     }
 

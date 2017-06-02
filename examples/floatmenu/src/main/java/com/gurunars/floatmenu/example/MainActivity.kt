@@ -1,7 +1,6 @@
 package com.gurunars.floatmenu.example
 
 import android.os.Bundle
-import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.view.Gravity
@@ -11,6 +10,7 @@ import com.gurunars.floatmenu.FloatMenu
 import com.gurunars.floatmenu.Icon
 import com.gurunars.floatmenu.floatMenu
 import com.gurunars.shortcuts.asRow
+import com.gurunars.shortcuts.color
 import com.gurunars.shortcuts.fullScreen
 import com.gurunars.storage.PersistentStorage
 import org.jetbrains.anko.*
@@ -35,10 +35,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        fun color(colorId: Int): Int {
-            return ContextCompat.getColor(this, colorId)
-        }
 
         frameLayout {
             fullScreen()
@@ -100,7 +96,7 @@ class MainActivity : AppCompatActivity() {
                                 id=R.id.buttonFrame
                                 setOnClickListener { show("Button Frame Clicked") }
                                 isClickable=true
-                                backgroundColor=ContextCompat.getColor(context, R.color.AliceBlue)
+                                backgroundColor=color(R.color.AliceBlue)
                                 padding=dip(30)
                             }.lparams {
                                 topMargin=dip(10)
