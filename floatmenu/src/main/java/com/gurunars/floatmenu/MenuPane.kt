@@ -85,9 +85,8 @@ internal class MenuPane constructor(context: Context) : FrameLayout(context) {
     }
 
     /* Intercept touch on the view group but not on the icons */
-    override fun onInterceptTouchEvent(ev: MotionEvent): Boolean {
-        return !isClickable && !touchBelongsTo(this, ev)
-    }
+    override fun onInterceptTouchEvent(ev: MotionEvent): Boolean =
+        !isClickable && !touchBelongsTo(this, ev)
 
     override fun onSaveInstanceState(): Parcelable {
         val bundle = Bundle()

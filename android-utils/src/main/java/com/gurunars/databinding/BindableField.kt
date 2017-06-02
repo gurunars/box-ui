@@ -1,12 +1,21 @@
 package com.gurunars.databinding
 
 
-open class BindableField<Type>(private var value: Type) : Bindable<Type> {
+open class BindableField<Type>(private var value: Type) {
+
+    interface ValueProcessor<Type> {
+        fun forward(value: Type): Type
+        fun backward(value: Type): Type
+    }
+
+    interface Binding {
+        fun unbind()
+    }
 
     val listeners: MutableList<(value: Type) -> Unit> = mutableListOf()
     val bindings: MutableList<Binding> = mutableListOf()
 
-    override fun bind(listener: (value: Type) -> Unit): Binding {
+    fun bind(listener: (value: Type) -> Unit): Binding {
         listeners.add(listener)
         val binding = object : Binding {
             override fun unbind() {
@@ -18,7 +27,7 @@ open class BindableField<Type>(private var value: Type) : Bindable<Type> {
         return binding
     }
 
-    override fun bind(field: BindableField<Type>, transformer: ValueProcessor<Type>?): Binding {
+    fun bind(field: BindableField<Type>, transformer: ValueProcessor<Type>?=null): Binding {
         val forwardBinding = bind { field.set(transformer?.forward(it) ?: it) }
         val backwardBinding = field.bind { this.set(transformer?.backward(it) ?: it) }
 
@@ -37,18 +46,18 @@ open class BindableField<Type>(private var value: Type) : Bindable<Type> {
         return twoWayBinding
     }
 
-    override fun set(value: Type, force:Boolean) {
+    fun set(value: Type, force:Boolean=false) {
         if (this.value != value || force) {
             this.value = value
             listeners.forEach { it(value) }
         }
     }
 
-    override fun get() : Type {
+    fun get() : Type {
         return this.value
     }
 
-    override fun unbindFromAll() {
+    fun unbindFromAll() {
         bindings.toList().forEach { it.unbind() }
     }
 }

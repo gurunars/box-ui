@@ -4,32 +4,27 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 
-inline fun ViewGroup.LayoutParams.fullScreen() {
-    width = ViewGroup.LayoutParams.MATCH_PARENT
-    height = ViewGroup.LayoutParams.MATCH_PARENT
+val matchParent = ViewGroup.LayoutParams.MATCH_PARENT
+val wrapContent = ViewGroup.LayoutParams.WRAP_CONTENT
+
+inline fun ViewGroup.LayoutParams.fullSize() {
+    width = matchParent
+    height = matchParent
 }
 
 inline fun ViewGroup.LayoutParams.asRow() {
-    width = ViewGroup.LayoutParams.MATCH_PARENT
-    height = ViewGroup.LayoutParams.WRAP_CONTENT
+    width = matchParent
+    height = wrapContent
 }
 
-inline fun ViewGroup.fullScreen() {
-    val width = ViewGroup.LayoutParams.MATCH_PARENT
-    val height = ViewGroup.LayoutParams.MATCH_PARENT
-
-    layoutParams = layoutParams ?: ViewGroup.LayoutParams(width, height)
-    layoutParams.width = width
-    layoutParams.height = height
+inline fun ViewGroup.fullSize() {
+    layoutParams = layoutParams ?: ViewGroup.LayoutParams(matchParent, matchParent)
+    layoutParams.fullSize()
 }
 
 inline fun ViewGroup.asRow() {
-    val width = ViewGroup.LayoutParams.MATCH_PARENT
-    val height = ViewGroup.LayoutParams.WRAP_CONTENT
-
-    layoutParams = layoutParams ?: ViewGroup.LayoutParams(width, height)
-    layoutParams.width = width
-    layoutParams.height = height
+    layoutParams = layoutParams ?: ViewGroup.LayoutParams(matchParent, wrapContent)
+    layoutParams.fullSize()
 }
 
 inline fun FrameLayout.setOneView(view: View) {

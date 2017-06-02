@@ -11,7 +11,7 @@ import com.gurunars.floatmenu.Icon
 import com.gurunars.floatmenu.floatMenu
 import com.gurunars.shortcuts.asRow
 import com.gurunars.shortcuts.color
-import com.gurunars.shortcuts.fullScreen
+import com.gurunars.shortcuts.fullSize
 import com.gurunars.storage.PersistentStorage
 import org.jetbrains.anko.*
 
@@ -37,7 +37,7 @@ class ActivityMain : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         frameLayout {
-            fullScreen()
+            fullSize()
             floatingMenu=floatMenu {
                 id=R.id.floatingMenu
 
@@ -60,7 +60,7 @@ class ActivityMain : AppCompatActivity() {
 
                 contentView.set(UI(false) {
                     relativeLayout {
-                        fullScreen()
+                        fullSize()
                         textView {
                             id=R.id.textView
                             text=getString(R.string.appName)
@@ -83,7 +83,7 @@ class ActivityMain : AppCompatActivity() {
 
                 menuView.set(UI(false) {
                     scrollView {
-                        fullScreen()
+                        fullSize()
                         verticalLayout {
                             gravity=Gravity.CENTER_HORIZONTAL
                             button {
@@ -104,7 +104,7 @@ class ActivityMain : AppCompatActivity() {
                         }.asRow()
                     }
                 }.view)
-            }.lparams { fullScreen() }
+            }.lparams { fullSize() }
         }
 
         storage.load()

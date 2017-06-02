@@ -9,7 +9,7 @@ import android.widget.TextView
 import com.gurunars.android_utils.AutoBg
 import com.gurunars.android_utils.ColoredShapeDrawable
 import com.gurunars.shortcuts.color
-import com.gurunars.shortcuts.fullScreen
+import com.gurunars.shortcuts.fullSize
 import com.gurunars.storage.PersistentStorage
 import org.jetbrains.anko.*
 
@@ -25,7 +25,7 @@ class ActivityMain : AppCompatActivity() {
 
         relativeLayout {
             gravity=Gravity.CENTER
-            fullScreen()
+            fullSize()
             textView {
                 id=R.id.payloadView
                 padding=dip(15)

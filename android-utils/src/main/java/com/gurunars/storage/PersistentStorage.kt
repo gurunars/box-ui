@@ -12,19 +12,15 @@ class PersistentStorage(
 ) {
 
     internal class PersistentField<Type: Serializable>(defaultValue: Type): BindableField<Type>(defaultValue) {
-        fun setVal(value: Serializable) {
-            set(value as Type)
-        }
+        fun setVal(value: Serializable) = set(value as Type)
     }
 
     private val fields = mutableMapOf<String, PersistentField<*>>()
     private var wasLoaded = false
 
-    private fun<ItemType: Serializable> load(name: String): ItemType? {
-        val preferences = activity.getPreferences(Context.MODE_PRIVATE)
-        return StringSerializer.fromString<ItemType>(
-                preferences.getString(storageName+"/"+name, null))
-    }
+    private fun<ItemType: Serializable> load(name: String): ItemType? =
+        StringSerializer.fromString<ItemType>(activity.getPreferences(Context.MODE_PRIVATE)
+            .getString(storageName+"/"+name, null))
 
     private fun<ItemType: Serializable> save(name: String, value: ItemType) {
         if (!wasLoaded) return
@@ -51,5 +47,7 @@ class PersistentStorage(
         }
         wasLoaded = true
     }
+
+    fun unbindAll() = fields.values.forEach { it.unbindFromAll() }
 
 }

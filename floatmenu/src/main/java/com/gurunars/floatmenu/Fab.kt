@@ -16,7 +16,7 @@ import android.widget.ImageView
 import com.gurunars.android_utils.AutoBg
 import com.gurunars.android_utils.ColoredShapeDrawable
 import com.gurunars.databinding.bindableField
-import org.jetbrains.anko.matchParent
+import com.gurunars.shortcuts.fullSize
 
 internal class Fab constructor(context: Context) : FrameLayout(context) {
 
@@ -30,7 +30,7 @@ internal class Fab constructor(context: Context) : FrameLayout(context) {
     val isActivated = bindableField(false)
 
     private val actualImageView = ImageView(context).apply {
-        layoutParams = LayoutParams(matchParent, matchParent)
+        fullSize()
     }
 
     init {

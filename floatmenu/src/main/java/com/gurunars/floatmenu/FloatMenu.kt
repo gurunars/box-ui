@@ -5,7 +5,7 @@ import android.view.View
 import android.widget.FrameLayout
 import android.widget.RelativeLayout
 import com.gurunars.databinding.bindableField
-import com.gurunars.shortcuts.fullScreen
+import com.gurunars.shortcuts.fullSize
 import com.gurunars.shortcuts.setOneView
 import org.jetbrains.anko.*
 
@@ -25,11 +25,11 @@ class FloatMenu constructor(context: Context) : FrameLayout(context) {
 
     init {
         relativeLayout {
-            fullScreen()
+            fullSize()
             frameLayout {
                 id=R.id.contentPane
                 contentView.bind { setOneView(it) }
-            }.fullScreen()
+            }.fullSize()
             menuPane {
                 id=R.id.menuPane
                 isClickable=true
@@ -38,7 +38,7 @@ class FloatMenu constructor(context: Context) : FrameLayout(context) {
                 isVisible.bind(isOpen)
                 hasOverlay.bind(this@FloatMenu.hasOverlay)
                 menuView.bind { setOneView(it) }
-            }.fullScreen()
+            }.fullSize()
             fab {
                 id=R.id.openFab
                 val fab = this
