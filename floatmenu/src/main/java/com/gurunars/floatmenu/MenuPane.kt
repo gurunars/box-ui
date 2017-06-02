@@ -11,13 +11,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import com.gurunars.databinding.bindableField
+import com.gurunars.shortcuts.setIsVisible
 
 
 internal class MenuPane constructor(context: Context) : FrameLayout(context) {
 
     private val floatEvaluator = FloatEvaluator()
     private val animatedValue = bindableField(1f)
-    private var withAnimation = false
 
     val hasOverlay = bindableField(true)
     val isVisible = bindableField(false)
@@ -29,15 +29,16 @@ internal class MenuPane constructor(context: Context) : FrameLayout(context) {
             isClickable = it
         }
         isVisible.bind {
-            if (withAnimation) {
+            if (isAttachedToWindow) {
                 ValueAnimator.ofFloat(0f, 1f).apply {
                     startDelay = 0
                     duration = animationDuration.get().toLong()
                     addUpdateListener { this@MenuPane.animatedValue.set(it.animatedValue as Float) }
                     start()
                 }
+            } else {
+                animatedValue.set(1f, true)
             }
-            updateVisibility()
         }
         animatedValue.bind {
             val visible = isVisible.get()
@@ -47,14 +48,10 @@ internal class MenuPane constructor(context: Context) : FrameLayout(context) {
             )
             updateVisibility()
         }
-        addOnAttachStateChangeListener(object: View.OnAttachStateChangeListener {
-            override fun onViewAttachedToWindow(v: View?) { withAnimation = true }
-            override fun onViewDetachedFromWindow(v: View?) { withAnimation = false }
-        })
     }
 
     private fun updateVisibility() {
-        visibility = if (!isVisible.get() && animatedValue.get() == 1f) View.GONE else View.VISIBLE
+        setIsVisible(isVisible.get() || animatedValue.get() != 1f)
     }
 
     private fun isWithinBounds(view: View, ev: MotionEvent): Boolean {

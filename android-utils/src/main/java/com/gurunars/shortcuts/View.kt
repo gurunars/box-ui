@@ -1,6 +1,5 @@
 package com.gurunars.shortcuts
 
-import android.support.v4.content.ContextCompat
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
@@ -33,7 +32,11 @@ inline fun ViewGroup.asRow() {
     layoutParams.height = height
 }
 
-inline fun FrameLayout.setToOneView(view: View) {
+inline fun FrameLayout.setOneView(view: View) {
     removeAllViews()
     addView(view)
+}
+
+inline fun View.setIsVisible(isVisible: Boolean) {
+    visibility = if (isVisible) View.VISIBLE else View.GONE
 }

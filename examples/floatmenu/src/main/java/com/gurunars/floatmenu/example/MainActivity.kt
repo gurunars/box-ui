@@ -107,7 +107,7 @@ class MainActivity : AppCompatActivity() {
             }.lparams { fullScreen() }
         }
 
-//        storage.load()
+        storage.load()
 
     }
 

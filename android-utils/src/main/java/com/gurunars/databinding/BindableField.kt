@@ -46,8 +46,8 @@ open class BindableField<Type>(private var value: Type) {
         return twoWayBinding
     }
 
-    fun set(value: Type) {
-        if (this.value != value) {
+    fun set(value: Type, force:Boolean=false) {
+        if (this.value != value || force) {
             this.value = value
             listeners.forEach { it(value) }
         }
