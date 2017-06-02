@@ -29,6 +29,12 @@ android {
         versionName buildInfo.version
     }
 
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+        test.java.srcDirs += 'src/main/kotlin'
+        androidTest.java.srcDirs += 'src/main/kotlin'
+    }
+
     return void
 }
 

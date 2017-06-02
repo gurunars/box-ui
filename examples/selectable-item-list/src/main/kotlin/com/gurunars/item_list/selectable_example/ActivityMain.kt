@@ -5,12 +5,15 @@ import android.graphics.Color
 import android.os.Bundle
 import android.support.annotation.StringRes
 import android.support.v7.app.AppCompatActivity
-import android.view.*
+import android.view.Gravity
+import android.view.Menu
+import android.view.MenuItem
+import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import com.gurunars.item_list.*
+import com.gurunars.shortcuts.fullSize
 import org.jetbrains.anko.frameLayout
-import org.jetbrains.anko.matchParent
 import java.util.*
 
 
@@ -26,7 +29,7 @@ class ActivityMain : AppCompatActivity() {
         }
 
         override fun bind(itemView: TextView, item: SelectableItem<AnimalItem>, previousItem: SelectableItem<AnimalItem>?) {
-            itemView.text = "" + item
+            itemView.text = "${item}"
             itemView.setBackgroundColor(if (item.isSelected) Color.RED else Color.WHITE)
         }
 
@@ -56,14 +59,12 @@ class ActivityMain : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         frameLayout {
-            layoutParams= ViewGroup.LayoutParams(matchParent, matchParent)
+            fullSize()
             itemList=selectableItemList<AnimalItem> {
+                fullSize()
                 id=R.id.selectableItemList
                 AnimalItem.Type.values().forEach { registerItemViewBinder(it, AnimalBinder()) }
                 setEmptyViewBinder(EmptyBinder())
-            }.lparams {
-                width= matchParent
-                height= matchParent
             }
         }
 

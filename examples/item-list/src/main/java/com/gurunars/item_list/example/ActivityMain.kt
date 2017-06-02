@@ -12,6 +12,7 @@ import com.gurunars.item_list.EmptyViewBinder
 import com.gurunars.item_list.ItemList
 import com.gurunars.item_list.ItemViewBinder
 import com.gurunars.item_list.itemList
+import com.gurunars.shortcuts.fullSize
 import org.jetbrains.anko.dip
 import org.jetbrains.anko.frameLayout
 import org.jetbrains.anko.matchParent
@@ -75,12 +76,10 @@ class ActivityMain : AppCompatActivity() {
         frameLayout {
             layoutParams=ViewGroup.LayoutParams(matchParent, matchParent)
             itemList=itemList<AnimalItem> {
+                fullSize()
                 id=R.id.itemList
                 AnimalItem.Type.values().forEach { registerItemViewBinder(it, AnimalBinder()) }
                 setEmptyViewBinder(EmptyBinder())
-            }.lparams {
-                width= matchParent
-                height= matchParent
             }
         }
 
@@ -150,10 +149,11 @@ class ActivityMain : AppCompatActivity() {
         if (items.size <= 0) {
             return R.string.no_action
         }
-        val item = items[items.size - 1]
-        items.removeAt(items.size - 1)
-        items.add(0, item)
-        itemList.setItems(items)
+        itemList.setItems(items.apply {
+            val item = get(size - 1)
+            removeAt(size - 1)
+            add(0, item)
+        })
         return R.string.did_move_to_top
     }
 
@@ -161,10 +161,11 @@ class ActivityMain : AppCompatActivity() {
         if (items.size <= 0) {
             return R.string.no_action
         }
-        val item = items[0]
-        items.removeAt(0)
-        items.add(item)
-        itemList.setItems(items)
+        itemList.setItems(items.apply {
+            val item = get(0)
+            removeAt(0)
+            add(0, item)
+        })
         return R.string.did_move_to_bottom
     }
 
