@@ -4,8 +4,8 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
 import com.gurunars.item_list.ItemViewBinderEmpty.Companion.EMPTY_TYPE
-import org.jetbrains.anko.matchParent
-import org.jetbrains.anko.wrapContent
+import com.gurunars.shortcuts.asRow
+import com.gurunars.shortcuts.fullSize
 
 
 internal class BindableViewHolder<ViewType : View, ItemType : Item> : RecyclerView.ViewHolder {
@@ -15,7 +15,7 @@ internal class BindableViewHolder<ViewType : View, ItemType : Item> : RecyclerVi
     constructor(root: ViewGroup,
                 itemViewBinder: ItemViewBinder<ViewType, ItemType>) : super(itemViewBinder.getView(root.context)) {
         this.itemViewBinder = itemViewBinder
-        itemView.layoutParams = RecyclerView.LayoutParams(matchParent, wrapContent)
+        itemView.asRow()
     }
 
     constructor(root: ViewGroup,
@@ -23,7 +23,7 @@ internal class BindableViewHolder<ViewType : View, ItemType : Item> : RecyclerVi
         this.itemViewBinder = null
         itemView.apply {
             setTag(EMPTY_TYPE, EMPTY_TYPE)
-            layoutParams = RecyclerView.LayoutParams(matchParent, matchParent)
+            this.fullSize()
         }
     }
 

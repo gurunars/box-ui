@@ -17,12 +17,12 @@ inline fun ViewGroup.LayoutParams.asRow() {
     height = wrapContent
 }
 
-inline fun ViewGroup.fullSize() {
+inline fun View.fullSize() {
     layoutParams = layoutParams ?: ViewGroup.LayoutParams(matchParent, matchParent)
     layoutParams.fullSize()
 }
 
-inline fun ViewGroup.asRow() {
+inline fun View.asRow() {
     layoutParams = layoutParams ?: ViewGroup.LayoutParams(matchParent, wrapContent)
     layoutParams.fullSize()
 }
