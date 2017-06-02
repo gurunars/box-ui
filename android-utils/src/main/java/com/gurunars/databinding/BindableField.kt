@@ -23,6 +23,7 @@ open class BindableField<Type>(private var value: Type) {
                 bindings.remove(this)
             }
         }
+        bindings.add(binding)
         listener(this.value)
         return binding
     }
@@ -53,9 +54,7 @@ open class BindableField<Type>(private var value: Type) {
         }
     }
 
-    fun get() : Type {
-        return this.value
-    }
+    fun get() : Type = this.value
 
     fun unbindFromAll() {
         bindings.toList().forEach { it.unbind() }
