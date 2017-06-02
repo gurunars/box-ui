@@ -37,7 +37,3 @@ inline fun FrameLayout.setToOneView(view: View) {
     removeAllViews()
     addView(view)
 }
-
-inline fun View.color(colorId: Int): Int {
-    return ContextCompat.getColor(context, colorId)
-}
