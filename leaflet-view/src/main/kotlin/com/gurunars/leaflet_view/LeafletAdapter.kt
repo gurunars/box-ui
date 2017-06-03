@@ -45,6 +45,7 @@ internal class LeafletAdapter<PageT : Page>(
         override fun renderNoPage() = getCenteredView(pager.context.getString(R.string.empty))
         override fun enter() {}
     }
+
     private var pageRenderer: PageRenderer<PageT> = object: PageRenderer<PageT> {
         override fun renderPage(page: PageT) = getCenteredView(page.toString())
         override fun enter(pageView: View) {}
@@ -66,9 +67,9 @@ internal class LeafletAdapter<PageT : Page>(
     fun setPages(pages: List<PageT>) {
         val oldCurrent = getCurrentPage()
         this.previousPages = this.pages
-        this.pages = this.kryo.copy(pages)
+        this.pages = this.kryo.copy(pages.toList())
         notifyDataSetChanged()
-        goTo(pages.find({pageEquator(it, oldCurrent)}) ?: getCurrentPage())
+        goTo(this.pages.find({pageEquator(it, oldCurrent)}) ?: getCurrentPage())
     }
 
     fun getCurrentPage() = if (pages.isEmpty()) null else pages[Math.min(pager.currentItem, pages.size - 1)]
@@ -76,9 +77,11 @@ internal class LeafletAdapter<PageT : Page>(
     fun goTo(page: PageT?) {
         if (page == null) {
             pager.visibility = View.GONE
-            emptyHolder.visibility = View.VISIBLE
-            emptyHolder.removeAllViews()
-            emptyHolder.addView(noPageRenderer.renderNoPage())
+            emptyHolder.apply {
+                visibility = View.VISIBLE
+                removeAllViews()
+                addView(noPageRenderer.renderNoPage())
+            }
             noPageRenderer.enter()
         } else {
             val desiredIndex = pages.indexOfFirst { pageEquator(it, page) }

@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <item name="pageTitle" type="id">666</item>
+    <item name="leafletViewR" type="id" />
+    <item name="leafletView" type="id" />
+    <item name="textEdit" type="id" />
 </resources>
