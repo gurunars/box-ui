@@ -48,7 +48,7 @@ open class BindableField<Type>(private var value: Type) {
     }
 
     fun set(value: Type, force:Boolean=false) {
-        if (this.value != value || force) {
+        if (force || this.value != value) {
             this.value = value
             listeners.forEach { it(value) }
         }

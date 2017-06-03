@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import com.gurunars.databinding.BindableField
 import com.gurunars.databinding.BindingRegistryService
+import com.gurunars.shortcuts.l
 import java.io.Serializable
 
 

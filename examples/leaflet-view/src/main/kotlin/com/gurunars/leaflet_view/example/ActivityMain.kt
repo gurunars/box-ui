@@ -71,13 +71,15 @@ class ActivityMain : AppCompatActivity() {
 
     }
 
+    // TODO: GO to should happend after DB load
+
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
         storage.load()
     }
 
-    override fun onDetachedFromWindow() {
-        super.onDetachedFromWindow()
+    override fun onDestroy() {
+        super.onDestroy()
         storage.unbindAll()
     }
 
@@ -159,7 +161,7 @@ class ActivityMain : AppCompatActivity() {
                     indices
                         .filter { get(it).id == currentPage.id }
                         .forEach { set(it, currentPage) }
-                })
+                }, true)
             }
             show()
         }
@@ -170,9 +172,8 @@ class ActivityMain : AppCompatActivity() {
         // however the idea is to demo that these methods are not important - only getId method is
         val page = leafletView.getCurrentPage() as TitledPage
         pages.set(pages.get().apply {
-            indices.filter { get(it).id == page.id }
-                    .forEach { removeAt(it) }
-        })
+            indices.filter { get(it).id == page.id }.forEach { removeAt(it) }
+        }, true)
     }
 
     private fun createPage() {
@@ -184,14 +185,12 @@ class ActivityMain : AppCompatActivity() {
             }
             setView(input)
             setPositiveButton(R.string.ok) { _, _ ->
-                pages.set(pages.get().apply {
-                    add(TitledPage(input.text.toString()))
-                })
+                pages.set(pages.get().apply { add(TitledPage(input.text.toString())) }, true)
             }
             show()
         }
     }
 
-    private fun clear() { pages.set(ArrayList()) }
+    private fun clear() { pages.set(ArrayList(), true) }
 
 }
