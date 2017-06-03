@@ -8,29 +8,33 @@ import android.text.InputType
 import android.view.*
 import android.widget.ArrayAdapter
 import android.widget.EditText
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import com.gurunars.leaflet_view.LeafletView
 import com.gurunars.leaflet_view.PageRenderer
 import com.gurunars.leaflet_view.leafletView
 import com.gurunars.shortcuts.fullSize
+import com.gurunars.storage.PersistentStorage
 import org.jetbrains.anko.*
 
 
 class ActivityMain : AppCompatActivity() {
 
-    private var pages = mutableListOf<TitledPage>()
-    private lateinit var leafletView: LeafletView<TitledPage>
+    private val storage= PersistentStorage(this, "main")
+    private val pages = storage.storageField("pages", ArrayList<TitledPage>())
 
-    private fun updateAdapter() {
-        leafletView.setPages(pages.sortedWith(kotlin.Comparator { lhs, rhs -> lhs.title.compareTo(rhs.title)}))
-    }
+    private lateinit var leafletView: LeafletView<TitledPage>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         frameLayout {
             fullSize()
             leafletView=leafletView<TitledPage> {
+
+                pages.bind {
+                    setPages(it.sortedWith(kotlin.Comparator {
+                        lhs, rhs -> lhs.title.compareTo(rhs.title)
+                    }))
+                }
+
                 id=R.id.leafletView
                 fullSize()
                 setPageRenderer(object : PageRenderer<TitledPage> {
@@ -65,21 +69,16 @@ class ActivityMain : AppCompatActivity() {
             }
         }
 
-        load()
-        updateAdapter()
     }
 
-    private fun load() {
-        pages = Gson().fromJson<ArrayList<TitledPage>>(
-            getPreferences(Context.MODE_PRIVATE).getString("data", "[]"),
-            object : TypeToken<ArrayList<TitledPage>>() {
-        }.type)
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
+        storage.load()
     }
 
-    private fun save() {
-        val editor = getPreferences(Context.MODE_PRIVATE).edit()
-        editor.putString("data", Gson().toJson(pages))
-        editor.apply()
+    override fun onDetachedFromWindow() {
+        super.onDetachedFromWindow()
+        storage.unbindAll()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -131,9 +130,9 @@ class ActivityMain : AppCompatActivity() {
         AlertDialog.Builder(this).apply {
             setTitle(R.string.go_to)
             setSingleChoiceItems(
-                    TitledPageAdapter(this@ActivityMain, pages), -1
+                    TitledPageAdapter(this@ActivityMain, pages.get()), -1
             ) { dialog, which ->
-                leafletView.goTo(pages[which])
+                leafletView.goTo(pages.get()[which])
                 dialog.dismiss()
             }
             setCancelable(true)
@@ -156,11 +155,11 @@ class ActivityMain : AppCompatActivity() {
                 // NOTE: surely equals method could have been implemented
                 // however the idea is to demo that these methods are not important -
                 // only getId method is
-                pages.indices
-                        .filter { pages[it].id == currentPage.id }
-                        .forEach { pages[it] = currentPage }
-                updateAdapter()
-                save()
+                pages.set(pages.get().apply {
+                    indices
+                        .filter { get(it).id == currentPage.id }
+                        .forEach { set(it, currentPage) }
+                })
             }
             show()
         }
@@ -170,11 +169,10 @@ class ActivityMain : AppCompatActivity() {
         // NOTE: surely equals method could have been implemented
         // however the idea is to demo that these methods are not important - only getId method is
         val page = leafletView.getCurrentPage() as TitledPage
-        pages.indices
-                .filter { pages[it].id == page.id }
-                .forEach { pages.removeAt(it) }
-        updateAdapter()
-        save()
+        pages.set(pages.get().apply {
+            indices.filter { get(it).id == page.id }
+                    .forEach { removeAt(it) }
+        })
     }
 
     private fun createPage() {
@@ -186,18 +184,14 @@ class ActivityMain : AppCompatActivity() {
             }
             setView(input)
             setPositiveButton(R.string.ok) { _, _ ->
-                pages.add(TitledPage(input.text.toString()))
-                save()
-                updateAdapter()
+                pages.set(pages.get().apply {
+                    add(TitledPage(input.text.toString()))
+                })
             }
             show()
         }
     }
 
-    private fun clear() {
-        pages.clear()
-        updateAdapter()
-        save()
-    }
+    private fun clear() { pages.set(ArrayList()) }
 
 }
