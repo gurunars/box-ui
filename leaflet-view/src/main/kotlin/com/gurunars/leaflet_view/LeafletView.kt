@@ -2,25 +2,19 @@ package com.gurunars.leaflet_view
 
 import android.content.Context
 import android.support.v4.view.ViewPager
-import android.view.Gravity
-import android.view.View
 import android.widget.LinearLayout
 import com.gurunars.shortcuts.fullSize
-import org.jetbrains.anko.AnkoContext
 import org.jetbrains.anko.frameLayout
-import org.jetbrains.anko.relativeLayout
 import org.jetbrains.anko.support.v4.viewPager
-import org.jetbrains.anko.textView
 
 /**
  * View pager without fragments on steroids.
  *
- * @param <ViewT> View subclass to be used to render individual pages
  * @param <PageT> Page subclass to be used to populate the pages
  */
-class LeafletView<ViewT : View, PageT : Page>  constructor(context: Context) : LinearLayout(context) {
+class LeafletView<PageT : Page>  constructor(context: Context) : LinearLayout(context) {
 
-    private lateinit var leafletAdapter: LeafletAdapter<ViewT, PageT>
+    private lateinit var leafletAdapter: LeafletAdapter<PageT>
 
     init {
 
@@ -34,24 +28,7 @@ class LeafletView<ViewT : View, PageT : Page>  constructor(context: Context) : L
                 id=R.id.emptyHolder
                 fullSize()
             }
-            leafletAdapter = LeafletAdapter<ViewT, PageT>(viewPager, emptyHolder).apply {
-                setNoPageRenderer(object : NoPageRenderer {
-                    override fun renderNoPage(): View {
-                        return AnkoContext.createReusable(context).frameLayout {
-                            fullSize()
-                            textView {
-                                text=context.getString(R.string.empty)
-                            }.lparams {
-                                gravity=Gravity.CENTER
-                            }
-                        }
-                    }
-
-                    override fun enter() {
-
-                    }
-                })
-            }
+            leafletAdapter = LeafletAdapter<PageT>(viewPager, emptyHolder)
             viewPager.adapter = leafletAdapter
             viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
                 override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
@@ -59,7 +36,7 @@ class LeafletView<ViewT : View, PageT : Page>  constructor(context: Context) : L
                 }
 
                 override fun onPageSelected(position: Int) {
-                    leafletAdapter.goTo(leafletAdapter.currentPage)
+                    leafletAdapter.goTo(leafletAdapter.getCurrentPage())
                 }
 
                 override fun onPageScrollStateChanged(state: Int) {
@@ -72,7 +49,7 @@ class LeafletView<ViewT : View, PageT : Page>  constructor(context: Context) : L
     /**
      * @param pageRenderer a substance that produces a view to be shown for a given page
      */
-    fun setPageRenderer(pageRenderer: PageRenderer<ViewT, PageT>) {
+    fun setPageRenderer(pageRenderer: PageRenderer<PageT>) {
         leafletAdapter.setPageRenderer(pageRenderer)
     }
 
@@ -93,7 +70,7 @@ class LeafletView<ViewT : View, PageT : Page>  constructor(context: Context) : L
     /**
      * @return currently selected page
      */
-    fun getCurrentPage() = leafletAdapter.currentPage
+    fun getCurrentPage() = leafletAdapter.getCurrentPage()
 
     /**
      * Scroll to a specific page. The page is expected to exist in a collection set via setPages.

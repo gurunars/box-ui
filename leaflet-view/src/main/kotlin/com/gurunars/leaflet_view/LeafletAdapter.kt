@@ -16,7 +16,7 @@ import org.jetbrains.anko.textView
 import org.objenesis.strategy.StdInstantiatorStrategy
 import java.util.*
 
-internal class LeafletAdapter<ViewT : View, PageT : Page>(
+internal class LeafletAdapter<PageT : Page>(
         private val pager: ViewPager,
         private val emptyHolder: ViewGroup) : PagerAdapter() {
 
@@ -27,25 +27,37 @@ internal class LeafletAdapter<ViewT : View, PageT : Page>(
     private var pages = listOf<PageT>()
     private var previousPages = listOf<PageT>()
 
-    private val mapping = SparseArray<ViewT>()
+    private val mapping = SparseArray<View>()
     private var childState = HashMap<Long, SparseArray<Parcelable>>()
 
-    private var noPageRenderer: NoPageRenderer
-    private var pageRenderer: PageRenderer<ViewT, PageT>
+    private fun getCenteredView(value: String): View {
+        return AnkoContext.createReusable(pager.context).frameLayout {
+            fullSize()
+            textView {
+                text=value
+            }.lparams {
+                gravity=Gravity.CENTER
+            }
+        }
+    }
+
+    private var noPageRenderer: NoPageRenderer = object : NoPageRenderer {
+        override fun renderNoPage() = getCenteredView(pager.context.getString(R.string.empty))
+        override fun enter() {}
+    }
+    private var pageRenderer: PageRenderer<PageT> = object: PageRenderer<PageT> {
+        override fun renderPage(page: PageT) = getCenteredView(page.toString())
+        override fun enter(pageView: View) {}
+        override fun leave(pageView: View) {}
+    }
 
     private val pageEquator = { one: Page?, two: Page? ->
-        if (one === two) {
-            true
-        } else if (one == null || two == null) {
-            false
-        } else {
-            one.javaClass == two.javaClass && one.id == two.id
-        }
+        one?.javaClass == two?.javaClass && one?.id == two?.id
     }
 
     fun setNoPageRenderer(noPageRenderer: NoPageRenderer) { this.noPageRenderer = noPageRenderer }
 
-    fun setPageRenderer(pageRenderer: PageRenderer<ViewT, PageT>) {
+    fun setPageRenderer(pageRenderer: PageRenderer<PageT>) {
         this.pageRenderer = pageRenderer
         this.mapping.clear()
         notifyDataSetChanged()
@@ -85,28 +97,17 @@ internal class LeafletAdapter<ViewT : View, PageT : Page>(
 
     override fun getCount() = pages.size
 
-    private fun enter(renderer: PageRenderer<ViewT, PageT>?, pageView: ViewT?) {
-        if (renderer != null && pageView != null) { renderer.enter(pageView) }
+    private fun enter(renderer: PageRenderer<PageT>?, pageView: View?) {
+        if (pageView != null) renderer?.enter(pageView)
     }
 
-    private fun leave(renderer: PageRenderer<ViewT, PageT>?, pageView: ViewT?) {
-        if (renderer != null && pageView != null) { renderer.leave(pageView) }
-    }
-
-    private fun renderDefault(collection: ViewGroup, page: PageT): View {
-        return AnkoContext.createReusable(collection.context).frameLayout {
-            fullSize()
-            textView {
-                text=page.toString()
-            }.lparams {
-                gravity=Gravity.CENTER
-            }
-        }
+    private fun leave(renderer: PageRenderer<PageT>?, pageView: View?) {
+        if (pageView != null) renderer?.leave(pageView)
     }
 
     override fun instantiateItem(collection: ViewGroup, position: Int): Any? {
         val page = pages[position]
-        var view: ViewT? = mapping.get(position)
+        var view = mapping.get(position)
 
         if (view == null) {
             view = pageRenderer.renderPage(page)
