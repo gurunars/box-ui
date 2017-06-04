@@ -47,8 +47,8 @@ open class BindableField<Type>(private var value: Type) {
         return twoWayBinding
     }
 
-    fun set(value: Type, force:Boolean=false) {
-        if (force || this.value != value) {
+    fun set(value: Type) {
+        if (this.value != value) {
             this.value = value
             listeners.forEach { it(value) }
         }
@@ -56,7 +56,5 @@ open class BindableField<Type>(private var value: Type) {
 
     fun get() : Type = this.value
 
-    fun unbindFromAll() {
-        bindings.toList().forEach { it.unbind() }
-    }
+    fun unbindFromAll() { bindings.toList().forEach { it.unbind() } }
 }

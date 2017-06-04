@@ -12,7 +12,6 @@ import com.gurunars.leaflet_view.LeafletView
 import com.gurunars.leaflet_view.PageRenderer
 import com.gurunars.leaflet_view.leafletView
 import com.gurunars.shortcuts.fullSize
-import com.gurunars.shortcuts.l
 import com.gurunars.storage.PersistentStorage
 import org.jetbrains.anko.*
 
@@ -157,7 +156,7 @@ class ActivityMain : AppCompatActivity() {
                     indices
                         .filter { get(it).id == currentPage.id }
                         .forEach { set(it, currentPage) }
-                }, true)
+                })
             }
             show()
         }
@@ -168,7 +167,7 @@ class ActivityMain : AppCompatActivity() {
         // however the idea is to demo that these methods are not important - only getId method is
         pages.set(pages.get().apply {
             indices.filter { get(it).id == leafletView.getCurrentPage()!!.id }.forEach { removeAt(it) }
-        }, true)
+        })
     }
 
     private fun createPage() {
@@ -180,12 +179,12 @@ class ActivityMain : AppCompatActivity() {
             }
             setView(input)
             setPositiveButton(R.string.ok) { _, _ ->
-                pages.set(pages.get().apply { add(TitledPage(input.text.toString())) }, true)
+                pages.set(pages.get().apply { add(TitledPage(input.text.toString())) })
             }
             show()
         }
     }
 
-    private fun clear() { pages.set(ArrayList(), true) }
+    private fun clear() { pages.set(ArrayList()) }
 
 }
