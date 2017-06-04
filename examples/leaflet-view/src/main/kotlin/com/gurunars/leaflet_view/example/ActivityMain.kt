@@ -170,9 +170,8 @@ class ActivityMain : AppCompatActivity() {
     private fun deletePage() {
         // NOTE: surely equals method could have been implemented
         // however the idea is to demo that these methods are not important - only getId method is
-        val page = leafletView.getCurrentPage() as TitledPage
         pages.set(pages.get().apply {
-            indices.filter { get(it).id == page.id }.forEach { removeAt(it) }
+            indices.filter { get(it).id == leafletView.getCurrentPage()!!.id }.forEach { removeAt(it) }
         }, true)
     }
 
