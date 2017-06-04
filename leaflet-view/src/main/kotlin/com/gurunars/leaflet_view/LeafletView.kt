@@ -1,10 +1,10 @@
 package com.gurunars.leaflet_view
 
 import android.content.Context
-import android.support.v4.view.ViewPager
-import android.widget.LinearLayout
+import android.view.View
+import android.widget.FrameLayout
+import com.gurunars.databinding.BindableField
 import com.gurunars.shortcuts.fullSize
-import org.jetbrains.anko.frameLayout
 import org.jetbrains.anko.support.v4.viewPager
 
 /**
@@ -12,72 +12,42 @@ import org.jetbrains.anko.support.v4.viewPager
  *
  * @param <PageT> Page subclass to be used to populate the pages
  */
-class LeafletView<PageT : Page>  constructor(context: Context) : LinearLayout(context) {
+class LeafletView<PageT : Page>  constructor(context: Context) : FrameLayout(context) {
 
-    private lateinit var leafletAdapter: LeafletAdapter<PageT>
+    private var leafletAdapter: LeafletAdapter<PageT>
+
+    val currentPage = BindableField<PageT?>(null)
 
     init {
-
-        frameLayout {
+        fullSize()
+        val viewPager = viewPager {
+            id=R.id.viewPager
             fullSize()
-            val viewPager = viewPager {
-                id=R.id.viewPager
-                fullSize()
-            }
-            val emptyHolder = frameLayout {
-                id=R.id.emptyHolder
-                fullSize()
-            }
-            leafletAdapter = LeafletAdapter<PageT>(viewPager, emptyHolder)
-            viewPager.adapter = leafletAdapter
-            viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
-                override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
-
-                }
-
-                override fun onPageSelected(position: Int) {
-                    leafletAdapter.goTo(leafletAdapter.getCurrentPage())
-                }
-
-                override fun onPageScrollStateChanged(state: Int) {
-
-                }
-            })
         }
+        leafletAdapter = LeafletAdapter<PageT>(viewPager)
+        viewPager.adapter = leafletAdapter
+        currentPage.bind(leafletAdapter.currentPage)
     }
 
     /**
      * @param pageRenderer a substance that produces a view to be shown for a given page
      */
-    fun setPageRenderer(pageRenderer: PageRenderer<PageT>) {
-        leafletAdapter.setPageRenderer(pageRenderer)
+    fun setPageRenderer(pageRenderer: (page: PageT) -> View) {
+        leafletAdapter.pageRenderer = pageRenderer
     }
 
     /**
      * @param noPageRenderer a substance that produces a view to be show when there are no pages
      */
-    fun setNoPageRenderer(noPageRenderer: NoPageRenderer) {
-        leafletAdapter.setNoPageRenderer(noPageRenderer)
+    fun setPageRenderer(noPageRenderer: () -> View) {
+        leafletAdapter.noPageRenderer = noPageRenderer
     }
 
     /**
-     * @param pages a collection of payloads to traverse
+     * @param pages a list of pages to be set for the adapter
      */
     fun setPages(pages: List<PageT>) {
         leafletAdapter.setPages(pages)
     }
 
-    /**
-     * @return currently selected page
-     */
-    fun getCurrentPage() = leafletAdapter.getCurrentPage()
-
-    /**
-     * Scroll to a specific page. The page is expected to exist in a collection set via setPages.
-     *
-     * @param page page's payload to navigate to
-     */
-    fun goTo(page: PageT) {
-        leafletAdapter.goTo(page)
-    }
 }

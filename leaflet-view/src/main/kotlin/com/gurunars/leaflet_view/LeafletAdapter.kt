@@ -9,6 +9,8 @@ import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import com.esotericsoftware.kryo.Kryo
+import com.gurunars.databinding.BindableField
+import com.gurunars.databinding.DeepList
 import com.gurunars.shortcuts.fullSize
 import org.jetbrains.anko.AnkoContext
 import org.jetbrains.anko.frameLayout
@@ -16,16 +18,54 @@ import org.jetbrains.anko.textView
 import org.objenesis.strategy.StdInstantiatorStrategy
 import java.util.*
 
-internal class LeafletAdapter<PageT : Page>(
-        private val pager: ViewPager,
-        private val emptyHolder: ViewGroup) : PagerAdapter() {
+internal class LeafletAdapter<PageT : Page>(private val pager: ViewPager) : PagerAdapter() {
 
     private val kryo = Kryo().apply {
         instantiatorStrategy = Kryo.DefaultInstantiatorStrategy(StdInstantiatorStrategy())
     }
 
-    private var pages = listOf<PageT>()
+    private val pages = BindableField(DeepList<PageT>(listOf()))
+    val currentPage = BindableField<PageT?>(null)
+
+    fun setPages(list: List<PageT>) {
+        pages.set(DeepList(list))
+    }
+
+    private var currentPages = listOf<PageT>()
     private var previousPages = listOf<PageT>()
+
+    init {
+
+        fun calculateCurrentPage() =
+                if (currentPages.isEmpty())
+                    null
+                else
+                    currentPages[Math.min(pager.currentItem, currentPages.size - 1)]
+
+        pages.bind {
+            val oldCurrent = calculateCurrentPage()
+            this.previousPages = this.currentPages
+            this.currentPages = this.kryo.copy(it.array.toList())
+            notifyDataSetChanged()
+            currentPage.set(this.currentPages.find({pageEquator(it, oldCurrent)}) ?: calculateCurrentPage())
+        }
+        currentPage.bind {
+            if (it == null) {
+                if (currentPages.isNotEmpty()) currentPage.set(currentPages.get(0))
+            } else {
+                val page = it
+                val desiredIndex = currentPages.indexOfFirst { pageEquator(it, page) }
+                if (desiredIndex != pager.currentItem) pager.setCurrentItem(desiredIndex, true)
+            }
+        }
+        pager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
+
+            override fun onPageSelected(position: Int) { currentPage.set(calculateCurrentPage()) }
+
+            override fun onPageScrollStateChanged(state: Int) {}
+        })
+    }
 
     private val mapping = SparseArray<View>()
     private var childState = HashMap<Long, SparseArray<Parcelable>>()
@@ -41,83 +81,41 @@ internal class LeafletAdapter<PageT : Page>(
         }
     }
 
-    private var noPageRenderer: NoPageRenderer = object : NoPageRenderer {
-        override fun renderNoPage() = getCenteredView(pager.context.getString(R.string.empty))
-        override fun enter() {}
-    }
+    var noPageRenderer: () -> View = {getCenteredView(pager.context.getString(R.string.empty))}
+        set(value) {
+            field = value
+            if (pages.get().array.isEmpty()) {
+                notifyDataSetChanged()
+            }
+        }
 
-    private var pageRenderer: PageRenderer<PageT> = object: PageRenderer<PageT> {
-        override fun renderPage(page: PageT) = getCenteredView(page.toString())
-        override fun enter(pageView: View) {}
-        override fun leave(pageView: View) {}
-    }
+    var pageRenderer: (page: PageT) -> View = {page -> getCenteredView(page.toString())}
+        set(value) {
+            field = value
+            mapping.clear()
+            notifyDataSetChanged()
+        }
 
     private val pageEquator = { one: Page?, two: Page? ->
         one?.javaClass == two?.javaClass && one?.id == two?.id
     }
 
-    fun setNoPageRenderer(noPageRenderer: NoPageRenderer) { this.noPageRenderer = noPageRenderer }
-
-    fun setPageRenderer(pageRenderer: PageRenderer<PageT>) {
-        this.pageRenderer = pageRenderer
-        this.mapping.clear()
-        notifyDataSetChanged()
-    }
-
-    fun setPages(pages: List<PageT>) {
-        val oldCurrent = getCurrentPage()
-        this.previousPages = this.pages
-        this.pages = this.kryo.copy(pages.toList())
-        notifyDataSetChanged()
-        goTo(this.pages.find({pageEquator(it, oldCurrent)}) ?: getCurrentPage())
-    }
-
-    fun getCurrentPage() = if (pages.isEmpty()) null else pages[Math.min(pager.currentItem, pages.size - 1)]
-
-    fun goTo(page: PageT?) {
-        if (page == null) {
-            pager.visibility = View.GONE
-            emptyHolder.apply {
-                visibility = View.VISIBLE
-                removeAllViews()
-                addView(noPageRenderer.renderNoPage())
-            }
-            noPageRenderer.enter()
-        } else {
-            val desiredIndex = pages.indexOfFirst { pageEquator(it, page) }
-            if (desiredIndex != pager.currentItem) {
-                pager.setCurrentItem(desiredIndex, true)
-            }
-            pager.visibility = View.VISIBLE
-            emptyHolder.visibility = View.GONE
-
-            for (i in 0..mapping.size() - 1) {
-                leave(pageRenderer, mapping.get(i))
-            }
-            enter(pageRenderer, mapping.get(desiredIndex))
-        }
-    }
-
-    override fun getCount() = pages.size
-
-    private fun enter(renderer: PageRenderer<PageT>?, pageView: View?) {
-        if (pageView != null) renderer?.enter(pageView)
-    }
-
-    private fun leave(renderer: PageRenderer<PageT>?, pageView: View?) {
-        if (pageView != null) renderer?.leave(pageView)
-    }
+    override fun getCount() = Math.max(1, currentPages.size)
 
     override fun instantiateItem(collection: ViewGroup, position: Int): Any? {
-        val page = pages[position]
+        if (currentPages.isEmpty()) {
+            return noPageRenderer()
+        }
+
+        val page = currentPages[position]
         var view = mapping.get(position)
 
         if (view == null) {
-            view = pageRenderer.renderPage(page)
+            view = pageRenderer(page)
             mapping.put(position, view)
         }
         collection.addView(view)
-        if (position == pager.currentItem) { enter(pageRenderer, view) }
+        if (position == pager.currentItem) { currentPage.set(page) }
         loadItemState(position)
         return view
     }
@@ -132,11 +130,11 @@ internal class LeafletAdapter<PageT : Page>(
 
     override fun isViewFromObject(view: View, obj: Any) = view === obj
 
-    override fun getPageTitle(position: Int) = pages[position].toString()
+    override fun getPageTitle(position: Int) = currentPages[position].toString()
 
     override fun getItemPosition(obj: Any?): Int {
         if (obj is Page) {
-            val pos = pages.indexOfFirst { pageEquator(it, obj) }
+            val pos = currentPages.indexOfFirst { pageEquator(it, obj) }
             if (pos == -1) return PagerAdapter.POSITION_NONE
             val prevPost = previousPages.indexOfFirst { pageEquator(it, obj) }
             return if (pos == prevPost) PagerAdapter.POSITION_UNCHANGED else pos
@@ -146,12 +144,8 @@ internal class LeafletAdapter<PageT : Page>(
 
     override fun saveState(): Parcelable {
         // We want to store state for the views currently kept in RAM
-        for (i in 0..mapping.size() - 1) {
-            saveItemState(mapping.keyAt(i))
-        }
-        return Bundle().apply {
-            putSerializable("state", childState)
-        }
+        for (i in 0..mapping.size() - 1) { saveItemState(mapping.keyAt(i)) }
+        return Bundle().apply { putSerializable("state", childState) }
     }
 
     override fun restoreState(state: Parcelable?, loader: ClassLoader?) {
@@ -167,15 +161,14 @@ internal class LeafletAdapter<PageT : Page>(
         view.saveHierarchyState(viewState)
 
         childState.put(
-            if (pages.isEmpty()) 0L else pages[position].id,
+            if (currentPages.isEmpty()) 0L else currentPages[position].id,
             viewState)
     }
 
     private fun loadItemState(position: Int) {
         val viewState = childState[
-            if (pages.isEmpty()) 0L else pages[position].id
+            if (currentPages.isEmpty()) 0L else currentPages[position].id
         ] ?: return
-        val view = mapping.get(position)
-        view.restoreHierarchyState(viewState)
+        mapping.get(position).restoreHierarchyState(viewState)
     }
 }

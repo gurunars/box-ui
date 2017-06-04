@@ -9,7 +9,6 @@ import android.view.*
 import android.widget.ArrayAdapter
 import android.widget.EditText
 import com.gurunars.leaflet_view.LeafletView
-import com.gurunars.leaflet_view.PageRenderer
 import com.gurunars.leaflet_view.leafletView
 import com.gurunars.shortcuts.fullSize
 import com.gurunars.storage.PersistentStorage
@@ -37,33 +36,25 @@ class ActivityMain : AppCompatActivity() {
                     }))
                 }
 
-                setPageRenderer(object : PageRenderer<TitledPage> {
-                    override fun renderPage(page: TitledPage): View {
-                        return AnkoContext.createReusable(context).relativeLayout {
-                            fullSize()
-                            gravity=Gravity.CENTER
-                            tag = page
-                            textView {
-                                id=R.id.pageTitle
-                                text=page.toString()
-                            }.lparams()
+                currentPage.bind { title = it.toString() }
 
-                            editText {
-                                id=R.id.textEdit
-                            }.lparams {
-                                width=dip(150)
-                                topMargin=dip(15)
-                                below(R.id.pageTitle)
-                            }
+                setPageRenderer({page: TitledPage ->
+                    AnkoContext.createReusable(context).relativeLayout {
+                        fullSize()
+                        gravity=Gravity.CENTER
+                        tag = page
+                        textView {
+                            id=R.id.pageTitle
+                            text=page.toString()
+                        }.lparams()
+
+                        editText {
+                            id=R.id.textEdit
+                        }.lparams {
+                            width=dip(150)
+                            topMargin=dip(15)
+                            below(R.id.pageTitle)
                         }
-                    }
-
-                    override fun enter(pageView: View) {
-                        title = pageView.tag.toString()
-                    }
-
-                    override fun leave(pageView: View) {
-
                     }
                 })
             }
@@ -128,7 +119,7 @@ class ActivityMain : AppCompatActivity() {
             setTitle(R.string.go_to)
             setSingleChoiceItems(TitledPageAdapter(this@ActivityMain, pages.get()), -1
             ) { dialog, which ->
-                leafletView.goTo(pages.get()[which])
+                leafletView.currentPage.set(pages.get()[which])
                 dialog.dismiss()
             }
             setCancelable(true)
@@ -139,7 +130,7 @@ class ActivityMain : AppCompatActivity() {
     private fun editPage() {
         AlertDialog.Builder(this).apply {
             setTitle(R.string.edit)
-            val currentPage = leafletView.getCurrentPage() as TitledPage
+            val currentPage = leafletView.currentPage.get() as TitledPage
             val input = EditText(this@ActivityMain).apply {
                 id = R.id.pageTitle
                 inputType = InputType.TYPE_CLASS_TEXT
@@ -166,7 +157,7 @@ class ActivityMain : AppCompatActivity() {
         // NOTE: surely equals method could have been implemented
         // however the idea is to demo that these methods are not important - only getId method is
         pages.set(pages.get().apply {
-            indices.filter { get(it).id == leafletView.getCurrentPage()!!.id }.forEach { removeAt(it) }
+            indices.filter { get(it).id == leafletView.currentPage.get()!!.id }.forEach { removeAt(it) }
         })
     }
 
