@@ -131,8 +131,7 @@ class ActivityMain : AppCompatActivity() {
     private fun goToPage() {
         AlertDialog.Builder(this).apply {
             setTitle(R.string.go_to)
-            setSingleChoiceItems(
-                    TitledPageAdapter(this@ActivityMain, pages.get()), -1
+            setSingleChoiceItems(TitledPageAdapter(this@ActivityMain, pages.get()), -1
             ) { dialog, which ->
                 leafletView.goTo(pages.get()[which])
                 dialog.dismiss()
@@ -145,11 +144,12 @@ class ActivityMain : AppCompatActivity() {
     private fun editPage() {
         AlertDialog.Builder(this).apply {
             setTitle(R.string.edit)
-            val input = EditText(this@ActivityMain)
-            input.id = R.id.pageTitle
-            input.inputType = InputType.TYPE_CLASS_TEXT
             val currentPage = leafletView.getCurrentPage() as TitledPage
-            input.setText(currentPage.title)
+            val input = EditText(this@ActivityMain).apply {
+                id = R.id.pageTitle
+                inputType = InputType.TYPE_CLASS_TEXT
+                setText(currentPage.title)
+            }
             setView(input)
             // Set up the buttons
             setPositiveButton(R.string.ok) { _, _ ->
