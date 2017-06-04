@@ -55,8 +55,8 @@ class ActivityMain : AppCompatActivity() {
                     ))
                 }
 
-                hasOverlay.bind(this@ActivityMain.hasOverlay)
-                isLeftHanded.bind(this@ActivityMain.isLeftHanded)
+                this@ActivityMain.hasOverlay.bind(hasOverlay)
+                this@ActivityMain.isLeftHanded.bind(isLeftHanded)
 
                 contentView.set(UI(false) {
                     relativeLayout {
@@ -107,10 +107,6 @@ class ActivityMain : AppCompatActivity() {
             }.lparams { fullSize() }
         }
 
-    }
-
-    override fun onAttachedToWindow() {
-        super.onAttachedToWindow()
         storage.load()
     }
 

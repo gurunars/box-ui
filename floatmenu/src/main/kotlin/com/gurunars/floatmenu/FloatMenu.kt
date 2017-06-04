@@ -34,9 +34,9 @@ class FloatMenu constructor(context: Context) : FrameLayout(context) {
                 id=R.id.menuPane
                 isClickable=true
                 visibility=View.GONE
-                animationDuration.bind(this@FloatMenu.animationDuration)
-                isVisible.bind(isOpen)
-                hasOverlay.bind(this@FloatMenu.hasOverlay)
+                this@FloatMenu.animationDuration.bind(animationDuration)
+                isOpen.bind(isVisible)
+                this@FloatMenu.hasOverlay.bind(hasOverlay)
                 menuView.bind { setOneView(it) }
             }.fullSize()
             fab {
@@ -44,7 +44,7 @@ class FloatMenu constructor(context: Context) : FrameLayout(context) {
                 val fab = this
                 this@FloatMenu.isLeftHanded.bind { fab.contentDescription = "LH:" + it }
                 animationDuration.bind(rotationDuration)
-                isActivated.bind(isOpen)
+                isOpen.bind(isActivated)
                 this@FloatMenu.openIcon.bind(openIcon)
                 this@FloatMenu.closeIcon.bind(closeIcon)
             }.lparams {

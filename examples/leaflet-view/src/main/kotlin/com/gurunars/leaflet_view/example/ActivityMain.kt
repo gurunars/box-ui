@@ -12,6 +12,7 @@ import com.gurunars.leaflet_view.LeafletView
 import com.gurunars.leaflet_view.PageRenderer
 import com.gurunars.leaflet_view.leafletView
 import com.gurunars.shortcuts.fullSize
+import com.gurunars.shortcuts.l
 import com.gurunars.storage.PersistentStorage
 import org.jetbrains.anko.*
 
@@ -28,6 +29,8 @@ class ActivityMain : AppCompatActivity() {
         frameLayout {
             fullSize()
             leafletView=leafletView<TitledPage> {
+                id=R.id.leafletView
+                fullSize()
 
                 pages.bind {
                     setPages(it.sortedWith(kotlin.Comparator {
@@ -35,8 +38,6 @@ class ActivityMain : AppCompatActivity() {
                     }))
                 }
 
-                id=R.id.leafletView
-                fullSize()
                 setPageRenderer(object : PageRenderer<TitledPage> {
                     override fun renderPage(page: TitledPage): View {
                         return AnkoContext.createReusable(context).relativeLayout {
@@ -69,13 +70,8 @@ class ActivityMain : AppCompatActivity() {
             }
         }
 
-    }
-
-    // TODO: GO to should happend after DB load
-
-    override fun onAttachedToWindow() {
-        super.onAttachedToWindow()
         storage.load()
+
     }
 
     override fun onDestroy() {
