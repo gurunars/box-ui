@@ -3,9 +3,9 @@ package com.gurunars.databinding
 
 open class BindableField<Type>(private var value: Type) {
 
-    interface ValueProcessor<Type> {
-        fun forward(value: Type): Type
-        fun backward(value: Type): Type
+    interface ValueProcessor<From, To> {
+        fun forward(value: From): To
+        fun backward(value: To): From
     }
 
     interface Binding {
@@ -28,10 +28,7 @@ open class BindableField<Type>(private var value: Type) {
         return binding
     }
 
-    fun bind(field: BindableField<Type>, transformer: ValueProcessor<Type>?=null): Binding {
-        val forwardBinding = bind { field.set(transformer?.forward(it) ?: it) }
-        val backwardBinding = field.bind { this.set(transformer?.backward(it) ?: it) }
-
+    private fun join(field: BindableField<*>, forwardBinding: Binding, backwardBinding: Binding): Binding {
         val twoWayBinding = object: Binding {
             override fun unbind() {
                 forwardBinding.unbind()
@@ -40,15 +37,27 @@ open class BindableField<Type>(private var value: Type) {
                 field.bindings.remove(this)
             }
         }
-
         bindings.add(twoWayBinding)
         field.bindings.add(twoWayBinding)
-
         return twoWayBinding
     }
 
-    fun set(value: Type) {
-        if (this.value != value) {
+    fun <To> bind(field: BindableField<To>, transformer: ValueProcessor<Type, To>): Binding {
+        return join(field,
+            bind { field.set(transformer.forward(it)) },
+            field.bind { this.set(transformer.backward(it)) }
+        )
+    }
+
+    fun bind(field: BindableField<Type>): Binding {
+        return join(field,
+            bind { field.set(it) },
+            field.bind { this.set(it) }
+        )
+    }
+
+    fun set(value: Type, force:Boolean=false) {
+        if (force || this.value != value) {
             this.value = value
             listeners.forEach { it(value) }
         }
