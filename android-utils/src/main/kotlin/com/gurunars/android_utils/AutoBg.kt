@@ -91,7 +91,9 @@ object AutoBg {
                     Color.parseColor("#68000000"))
             view.setLayerType(View.LAYER_TYPE_SOFTWARE, null)
             // In some cases the theming of Android makes views look really ugly with auto shadows
-            ViewCompat.setClipBounds(view, Rect(0, 0, 0, 0))
+            //TODO: check no clip bounds on other android versions
+            //In android 7 - 0 bounds make the button invisible
+            //ViewCompat.setClipBounds(view, Rect(0, 0, 0, 0))
             view.background = AutoBgDrawable(bg, shadowWidth)
         } else {
             view.background = AutoBgDrawable(bg, 0)
