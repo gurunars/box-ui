@@ -8,6 +8,11 @@ import android.support.annotation.StringRes
 import android.view.*
 import android.widget.TextView
 import android.widget.Toast
+import com.gurunars.item_list.EmptyViewBinder
+import com.gurunars.item_list.ItemList
+import com.gurunars.item_list.ItemViewBinder
+import com.gurunars.item_list.itemList
+import com.gurunars.shortcuts.fullSize
 import org.jetbrains.anko.dip
 import org.jetbrains.anko.frameLayout
 import org.jetbrains.anko.matchParent
