@@ -2,13 +2,11 @@ package com.gurunars.android_utils
 
 import android.graphics.Color
 import android.graphics.LightingColorFilter
-import android.graphics.Rect
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.InsetDrawable
 import android.graphics.drawable.ShapeDrawable
 import android.graphics.drawable.shapes.RectShape
-import android.support.v4.view.ViewCompat
 import android.view.View
 import java.util.*
 
@@ -35,8 +33,7 @@ object AutoBg {
             invalidateSelf()
 
             if (bg is ShapeDrawable && !enabled) {
-                bg.paint.setShadowLayer(shadowWidth.toFloat(), 0f, 0f,
-                        Color.parseColor("#40000000"))
+                bg.paint.setShadowLayer(shadowWidth.toFloat(), 0f, 0f, Color.parseColor("#40000000"))
             }
 
             return super.onStateChange(states)
@@ -90,10 +87,6 @@ object AutoBg {
             bg.paint.setShadowLayer(shadowWidth.toFloat(), 0f, shadowWidth.toFloat(),
                     Color.parseColor("#68000000"))
             view.setLayerType(View.LAYER_TYPE_SOFTWARE, null)
-            // In some cases the theming of Android makes views look really ugly with auto shadows
-            //TODO: check no clip bounds on other android versions
-            //In android 7 - 0 bounds make the button invisible
-            //ViewCompat.setClipBounds(view, Rect(0, 0, 0, 0))
             view.background = AutoBgDrawable(bg, shadowWidth)
         } else {
             view.background = AutoBgDrawable(bg, 0)

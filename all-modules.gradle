@@ -23,7 +23,7 @@ android {
     lintOptions.abortOnError false
 
     defaultConfig {
-        minSdkVersion 19
+        minSdkVersion 21
         targetSdkVersion 25
         versionCode buildInfo.versionCode
         versionName buildInfo.version

@@ -1,10 +1,10 @@
 package com.gurunars.item_list.selectable_example
 
+import android.app.Activity
 import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
 import android.support.annotation.StringRes
-import android.support.v7.app.AppCompatActivity
 import android.view.Gravity
 import android.view.Menu
 import android.view.MenuItem
@@ -13,17 +13,18 @@ import android.widget.TextView
 import android.widget.Toast
 import com.gurunars.item_list.*
 import com.gurunars.shortcuts.fullSize
+import org.jetbrains.anko.dip
 import org.jetbrains.anko.frameLayout
 import java.util.*
 
 
-class ActivityMain : AppCompatActivity() {
+class ActivityMain : Activity() {
 
     internal class AnimalBinder : ItemViewBinder<TextView, SelectableItem<AnimalItem>> {
 
         override fun getView(context: Context): TextView {
             val text = TextView(context)
-            val padding = context.resources.getDimensionPixelOffset(R.dimen.padding)
+            val padding = context.dip(5)
             text.setPadding(padding, padding, padding, padding)
             return text
         }

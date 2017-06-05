@@ -1,9 +1,9 @@
 package com.gurunars.leaflet_view.example
 
+import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.text.InputType
 import android.view.*
 import android.widget.ArrayAdapter
@@ -15,7 +15,7 @@ import com.gurunars.storage.PersistentStorage
 import org.jetbrains.anko.*
 
 
-class ActivityMain : AppCompatActivity() {
+class ActivityMain : Activity() {
 
     private val storage= PersistentStorage(this, "main")
     private val pages = storage.storageField("pages", ArrayList<TitledPage>())

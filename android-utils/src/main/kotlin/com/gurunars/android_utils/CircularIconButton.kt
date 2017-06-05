@@ -13,7 +13,7 @@ import android.widget.ImageView
 /**
  * Button with customizable icon, background and foreground color.
  */
-class CircularIconButton @JvmOverloads constructor(context: Context) : ImageButton(context) {
+class CircularIconButton constructor(context: Context) : ImageButton(context) {
 
     internal var backgroundColor: Int = 0
     internal var foregroundColor: Int = 0

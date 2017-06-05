@@ -9,7 +9,6 @@
         android:label="@string/appName"
         android:icon="@drawable/ic_launcher"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
 
         <activity android:name=".ActivityMain" android:label="@string/appName">

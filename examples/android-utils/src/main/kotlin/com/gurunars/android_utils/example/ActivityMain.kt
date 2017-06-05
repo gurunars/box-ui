@@ -1,9 +1,9 @@
 package com.gurunars.android_utils.example
 
+import android.app.Activity
 import android.graphics.Color
 import android.graphics.drawable.shapes.OvalShape
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.view.Gravity
 import android.widget.TextView
 import com.gurunars.android_utils.AutoBg
@@ -14,7 +14,7 @@ import com.gurunars.storage.PersistentStorage
 import org.jetbrains.anko.*
 
 
-class ActivityMain : AppCompatActivity() {
+class ActivityMain : Activity() {
 
     private val storage = PersistentStorage(this, "main")
 

@@ -1,25 +1,20 @@
 package com.gurunars.item_list.example
 
 import android.animation.ValueAnimator
+import android.app.Activity
 import android.content.Context
 import android.os.Bundle
 import android.support.annotation.StringRes
-import android.support.v7.app.AppCompatActivity
 import android.view.*
 import android.widget.TextView
 import android.widget.Toast
-import com.gurunars.item_list.EmptyViewBinder
-import com.gurunars.item_list.ItemList
-import com.gurunars.item_list.ItemViewBinder
-import com.gurunars.item_list.itemList
-import com.gurunars.shortcuts.fullSize
 import org.jetbrains.anko.dip
 import org.jetbrains.anko.frameLayout
 import org.jetbrains.anko.matchParent
 import org.jetbrains.anko.wrapContent
 
 
-class ActivityMain : AppCompatActivity() {
+class ActivityMain : Activity() {
 
     internal class AnimalBinder : ItemViewBinder<TextView, AnimalItem> {
 

@@ -1,8 +1,8 @@
 package com.gurunars.floatmenu.example
 
+import android.app.Activity
+import android.app.AlertDialog
 import android.os.Bundle
-import android.support.v7.app.AlertDialog
-import android.support.v7.app.AppCompatActivity
 import android.view.Gravity
 import android.view.Menu
 import android.view.MenuItem
@@ -16,7 +16,7 @@ import com.gurunars.storage.PersistentStorage
 import org.jetbrains.anko.*
 
 
-class ActivityMain : AppCompatActivity() {
+class ActivityMain : Activity() {
     private val storage= PersistentStorage(this, "main")
 
     private val buttonColorFlag = storage.storageField("buttonColorFlag", false)
