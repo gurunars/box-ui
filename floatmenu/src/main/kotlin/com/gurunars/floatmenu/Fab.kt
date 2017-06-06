@@ -4,18 +4,11 @@ import android.animation.ArgbEvaluator
 import android.animation.FloatEvaluator
 import android.animation.ValueAnimator
 import android.content.Context
-import android.graphics.PorterDuff
-import android.graphics.drawable.InsetDrawable
-import android.graphics.drawable.shapes.OvalShape
 import android.os.Bundle
 import android.os.Parcelable
-import android.support.v4.content.res.ResourcesCompat
-import android.view.View
 import android.widget.FrameLayout
-import android.widget.ImageView
-import com.gurunars.android_utils.AutoBg
-import com.gurunars.android_utils.ColoredShapeDrawable
-import com.gurunars.android_utils.Icon
+import com.gurunars.android_utils.IconView
+import com.gurunars.android_utils.IconView.Icon
 import com.gurunars.databinding.bindableField
 import com.gurunars.shortcuts.fullSize
 
@@ -30,12 +23,11 @@ internal class Fab constructor(context: Context) : FrameLayout(context) {
     val closeIcon = bindableField(Icon(icon = R.drawable.ic_menu_close))
     val isActivated = bindableField(false)
 
-    private val actualImageView = ImageView(context).apply {
+    private val actualImageView = IconView(context).apply {
         fullSize()
     }
 
     init {
-        setLayerType(View.LAYER_TYPE_SOFTWARE, null)
         addView(actualImageView)
 
         setOnClickListener { isActivated.set(!isActivated.get()) }
@@ -65,27 +57,17 @@ internal class Fab constructor(context: Context) : FrameLayout(context) {
         val targetIcon: Icon = if (isActivated.get()) closeIcon.get() else openIcon.get()
 
         val currentIcon = Icon(
-                bgColor=argbEvaluator.evaluate(
+                bgColor = argbEvaluator.evaluate(
                         animatedValue.get(),
                         sourceIcon.bgColor,
                         targetIcon.bgColor) as Int,
-                fgColor=argbEvaluator.evaluate(
+                fgColor = argbEvaluator.evaluate(
                         animatedValue.get(),
                         sourceIcon.fgColor,
                         targetIcon.fgColor) as Int,
-                icon=if (animatedValue.get() < 0.5f) sourceIcon.icon else targetIcon.icon
+                icon = if (animatedValue.get() < 0.5f) sourceIcon.icon else targetIcon.icon
         )
 
-        // Bg
-        background = ColoredShapeDrawable(OvalShape(), currentIcon.bgColor)
-        AutoBg.apply(this, 6)
-
-        // View
-        actualImageView.setImageDrawable(InsetDrawable(
-                ResourcesCompat.getDrawable(resources, currentIcon.icon, null)?.apply {
-                    setColorFilter(currentIcon.fgColor, PorterDuff.Mode.SRC_IN)
-                }, 100
-        ))
         actualImageView.rotation = floatEvaluator.evaluate(animatedValue.get(),
                 if (isActivated.get()) 0f else 360f,
                 if (isActivated.get()) 360f else 0f

@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.RelativeLayout
+import com.gurunars.android_utils.IconView
 import com.gurunars.databinding.bindableField
 import com.gurunars.shortcuts.fullSize
 import com.gurunars.shortcuts.setOneView
@@ -17,8 +18,8 @@ class FloatMenu constructor(context: Context) : FrameLayout(context) {
     val isLeftHanded = bindableField(false)
     val animationDuration = bindableField(400)
     val isOpen = bindableField(false)
-    val openIcon = bindableField(Icon(icon = R.drawable.ic_menu))
-    val closeIcon = bindableField(Icon(icon = R.drawable.ic_menu_close))
+    val openIcon = bindableField(IconView.Icon(icon = R.drawable.ic_menu))
+    val closeIcon = bindableField(IconView.Icon(icon = R.drawable.ic_menu_close))
     val hasOverlay = bindableField(true)
     val contentView = bindableField(View(context))
     val menuView = bindableField(View(context))

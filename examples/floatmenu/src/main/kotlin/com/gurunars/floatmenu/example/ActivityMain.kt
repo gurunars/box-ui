@@ -6,8 +6,8 @@ import android.os.Bundle
 import android.view.Gravity
 import android.view.Menu
 import android.view.MenuItem
+import com.gurunars.android_utils.IconView
 import com.gurunars.floatmenu.FloatMenu
-import com.gurunars.floatmenu.Icon
 import com.gurunars.floatmenu.floatMenu
 import com.gurunars.shortcuts.asRow
 import com.gurunars.shortcuts.color
@@ -41,17 +41,17 @@ class ActivityMain : Activity() {
             floatingMenu=floatMenu {
                 id=R.id.floatingMenu
 
-                closeIcon.set(Icon(
-                    bgColor=color(R.color.White),
-                    fgColor=color(R.color.Black),
-                    icon=R.drawable.ic_menu_close
+                closeIcon.set(IconView.Icon(
+                    bgColor = color(R.color.White),
+                    fgColor = color(R.color.Black),
+                    icon = R.drawable.ic_menu_close
                 ))
 
                 buttonColorFlag.bind {
-                    openIcon.set(Icon(
-                        bgColor=color(if (it) R.color.DarkRed else R.color.RosyBrown),
-                        fgColor=color(if (it) R.color.White else R.color.Black),
-                        icon=R.drawable.ic_menu
+                    openIcon.set(IconView.Icon(
+                        bgColor = color(if (it) R.color.DarkRed else R.color.RosyBrown),
+                        fgColor = color(if (it) R.color.White else R.color.Black),
+                        icon = R.drawable.ic_menu
                     ))
                 }
 
