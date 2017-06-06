@@ -21,21 +21,15 @@ internal class ItemAdapter<ItemType : Item> : RecyclerView.Adapter<BindableViewH
             val previousList: List<ItemType>,
             val currentList: List<ItemType>): DiffUtil.Callback() {
 
-        override fun getOldListSize(): Int {
-            return previousList.size
-        }
+        override fun getOldListSize() = previousList.size
 
-        override fun getNewListSize(): Int {
-            return currentList.size
-        }
+        override fun getNewListSize() = currentList.size
 
-        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-            return previousList[oldItemPosition].payloadsEqual(currentList.get(newItemPosition))
-        }
+        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
+            previousList[oldItemPosition].payloadsEqual(currentList.get(newItemPosition))
 
-        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-            return previousList[oldItemPosition].getId() == currentList.get(newItemPosition).getId()
-        }
+        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
+            previousList[oldItemPosition].getId() == currentList.get(newItemPosition).getId()
 
     }
 
@@ -87,12 +81,9 @@ internal class ItemAdapter<ItemType : Item> : RecyclerView.Adapter<BindableViewH
         holder.bind(item, previousItem)
     }
 
-    override fun getItemViewType(position: Int): Int {
-        return if (items.isEmpty()) ItemViewBinderEmpty.EMPTY_TYPE else items[position].getType().ordinal
-    }
+    override fun getItemViewType(position: Int): Int =
+        if (items.isEmpty()) ItemViewBinderEmpty.EMPTY_TYPE else items[position].getType().ordinal
 
-    override fun getItemCount(): Int {
-        return Math.max(1, items.size)
-    }
+    override fun getItemCount(): Int = Math.max(1, items.size)
 
 }

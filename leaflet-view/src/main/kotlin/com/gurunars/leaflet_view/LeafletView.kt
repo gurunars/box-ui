@@ -39,7 +39,7 @@ class LeafletView<PageT : Page>  constructor(context: Context) : FrameLayout(con
     /**
      * @param noPageRenderer a substance that produces a view to be show when there are no pages
      */
-    fun setPageRenderer(noPageRenderer: () -> View) {
+    fun setNoPageRenderer(noPageRenderer: () -> View) {
         leafletAdapter.noPageRenderer = noPageRenderer
     }
 

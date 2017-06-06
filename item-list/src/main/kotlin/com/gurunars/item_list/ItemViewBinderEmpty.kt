@@ -5,13 +5,14 @@ import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import com.gurunars.shortcuts.fullSize
 import org.jetbrains.anko.matchParent
 
 internal class ItemViewBinderEmpty : EmptyViewBinder {
 
     override fun getView(context: Context): View {
         return TextView(context).apply {
-            layoutParams = ViewGroup.LayoutParams(matchParent, matchParent)
+            fullSize()
             setText(R.string.empty)
             gravity = Gravity.CENTER
         }

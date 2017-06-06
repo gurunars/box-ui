@@ -35,3 +35,7 @@ inline fun FrameLayout.setOneView(view: View) {
 inline fun View.setIsVisible(isVisible: Boolean) {
     visibility = if (isVisible) View.VISIBLE else View.GONE
 }
+
+inline fun View.setPadding(padding: Int) {
+    setPadding(padding, padding, padding, padding)
+}

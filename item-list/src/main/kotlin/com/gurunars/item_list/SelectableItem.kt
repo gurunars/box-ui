@@ -7,27 +7,18 @@ package com.gurunars.item_list
  */
 class SelectableItem<ItemType : Item> internal constructor(val item: ItemType, val isSelected: Boolean) : Item {
 
-    override fun getId(): Long {
-        return item.getId()
-    }
+    override fun getId() = item.getId()
 
-    override fun getType(): Enum<*> {
-        return item.getType()
-    }
+    override fun getType() = item.getType()
 
-    override fun payloadsEqual(other: Item): Boolean {
-        return other is SelectableItem<*> && item.payloadsEqual(other.item) && isSelected == other.isSelected
-    }
+    override fun payloadsEqual(other: Item) =
+        other is SelectableItem<*> && item.payloadsEqual(other.item) && isSelected == other.isSelected
 
-    override fun toString(): String {
-        return item.toString() + "|" + isSelected
-    }
+    override fun toString() =
+        item.toString() + "|" + isSelected
 
-    override fun equals(other: Any?): Boolean {
-        return other is SelectableItem<*> && other.getId() == getId()
-    }
+    override fun equals(other: Any?) =
+        other is SelectableItem<*> && other.getId() == getId()
 
-    override fun hashCode(): Int {
-        return getId().hashCode()
-    }
+    override fun hashCode() = getId().hashCode()
 }
