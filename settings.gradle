@@ -1,4 +1,4 @@
-include ':android-utils', ':leaflet-view', ':item-list', ':floatmenu', ':test-utils',
+include ':android-utils', ':leaflet-view', ':item-list', ':floatmenu', ':test-utils', ':databinding',
         ':example-android-utils', ':example-leaflet-view', ':example-item-list',
         ':example-floatmenu', ':example-selectable-item-list'
 project(":example-android-utils").projectDir = file("examples/android-utils")

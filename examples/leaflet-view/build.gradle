@@ -8,5 +8,6 @@ dependencies {
     compile 'com.google.code.gson:gson:2.8.0'
     compile project(':leaflet-view')
     compile project(':test-utils')
+    compile project(':databinding')
 }
 
