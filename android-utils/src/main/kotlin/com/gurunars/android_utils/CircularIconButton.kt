@@ -8,6 +8,7 @@ import android.support.v4.content.ContextCompat
 import android.view.View
 import android.widget.ImageButton
 import android.widget.ImageView
+import com.gurunars.shortcuts.setPadding
 
 
 /**
@@ -35,7 +36,7 @@ class CircularIconButton constructor(context: Context) : ImageButton(context) {
         AutoBg.apply(this, 4)
 
         scaleType = ImageView.ScaleType.CENTER_CROP
-        setPadding(8, 8, 8, 8)
+        setPadding(8)
 
         val fg = ContextCompat.getDrawable(context, innerDrawable)
         fg.setColorFilter(foregroundColor, PorterDuff.Mode.SRC_IN)
