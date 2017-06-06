@@ -24,7 +24,7 @@ inline fun View.fullSize() {
 
 inline fun View.asRow() {
     layoutParams = layoutParams ?: ViewGroup.LayoutParams(matchParent, wrapContent)
-    layoutParams.fullSize()
+    layoutParams.asRow()
 }
 
 inline fun FrameLayout.setOneView(view: View) {

@@ -4,9 +4,9 @@ import android.content.Context
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
 import android.widget.FrameLayout
+import com.gurunars.shortcuts.fullSize
 import org.jetbrains.anko.bottomPadding
 import org.jetbrains.anko.dip
-import org.jetbrains.anko.matchParent
 import org.jetbrains.anko.recyclerview.v7.recyclerView
 
 /**
@@ -27,7 +27,7 @@ class ItemList<ItemType : Item> constructor(context: Context) : FrameLayout(cont
 
         recyclerView {
             id=R.id.recyclerView
-            layoutParams=LayoutParams(matchParent, matchParent)
+            fullSize()
             clipToPadding=false
             bottomPadding=dip(60)
             isSaveEnabled=false

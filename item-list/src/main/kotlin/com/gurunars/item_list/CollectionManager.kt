@@ -1,6 +1,7 @@
 package com.gurunars.item_list
 
 import com.esotericsoftware.kryo.Kryo
+import com.gurunars.shortcuts.l
 import org.objenesis.strategy.StdInstantiatorStrategy
 import java.io.Serializable
 import java.util.*
@@ -44,11 +45,12 @@ internal class CollectionManager<ItemType : Item>(
         }
 
         val item = selectableItem.item
+        l("SEL " + selectedItems.indexOfFirst { item.getId() == it.getId() })
         changed(items,
-                if (selectedItems.contains(item))
-                    selectedItems - item
+                if (selectedItems.indexOfFirst { item.getId() == it.getId() } == -1)
+                    selectedItems + item
                 else
-                    selectedItems + item)
+                    selectedItems.filterNot { item.getId() == it.getId() }.toHashSet())
     }
 
     fun itemLongClick(selectableItem: SelectableItem<ItemType>): Boolean {
