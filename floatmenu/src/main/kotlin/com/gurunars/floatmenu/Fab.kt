@@ -35,6 +35,12 @@ internal class Fab constructor(context: Context) : FrameLayout(context) {
         openIcon.bind { updateIcon() }
         closeIcon.bind { updateIcon() }
         animatedValue.bind { updateIcon() }
+        animatedValue.bind {
+            actualImageView.rotation = floatEvaluator.evaluate(it,
+                if (isActivated.get()) 0f else 360f,
+                if (isActivated.get()) 360f else 0f
+            )
+        }
         isActivated.bind {
             if (isAttachedToWindow) {
                 ValueAnimator.ofFloat(0f, 1f).apply {
@@ -56,7 +62,7 @@ internal class Fab constructor(context: Context) : FrameLayout(context) {
         val sourceIcon: Icon = if (isActivated.get()) openIcon.get() else closeIcon.get()
         val targetIcon: Icon = if (isActivated.get()) closeIcon.get() else openIcon.get()
 
-        val currentIcon = Icon(
+        actualImageView.icon.set(Icon(
                 bgColor = argbEvaluator.evaluate(
                         animatedValue.get(),
                         sourceIcon.bgColor,
@@ -66,20 +72,7 @@ internal class Fab constructor(context: Context) : FrameLayout(context) {
                         sourceIcon.fgColor,
                         targetIcon.fgColor) as Int,
                 icon = if (animatedValue.get() < 0.5f) sourceIcon.icon else targetIcon.icon
-        )
-
-        actualImageView.icon.set(currentIcon)
-        actualImageView.rotation = floatEvaluator.evaluate(animatedValue.get(),
-                if (isActivated.get()) 0f else 360f,
-                if (isActivated.get()) 360f else 0f
-        )
-
-        // Content description
-        contentDescription = "|BG:" + currentIcon.bgColor +
-                "|IC:" + currentIcon.fgColor +
-                "|ACT:" + isActivated
-
-        requestLayout()
+        ))
     }
 
     override fun onSaveInstanceState(): Parcelable {
