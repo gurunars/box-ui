@@ -1,4 +1,4 @@
-package com.gurunars.floatmenu
+package com.gurunars.android_utils
 
 import android.graphics.Color
 

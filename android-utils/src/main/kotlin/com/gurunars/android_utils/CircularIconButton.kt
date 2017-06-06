@@ -8,6 +8,7 @@ import android.support.v4.content.ContextCompat
 import android.view.View
 import android.widget.ImageButton
 import android.widget.ImageView
+import com.gurunars.databinding.bindableField
 import com.gurunars.shortcuts.setPadding
 
 
@@ -16,56 +17,32 @@ import com.gurunars.shortcuts.setPadding
  */
 class CircularIconButton constructor(context: Context) : ImageButton(context) {
 
-    internal var backgroundColor: Int = 0
-    internal var foregroundColor: Int = 0
-    internal var innerDrawable: Int = 0
+    val icon = bindableField(Icon(
+            bgColor = ContextCompat.getColor(context, R.color.White),
+            fgColor = ContextCompat.getColor(context, R.color.Black),
+            icon = R.drawable.ic_plus
+    ))
+
+    val enabled = bindableField(true)
 
     init {
         setLayerType(View.LAYER_TYPE_SOFTWARE, null)
         isClickable = true
-
-        backgroundColor = ContextCompat.getColor(context, R.color.White)
-        foregroundColor = ContextCompat.getColor(context, R.color.Black)
-        innerDrawable = R.drawable.ic_plus
-
-        reset()
+        icon.bind { reset() }
+        enabled.bind { reset() }
     }
 
     private fun reset() {
-        background = ColoredShapeDrawable(OvalShape(), backgroundColor)
+        background = ColoredShapeDrawable(OvalShape(), icon.get().bgColor)
         AutoBg.apply(this, 4)
 
         scaleType = ImageView.ScaleType.CENTER_CROP
         setPadding(8)
 
-        val fg = ContextCompat.getDrawable(context, innerDrawable)
-        fg.setColorFilter(foregroundColor, PorterDuff.Mode.SRC_IN)
+        val fg = ContextCompat.getDrawable(context, icon.get().icon)
+        fg.setColorFilter(icon.get().fgColor, PorterDuff.Mode.SRC_IN)
         fg.alpha = if (isEnabled) 255 else 50
-        setImageDrawable(InsetDrawable(fg, ICON_PADDING))
+        setImageDrawable(InsetDrawable(fg, 50))
     }
 
-    fun setInnerDrawable(innerDrawable: Int) {
-        this.innerDrawable = innerDrawable
-        reset()
-    }
-
-    override fun setBackgroundColor(backgroundColor: Int) {
-        this.backgroundColor = backgroundColor
-        reset()
-    }
-
-    fun setForegroundColor(foregroundColor: Int) {
-        this.foregroundColor = foregroundColor
-        reset()
-    }
-
-    override fun setEnabled(enabled: Boolean) {
-        super.setEnabled(enabled)
-        reset()
-    }
-
-    companion object {
-
-        private val ICON_PADDING = 50
-    }
 }

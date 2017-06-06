@@ -15,6 +15,7 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import com.gurunars.android_utils.AutoBg
 import com.gurunars.android_utils.ColoredShapeDrawable
+import com.gurunars.android_utils.Icon
 import com.gurunars.databinding.bindableField
 import com.gurunars.shortcuts.fullSize
 
