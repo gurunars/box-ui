@@ -8,6 +8,7 @@ import android.graphics.drawable.Drawable
 import android.graphics.drawable.InsetDrawable
 import android.graphics.drawable.LayerDrawable
 import android.graphics.drawable.shapes.OvalShape
+import android.graphics.drawable.shapes.Shape
 import android.support.v4.content.ContextCompat
 import android.support.v4.content.res.ResourcesCompat
 import android.widget.ImageView
@@ -22,7 +23,8 @@ class IconView constructor(context: Context) : ImageView(context) {
     data class Icon(
         val bgColor: Int= Color.RED,
         val fgColor: Int= Color.WHITE,
-        val icon: Int
+        val icon: Int,
+        val shape: Shape = OvalShape()
     )
 
     val icon = bindableField(Icon(
@@ -44,7 +46,7 @@ class IconView constructor(context: Context) : ImageView(context) {
         val shadowWidth = 4
         val inset = 50
 
-        background = ColoredShapeDrawable(OvalShape(), currentIcon.bgColor)
+        background = ColoredShapeDrawable(currentIcon.shape, currentIcon.bgColor)
         AutoBg.apply(this, shadowWidth)
 
         iconDrawable = InsetDrawable(

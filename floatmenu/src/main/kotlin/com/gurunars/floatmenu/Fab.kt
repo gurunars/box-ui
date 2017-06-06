@@ -68,6 +68,7 @@ internal class Fab constructor(context: Context) : FrameLayout(context) {
                 icon = if (animatedValue.get() < 0.5f) sourceIcon.icon else targetIcon.icon
         )
 
+        actualImageView.icon.set(currentIcon)
         actualImageView.rotation = floatEvaluator.evaluate(animatedValue.get(),
                 if (isActivated.get()) 0f else 360f,
                 if (isActivated.get()) 360f else 0f
