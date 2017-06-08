@@ -1,6 +1,6 @@
 package com.gurunars.databinding
 
-class BindingRegistryService : BindingRegistry {
+class DisposableRegistryService : DisposableRegistry {
 
     override fun forEach(predicate: (field: BindableField<*>) -> Unit) {
         return fields.forEach(predicate)
@@ -18,7 +18,7 @@ class BindingRegistryService : BindingRegistry {
         if (unbinding) return
         unbinding = true
         fields.forEach {
-            it.unbindFromAll()
+            it.disposeAll()
         }
         unbinding = false
     }

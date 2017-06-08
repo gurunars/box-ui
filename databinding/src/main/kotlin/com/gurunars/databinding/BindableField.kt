@@ -15,7 +15,7 @@ class BindableField<Type>(private var value: Type) {
     private val listeners: MutableList<(value: Type) -> Unit> = mutableListOf()
     private val bindings: MutableList<Binding> = mutableListOf()
 
-    fun bind(listener: (value: Type) -> Unit): Binding {
+    fun onChange(listener: (value: Type) -> Unit): Binding {
         listeners.add(listener)
         val binding = object : Binding {
             override fun unbind() {
@@ -53,19 +53,19 @@ class BindableField<Type>(private var value: Type) {
 
     fun <To> bind(field: BindableField<To>, transformer: ValueProcessor<Type, To>): Binding {
         return join(field,
-            bind { field.set(transformer.forward(it)) },
-            field.bind { this.set(transformer.backward(it)) }
+            onChange { field.set(transformer.forward(it)) },
+            field.onChange { this.set(transformer.backward(it)) }
         )
     }
 
     fun bind(field: BindableField<Type>): Binding {
         return join(field,
-            bind { field.set(it) },
-            field.bind { this.set(it) }
+            onChange { field.set(it) },
+            field.onChange { this.set(it) }
         )
     }
 
-    fun unbindFromAll() {
+    fun disposeAll() {
         bindings.toList().forEach { it.unbind() }
     }
 

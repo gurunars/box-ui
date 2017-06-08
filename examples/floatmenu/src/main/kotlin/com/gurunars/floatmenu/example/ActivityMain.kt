@@ -47,7 +47,7 @@ class ActivityMain : Activity() {
                     icon = R.drawable.ic_menu_close
                 ))
 
-                buttonColorFlag.bind {
+                buttonColorFlag.onChange {
                     openIcon.set(IconView.Icon(
                         bgColor = color(if (it) R.color.DarkRed else R.color.RosyBrown),
                         fgColor = color(if (it) R.color.White else R.color.Black),
@@ -71,7 +71,7 @@ class ActivityMain : Activity() {
                         }
 
                         textView {
-                            isOpen.bind { setText(if (it) R.string.menuOpen else R.string.menuClosed) }
+                            isOpen.onChange { setText(if (it) R.string.menuOpen else R.string.menuClosed) }
                             isClickable=true
                         }.lparams {
                             below(R.id.textView)

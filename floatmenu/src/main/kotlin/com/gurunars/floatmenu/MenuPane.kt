@@ -24,11 +24,11 @@ internal class MenuPane constructor(context: Context) : FrameLayout(context) {
     val animationDuration = bindableField(400)
 
     init {
-        hasOverlay.bind {
+        hasOverlay.onChange {
             setBackgroundColor(if (it) Color.parseColor("#99000000") else Color.TRANSPARENT)
             isClickable = it
         }
-        isVisible.bind {
+        isVisible.onChange {
             if (isAttachedToWindow) {
                 ValueAnimator.ofFloat(0f, 1f).apply {
                     startDelay = 0
@@ -40,7 +40,7 @@ internal class MenuPane constructor(context: Context) : FrameLayout(context) {
                 animatedValue.set(1f, true)
             }
         }
-        animatedValue.bind {
+        animatedValue.onChange {
             val visible = isVisible.get()
             alpha = floatEvaluator.evaluate(animatedValue.get(),
                 if (visible) 0f else 1f,

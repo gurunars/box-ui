@@ -30,13 +30,13 @@ class ActivityMain : Activity() {
                 id=R.id.leafletView
                 fullSize()
 
-                pages.bind {
+                pages.onChange {
                     setPages(it.sortedWith(kotlin.Comparator {
                         lhs, rhs -> lhs.title.compareTo(rhs.title)
                     }))
                 }
 
-                currentPage.bind { title = it.toString() }
+                currentPage.onChange { title = it.toString() }
 
                 setPageRenderer({page: TitledPage ->
                     AnkoContext.createReusable(context).relativeLayout {

@@ -38,8 +38,8 @@ class IconView constructor(context: Context) : ImageView(context) {
     private lateinit var iconDrawable: Drawable
 
     init {
-        icon.bind { reset(it) }
-        enabled.bind { reset(icon.get()) }
+        icon.onChange { reset(it) }
+        enabled.onChange { reset(icon.get()) }
     }
 
     private fun reset(currentIcon: Icon) {

@@ -32,16 +32,16 @@ internal class Fab constructor(context: Context) : FrameLayout(context) {
 
         setOnClickListener { isActivated.set(!isActivated.get()) }
 
-        openIcon.bind { updateIcon() }
-        closeIcon.bind { updateIcon() }
-        animatedValue.bind { updateIcon() }
-        animatedValue.bind {
+        openIcon.onChange { updateIcon() }
+        closeIcon.onChange { updateIcon() }
+        animatedValue.onChange { updateIcon() }
+        animatedValue.onChange {
             actualImageView.rotation = floatEvaluator.evaluate(it,
                 if (isActivated.get()) 0f else 360f,
                 if (isActivated.get()) 360f else 0f
             )
         }
-        isActivated.bind {
+        isActivated.onChange {
             if (isAttachedToWindow) {
                 ValueAnimator.ofFloat(0f, 1f).apply {
                     startDelay = 0

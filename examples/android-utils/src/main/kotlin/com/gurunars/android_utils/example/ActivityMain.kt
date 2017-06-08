@@ -31,7 +31,7 @@ class ActivityMain : Activity() {
                 padding=dip(15)
                 gravity=Gravity.CENTER
                 backgroundColor=Color.parseColor("#FFFFAA")
-                title.bind { text = it }
+                title.onChange { text = it }
             }.lparams {
                 width=matchParent
                 margin=dip(10)

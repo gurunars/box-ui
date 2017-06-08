@@ -29,7 +29,7 @@ class FloatMenu constructor(context: Context) : FrameLayout(context) {
             fullSize()
             frameLayout {
                 id=R.id.contentPane
-                contentView.bind { setOneView(it) }
+                contentView.onChange { setOneView(it) }
             }.fullSize()
             menuPane {
                 id=R.id.menuPane
@@ -38,12 +38,12 @@ class FloatMenu constructor(context: Context) : FrameLayout(context) {
                 this@FloatMenu.animationDuration.bind(animationDuration)
                 isOpen.bind(isVisible)
                 this@FloatMenu.hasOverlay.bind(hasOverlay)
-                menuView.bind { setOneView(it) }
+                menuView.onChange { setOneView(it) }
             }.fullSize()
             fab {
                 id=R.id.openFab
                 val fab = this
-                this@FloatMenu.isLeftHanded.bind { fab.contentDescription = "LH:" + it }
+                this@FloatMenu.isLeftHanded.onChange { fab.contentDescription = "LH:" + it }
                 animationDuration.bind(rotationDuration)
                 isOpen.bind(isActivated)
                 this@FloatMenu.openIcon.bind(openIcon)
@@ -54,7 +54,7 @@ class FloatMenu constructor(context: Context) : FrameLayout(context) {
                 height=dip(60)
                 alignParentBottom()
                 val fab = this
-                this@FloatMenu.isLeftHanded.bind {
+                this@FloatMenu.isLeftHanded.onChange {
                     fab.removeRule(RelativeLayout.ALIGN_PARENT_LEFT)
                     fab.removeRule(RelativeLayout.ALIGN_PARENT_RIGHT)
                     if(it) fab.alignParentLeft() else fab.alignParentRight()

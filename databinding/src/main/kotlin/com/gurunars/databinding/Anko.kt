@@ -10,13 +10,13 @@ fun<Type> View.bindableField(value: Type): BindableField<Type> {
         }
 
         override fun onViewDetachedFromWindow(v: View) {
-            field.unbindFromAll()
+            field.disposeAll()
         }
     })
     return field
 }
 
-fun<Type> BindingRegistry.bindableField(value: Type): BindableField<Type> {
+fun<Type> DisposableRegistry.bindableField(value: Type): BindableField<Type> {
     val field = BindableField(value)
     this.add(field)
     return field

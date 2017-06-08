@@ -5,5 +5,5 @@ import com.gurunars.databinding.BindableField
 
 
 inline fun BindableField<String>.bind(textView: TextView) {
-    bind { textView.setText(it) }
+    onChange { textView.setText(it) }
 }

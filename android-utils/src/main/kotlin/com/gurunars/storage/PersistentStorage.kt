@@ -3,8 +3,7 @@ package com.gurunars.storage
 import android.app.Activity
 import android.content.Context
 import com.gurunars.databinding.BindableField
-import com.gurunars.databinding.BindingRegistryService
-import com.gurunars.shortcuts.l
+import com.gurunars.databinding.DisposableRegistryService
 import java.io.Serializable
 
 
@@ -31,7 +30,7 @@ class PersistentStorage(
         }
     }
 
-    private val registry = BindingRegistryService()
+    private val registry = DisposableRegistryService()
 
     private var wasLoaded = false
 
@@ -45,7 +44,7 @@ class PersistentStorage(
         registry.forEach {
             val field = it as PersistentField<*>
             field.load()
-            field.bind { field.save() }
+            field.onChange { field.save() }
         }
         wasLoaded = true
     }

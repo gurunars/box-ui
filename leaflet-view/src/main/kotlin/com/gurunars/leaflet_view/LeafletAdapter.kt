@@ -42,14 +42,14 @@ internal class LeafletAdapter<PageT : Page>(private val pager: ViewPager) : Page
                 else
                     currentPages[Math.min(pager.currentItem, currentPages.size - 1)]
 
-        pages.bind {
+        pages.onChange {
             val oldCurrent = calculateCurrentPage()
             this.previousPages = this.currentPages
             this.currentPages = this.kryo.copy(it.array.toList())
             notifyDataSetChanged()
             currentPage.set(this.currentPages.find({pageEquator(it, oldCurrent)}) ?: calculateCurrentPage())
         }
-        currentPage.bind {
+        currentPage.onChange {
             if (it == null) {
                 if (currentPages.isNotEmpty()) currentPage.set(currentPages.get(0))
             } else {

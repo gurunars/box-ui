@@ -6,7 +6,7 @@ import android.widget.EditText
 import com.gurunars.databinding.BindableField
 
 inline fun EditText.bind(field: BindableField<String>) {
-    field.bind { setText(it) }
+    field.onChange { setText(it) }
     addTextChangedListener(object: TextWatcher {
         override fun afterTextChanged(s: Editable?) {}
 
