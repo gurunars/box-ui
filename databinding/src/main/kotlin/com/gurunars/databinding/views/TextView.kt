@@ -1,9 +1,9 @@
 package com.gurunars.databinding.views
 
 import android.widget.TextView
-import com.gurunars.databinding.SenderField
+import com.gurunars.databinding.BindableField
 
 
-fun SenderField<String>.sendTo(textView: TextView) {
+inline fun BindableField<String>.bind(textView: TextView) {
     bind { textView.setText(it) }
 }

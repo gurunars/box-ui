@@ -1,9 +1,41 @@
 package com.gurunars.databinding
 
 
-class BindableField<Type>(value: Type): ListenerField<Type>(value) {
+class BindableField<Type>(private var value: Type) {
 
+    interface ValueProcessor<From, To> {
+        fun forward(value: From): To
+        fun backward(value: To): From
+    }
+
+    interface Binding {
+        fun unbind()
+    }
+
+    private val listeners: MutableList<(value: Type) -> Unit> = mutableListOf()
     private val bindings: MutableList<Binding> = mutableListOf()
+
+    fun bind(listener: (value: Type) -> Unit): Binding {
+        listeners.add(listener)
+        val binding = object : Binding {
+            override fun unbind() {
+                listeners.remove(listener)
+                bindings.remove(this)
+            }
+        }
+        bindings.add(binding)
+        listener(this.value)
+        return binding
+    }
+
+    fun set(value: Type, force:Boolean=false) {
+        if (force || this.value != value) {
+            this.value = value
+            listeners.forEach { it(value) }
+        }
+    }
+
+    fun get() : Type = this.value
 
     private fun join(field: BindableField<*>, forwardBinding: Binding, backwardBinding: Binding): Binding {
         val twoWayBinding = object: Binding {
@@ -33,15 +65,8 @@ class BindableField<Type>(value: Type): ListenerField<Type>(value) {
         )
     }
 
-    override fun unbindFromAll() {
-        super.unbindFromAll()
+    fun unbindFromAll() {
         bindings.toList().forEach { it.unbind() }
     }
-
-    public override fun set(value: Type, force: Boolean) {
-        super.set(value, force)
-    }
-
-    public override fun get() = super.get()
 
 }
