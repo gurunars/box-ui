@@ -18,17 +18,14 @@ import org.jetbrains.anko.textView
 import org.objenesis.strategy.StdInstantiatorStrategy
 import java.util.*
 
-internal class LeafletAdapter<PageT : Page>(private val pager: ViewPager) : PagerAdapter() {
+internal class LeafletAdapter<PageT : Page>(
+        private val pager: ViewPager,
+        private val pages: BindableField<DeepList<PageT>>,
+        private val currentPage: BindableField<PageT?>
+) : PagerAdapter() {
 
     private val kryo = Kryo().apply {
         instantiatorStrategy = Kryo.DefaultInstantiatorStrategy(StdInstantiatorStrategy())
-    }
-
-    private val pages = BindableField(DeepList<PageT>(listOf()))
-    val currentPage = BindableField<PageT?>(null)
-
-    fun setPages(list: List<PageT>) {
-        pages.set(DeepList(list))
     }
 
     private var currentPages = listOf<PageT>()
