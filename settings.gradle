@@ -1,11 +1,10 @@
-include ':android-utils', ':leaflet-view', ':item-list', ':floatmenu', ':test-utils',
+include ':android-utils', ':item-list', ':floatmenu', ':test-utils',
         ':databinding',
         //':crud-item-list',
-        ':example-android-utils', ':example-leaflet-view', ':example-item-list',
+        ':example-android-utils', ':example-item-list',
         ':example-floatmenu', ':example-selectable-item-list'
         //,':example-crud-item-list'
 project(":example-android-utils").projectDir = file("examples/android-utils")
-project(":example-leaflet-view").projectDir = file("examples/leaflet-view")
 project(":example-item-list").projectDir = file("examples/item-list")
 project(":example-floatmenu").projectDir = file("examples/floatmenu")
 project(":example-selectable-item-list").projectDir = file("examples/selectable-item-list")

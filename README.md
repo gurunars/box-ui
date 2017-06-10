@@ -20,9 +20,6 @@ their own.
   to manipulate the app. In contrast with the toolbar it aims to simplify the
   way the app can be managed with left or right hand thumb on a large phone
   screen.
-- [leaflet-view](leaflet-view/README.md) - a component based on ViewPager with
-  a dramatically simplified interface. Apart from simpler interfaces it also
-  handles empty pages.
 - [android-utils](android-utils/README.md) - a set of helpers for beautifying
   the UI - such as a generic way to supply shadows to views with shape drawable
   backgrounds.
