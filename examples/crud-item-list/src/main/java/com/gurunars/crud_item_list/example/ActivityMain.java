@@ -1,9 +1,9 @@
 package com.gurunars.crud_item_list.example;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -15,10 +15,9 @@ import com.gurunars.crud_item_list.ListChangeListener;
 
 import java.util.List;
 
-import butterknife.ButterKnife;
 
 
-public class ActivityMain extends AppCompatActivity {
+public class ActivityMain extends Activity {
 
     private CrudItemList<AnimalItem> crudItemList;
     private Model model;

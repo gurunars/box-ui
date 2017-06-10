@@ -2,7 +2,6 @@ package com.gurunars.crud_item_list
 
 import android.content.Context
 import android.graphics.Color
-import android.os.Parcelable
 import android.support.annotation.IdRes
 import android.support.v4.content.ContextCompat
 import android.view.View
@@ -37,8 +36,8 @@ class CrudItemList<ItemType : Item>  constructor(context: Context) : RelativeLay
     private val floatingMenu: FloatMenu
     private val itemList: SelectableItemList<ItemType>
 
-    private var listChangeListener: ListChangeListener<ItemType> = ListChangeListener.DefaultListChangeListener<ItemType>()
-    private var itemEditListener: ItemEditListener<ItemType> = ItemEditListener.DefaultItemEditListener<ItemType>()
+    private var listChangeListener: (list: List<ItemType>) -> Unit = {}
+    private var itemEditListener: (item: ItemType) -> Unit = {}
 
     private var items: List<ItemType> = ArrayList()
 
@@ -46,7 +45,7 @@ class CrudItemList<ItemType : Item>  constructor(context: Context) : RelativeLay
         init {
             put(R.id.selectAll, ActionSelectAll<ItemType>())
             put(R.id.delete, ActionDelete<ItemType>())
-            put(R.id.edit, ActionEdit({ payload -> itemEditListener.onEdit(payload) }))
+            put(R.id.edit, ActionEdit({ payload -> itemEditListener(payload) }))
             put(R.id.moveUp, ActionMoveUp<ItemType>())
             put(R.id.moveDown, ActionMoveDown<ItemType>())
         }
@@ -73,26 +72,10 @@ class CrudItemList<ItemType : Item>  constructor(context: Context) : RelativeLay
         setCreationMenu(View(context))
 
         floatingMenu.contentView.set(itemList)
-        floatingMenu.setMenuView(contextualMenu)
+        floatingMenu.menuView.set(contextualMenu)
         floatingMenu.setOpenIcon(R.drawable.ic_plus)
 
         addView(floatingMenu)
-
-        val a = context.obtainStyledAttributes(attrs, R.styleable.CrudItemList)
-
-        val bgColor = ContextCompat.getColor(context, R.color.Black)
-        val fgColor = ContextCompat.getColor(context, R.color.White)
-
-        actionIconFgColor = a.getColor(R.styleable.CrudItemList_actionIconFgColor, bgColor)
-        actionIconBgColor = a.getColor(R.styleable.CrudItemList_actionIconBgColor, fgColor)
-        contextualCloseFgColor = a.getColor(R.styleable.CrudItemList_contextualCloseFgColor, bgColor)
-        contextualCloseBgColor = a.getColor(R.styleable.CrudItemList_contextualCloseBgColor, fgColor)
-        createCloseBgColor = a.getColor(R.styleable.CrudItemList_createCloseBgColor, bgColor)
-        createCloseFgColor = a.getColor(R.styleable.CrudItemList_createCloseFgColor, fgColor)
-        openBgColor = a.getColor(R.styleable.CrudItemList_openBgColor, bgColor)
-        openFgColor = a.getColor(R.styleable.CrudItemList_openFgColor, fgColor)
-
-        a.recycle()
 
         setLeftHanded(false)
 
@@ -104,7 +87,16 @@ class CrudItemList<ItemType : Item>  constructor(context: Context) : RelativeLay
             }
         })
 
-        floatingMenu.setOnCloseListener(object : AnimationListener() {
+        floatingMenu.isOpen.onChange {
+            if (it) {
+
+            } else {
+
+            }
+        }
+
+
+        (object : AnimationListener() {
             fun onStart(projectedDuration: Int) {
                 itemList.selectedItems = HashSet<ItemType>()
             }
@@ -149,11 +141,11 @@ class CrudItemList<ItemType : Item>  constructor(context: Context) : RelativeLay
     }
 
     private fun setUpContextualMenu() {
-        floatingMenu.setMenuView(contextualMenu)
+        floatingMenu.menuView.set(contextualMenu)
         floatingMenu.setCloseIconFgColor(contextualCloseFgColor)
         floatingMenu.setCloseIconBgColor(contextualCloseBgColor)
         floatingMenu.setCloseIcon(R.drawable.ic_check)
-        floatingMenu.setHasOverlay(false)
+        floatingMenu.hasOverlay.set(false)
         setUpActions()
         floatingMenu.open()
     }
@@ -163,7 +155,7 @@ class CrudItemList<ItemType : Item>  constructor(context: Context) : RelativeLay
         floatingMenu.setCloseIconFgColor(createCloseFgColor)
         floatingMenu.setCloseIconBgColor(createCloseBgColor)
         floatingMenu.setCloseIcon(R.drawable.ic_menu_close)
-        floatingMenu.setHasOverlay(true)
+        floatingMenu.hasOverlay.set(true)
     }
 
     override fun onDetachedFromWindow() {

@@ -1,14 +1,13 @@
 package com.gurunars.crud_item_list
 
-internal class ActionSelectAll<ItemType> : Action<ItemType> {
+import com.gurunars.item_list.Item
 
-    override fun perform(all: MutableList<ItemType>, selectedItems: MutableSet<ItemType>): Boolean {
-        selectedItems.addAll(all)
-        return true
+internal class ActionSelectAll<ItemType: Item> : Action<ItemType> {
+
+    override fun perform(all: List<ItemType>, selectedItems: Set<ItemType>): Pair<List<ItemType>, Set<ItemType>> {
+        return Pair(all, all.toHashSet())
     }
 
-    override fun canPerform(all: List<ItemType>, selectedItems: Set<ItemType>): Boolean {
-        return selectedItems.size < all.size
-    }
+    override fun canPerform(all: List<ItemType>, selectedItems: Set<ItemType>): Boolean = selectedItems.size < all.size
 
 }

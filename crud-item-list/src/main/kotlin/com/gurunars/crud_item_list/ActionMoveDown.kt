@@ -1,23 +1,23 @@
 package com.gurunars.crud_item_list
 
-internal class ActionMoveDown<ItemType> : Action<ItemType> {
+import com.gurunars.item_list.Item
 
-    private val positionFetcher = PositionFetcher<ItemType>()
+internal class ActionMoveDown<ItemType: Item> : Action<ItemType> {
 
-    private val solidChunkChecker = CheckerSolidChunk()
-
-    override fun perform(all: MutableList<ItemType>, selectedItems: MutableSet<ItemType>): Boolean {
-        val positions = positionFetcher.apply(all, selectedItems)
+    override fun perform(all: List<ItemType>, selectedItems: Set<ItemType>): Pair<List<ItemType>, Set<ItemType>> {
+        val positions = getPositions(all, selectedItems)
         val positionToMoveUp = positions[positions.size - 1] + 1
         val itemToMoveUp = all[positionToMoveUp]
-        all.removeAt(positionToMoveUp)
-        all.add(positions[0], itemToMoveUp)
-        return true
+        return Pair(mutableListOf<ItemType>().apply {
+            addAll(all)
+            removeAt(positionToMoveUp)
+            add(positions[0], itemToMoveUp)
+        }, selectedItems)
     }
 
     override fun canPerform(all: List<ItemType>, selectedItems: Set<ItemType>): Boolean {
-        val positions = positionFetcher.apply(all, selectedItems)
-        return solidChunkChecker.apply(positions) && positions[positions.size - 1] < all.size - 1
+        val positions = getPositions(all, selectedItems)
+        return isSolidChunk(positions) && positions[positions.size - 1] < all.size - 1
     }
 
 }

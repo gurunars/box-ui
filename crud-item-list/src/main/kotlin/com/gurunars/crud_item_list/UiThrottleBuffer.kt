@@ -5,7 +5,7 @@ import android.os.Handler
 /* Allows to buffer runnable execution to prevent spamming events of the same type. */
 internal class UiThrottleBuffer {
     private val handler = Handler()
-    private var currentCallback: Runnable? = null
+    private var currentCallback = {}
 
     private fun cancel() {
         handler.removeCallbacks(currentCallback)
@@ -13,22 +13,19 @@ internal class UiThrottleBuffer {
 
     fun shutdown() {
         cancel()
-        if (currentCallback != null) {
-            currentCallback!!.run()
-        }
+        currentCallback()
     }
 
-    fun call(runnable: Runnable) {
+    fun call(runnable: () -> Unit) {
         cancel()
-        currentCallback = Runnable {
-            runnable.run()
-            currentCallback = null
+        currentCallback = {
+            runnable()
+            currentCallback = {}
         }
         handler.postDelayed(currentCallback, TIMEOUT.toLong())
     }
 
     companion object {
-
         private val TIMEOUT = 500
     }
 

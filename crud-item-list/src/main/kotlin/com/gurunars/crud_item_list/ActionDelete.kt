@@ -1,14 +1,16 @@
 package com.gurunars.crud_item_list
 
-internal class ActionDelete<ItemType> : Action<ItemType> {
+import com.gurunars.item_list.Item
 
-    override fun perform(all: MutableList<ItemType>, selectedItems: MutableSet<ItemType>): Boolean {
-        all.removeAll(selectedItems)
-        return true
+internal class ActionDelete<ItemType: Item> : Action<ItemType> {
+
+    override fun perform(all: List<ItemType>, selectedItems: Set<ItemType>): Pair<List<ItemType>, Set<ItemType>> {
+        return Pair(
+            all.filter { item -> selectedItems.indexOfFirst { it.getId() == item.getId() } == -1 },
+            setOf()
+        )
     }
 
-    override fun canPerform(all: List<ItemType>, selectedItems: Set<ItemType>): Boolean {
-        return selectedItems.isNotEmpty()
-    }
+    override fun canPerform(all: List<ItemType>, selectedItems: Set<ItemType>) = selectedItems.isNotEmpty()
 
 }

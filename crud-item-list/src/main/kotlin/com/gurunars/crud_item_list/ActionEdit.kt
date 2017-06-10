@@ -1,26 +1,16 @@
 package com.gurunars.crud_item_list
 
-import com.esotericsoftware.kryo.Kryo
-import org.objenesis.strategy.StdInstantiatorStrategy
+import com.gurunars.item_list.Item
 
-internal class ActionEdit<ItemType>(private val itemConsumer: (item: ItemType)-> Unit) : Action<ItemType> {
+internal class ActionEdit<ItemType: Item>(private val itemConsumer: (item: ItemType)-> Unit) : Action<ItemType> {
 
-    private val kryo = Kryo()
-
-    init {
-        this.kryo.instantiatorStrategy = Kryo.DefaultInstantiatorStrategy(StdInstantiatorStrategy())
-    }
-
-    override fun perform(all: MutableList<ItemType>, selectedItems: MutableSet<ItemType>): Boolean {
-        val iterator = selectedItems.iterator()
-        if (iterator.hasNext()) {
-            itemConsumer(kryo.copy(iterator.next()))
+    override fun perform(all: List<ItemType>, selectedItems: Set<ItemType>): Pair<List<ItemType>, Set<ItemType>> {
+        all.filter { item -> selectedItems.indexOfFirst { it.getId() == item.getId() } != -1 }.first().apply {
+            itemConsumer(this)
         }
-        return false
+        return Pair(all, selectedItems)
     }
 
-    override fun canPerform(all: List<ItemType>, selectedItems: Set<ItemType>): Boolean {
-        return selectedItems.size == 1
-    }
+    override fun canPerform(all: List<ItemType>, selectedItems: Set<ItemType>) = selectedItems.size == 1
 
 }
