@@ -63,12 +63,11 @@ internal class ItemAdapter<ItemType : Item> : RecyclerView.Adapter<BindableViewH
     }
 
     override fun onCreateViewHolder(parent: ViewGroup,
-                                    viewType: Int): BindableViewHolder<out View, ItemType> {
-        return if (viewType == ItemViewBinderEmpty.EMPTY_TYPE)
-            BindableViewHolder(parent, emptyViewBinder)
-        else
-            BindableViewHolder(parent, this.itemViewBinderMap.get(viewType) ?: defaultViewBinder)
-    }
+                                    viewType: Int) =
+    if (viewType == ItemViewBinderEmpty.EMPTY_TYPE)
+        BindableViewHolder(parent, emptyViewBinder)
+    else
+        BindableViewHolder(parent, this.itemViewBinderMap.get(viewType) ?: defaultViewBinder)
 
     override fun onBindViewHolder(holder: BindableViewHolder<out View, ItemType>, position: Int) {
         if (position == items.size) {
@@ -84,6 +83,6 @@ internal class ItemAdapter<ItemType : Item> : RecyclerView.Adapter<BindableViewH
     override fun getItemViewType(position: Int): Int =
         if (items.isEmpty()) ItemViewBinderEmpty.EMPTY_TYPE else items[position].getType().ordinal
 
-    override fun getItemCount(): Int = Math.max(1, items.size)
+    override fun getItemCount() = Math.max(1, items.size)
 
 }
