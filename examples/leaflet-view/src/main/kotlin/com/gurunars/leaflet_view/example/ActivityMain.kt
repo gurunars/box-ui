@@ -8,6 +8,7 @@ import android.text.InputType
 import android.view.*
 import android.widget.ArrayAdapter
 import android.widget.EditText
+import com.gurunars.databinding.DeepList
 import com.gurunars.leaflet_view.LeafletView
 import com.gurunars.leaflet_view.leafletView
 import com.gurunars.shortcuts.fullSize
@@ -30,10 +31,10 @@ class ActivityMain : Activity() {
                 id=R.id.leafletView
                 fullSize()
 
-                pages.onChange {
-                    setPages(it.sortedWith(kotlin.Comparator {
+                this@ActivityMain.pages.onChange {
+                    leafletView.pages.set(DeepList(it.sortedWith(kotlin.Comparator {
                         lhs, rhs -> lhs.title.compareTo(rhs.title)
-                    }))
+                    })))
                 }
 
                 currentPage.onChange { title = it.toString() }

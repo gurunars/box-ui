@@ -17,16 +17,15 @@ import java.util.*
  */
 class SelectableItemList<ItemType : Item> constructor(context: Context) : FrameLayout(context) {
 
-    private val itemList: ItemList<SelectableItem<ItemType>>
+    private val itemList: ItemList<SelectableItem<ItemType>> = itemList {
+        id=R.id.itemList
+        layoutParams=LayoutParams(matchParent, matchParent)
+    }
+
     private val collectionManager: CollectionManager<ItemType>
     private var selectionChangeListener: Runnable? = null
 
     init {
-
-        itemList = itemList {
-            id=R.id.itemList
-            layoutParams=LayoutParams(matchParent, matchParent)
-        }
 
         collectionManager = CollectionManager({ itemList.setItems(it) }, Runnable {
             selectionChangeListener?.run()

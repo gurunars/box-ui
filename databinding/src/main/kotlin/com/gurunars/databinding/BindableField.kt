@@ -1,7 +1,10 @@
 package com.gurunars.databinding
 
 
-class BindableField<Type>(private var value: Type) {
+class BindableField<Type>(
+        private var value: Type,
+        private val equal: (one: Type, other: Type) -> Boolean = {one, two -> one == two}
+) : Disposable {
 
     interface ValueProcessor<From, To> {
         fun forward(value: From): To
@@ -29,7 +32,7 @@ class BindableField<Type>(private var value: Type) {
     }
 
     fun set(value: Type, force:Boolean=false) {
-        if (force || this.value != value) {
+        if (force || ! equal(this.value, value)) {
             this.value = value
             listeners.forEach { it(value) }
         }
@@ -65,7 +68,7 @@ class BindableField<Type>(private var value: Type) {
         )
     }
 
-    fun disposeAll() {
+    override fun disposeAll() {
         bindings.toList().forEach { it.unbind() }
     }
 

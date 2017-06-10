@@ -1,14 +1,10 @@
 package com.gurunars.databinding
 
-class DisposableRegistryService : DisposableRegistry {
+class DisposableRegistryService {
 
-    override fun forEach(predicate: (field: BindableField<*>) -> Unit) {
-        return fields.forEach(predicate)
-    }
+    private val fields = mutableListOf<Disposable>()
 
-    private val fields = mutableListOf<BindableField<*>>()
-
-    override fun add(field: BindableField<*>) {
+    fun add(field: Disposable) {
         fields.add(field)
     }
 

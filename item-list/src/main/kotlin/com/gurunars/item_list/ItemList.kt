@@ -17,13 +17,9 @@ import org.jetbrains.anko.recyclerview.v7.recyclerView
  */
 class ItemList<ItemType : Item> constructor(context: Context) : FrameLayout(context) {
 
-    private val itemAdapter: ItemAdapter<ItemType>
-    private val llm: LinearLayoutManager
+    private val itemAdapter = ItemAdapter<ItemType>()
 
     init {
-        llm = LinearLayoutManager(context)
-        llm.orientation = LinearLayoutManager.VERTICAL
-        itemAdapter = ItemAdapter<ItemType>()
 
         recyclerView {
             id=R.id.recyclerView
@@ -31,8 +27,10 @@ class ItemList<ItemType : Item> constructor(context: Context) : FrameLayout(cont
             clipToPadding=false
             bottomPadding=dip(60)
             isSaveEnabled=false
-            setAdapter(itemAdapter)
-            setLayoutManager(llm)
+            adapter = itemAdapter
+            layoutManager = LinearLayoutManager(context).apply {
+                orientation = LinearLayoutManager.VERTICAL
+            }
         }
 
     }
