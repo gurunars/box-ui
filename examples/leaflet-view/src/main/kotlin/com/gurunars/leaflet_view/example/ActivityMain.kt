@@ -32,17 +32,15 @@ class ActivityMain : Activity() {
                 id=R.id.leafletView
                 fullSize()
 
-                /*
                 this@ActivityMain.pages.bind(pages, object: BindableField.ValueProcessor<ArrayList<TitledPage>, DeepList<TitledPage>> {
                     override fun backward(value: DeepList<TitledPage>): ArrayList<TitledPage> {
-                        return value.array as ArrayList<TitledPage>
+                        return ArrayList(value.array)
                     }
 
                     override fun forward(value: ArrayList<TitledPage>): DeepList<TitledPage> {
                         return DeepList(value.sortedWith(kotlin.Comparator {lhs, rhs -> lhs.title.compareTo(rhs.title)}))
                     }
                 })
-                */
 
                 currentPage.onChange { title = it.toString() }
 
