@@ -10,7 +10,6 @@ import android.view.View
 import android.view.ViewGroup
 import com.esotericsoftware.kryo.Kryo
 import com.gurunars.databinding.BindableField
-import com.gurunars.databinding.DeepList
 import com.gurunars.shortcuts.fullSize
 import org.jetbrains.anko.AnkoContext
 import org.jetbrains.anko.frameLayout
@@ -20,7 +19,7 @@ import java.util.*
 
 internal class LeafletAdapter<PageT : Page>(
         private val pager: ViewPager,
-        private val pages: BindableField<DeepList<PageT>>,
+        private val pages: BindableField<List<PageT>>,
         private val currentPage: BindableField<PageT?>
 ) : PagerAdapter() {
 
@@ -42,13 +41,13 @@ internal class LeafletAdapter<PageT : Page>(
         pages.onChange {
             val oldCurrent = calculateCurrentPage()
             this.previousPages = this.currentPages
-            this.currentPages = this.kryo.copy(it.array.toList())
+            this.currentPages = this.kryo.copy(it.toList())
             notifyDataSetChanged()
             currentPage.set(this.currentPages.find({pageEquator(it, oldCurrent)}) ?: calculateCurrentPage())
         }
         currentPage.onChange {
             if (it == null) {
-                if (currentPages.isNotEmpty()) currentPage.set(currentPages.get(0))
+                if (currentPages.isNotEmpty()) currentPage.set(currentPages[0])
             } else {
                 val page = it
                 val desiredIndex = currentPages.indexOfFirst { pageEquator(it, page) }
@@ -81,7 +80,7 @@ internal class LeafletAdapter<PageT : Page>(
     var noPageRenderer: () -> View = {getCenteredView(pager.context.getString(R.string.empty))}
         set(value) {
             field = value
-            if (pages.get().array.isEmpty()) {
+            if (pages.get().isEmpty()) {
                 notifyDataSetChanged()
             }
         }

@@ -4,7 +4,6 @@ import android.content.Context
 import android.view.View
 import android.widget.FrameLayout
 import com.gurunars.databinding.BindableField
-import com.gurunars.databinding.DeepList
 import com.gurunars.shortcuts.fullSize
 import org.jetbrains.anko.support.v4.viewPager
 
@@ -17,7 +16,7 @@ class LeafletView<PageT : Page>  constructor(context: Context) : FrameLayout(con
 
     private var leafletAdapter: LeafletAdapter<PageT>
 
-    val pages = BindableField<DeepList<PageT>>(DeepList(listOf()))
+    val pages = BindableField<List<PageT>>(listOf())
     val currentPage = BindableField<PageT?>(null)
 
     init {
