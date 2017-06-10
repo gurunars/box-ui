@@ -5,7 +5,6 @@ import android.content.Context
 import com.gurunars.databinding.BindableField
 import com.gurunars.databinding.Disposable
 import com.gurunars.databinding.DisposableRegistryService
-import java.io.Serializable
 
 
 class PersistentStorage(
@@ -13,7 +12,7 @@ class PersistentStorage(
         private val storageName: String
 ) {
 
-    internal class PersistentField<Type: Serializable>(
+    internal class PersistentField<Type>(
             val storage: PersistentStorage,
             val name: String,
             val field: BindableField<Type>): Disposable {
@@ -42,7 +41,7 @@ class PersistentStorage(
 
     private var wasLoaded = false
 
-    fun<Type: Serializable> storageField(name: String, defaultValue: Type): BindableField<Type> {
+    fun<Type> storageField(name: String, defaultValue: Type): BindableField<Type> {
         val field = BindableField(defaultValue)
         val wrapper = PersistentField(this, name, field)
         registry.add(wrapper)

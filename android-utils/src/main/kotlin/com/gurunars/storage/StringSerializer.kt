@@ -16,7 +16,7 @@ import java.lang.Exception
 internal object StringSerializer {
 
     /** Read the object from Base64 string.  */
-    fun <ObjType : Serializable> fromString(serializedObject: String?): ObjType? {
+    fun <ObjType> fromString(serializedObject: String?): ObjType? {
         if (serializedObject == null) return null
         try {
             return ObjectInputStream(
@@ -31,7 +31,7 @@ internal object StringSerializer {
     }
 
     /** Write the object to a Base64 string.  */
-    fun toString(obj: Serializable?): String? {
+    fun toString(obj: Any?): String? {
         if (obj == null) return null
         try {
             val baos = ByteArrayOutputStream()

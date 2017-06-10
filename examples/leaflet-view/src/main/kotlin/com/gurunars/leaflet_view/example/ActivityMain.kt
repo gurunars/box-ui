@@ -8,7 +8,6 @@ import android.text.InputType
 import android.view.*
 import android.widget.ArrayAdapter
 import android.widget.EditText
-import com.gurunars.databinding.BindableField
 import com.gurunars.leaflet_view.LeafletView
 import com.gurunars.leaflet_view.leafletView
 import com.gurunars.shortcuts.fullSize
@@ -19,7 +18,7 @@ import org.jetbrains.anko.*
 class ActivityMain : Activity() {
 
     private val storage= PersistentStorage(this, "main")
-    private val pages = storage.storageField("pages", ArrayList<TitledPage>())
+    private val pages = storage.storageField("pages", listOf<TitledPage>())
 
     private lateinit var leafletView: LeafletView<TitledPage>
 
@@ -31,16 +30,7 @@ class ActivityMain : Activity() {
                 id=R.id.leafletView
                 fullSize()
 
-                this@ActivityMain.pages.bind(pages, object: BindableField.ValueProcessor<ArrayList<TitledPage>, List<TitledPage>> {
-                    override fun forward(value: ArrayList<TitledPage>): List<TitledPage> {
-                        return value
-                    }
-
-                    override fun backward(value: List<TitledPage>): ArrayList<TitledPage> {
-                        return ArrayList(value)
-                    }
-
-                })
+                this@ActivityMain.pages.bind(pages)
 
                 currentPage.onChange { title = it.toString() }
 
@@ -145,26 +135,15 @@ class ActivityMain : Activity() {
             setView(input)
             // Set up the buttons
             setPositiveButton(R.string.ok) { _, _ ->
-                currentPage.title = input.text.toString()
-                // NOTE: surely equals method could have been implemented
-                // however the idea is to demo that these methods are not important -
-                // only getId method is
-                pages.set(pages.get().apply {
-                    indices
-                        .filter { get(it).id == currentPage.id }
-                        .forEach { set(it, currentPage) }
-                })
+                leafletView.currentPage.set(currentPage.copy(title = input.text.toString()))
+                pages.set(pages.get().map { if (it.id == currentPage.id) currentPage else it })
             }
             show()
         }
     }
 
     private fun deletePage() {
-        // NOTE: surely equals method could have been implemented
-        // however the idea is to demo that these methods are not important - only getId method is
-        pages.set(pages.get().apply {
-            indices.filter { get(it).id == leafletView.currentPage.get()!!.id }.forEach { removeAt(it) }
-        })
+        pages.set(pages.get().filterNot { it.id == leafletView.currentPage.get()!!.id })
     }
 
     private fun createPage() {
@@ -176,7 +155,7 @@ class ActivityMain : Activity() {
             }
             setView(input)
             setPositiveButton(R.string.ok) { _, _ ->
-                pages.set(pages.get().apply { add(TitledPage(input.text.toString())) })
+                pages.set(pages.get() + TitledPage(System.nanoTime(), input.text.toString()))
             }
             show()
         }
