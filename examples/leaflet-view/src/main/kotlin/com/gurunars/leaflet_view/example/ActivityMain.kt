@@ -8,6 +8,7 @@ import android.text.InputType
 import android.view.*
 import android.widget.ArrayAdapter
 import android.widget.EditText
+import com.gurunars.databinding.BindableField
 import com.gurunars.databinding.DeepList
 import com.gurunars.leaflet_view.LeafletView
 import com.gurunars.leaflet_view.leafletView
@@ -31,11 +32,17 @@ class ActivityMain : Activity() {
                 id=R.id.leafletView
                 fullSize()
 
-                this@ActivityMain.pages.onChange {
-                    leafletView.pages.set(DeepList(it.sortedWith(kotlin.Comparator {
-                        lhs, rhs -> lhs.title.compareTo(rhs.title)
-                    })))
-                }
+                /*
+                this@ActivityMain.pages.bind(pages, object: BindableField.ValueProcessor<ArrayList<TitledPage>, DeepList<TitledPage>> {
+                    override fun backward(value: DeepList<TitledPage>): ArrayList<TitledPage> {
+                        return value.array as ArrayList<TitledPage>
+                    }
+
+                    override fun forward(value: ArrayList<TitledPage>): DeepList<TitledPage> {
+                        return DeepList(value.sortedWith(kotlin.Comparator {lhs, rhs -> lhs.title.compareTo(rhs.title)}))
+                    }
+                })
+                */
 
                 currentPage.onChange { title = it.toString() }
 
