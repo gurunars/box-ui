@@ -16,6 +16,7 @@ fun<Type> View.bindableField(value: Type): BindableField<Type> {
     return field
 }
 
+
 fun<Type> DisposableRegistryService.bindableField(value: Type): BindableField<Type> {
     val field = BindableField(value)
     this.add(field)

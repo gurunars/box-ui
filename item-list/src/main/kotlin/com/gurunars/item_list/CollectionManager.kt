@@ -1,42 +1,41 @@
 package com.gurunars.item_list
 
-import com.esotericsoftware.kryo.Kryo
-import com.gurunars.shortcuts.l
-import org.objenesis.strategy.StdInstantiatorStrategy
+import com.gurunars.databinding.BindableField
 import java.io.Serializable
-import java.util.*
+
+
+internal class ItemWrapper<out ItemType: Item>(val item: ItemType) {
+    override fun equals(other: Any?) =
+        other != null &&
+        other is ItemWrapper<*> &&
+        item.getId() == other.item.getId()
+    override fun hashCode() = item.hashCode()
+}
+
+
+internal fun<ItemType: Item> mergeCollections(items: List<ItemType>, selectedItems: Set<ItemType>) : List<SelectableItem<ItemType>> {
+    val all = items.map { ItemWrapper(it) }
+    val selected = selectedItems.map { ItemWrapper(it) }
+    return all.map { SelectableItem(it.item, selected.contains(it)) }
+}
+
+
+internal fun<ItemType: Item> selectionChange(oldSelection: Set<ItemType>, newSelection: Set<ItemType>) {
+
+}
 
 
 internal class CollectionManager<ItemType : Item>(
-        private val stateChangeHandler: (items: List<SelectableItem<ItemType>>) -> Unit,
-        private val selectionChangeListener: Runnable) : Serializable {
-
-    private val kryo = Kryo()
-
-    private var items: List<ItemType> = ArrayList()
-    private var selectedItems: Set<ItemType> = HashSet()
-
-    init {
-        this.kryo.instantiatorStrategy = Kryo.DefaultInstantiatorStrategy(StdInstantiatorStrategy())
-    }
+        private val items: BindableField<List<ItemType>>,
+        private val selectedItems: BindableField<HashSet<ItemType>>) : Serializable {
 
     private fun changed(newItems: List<ItemType>, newSelection: Set<ItemType>) {
-        this.items = kryo.copy(ArrayList(newItems))
 
-        fun indexOfItem(items: Collection<ItemType>, item: ItemType): Int {
-            return items.indexOfFirst { item.getId() == it.getId() }
-        }
-
-        val filteredSelection = kryo.copy(HashSet(newSelection))
+        val filteredSelection = newSelection
                 .filter { indexOfItem(items, it) != -1 }
                 .map { items[indexOfItem(items, it)] }
                 .toHashSet()
         val selectionChanged = selectedItems != filteredSelection
-        selectedItems = filteredSelection
-        stateChangeHandler(items.map { item -> SelectableItem(item, indexOfItem(selectedItems, item) != -1) })
-        if (selectionChanged) {
-            selectionChangeListener.run()
-        }
     }
 
     fun itemClick(selectableItem: SelectableItem<ItemType>) {
@@ -45,7 +44,6 @@ internal class CollectionManager<ItemType : Item>(
         }
 
         val item = selectableItem.item
-        l("SEL " + selectedItems.indexOfFirst { item.getId() == it.getId() })
         changed(items,
                 if (selectedItems.indexOfFirst { item.getId() == it.getId() } == -1)
                     selectedItems + item
@@ -60,7 +58,4 @@ internal class CollectionManager<ItemType : Item>(
         return true
     }
 
-    fun setItems(items: List<ItemType>) { changed(items, selectedItems) }
-    fun setSelectedItems(value: Set<ItemType>) = changed(items, value)
-    fun getSelectedItems(): Set<ItemType> = kryo.copy(selectedItems)
 }

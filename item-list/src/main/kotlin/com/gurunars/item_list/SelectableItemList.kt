@@ -22,14 +22,7 @@ class SelectableItemList<ItemType : Item> constructor(context: Context) : FrameL
         layoutParams=LayoutParams(matchParent, matchParent)
     }
 
-    private val collectionManager: CollectionManager<ItemType>
-    private var selectionChangeListener: Runnable? = null
-
     init {
-
-        collectionManager = CollectionManager({ itemList.setItems(it) }, Runnable {
-            selectionChangeListener?.run()
-        })
 
         itemList.setDefaultViewBinder(ClickableItemViewBinder(
                 SelectableItemViewBinderString<ItemType>(), collectionManager
@@ -37,58 +30,6 @@ class SelectableItemList<ItemType : Item> constructor(context: Context) : FrameL
 
     }
 
-    /**
-     * Set a collection of items to be shown.
-     *
-     * If the collection of items is different - the diff shall be animated.
-     *
-     * @param items a new collection to be shown
-     */
-    fun setItems(items: List<ItemType>) {
-        collectionManager.setItems(items)
-    }
-
-    /**
-     * Map item type to view binder responsible for rending items of this type.
-     *
-     * @param itemType type of the Item
-     *
-     * @param itemViewBinder renderer for the items of a given type wrapped into a container with
-     * *                       an isSelected flag
-     */
-    fun registerItemViewBinder(itemType: Enum<*>,
-                               itemViewBinder: ItemViewBinder<out View, SelectableItem<ItemType>>) {
-        itemList.registerItemViewBinder(itemType,
-                ClickableItemViewBinder(itemViewBinder, collectionManager))
-    }
-
-    /**
-     * Set the renderer to be employed when the list contains no items.
-     *
-     * @param emptyViewBinder renderer for the empty list
-     */
-    fun setEmptyViewBinder(emptyViewBinder: EmptyViewBinder) {
-        itemList.setEmptyViewBinder(emptyViewBinder)
-    }
-
-    /**
-     * A set of items selected ATM
-     */
-    var selectedItems: Set<ItemType>
-        get() = collectionManager.getSelectedItems()
-        set(selectedItems) {
-            collectionManager.setSelectedItems(selectedItems)
-        }
-
-    /**
-     * Configure a listener for the cases when the item collection within the view is updated. I.e.
-     * if selection status or payload value gets changed.
-     *
-     * @param stateChangeListener callable to invoked whenever the changes occur
-     */
-    fun setSelectionChangeListener(stateChangeListener: Runnable) {
-        this.selectionChangeListener = stateChangeListener
-    }
 
     override fun onSaveInstanceState(): Parcelable {
         val bundle = Bundle()
