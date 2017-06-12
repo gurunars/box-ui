@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.os.Parcelable
 import android.view.View
 import android.widget.FrameLayout
+import com.gurunars.databinding.bindableField
+import com.gurunars.shortcuts.fullSize
 import org.jetbrains.anko.matchParent
 import java.util.*
 
@@ -17,30 +19,38 @@ import java.util.*
  */
 class SelectableItemList<ItemType : Item> constructor(context: Context) : FrameLayout(context) {
 
-    private val itemList: ItemList<SelectableItem<ItemType>> = itemList {
-        id=R.id.itemList
-        layoutParams=LayoutParams(matchParent, matchParent)
-    }
+    val selectedItems = bindableField<Set<ItemType>>(hashSetOf())
+    val items = bindableField<List<ItemType>>(listOf())
 
     init {
+        itemList<ItemType> {
+            id = R.id.itemList
+            fullSize()
+            defaultViewBinder.set(ClickableItemViewBinder(
+                    SelectableItemViewBinderString<ItemType>(), selectedItems
+            ))
 
-        itemList.setDefaultViewBinder(ClickableItemViewBinder(
-                SelectableItemViewBinderString<ItemType>(), collectionManager
-        ))
+            items.onChange {
+                items.set()
+            }
 
+            selectedItems.onChange {
+                items.set()
+            }
+
+        }
     }
-
 
     override fun onSaveInstanceState(): Parcelable {
         val bundle = Bundle()
         bundle.putParcelable("superState", super.onSaveInstanceState())
-        bundle.putSerializable("selectedItems", HashSet(collectionManager.getSelectedItems()))
+        bundle.putSerializable("selectedItems", HashSet(selectedItems.get()))
         return bundle
     }
 
     override fun onRestoreInstanceState(state: Parcelable) {
         val localState = state as Bundle
         super.onRestoreInstanceState(localState.getParcelable<Parcelable>("superState"))
-        selectedItems = localState.getSerializable("selectedItems") as HashSet<ItemType>
+        selectedItems.set(localState.getSerializable("selectedItems") as HashSet<ItemType>)
     }
 }
