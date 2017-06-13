@@ -3,7 +3,8 @@ package com.gurunars.databinding
 
 class BindableField<Type>(
         private var value: Type,
-        private val equal: (one: Type, two: Type) -> Boolean = ::equal
+        private val equal: (one: Type, two: Type) -> Boolean = ::equal,
+        private val preset: (one: Type) -> Type = { item -> item }
 ) : Disposable {
 
     interface ValueProcessor<From, To> {
@@ -33,7 +34,7 @@ class BindableField<Type>(
 
     fun set(value: Type, force:Boolean=false) {
         if (force || ! equal(this.value, value)) {
-            this.value = value
+            this.value = preset(value)
             listeners.forEach { it(value) }
         }
     }

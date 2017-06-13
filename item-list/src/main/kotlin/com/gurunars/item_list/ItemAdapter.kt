@@ -4,10 +4,7 @@ import android.support.v7.util.DiffUtil
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
-import com.esotericsoftware.kryo.Kryo
 import com.gurunars.databinding.BindableField
-import com.gurunars.shortcuts.l
-import org.objenesis.strategy.StdInstantiatorStrategy
 
 internal class ItemAdapter<ItemType : Item>(
         private val items: BindableField<List<ItemType>>,
@@ -15,10 +12,6 @@ internal class ItemAdapter<ItemType : Item>(
         private val itemViewBinders: BindableField<Map<Enum<*>, ItemViewBinder<*, ItemType>>>,
         private val defaultViewBinder: BindableField<ItemViewBinder<*, ItemType>>
 ) : RecyclerView.Adapter<BindableViewHolder<out View, ItemType>>() {
-    private val kryo = Kryo().apply {
-        instantiatorStrategy = Kryo.DefaultInstantiatorStrategy(StdInstantiatorStrategy())
-    }
-
     private var previousList: List<ItemType> = ArrayList()
 
     private class ItemCallback<out ItemType: Item>(
@@ -39,9 +32,8 @@ internal class ItemAdapter<ItemType : Item>(
 
     init {
         items.onChange {
-            l("CHANGE")
             DiffUtil.calculateDiff(ItemCallback(previousList, it)).dispatchUpdatesTo(this)
-            previousList = kryo.copy(ArrayList(it))
+            previousList = it
         }
     }
 
