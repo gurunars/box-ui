@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
 import com.gurunars.databinding.BindableField
+import com.gurunars.shortcuts.l
 
 internal class ItemAdapter<ItemType : Item>(
         private val items: BindableField<List<ItemType>>,
