@@ -78,8 +78,11 @@ class ActivityMain : Activity() {
             itemList=itemList<AnimalItem> {
                 fullSize()
                 id=R.id.itemList
-                AnimalItem.Type.values().forEach { registerItemViewBinder(it, AnimalBinder()) }
-                setEmptyViewBinder(EmptyBinder())
+
+                itemViewBinders.set(mutableMapOf<Enum<*>, ItemViewBinder<*, AnimalItem>>().apply {
+                    AnimalItem.Type.values().forEach { put(it, AnimalBinder()) }
+                })
+                emptyViewBinder.set(EmptyBinder())
             }
         }
 
@@ -112,7 +115,7 @@ class ActivityMain : Activity() {
 
     @StringRes private fun clear(): Int {
         items.clear()
-        itemList.setItems(items)
+        itemList.items.set(items)
         return R.string.did_clear
     }
 
@@ -121,7 +124,7 @@ class ActivityMain : Activity() {
         add(AnimalItem.Type.WOLF)
         add(AnimalItem.Type.MONKEY)
         add(AnimalItem.Type.LION)
-        itemList.setItems(items)
+        itemList.items.set(items)
         return R.string.did_create
     }
 
@@ -131,7 +134,7 @@ class ActivityMain : Activity() {
                 items.removeAt(i)
             }
         }
-        itemList.setItems(items)
+        itemList.items.set(items)
         return R.string.did_delete
     }
 
@@ -141,7 +144,7 @@ class ActivityMain : Activity() {
                 items[i].update()
             }
         }
-        itemList.setItems(items)
+        itemList.items.set(items)
         return R.string.did_update
     }
 
@@ -149,7 +152,7 @@ class ActivityMain : Activity() {
         if (items.size <= 0) {
             return R.string.no_action
         }
-        itemList.setItems(items.apply {
+        itemList.items.set(items.apply {
             val item = get(size - 1)
             removeAt(size - 1)
             add(0, item)
@@ -161,7 +164,7 @@ class ActivityMain : Activity() {
         if (items.size <= 0) {
             return R.string.no_action
         }
-        itemList.setItems(items.apply {
+        itemList.items.set(items.apply {
             val item = get(0)
             removeAt(0)
             add(0, item)

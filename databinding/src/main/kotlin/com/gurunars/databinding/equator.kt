@@ -1,7 +1,7 @@
 package com.gurunars.databinding
 
 private fun <Type: Collection<*>> collectionsEqual(one: Type, two: Type) =
-        one == two && one.size == two.size && one.zip(two).all { one == two }
+        one == two && one.size == two.size && one.zip(two).all { (item1, item2) -> item1 == item2 }
 
 private fun <Type: Map<*, *>> mapsEqual(one: Type, two: Type) =
         collectionsEqual(one.entries.map { it.toPair() }, two.entries.map { it.toPair() })

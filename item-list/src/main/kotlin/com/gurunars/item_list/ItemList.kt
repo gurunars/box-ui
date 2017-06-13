@@ -11,7 +11,7 @@ import org.jetbrains.anko.recyclerview.v7.recyclerView
 
 class ItemList<ItemType : Item> constructor(context: Context) : FrameLayout(context) {
 
-    val items = bindableField(listOf<ItemType>())
+    val items = bindableField(listOf<ItemType>(), {one, two -> equal(one, two) })
     val emptyViewBinder = bindableField<EmptyViewBinder>(ItemViewBinderEmpty())
     val itemViewBinders = bindableField<Map<Enum<*>, ItemViewBinder<*, ItemType>>>(mapOf())
     val defaultViewBinder = bindableField<ItemViewBinder<*, ItemType>>(ItemViewBinderString())

@@ -2,7 +2,8 @@ package com.gurunars.databinding
 
 
 class BindableField<Type>(
-        private var value: Type
+        private var value: Type,
+        private val equal: (one: Type, two: Type) -> Boolean = ::equal
 ) : Disposable {
 
     interface ValueProcessor<From, To> {

@@ -3,11 +3,9 @@ package com.gurunars.item_list
 import android.content.Context
 import android.os.Bundle
 import android.os.Parcelable
-import android.view.View
 import android.widget.FrameLayout
 import com.gurunars.databinding.bindableField
 import com.gurunars.shortcuts.fullSize
-import org.jetbrains.anko.matchParent
 import java.util.*
 
 /**
@@ -19,27 +17,32 @@ import java.util.*
  */
 class SelectableItemList<ItemType : Item> constructor(context: Context) : FrameLayout(context) {
 
-    val selectedItems = bindableField<Set<ItemType>>(hashSetOf())
-    val items = bindableField<List<ItemType>>(listOf())
+    val selectedItems = bindableField<Set<ItemType>>(hashSetOf(), {one, two -> equal(one, two) })
+    val items = bindableField<List<ItemType>>(listOf(), {one, two -> equal(one, two) })
 
-    init {
-        itemList<ItemType> {
-            id = R.id.itemList
-            fullSize()
-            defaultViewBinder.set(ClickableItemViewBinder(
-                    SelectableItemViewBinderString<ItemType>(), selectedItems
-            ))
+    val itemList = itemList<SelectableItem<ItemType>> {
+        id = R.id.itemList
+        fullSize()
+        defaultViewBinder.set(ClickableItemViewBinder(
+                SelectableItemViewBinderString<ItemType>(), selectedItems
+        ))
 
-            items.onChange {
-                items.set()
-            }
-
-            selectedItems.onChange {
-                items.set()
-            }
-
+        fun isSelected(item: ItemType) : Boolean{
+            return selectedItems.get().find { item.getId() == it.getId() } != null
         }
+
+        fun updateItemList() {
+            this@SelectableItemList.items.get().map { SelectableItem(it, isSelected(it)) }
+        }
+
+        this@SelectableItemList.items.onChange { updateItemList() }
+        this@SelectableItemList.selectedItems.onChange { updateItemList() }
+
     }
+
+    val emptyViewBinder = itemList.emptyViewBinder
+    val itemViewBinders = itemList.itemViewBinders
+    val defaultViewBinder = itemList.defaultViewBinder
 
     override fun onSaveInstanceState(): Parcelable {
         val bundle = Bundle()
