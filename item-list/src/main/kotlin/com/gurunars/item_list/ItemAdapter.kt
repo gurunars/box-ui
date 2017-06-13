@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.esotericsoftware.kryo.Kryo
 import com.gurunars.databinding.BindableField
+import com.gurunars.shortcuts.l
 import org.objenesis.strategy.StdInstantiatorStrategy
 
 internal class ItemAdapter<ItemType : Item>(
@@ -38,6 +39,7 @@ internal class ItemAdapter<ItemType : Item>(
 
     init {
         items.onChange {
+            l("CHANGE")
             DiffUtil.calculateDiff(ItemCallback(previousList, it)).dispatchUpdatesTo(this)
             previousList = kryo.copy(ArrayList(it))
         }
