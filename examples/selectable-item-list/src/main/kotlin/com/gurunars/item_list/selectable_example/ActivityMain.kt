@@ -11,8 +11,10 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
+import com.gurunars.databinding.contains
 import com.gurunars.item_list.*
 import com.gurunars.shortcuts.fullSize
+import com.gurunars.shortcuts.setPadding
 import org.jetbrains.anko.dip
 import org.jetbrains.anko.frameLayout
 import java.util.*
@@ -23,14 +25,13 @@ class ActivityMain : Activity() {
     internal class AnimalBinder : ItemViewBinder<TextView, SelectableItem<AnimalItem>> {
 
         override fun getView(context: Context): TextView {
-            val text = TextView(context)
-            val padding = context.dip(5)
-            text.setPadding(padding, padding, padding, padding)
-            return text
+            return TextView(context).apply {
+                setPadding(context.dip(5))
+            }
         }
 
         override fun bind(itemView: TextView, item: SelectableItem<AnimalItem>, previousItem: SelectableItem<AnimalItem>?) {
-            itemView.text = "${item}"
+            itemView.text = "$item"
             itemView.setBackgroundColor(if (item.isSelected) Color.RED else Color.WHITE)
         }
 
@@ -64,8 +65,10 @@ class ActivityMain : Activity() {
             itemList=selectableItemList<AnimalItem> {
                 fullSize()
                 id=R.id.selectableItemList
-                AnimalItem.Type.values().forEach { registerItemViewBinder(it, AnimalBinder()) }
-                setEmptyViewBinder(EmptyBinder())
+                itemViewBinders.set(mutableMapOf<Enum<*>, ItemViewBinder<*, SelectableItem<AnimalItem>>>().apply {
+                    AnimalItem.Type.values().forEach { put(it, AnimalBinder()) }
+                })
+                emptyViewBinder.set(EmptyBinder())
             }
         }
 
@@ -90,7 +93,7 @@ class ActivityMain : Activity() {
     }
 
     private fun updateSelected(): Int {
-        for (item in itemList.selectedItems) {
+        for (item in itemList.selectedItems.get()) {
             item.update()
             for (i in items.indices) {
                 if (item.getId() == items[i].getId()) {
@@ -99,13 +102,14 @@ class ActivityMain : Activity() {
                 }
             }
         }
-        itemList.setItems(items)
+        itemList.items.set(items)
         return R.string.did_update_selected
     }
 
     private fun deleteSelected(): Int {
-        items.retainAll(items.filter { item -> itemList.selectedItems.indexOfFirst { item.getId() == it.getId() } == -1 })
-        itemList.setItems(items)
+        fun equal(one: AnimalItem, two: AnimalItem) = one.getId() == two.getId()
+        items.removeIf { itemList.selectedItems.get().contains(it, ::equal) }
+        itemList.items.set(items)
         return R.string.did_delete_selected
     }
 
@@ -115,7 +119,7 @@ class ActivityMain : Activity() {
     }
 
     @StringRes private fun clearSelection(): Int {
-        itemList.selectedItems = HashSet<AnimalItem>()
+        itemList.selectedItems.set(HashSet<AnimalItem>())
         return R.string.did_clear_selection
     }
 
@@ -124,7 +128,7 @@ class ActivityMain : Activity() {
         add(AnimalItem.Type.WOLF)
         add(AnimalItem.Type.MONKEY)
         add(AnimalItem.Type.LION)
-        itemList.setItems(items)
+        itemList.items.set(items)
         return R.string.did_create
     }
 
