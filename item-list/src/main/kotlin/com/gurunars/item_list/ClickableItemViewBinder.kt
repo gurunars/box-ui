@@ -3,7 +3,6 @@ package com.gurunars.item_list
 import android.content.Context
 import android.view.View
 import com.gurunars.databinding.BindableField
-import com.gurunars.shortcuts.l
 
 
 internal class ClickableItemViewBinder<ViewType : View, ItemType : Item>(
@@ -19,7 +18,6 @@ internal class ClickableItemViewBinder<ViewType : View, ItemType : Item>(
         itemView.apply {
             isClickable=true
             setOnClickListener {
-                l("CLICK")
                 val sel = selectedItems.get()
                 if (sel.isEmpty()) {
                     return@setOnClickListener
@@ -31,7 +29,6 @@ internal class ClickableItemViewBinder<ViewType : View, ItemType : Item>(
                 }
             }
             setOnLongClickListener {
-                l("LONG CLICK")
                 val sel = selectedItems.get()
                 if (sel.isEmpty()) selectedItems.set(sel + item.item)
                 true
