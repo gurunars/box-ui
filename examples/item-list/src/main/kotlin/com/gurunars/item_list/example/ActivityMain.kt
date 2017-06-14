@@ -167,7 +167,7 @@ class ActivityMain : Activity() {
         itemList.items.set(items.apply {
             val item = get(0)
             removeAt(0)
-            add(0, item)
+            add(item)
         })
         return R.string.did_move_to_bottom
     }

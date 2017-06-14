@@ -20,14 +20,16 @@ internal class ItemAdapter<ItemType : Item>(
             val previousList: List<ItemType>,
             val currentList: List<ItemType>): DiffUtil.Callback() {
 
-        override fun getOldListSize() = previousList.size
+        override fun getOldListSize() = Math.max(1, previousList.size)
 
-        override fun getNewListSize() = currentList.size
+        override fun getNewListSize() = Math.max(1, currentList.size)
 
         override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
+            currentList.isNotEmpty() && previousList.isNotEmpty() &&
             previousList[oldItemPosition].payloadsEqual(currentList.get(newItemPosition))
 
         override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
+            currentList.isNotEmpty() && previousList.isNotEmpty() &&
             previousList[oldItemPosition].getId() == currentList.get(newItemPosition).getId()
 
     }
