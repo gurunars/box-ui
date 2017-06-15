@@ -7,10 +7,12 @@ import android.support.v4.content.ContextCompat
 import android.view.View
 import android.view.ViewGroup
 import android.widget.RelativeLayout
+import com.gurunars.android_utils.IconView
 import com.gurunars.databinding.bindableField
 import com.gurunars.floatmenu.FloatMenu
 import com.gurunars.item_list.Item
 import com.gurunars.item_list.SelectableItemList
+import com.gurunars.shortcuts.fullSize
 import java.util.*
 
 /**
@@ -29,14 +31,13 @@ class CrudItemList<ItemType : Item>  constructor(context: Context) : RelativeLay
     val openIcon = bindableField(IconColorBundle())
 
     private val contextualMenu: ContextualMenu
-    private var creationMenu: View? = null
+    private var creationMenu = View(context)
 
     private val throttleBuffer = UiThrottleBuffer()
 
     private val floatingMenu: FloatMenu
     private val itemList: SelectableItemList<ItemType>
 
-    private var listChangeListener: (list: List<ItemType>) -> Unit = {}
     private var itemEditListener: (item: ItemType) -> Unit = {}
 
     private var items: List<ItemType> = ArrayList()
@@ -51,23 +52,21 @@ class CrudItemList<ItemType : Item>  constructor(context: Context) : RelativeLay
         }
     }
 
-    private fun confView(view: View, @IdRes id: Int) {
-        view.layoutParams = ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT)
-        view.id = id
-    }
-
     init {
 
-        floatingMenu = FloatMenu(context)
-        confView(floatingMenu, R.id.floatingMenu)
+        floatingMenu = FloatMenu(context).apply {
+            fullSize()
+            id = R.id.floatingMenu
+        }
+        itemList = SelectableItemList<ItemType>(context).apply {
+            fullSize()
+            id = R.id.rawItemList
+        }
 
-        itemList = SelectableItemList<ItemType>(context)
-        confView(itemList, R.id.rawItemList)
-
-        contextualMenu = ContextualMenu(context)
-        confView(contextualMenu, R.id.contextualMenu)
+        contextualMenu = ContextualMenu(context).apply {
+            fullSize()
+            id = R.id.contextualMenu
+        }
 
         setCreationMenu(View(context))
 
@@ -142,57 +141,29 @@ class CrudItemList<ItemType : Item>  constructor(context: Context) : RelativeLay
 
     private fun setUpContextualMenu() {
         floatingMenu.menuView.set(contextualMenu)
-        floatingMenu.setCloseIconFgColor(contextualCloseFgColor)
-        floatingMenu.setCloseIconBgColor(contextualCloseBgColor)
-        floatingMenu.setCloseIcon(R.drawable.ic_check)
+        floatingMenu.closeIcon.set(IconView.Icon(
+            icon = R.drawable.ic_check,
+            bgColor = contextualIcon.get().bgColor,
+            fgColor = contextualIcon.get().fgColor
+        ))
         floatingMenu.hasOverlay.set(false)
         setUpActions()
-        floatingMenu.open()
+        floatingMenu.isOpen.set(true)
     }
 
     private fun setUpCreationMenu() {
-        floatingMenu.setMenuView(creationMenu)
-        floatingMenu.setCloseIconFgColor(createCloseFgColor)
-        floatingMenu.setCloseIconBgColor(createCloseBgColor)
-        floatingMenu.setCloseIcon(R.drawable.ic_menu_close)
+        floatingMenu.menuView.set(creationMenu)
+        floatingMenu.closeIcon.set(IconView.Icon(
+            icon = R.drawable.ic_menu_close,
+            bgColor = createCloseIcon.get().bgColor,
+            fgColor = createCloseIcon.get().fgColor
+        ))
         floatingMenu.hasOverlay.set(true)
     }
 
     override fun onDetachedFromWindow() {
         throttleBuffer.shutdown()
         super.onDetachedFromWindow()
-    }
-
-    /**
-     * Map item type to view binder responsible for rending items of this type.
-
-     * @param itemType type of the Items
-     * *
-     * @param itemViewBinder row renderer for the items of a given type
-     */
-    fun registerItemType(
-            itemType: Enum<*>,
-            itemViewBinder: ItemViewBinder<out View, SelectableItem<ItemType>>) {
-        itemList.registerItemViewBinder(itemType, itemViewBinder)
-    }
-
-
-    /**
-     * @param listChangeListener callback to be executed whenever the list gets changed within
-     * *                           the widget
-     */
-    fun setListChangeListener(listChangeListener: ListChangeListener<ItemType>) {
-        this.listChangeListener = listChangeListener
-    }
-
-    /**
-     * @param creationMenu menu to be show when creation mode is active (no items selected) and the
-     * *                     menu is open
-     */
-    fun setCreationMenu(creationMenu: View) {
-        this.creationMenu = creationMenu
-        confView(creationMenu, R.id.creationMenu)
-        reload()
     }
 
     /**
