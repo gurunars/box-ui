@@ -2,51 +2,45 @@ package com.gurunars.crud_item_list
 
 
 import android.content.Context
-import android.os.Parcelable
-import android.support.annotation.IdRes
-import android.util.AttributeSet
 import android.widget.FrameLayout
-import android.widget.RelativeLayout
+import android.widget.RelativeLayout.*
+import com.gurunars.android_utils.iconView
+import com.gurunars.databinding.bindableField
+import com.gurunars.shortcuts.fullSize
+import org.jetbrains.anko.relativeLayout
 
-import com.gurunars.android_utils.CircularIconButton
 
-import java.util.Arrays
+internal class ContextualMenu constructor(context: Context) : FrameLayout(context) {
 
-import icepick.Icepick
-import icepick.State
-
-import android.widget.RelativeLayout.ALIGN_PARENT_LEFT
-import android.widget.RelativeLayout.ALIGN_PARENT_RIGHT
-import android.widget.RelativeLayout.LEFT_OF
-import android.widget.RelativeLayout.RIGHT_OF
-
-internal class ContextualMenu @JvmOverloads constructor(context: Context, attrs: AttributeSet = null, defStyleAttr: Int = 0) : FrameLayout(context, attrs, defStyleAttr) {
-
-    private val buttons: List<CircularIconButton>
-
-    @State var iconBgColor: Int = 0
-    @State var iconFgColor: Int = 0
-    @State var leftHanded = false
-    @State var sortable = true
+    val isLeftHanded = bindableField(false)
+    val isSortable = bindableField(true)
 
     init {
-        View.inflate(context, R.layout.contextual_menu, this)
-        buttons = Arrays.asList<CircularIconButton>(
-                getButton(R.id.delete),
-                getButton(R.id.edit),
-                getButton(R.id.selectAll),
-                getButton(R.id.moveDown),
-                getButton(R.id.moveUp)
-        )
-    }
+        relativeLayout {
+            fullSize()
+            R.id.menuContainer
 
-    private fun getParams(@IdRes id: Int): RelativeLayout.LayoutParams {
-        val params = findViewById(id).layoutParams as RelativeLayout.LayoutParams
-        params.removeRule(ALIGN_PARENT_RIGHT)
-        params.removeRule(ALIGN_PARENT_LEFT)
-        params.removeRule(LEFT_OF)
-        params.removeRule(RIGHT_OF)
-        return params
+            iconView {
+                id=R.id.moveUp
+            }
+
+            iconView {
+                id=R.id.moveDown
+            }
+
+            iconView {
+                id=R.id.delete
+            }
+
+            iconView {
+                id=R.id.edit
+            }
+
+            iconView {
+                id=R.id.selectAll
+            }
+
+        }
     }
 
     fun setLeftHanded(leftHanded: Boolean) {
@@ -78,36 +72,6 @@ internal class ContextualMenu @JvmOverloads constructor(context: Context, attrs:
         this.sortable = sortable
         findViewById(R.id.moveUp).visibility = if (sortable) View.VISIBLE else View.GONE
         findViewById(R.id.moveDown).visibility = if (sortable) View.VISIBLE else View.GONE
-    }
-
-    fun setIconFgColor(iconFgColor: Int) {
-        this.iconFgColor = iconFgColor
-        for (button in buttons) {
-            button.setForegroundColor(iconFgColor)
-        }
-    }
-
-    fun setIconBgColor(iconBgColor: Int) {
-        this.iconBgColor = iconBgColor
-        for (button in buttons) {
-            button.setBackgroundColor(iconBgColor)
-        }
-    }
-
-    private fun getButton(id: Int): CircularIconButton {
-        return findViewById(id) as CircularIconButton
-    }
-
-    public override fun onSaveInstanceState(): Parcelable {
-        return Icepick.saveInstanceState(this, super.onSaveInstanceState())
-    }
-
-    public override fun onRestoreInstanceState(state: Parcelable) {
-        super.onRestoreInstanceState(Icepick.restoreInstanceState(this, state))
-        setIconBgColor(iconBgColor)
-        setIconFgColor(iconFgColor)
-        setSortable(sortable)
-        setLeftHanded(leftHanded)
     }
 
 }

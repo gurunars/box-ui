@@ -29,6 +29,7 @@ class CrudItemList<ItemType : Item>  constructor(context: Context) : RelativeLay
     val contextualIcon = bindableField(IconColorBundle())
     val createCloseIcon = bindableField(IconColorBundle())
     val openIcon = bindableField(IconColorBundle())
+    val isLeftHanded = bindableField(false)
 
     private val contextualMenu: ContextualMenu
     private var creationMenu = View(context)
@@ -66,6 +67,7 @@ class CrudItemList<ItemType : Item>  constructor(context: Context) : RelativeLay
         contextualMenu = ContextualMenu(context).apply {
             fullSize()
             id = R.id.contextualMenu
+            setLeftHanded()
         }
 
         setCreationMenu(View(context))
