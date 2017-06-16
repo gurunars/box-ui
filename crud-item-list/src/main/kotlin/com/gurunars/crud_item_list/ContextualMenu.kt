@@ -2,12 +2,14 @@ package com.gurunars.crud_item_list
 
 
 import android.content.Context
+import android.view.View
 import android.widget.FrameLayout
-import android.widget.RelativeLayout.*
+import android.widget.RelativeLayout
+import com.gurunars.android_utils.IconView
 import com.gurunars.android_utils.iconView
 import com.gurunars.databinding.bindableField
 import com.gurunars.shortcuts.fullSize
-import org.jetbrains.anko.relativeLayout
+import org.jetbrains.anko.*
 
 
 internal class ContextualMenu constructor(context: Context) : FrameLayout(context) {
@@ -16,62 +18,113 @@ internal class ContextualMenu constructor(context: Context) : FrameLayout(contex
     val isSortable = bindableField(true)
 
     init {
+
+        isLeftHanded.onChange {
+            contentDescription = if (it) "LEFT HANDED" else "RIGHT HANDED"
+        }
+
         relativeLayout {
             fullSize()
             R.id.menuContainer
 
             iconView {
                 id=R.id.moveUp
+            }.lparams {
+                isLeftHanded.onChange {
+                    if (it) {
+                        alignParentLeft()
+                    } else {
+                        alignParentRight()
+                    }
+                }
+                isSortable.onChange {
+                    visibility = if (it) View.VISIBLE else View.GONE
+                }
+                above(R.id.moveDown)
+                bottomMargin=dip(5)
+                leftMargin=dip(23)
+                rightMargin=dip(23)
             }
 
             iconView {
                 id=R.id.moveDown
+            }.lparams {
+                alignParentBottom()
+                isLeftHanded.onChange {
+                    if (it) {
+                        alignParentLeft()
+                    } else {
+                        alignParentRight()
+                    }
+                }
+                isSortable.onChange {
+                    visibility = if (it) View.VISIBLE else View.GONE
+                }
+                bottomMargin=dip(85)
+                leftMargin=dip(23)
+                rightMargin=dip(23)
             }
 
             iconView {
                 id=R.id.delete
+            }.lparams {
+                alignParentBottom()
+                isLeftHanded.onChange {
+                    if (it) {
+                        rightOf(R.id.selectAll)
+                    } else {
+                        leftOf(R.id.selectAll)
+                    }
+                }
+                bottomMargin=dip(23)
+                leftMargin=dip(5)
+                rightMargin=dip(5)
+            }
+
+
+            iconView {
+                id=R.id.selectAll
+            }.lparams {
+                alignParentBottom()
+                isLeftHanded.onChange {
+                    if (it) {
+                        rightOf(R.id.edit)
+                    } else {
+                        leftOf(R.id.edit)
+                    }
+                }
+                bottomMargin=dip(23)
+                leftMargin=dip(5)
+                rightMargin=dip(5)
             }
 
             iconView {
                 id=R.id.edit
+            }.lparams {
+                alignParentBottom()
+                isLeftHanded.onChange {
+                    if (it) {
+                        alignParentLeft()
+                        leftMargin=dip(85)
+                        rightMargin=dip(5)
+                    } else {
+                        alignParentRight()
+                        leftMargin=dip(5)
+                        rightMargin=dip(85)
+                    }
+                }
+                bottomMargin=dip(23)
             }
 
-            iconView {
-                id=R.id.selectAll
+        }.applyRecursively { when(it) {
+            is IconView -> {
+                (it.layoutParams as RelativeLayout.LayoutParams).apply {
+                    topMargin=dip(5)
+                    width=dip(45)
+                    height=dip(45)
+                }
             }
-
-        }
-    }
-
-    fun setLeftHanded(leftHanded: Boolean) {
-        this.leftHanded = leftHanded
-        val moveUpParams = getParams(R.id.moveUp)
-        val moveDownParams = getParams(R.id.moveDown)
-        val editParams = getParams(R.id.edit)
-        val deleteParams = getParams(R.id.delete)
-        val selectAllParams = getParams(R.id.selectAll)
-
-        moveUpParams.addRule(if (leftHanded) ALIGN_PARENT_LEFT else ALIGN_PARENT_RIGHT)
-        moveDownParams.addRule(if (leftHanded) ALIGN_PARENT_LEFT else ALIGN_PARENT_RIGHT)
-
-        editParams.addRule(if (leftHanded) ALIGN_PARENT_LEFT else ALIGN_PARENT_RIGHT)
-        editParams.leftMargin = resources.getDimensionPixelSize(
-                if (leftHanded) R.dimen.largeMargin else R.dimen.smallMargin)
-        editParams.rightMargin = resources.getDimensionPixelSize(
-                if (leftHanded) R.dimen.smallMargin else R.dimen.largeMargin)
-
-        selectAllParams.addRule(if (leftHanded) RIGHT_OF else LEFT_OF, R.id.edit)
-        deleteParams.addRule(if (leftHanded) RIGHT_OF else LEFT_OF, R.id.selectAll)
-
-        contentDescription = if (leftHanded) "LEFT HANDED" else "RIGHT HANDED"
-
-        findViewById(R.id.menuContainer).requestLayout()
-    }
-
-    fun setSortable(sortable: Boolean) {
-        this.sortable = sortable
-        findViewById(R.id.moveUp).visibility = if (sortable) View.VISIBLE else View.GONE
-        findViewById(R.id.moveDown).visibility = if (sortable) View.VISIBLE else View.GONE
+        } }
     }
 
 }

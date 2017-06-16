@@ -2,10 +2,8 @@ package com.gurunars.crud_item_list
 
 import android.content.Context
 import android.graphics.Color
-import android.support.annotation.IdRes
-import android.support.v4.content.ContextCompat
 import android.view.View
-import android.view.ViewGroup
+import android.widget.FrameLayout
 import android.widget.RelativeLayout
 import com.gurunars.android_utils.IconView
 import com.gurunars.databinding.bindableField
@@ -18,7 +16,7 @@ import java.util.*
 /**
  * Widget to be used for manipulating a collection of items.
  */
-class CrudItemList<ItemType : Item>  constructor(context: Context) : RelativeLayout(context) {
+class CrudItemList<ItemType : Item>  constructor(context: Context) : FrameLayout(context) {
 
     data class IconColorBundle(
         val bgColor: Int = Color.RED,
@@ -30,18 +28,16 @@ class CrudItemList<ItemType : Item>  constructor(context: Context) : RelativeLay
     val createCloseIcon = bindableField(IconColorBundle())
     val openIcon = bindableField(IconColorBundle())
     val isLeftHanded = bindableField(false)
+    val items = bindableField(listOf<ItemType>())
+    val creationMenu = bindableField(View(context))
 
     private val contextualMenu: ContextualMenu
-    private var creationMenu = View(context)
-
-    private val throttleBuffer = UiThrottleBuffer()
-
     private val floatingMenu: FloatMenu
     private val itemList: SelectableItemList<ItemType>
 
     private var itemEditListener: (item: ItemType) -> Unit = {}
 
-    private var items: List<ItemType> = ArrayList()
+    private val throttleBuffer = UiThrottleBuffer()
 
     private val actions = object : HashMap<Int, Action<ItemType>>() {
         init {
@@ -67,26 +63,13 @@ class CrudItemList<ItemType : Item>  constructor(context: Context) : RelativeLay
         contextualMenu = ContextualMenu(context).apply {
             fullSize()
             id = R.id.contextualMenu
-            setLeftHanded()
+            this@CrudItemList.isLeftHanded.bind(isLeftHanded)
         }
-
-        setCreationMenu(View(context))
 
         floatingMenu.contentView.set(itemList)
         floatingMenu.menuView.set(contextualMenu)
-        floatingMenu.setOpenIcon(R.drawable.ic_plus)
 
         addView(floatingMenu)
-
-        setLeftHanded(false)
-
-        itemList.setSelectionChangeListener(Runnable {
-            if (itemList.selectedItems.isEmpty()) {
-                floatingMenu.close()
-            } else {
-                setUpContextualMenu()
-            }
-        })
 
         floatingMenu.isOpen.onChange {
             if (it) {
@@ -95,17 +78,6 @@ class CrudItemList<ItemType : Item>  constructor(context: Context) : RelativeLay
 
             }
         }
-
-
-        (object : AnimationListener() {
-            fun onStart(projectedDuration: Int) {
-                itemList.selectedItems = HashSet<ItemType>()
-            }
-
-            fun onFinish() {
-                setUpCreationMenu()
-            }
-        })
 
         for ((key, action) in actions) {
             contextualMenu.findViewById(key).setOnClickListener(View.OnClickListener {
@@ -126,18 +98,10 @@ class CrudItemList<ItemType : Item>  constructor(context: Context) : RelativeLay
     }
 
     private fun reload() {
-        floatingMenu.setOpenIconBgColor(openBgColor)
-        floatingMenu.setOpenIconFgColor(openFgColor)
-        if (itemList.selectedItems.isEmpty()) {
+        if (itemList.selectedItems.get().isEmpty()) {
             setUpCreationMenu()
         } else {
             setUpContextualMenu()
-        }
-    }
-
-    private fun setUpActions() {
-        for ((key, value) in actions) {
-            contextualMenu.findViewById(key).isEnabled = value.canPerform(items, itemList.selectedItems)
         }
     }
 
@@ -149,12 +113,10 @@ class CrudItemList<ItemType : Item>  constructor(context: Context) : RelativeLay
             fgColor = contextualIcon.get().fgColor
         ))
         floatingMenu.hasOverlay.set(false)
-        setUpActions()
-        floatingMenu.isOpen.set(true)
     }
 
     private fun setUpCreationMenu() {
-        floatingMenu.menuView.set(creationMenu)
+        floatingMenu.menuView.set(creationMenu.get())
         floatingMenu.closeIcon.set(IconView.Icon(
             icon = R.drawable.ic_menu_close,
             bgColor = createCloseIcon.get().bgColor,
@@ -167,13 +129,4 @@ class CrudItemList<ItemType : Item>  constructor(context: Context) : RelativeLay
         throttleBuffer.shutdown()
         super.onDetachedFromWindow()
     }
-
-    /**
-     * @param itemEditListener a listener for the cases when a new item has to be created or when
-     * *                         the existing one has to be edited
-     */
-    fun setItemEditListener(itemEditListener: ItemEditListener<ItemType>) {
-        this.itemEditListener = itemEditListener
-    }
-
 }
