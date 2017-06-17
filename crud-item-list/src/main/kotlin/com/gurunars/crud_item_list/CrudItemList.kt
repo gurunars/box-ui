@@ -5,7 +5,7 @@ import android.graphics.Color
 import android.view.View
 import android.widget.FrameLayout
 import com.gurunars.android_utils.IconView
-import com.gurunars.android_utils.IconView.Icon
+import com.gurunars.databinding.BindableField
 import com.gurunars.databinding.bindableField
 import com.gurunars.floatmenu.FloatMenu
 import com.gurunars.floatmenu.floatMenu
@@ -28,10 +28,11 @@ class CrudItemList<ItemType : Item>  constructor(context: Context) : FrameLayout
     val createCloseIcon = bindableField(IconColorBundle())
     val openIcon = bindableField(IconColorBundle())
     val isLeftHanded = bindableField(false)
-    val items = bindableField(listOf<ItemType>())
     val creationMenu = bindableField(View(context))
     val isSortable = bindableField(true)
     val itemEditListener = bindableField<(item: ItemType) -> Unit>({})
+
+    val items: BindableField<List<ItemType>>
 
     private val contextualMenu: ContextualMenu<ItemType>
     private val floatingMenu: FloatMenu
@@ -44,12 +45,15 @@ class CrudItemList<ItemType : Item>  constructor(context: Context) : FrameLayout
             id = R.id.rawItemList
         }
 
-        contextualMenu = ContextualMenu<ItemType>(context,
-                isLeftHanded,
-                isSortable,
-                items,
-                itemList.selectedItems,
-                itemEditListener
+        items = itemList.items
+
+        contextualMenu = ContextualMenu(context,
+            actionIcon,
+            isLeftHanded,
+            isSortable,
+            itemList.items,
+            itemList.selectedItems,
+            itemEditListener
         ).apply {
             fullSize()
             id = R.id.contextualMenu
@@ -59,6 +63,7 @@ class CrudItemList<ItemType : Item>  constructor(context: Context) : FrameLayout
             fullSize()
             id = R.id.floatingMenu
             contentView.set(itemList)
+            this@CrudItemList.isLeftHanded.bind(isLeftHanded)
 
             fun configureCloseIcon() {
                 if (itemList.selectedItems.get().isEmpty()) {

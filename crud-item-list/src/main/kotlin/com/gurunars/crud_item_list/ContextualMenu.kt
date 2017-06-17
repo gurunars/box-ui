@@ -15,11 +15,12 @@ import org.jetbrains.anko.*
 
 internal class ContextualMenu<ItemType: Item> constructor(
     context: Context,
-    private val isLeftHanded: BindableField<Boolean>,
-    private val isSortable: BindableField<Boolean>,
-    private val items: BindableField<List<ItemType>>,
-    private val selectedItems: BindableField<Set<ItemType>>,
-    private val itemEditListener: BindableField<(item: ItemType) -> Unit>
+    actionIcon: BindableField<CrudItemList.IconColorBundle>,
+    isLeftHanded: BindableField<Boolean>,
+    isSortable: BindableField<Boolean>,
+    items: BindableField<List<ItemType>>,
+    selectedItems: BindableField<Set<ItemType>>,
+    itemEditListener: BindableField<(item: ItemType) -> Unit>
 ) : FrameLayout(context) {
 
     private val ACTION = 42
@@ -148,6 +149,15 @@ internal class ContextualMenu<ItemType: Item> constructor(
                     val pair = action.perform(items.get(), selectedItems.get())
                     items.set(pair.first)
                     selectedItems.set(pair.second)
+                }
+
+                val iconView = it
+
+                actionIcon.onChange {
+                    iconView.icon.set(iconView.icon.get().copy(
+                        bgColor = it.bgColor,
+                        fgColor = it.fgColor
+                    ))
                 }
             }
         } }
