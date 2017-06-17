@@ -59,7 +59,7 @@ class CrudItemList<ItemType : Item>  constructor(context: Context) : FrameLayout
             id = R.id.floatingMenu
             contentView.set(itemList)
             menuView.set(contextualMenu)
-            isOpen.beforeChange {
+            isOpen.onChange {
                 if (itemList.selectedItems.get().isEmpty()) {
                     setUpCreationMenu()
                 } else {
