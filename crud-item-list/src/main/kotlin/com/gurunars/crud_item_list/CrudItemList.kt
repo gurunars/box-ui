@@ -31,23 +31,13 @@ class CrudItemList<ItemType : Item>  constructor(context: Context) : FrameLayout
     val items = bindableField(listOf<ItemType>())
     val creationMenu = bindableField(View(context))
 
-    private val contextualMenu: ContextualMenu
+    private val contextualMenu: ContextualMenu<ItemType>
     private val floatingMenu: FloatMenu
     private val itemList: SelectableItemList<ItemType>
 
     private var itemEditListener: (item: ItemType) -> Unit = {}
 
     private val throttleBuffer = UiThrottleBuffer()
-
-    private val actions = object : HashMap<Int, Action<ItemType>>() {
-        init {
-            put(R.id.selectAll, ActionSelectAll<ItemType>())
-            put(R.id.delete, ActionDelete<ItemType>())
-            put(R.id.edit, ActionEdit({ payload -> itemEditListener(payload) }))
-            put(R.id.moveUp, ActionMoveUp<ItemType>())
-            put(R.id.moveDown, ActionMoveDown<ItemType>())
-        }
-    }
 
     init {
 
@@ -60,10 +50,11 @@ class CrudItemList<ItemType : Item>  constructor(context: Context) : FrameLayout
             id = R.id.rawItemList
         }
 
-        contextualMenu = ContextualMenu(context).apply {
+        contextualMenu = ContextualMenu<ItemType>(context).apply {
             fullSize()
             id = R.id.contextualMenu
             this@CrudItemList.isLeftHanded.bind(isLeftHanded)
+            itemEditListener = this@CrudItemList.itemEditListener
         }
 
         floatingMenu.contentView.set(itemList)

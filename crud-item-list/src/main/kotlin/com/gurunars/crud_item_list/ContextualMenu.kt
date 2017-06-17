@@ -22,7 +22,7 @@ internal class ContextualMenu<ItemType: Item> constructor(context: Context) : Fr
 
     private val ACTION = 42
 
-    private var itemEditListener: (item: ItemType) -> Unit = {}
+    var itemEditListener: (item: ItemType) -> Unit = {}
 
     init {
 
@@ -134,6 +134,20 @@ internal class ContextualMenu<ItemType: Item> constructor(context: Context) : Fr
                     topMargin=dip(5)
                     width=dip(45)
                     height=dip(45)
+                }
+                val action = getTag(ACTION) as Action<ItemType>
+
+                fun configureAbility() {
+                    isEnabled = action.canPerform(items.get(), selectedItems.get())
+                }
+
+                items.onChange { configureAbility() }
+                selectedItems.onChange { configureAbility() }
+
+                it.setOnClickListener {
+                    val pair = action.perform(items.get(), selectedItems.get())
+                    items.set(pair.first)
+                    selectedItems.set(pair.second)
                 }
             }
         } }
