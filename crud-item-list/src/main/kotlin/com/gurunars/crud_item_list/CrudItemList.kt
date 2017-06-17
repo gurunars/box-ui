@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.view.View
 import android.widget.FrameLayout
 import com.gurunars.android_utils.IconView
+import com.gurunars.android_utils.IconView.Icon
 import com.gurunars.databinding.bindableField
 import com.gurunars.floatmenu.FloatMenu
 import com.gurunars.floatmenu.floatMenu
@@ -58,36 +59,52 @@ class CrudItemList<ItemType : Item>  constructor(context: Context) : FrameLayout
             fullSize()
             id = R.id.floatingMenu
             contentView.set(itemList)
-            menuView.set(contextualMenu)
-            isOpen.onChange {
+
+            fun configureCloseIcon() {
                 if (itemList.selectedItems.get().isEmpty()) {
-                    setUpCreationMenu()
+                    closeIcon.set(IconView.Icon(
+                        icon = R.drawable.ic_menu_close,
+                        bgColor = createCloseIcon.get().bgColor,
+                        fgColor = createCloseIcon.get().fgColor
+                    ))
                 } else {
-                    setUpContextualMenu()
+                    closeIcon.set(IconView.Icon(
+                        icon = R.drawable.ic_check,
+                        bgColor = contextualIcon.get().bgColor,
+                        fgColor = contextualIcon.get().fgColor
+                    ))
                 }
             }
+
+            fun configureMenuView() {
+                if (itemList.selectedItems.get().isEmpty()) {
+                    menuView.set(creationMenu.get())
+                } else {
+                    menuView.set(contextualMenu)
+                }
+            }
+
+            isOpen.onChange {
+                hasOverlay.set(itemList.selectedItems.get().isEmpty())
+                configureMenuView()
+                configureCloseIcon()
+            }
+
+            creationMenu.onChange {
+                configureMenuView()
+            }
+
+            this@CrudItemList.openIcon.onChange {
+                openIcon.set(openIcon.get().copy(
+                    bgColor = it.bgColor,
+                    fgColor = it.fgColor
+                ))
+            }
+
+            contextualIcon.onChange { configureCloseIcon() }
+            createCloseIcon.onChange { configureCloseIcon() }
         }
 
-    }
-
-    private fun setUpContextualMenu() {
-        floatingMenu.menuView.set(contextualMenu)
-        floatingMenu.closeIcon.set(IconView.Icon(
-            icon = R.drawable.ic_check,
-            bgColor = contextualIcon.get().bgColor,
-            fgColor = contextualIcon.get().fgColor
-        ))
-        floatingMenu.hasOverlay.set(false)
-    }
-
-    private fun setUpCreationMenu() {
-        floatingMenu.menuView.set(creationMenu.get())
-        floatingMenu.closeIcon.set(IconView.Icon(
-            icon = R.drawable.ic_menu_close,
-            bgColor = createCloseIcon.get().bgColor,
-            fgColor = createCloseIcon.get().fgColor
-        ))
-        floatingMenu.hasOverlay.set(true)
     }
 
 }
