@@ -4,14 +4,12 @@ import android.content.Context
 import android.graphics.Color
 import android.view.View
 import android.widget.FrameLayout
-import android.widget.RelativeLayout
 import com.gurunars.android_utils.IconView
 import com.gurunars.databinding.bindableField
 import com.gurunars.floatmenu.FloatMenu
 import com.gurunars.item_list.Item
 import com.gurunars.item_list.SelectableItemList
 import com.gurunars.shortcuts.fullSize
-import java.util.*
 
 /**
  * Widget to be used for manipulating a collection of items.
@@ -36,8 +34,6 @@ class CrudItemList<ItemType : Item>  constructor(context: Context) : FrameLayout
     private val itemList: SelectableItemList<ItemType>
 
     private var itemEditListener: (item: ItemType) -> Unit = {}
-
-    private val throttleBuffer = UiThrottleBuffer()
 
     init {
 
@@ -67,21 +63,6 @@ class CrudItemList<ItemType : Item>  constructor(context: Context) : FrameLayout
 
             } else {
             }
-        }
-
-        for ((key, action) in actions) {
-            contextualMenu.findViewById(key).setOnClickListener(View.OnClickListener {
-                val selectedItems = itemList.selectedItems
-                if (!action.canPerform(items, selectedItems)) {
-                    return@OnClickListener
-                }
-                if (action.perform(items, selectedItems)) {
-                    itemList.selectedItems = selectedItems
-                    itemList.setItems(items)
-                    setUpActions()
-                    throttleBuffer.call { listChangeListener.onChange(items) }
-                }
-            })
         }
 
         reload()
@@ -115,8 +96,4 @@ class CrudItemList<ItemType : Item>  constructor(context: Context) : FrameLayout
         floatingMenu.hasOverlay.set(true)
     }
 
-    override fun onDetachedFromWindow() {
-        throttleBuffer.shutdown()
-        super.onDetachedFromWindow()
-    }
 }
