@@ -7,6 +7,7 @@ import android.widget.FrameLayout
 import com.gurunars.android_utils.IconView
 import com.gurunars.databinding.bindableField
 import com.gurunars.floatmenu.FloatMenu
+import com.gurunars.floatmenu.floatMenu
 import com.gurunars.item_list.Item
 import com.gurunars.item_list.SelectableItemList
 import com.gurunars.shortcuts.fullSize
@@ -37,47 +38,36 @@ class CrudItemList<ItemType : Item>  constructor(context: Context) : FrameLayout
 
     init {
 
-        floatingMenu = FloatMenu(context).apply {
-            fullSize()
-            id = R.id.floatingMenu
-        }
         itemList = SelectableItemList<ItemType>(context).apply {
             fullSize()
             id = R.id.rawItemList
         }
 
         contextualMenu = ContextualMenu<ItemType>(context,
-            isLeftHanded,
-            isSortable,
-            items,
-            itemList.selectedItems,
-            itemEditListener
+                isLeftHanded,
+                isSortable,
+                items,
+                itemList.selectedItems,
+                itemEditListener
         ).apply {
             fullSize()
             id = R.id.contextualMenu
         }
 
-        floatingMenu.contentView.set(itemList)
-        floatingMenu.menuView.set(contextualMenu)
-
-        addView(floatingMenu)
-
-        floatingMenu.isOpen.onChange {
-            if (it) {
-
-            } else {
+        floatingMenu = floatMenu {
+            fullSize()
+            id = R.id.floatingMenu
+            contentView.set(itemList)
+            menuView.set(contextualMenu)
+            isOpen.beforeChange {
+                if (itemList.selectedItems.get().isEmpty()) {
+                    setUpCreationMenu()
+                } else {
+                    setUpContextualMenu()
+                }
             }
         }
 
-        reload()
-    }
-
-    private fun reload() {
-        if (itemList.selectedItems.get().isEmpty()) {
-            setUpCreationMenu()
-        } else {
-            setUpContextualMenu()
-        }
     }
 
     private fun setUpContextualMenu() {
