@@ -1,6 +1,8 @@
 package com.gurunars.floatmenu
 
 import android.content.Context
+import android.os.Bundle
+import android.os.Parcelable
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.RelativeLayout
@@ -56,6 +58,19 @@ class FloatMenu constructor(context: Context) : FrameLayout(context) {
             }
         }
 
+    }
+
+    override fun onSaveInstanceState(): Parcelable {
+        return Bundle().apply {
+            putParcelable("superState", super.onSaveInstanceState())
+            putBoolean("isOpen", isOpen.get())
+        }
+    }
+
+    override fun onRestoreInstanceState(state: Parcelable) {
+        val localState = state as Bundle
+        super.onRestoreInstanceState(localState.getParcelable("superState"))
+        isOpen.set(localState.getBoolean("isOpen"))
     }
 
 }

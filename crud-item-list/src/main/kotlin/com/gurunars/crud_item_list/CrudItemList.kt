@@ -47,7 +47,10 @@ class CrudItemList<ItemType : Item>  constructor(context: Context) : FrameLayout
         }
 
         contextualMenu = ContextualMenu<ItemType>(context,
-            isLeftHanded, isSortable,  items, itemList.selectedItems,
+            isLeftHanded,
+            isSortable,
+            items,
+            itemList.selectedItems,
             itemEditListener
         ).apply {
             fullSize()
