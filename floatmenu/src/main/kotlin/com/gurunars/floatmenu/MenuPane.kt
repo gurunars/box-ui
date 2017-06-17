@@ -4,26 +4,27 @@ import android.animation.FloatEvaluator
 import android.animation.ValueAnimator
 import android.content.Context
 import android.graphics.Color
-import android.os.Bundle
-import android.os.Parcelable
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import com.gurunars.databinding.BindableField
 import com.gurunars.databinding.bindableField
 import com.gurunars.shortcuts.setIsVisible
 
 
-internal class MenuPane constructor(context: Context) : FrameLayout(context) {
-
-    private val floatEvaluator = FloatEvaluator()
-    private val animatedValue = bindableField(1f)
-
-    val hasOverlay = bindableField(true)
-    val isVisible = bindableField(false)
-    val animationDuration = bindableField(400)
+internal class MenuPane constructor(
+    context: Context,
+    hasOverlay: BindableField<Boolean>,
+    isVisible: BindableField<Boolean>,
+    animationDuration: BindableField<Int>
+) : FrameLayout(context) {
 
     init {
+
+        val floatEvaluator = FloatEvaluator()
+        val animatedValue = bindableField(1f)
+
         hasOverlay.onChange {
             setBackgroundColor(if (it) Color.parseColor("#99000000") else Color.TRANSPARENT)
             isClickable = it
@@ -33,7 +34,7 @@ internal class MenuPane constructor(context: Context) : FrameLayout(context) {
                 ValueAnimator.ofFloat(0f, 1f).apply {
                     startDelay = 0
                     duration = animationDuration.get().toLong()
-                    addUpdateListener { this@MenuPane.animatedValue.set(it.animatedValue as Float) }
+                    addUpdateListener { animatedValue.set(it.animatedValue as Float) }
                     start()
                 }
             } else {
@@ -46,12 +47,8 @@ internal class MenuPane constructor(context: Context) : FrameLayout(context) {
                 if (visible) 0f else 1f,
                 if (visible) 1f else 0f
             )
-            updateVisibility()
+            setIsVisible(isVisible.get() || animatedValue.get() != 1f)
         }
-    }
-
-    private fun updateVisibility() {
-        setIsVisible(isVisible.get() || animatedValue.get() != 1f)
     }
 
     private fun isWithinBounds(view: View, ev: MotionEvent): Boolean {
@@ -87,18 +84,5 @@ internal class MenuPane constructor(context: Context) : FrameLayout(context) {
     /* Intercept touch on the view group but not on the icons */
     override fun onInterceptTouchEvent(ev: MotionEvent): Boolean =
         !isClickable && !touchBelongsTo(this, ev)
-
-    override fun onSaveInstanceState(): Parcelable {
-        val bundle = Bundle()
-        bundle.putParcelable("superState", super.onSaveInstanceState())
-        bundle.putBoolean("visible", isVisible.get())
-        return bundle
-    }
-
-    override fun onRestoreInstanceState(state: Parcelable) {
-        val localState = state as Bundle
-        super.onRestoreInstanceState(localState.getParcelable<Parcelable>("superState"))
-        isVisible.set(localState.getBoolean("visible"))
-    }
 
 }

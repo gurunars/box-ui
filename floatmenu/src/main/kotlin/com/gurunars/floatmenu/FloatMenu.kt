@@ -31,23 +31,16 @@ class FloatMenu constructor(context: Context) : FrameLayout(context) {
                 id=R.id.contentPane
                 contentView.onChange { setOneView(it) }
             }.fullSize()
-            menuPane {
+            menuPane(hasOverlay, isOpen, animationDuration) {
                 id=R.id.menuPane
                 isClickable=true
                 visibility=View.GONE
-                this@FloatMenu.animationDuration.bind(animationDuration)
-                isOpen.bind(isVisible)
-                this@FloatMenu.hasOverlay.bind(hasOverlay)
                 menuView.onChange { setOneView(it) }
             }.fullSize()
-            fab {
+            fab(animationDuration, openIcon, closeIcon, isOpen) {
                 id=R.id.openFab
                 val fab = this
                 this@FloatMenu.isLeftHanded.onChange { fab.contentDescription = "LH:" + it }
-                animationDuration.bind(rotationDuration)
-                isOpen.bind(isActivated)
-                this@FloatMenu.openIcon.bind(openIcon)
-                this@FloatMenu.closeIcon.bind(closeIcon)
             }.lparams {
                 margin=dip(16)
                 width=dip(60)
