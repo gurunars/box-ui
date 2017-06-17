@@ -8,14 +8,21 @@ import android.widget.RelativeLayout
 import com.gurunars.android_utils.IconView
 import com.gurunars.android_utils.iconView
 import com.gurunars.databinding.bindableField
+import com.gurunars.item_list.Item
 import com.gurunars.shortcuts.fullSize
 import org.jetbrains.anko.*
 
 
-internal class ContextualMenu constructor(context: Context) : FrameLayout(context) {
+internal class ContextualMenu<ItemType: Item> constructor(context: Context) : FrameLayout(context) {
 
     val isLeftHanded = bindableField(false)
     val isSortable = bindableField(true)
+    val items = bindableField(listOf<ItemType>())
+    val selectedItems = bindableField(setOf<ItemType>())
+
+    private val ACTION = 42
+
+    private var itemEditListener: (item: ItemType) -> Unit = {}
 
     init {
 
@@ -30,6 +37,7 @@ internal class ContextualMenu constructor(context: Context) : FrameLayout(contex
             iconView {
                 id=R.id.moveUp
             }.lparams {
+                setTag(ACTION, ActionMoveUp<ItemType>())
                 isLeftHanded.onChange {
                     if (it) {
                         alignParentLeft()
@@ -49,6 +57,7 @@ internal class ContextualMenu constructor(context: Context) : FrameLayout(contex
             iconView {
                 id=R.id.moveDown
             }.lparams {
+                setTag(ACTION, ActionMoveDown<ItemType>())
                 alignParentBottom()
                 isLeftHanded.onChange {
                     if (it) {
@@ -68,6 +77,7 @@ internal class ContextualMenu constructor(context: Context) : FrameLayout(contex
             iconView {
                 id=R.id.delete
             }.lparams {
+                setTag(ACTION, ActionDelete<ItemType>())
                 alignParentBottom()
                 isLeftHanded.onChange {
                     if (it) {
@@ -85,6 +95,7 @@ internal class ContextualMenu constructor(context: Context) : FrameLayout(contex
             iconView {
                 id=R.id.selectAll
             }.lparams {
+                setTag(ACTION, ActionSelectAll<ItemType>())
                 alignParentBottom()
                 isLeftHanded.onChange {
                     if (it) {
@@ -101,6 +112,7 @@ internal class ContextualMenu constructor(context: Context) : FrameLayout(contex
             iconView {
                 id=R.id.edit
             }.lparams {
+                setTag(ACTION, ActionEdit({ payload: ItemType -> itemEditListener(payload) }))
                 alignParentBottom()
                 isLeftHanded.onChange {
                     if (it) {

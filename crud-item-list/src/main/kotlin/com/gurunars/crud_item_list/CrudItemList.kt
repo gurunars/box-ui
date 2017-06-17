@@ -75,7 +75,6 @@ class CrudItemList<ItemType : Item>  constructor(context: Context) : FrameLayout
             if (it) {
 
             } else {
-
             }
         }
 
