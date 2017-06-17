@@ -7,22 +7,22 @@ import android.widget.FrameLayout
 import android.widget.RelativeLayout
 import com.gurunars.android_utils.IconView
 import com.gurunars.android_utils.iconView
-import com.gurunars.databinding.bindableField
+import com.gurunars.databinding.BindableField
 import com.gurunars.item_list.Item
 import com.gurunars.shortcuts.fullSize
 import org.jetbrains.anko.*
 
 
-internal class ContextualMenu<ItemType: Item> constructor(context: Context) : FrameLayout(context) {
-
-    val isLeftHanded = bindableField(false)
-    val isSortable = bindableField(true)
-    val items = bindableField(listOf<ItemType>())
-    val selectedItems = bindableField(setOf<ItemType>())
+internal class ContextualMenu<ItemType: Item> constructor(
+    context: Context,
+    private val isLeftHanded: BindableField<Boolean>,
+    private val isSortable: BindableField<Boolean>,
+    private val items: BindableField<List<ItemType>>,
+    private val selectedItems: BindableField<Set<ItemType>>,
+    private val itemEditListener: BindableField<(item: ItemType) -> Unit>
+) : FrameLayout(context) {
 
     private val ACTION = 42
-
-    var itemEditListener: (item: ItemType) -> Unit = {}
 
     init {
 
@@ -112,7 +112,7 @@ internal class ContextualMenu<ItemType: Item> constructor(context: Context) : Fr
             iconView {
                 id=R.id.edit
             }.lparams {
-                setTag(ACTION, ActionEdit({ payload: ItemType -> itemEditListener(payload) }))
+                setTag(ACTION, ActionEdit({ payload: ItemType -> itemEditListener.get()(payload) }))
                 alignParentBottom()
                 isLeftHanded.onChange {
                     if (it) {

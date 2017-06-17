@@ -28,12 +28,12 @@ class CrudItemList<ItemType : Item>  constructor(context: Context) : FrameLayout
     val isLeftHanded = bindableField(false)
     val items = bindableField(listOf<ItemType>())
     val creationMenu = bindableField(View(context))
+    val isSortable = bindableField(true)
+    val itemEditListener = bindableField<(item: ItemType) -> Unit>({})
 
     private val contextualMenu: ContextualMenu<ItemType>
     private val floatingMenu: FloatMenu
     private val itemList: SelectableItemList<ItemType>
-
-    private var itemEditListener: (item: ItemType) -> Unit = {}
 
     init {
 
@@ -46,11 +46,12 @@ class CrudItemList<ItemType : Item>  constructor(context: Context) : FrameLayout
             id = R.id.rawItemList
         }
 
-        contextualMenu = ContextualMenu<ItemType>(context).apply {
+        contextualMenu = ContextualMenu<ItemType>(context,
+            isLeftHanded, isSortable,  items, itemList.selectedItems,
+            itemEditListener
+        ).apply {
             fullSize()
             id = R.id.contextualMenu
-            this@CrudItemList.isLeftHanded.bind(isLeftHanded)
-            itemEditListener = this@CrudItemList.itemEditListener
         }
 
         floatingMenu.contentView.set(itemList)
