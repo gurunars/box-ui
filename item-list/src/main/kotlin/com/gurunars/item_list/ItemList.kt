@@ -17,7 +17,7 @@ import org.jetbrains.anko.recyclerview.v7.recyclerView
 import org.objenesis.strategy.StdInstantiatorStrategy
 
 
-fun defaultEmptyViewBinder(context: Context): View {
+internal fun defaultEmptyViewBinder(context: Context): View {
     return TextView(context).apply {
         fullSize()
         setText(R.string.empty)
@@ -26,7 +26,7 @@ fun defaultEmptyViewBinder(context: Context): View {
 }
 
 
-fun<ItemType> defaultItemViewBinder(context: Context, payload: BindableField<Pair<ItemType?, ItemType?>>) : View {
+private fun<ItemType> defaultItemViewBinder(context: Context, payload: BindableField<Pair<ItemType?, ItemType?>>) : View {
     return TextView(context).apply {
         setPadding(context.dip(5))
         payload.onChange {

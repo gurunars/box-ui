@@ -5,10 +5,13 @@ import android.app.Activity
 import android.content.Context
 import android.os.Bundle
 import android.support.annotation.StringRes
-import android.view.*
+import android.view.Menu
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
-import com.gurunars.item_list.EmptyViewBinder
+import com.gurunars.databinding.BindableField
 import com.gurunars.item_list.ItemList
 import com.gurunars.item_list.ItemViewBinder
 import com.gurunars.item_list.itemList
@@ -19,48 +22,28 @@ import org.jetbrains.anko.matchParent
 import org.jetbrains.anko.wrapContent
 
 
+internal fun animalBinder(context: Context, payload: BindableField<Pair<AnimalItem?, AnimalItem?>>) : View {
+    return TextView(context).apply {
+        layoutParams = ViewGroup.LayoutParams(matchParent, wrapContent)
+        val padding = context.dip(5)
+        setPadding(padding, padding, padding, padding)
+        payload.onChange {
+            text = it.first.toString()
+            if (it.second != null) {
+                clearAnimation()
+                ValueAnimator().apply {
+                    setFloatValues(1.0.toFloat(), 0.0.toFloat(), 1.0.toFloat())
+                    addUpdateListener { animation -> alpha = animation.animatedValue as Float }
+                    duration = 1300
+                    start()
+                }
+            }
+        }
+    }
+}
+
+
 class ActivityMain : Activity() {
-
-    internal class AnimalBinder : ItemViewBinder<TextView, AnimalItem> {
-
-        override fun getView(context: Context): TextView {
-            return TextView(context).apply {
-                layoutParams=ViewGroup.LayoutParams(matchParent, wrapContent)
-                val padding = context.dip(5)
-                setPadding(padding, padding, padding, padding)
-            }
-        }
-
-        override fun bind(itemView: TextView, item: AnimalItem, previousItem: AnimalItem?) {
-            itemView.text = item.toString()
-            if (previousItem != null) {
-                animateUpdate(itemView)
-            }
-        }
-
-        private fun animateUpdate(view: View) {
-            view.clearAnimation()
-            ValueAnimator().apply {
-                setFloatValues(1.0.toFloat(), 0.0.toFloat(), 1.0.toFloat())
-                addUpdateListener { animation -> view.alpha = animation.animatedValue as Float }
-                duration = 1300
-                start()
-            }
-        }
-
-    }
-
-    internal class EmptyBinder : EmptyViewBinder {
-
-        override fun getView(context: Context): View {
-            val view = TextView(context)
-            view.gravity = Gravity.CENTER
-            view.setText(R.string.empty)
-            return view
-        }
-
-    }
-
     private lateinit var itemList: ItemList<AnimalItem>
     private val items = ArrayList<AnimalItem>()
     private var count = 0
@@ -79,10 +62,9 @@ class ActivityMain : Activity() {
                 fullSize()
                 id=R.id.itemList
 
-                itemViewBinders.set(mutableMapOf<Enum<*>, ItemViewBinder<*, AnimalItem>>().apply {
-                    AnimalItem.Type.values().forEach { put(it, AnimalBinder()) }
+                itemViewBinders.set(mutableMapOf<Enum<*>, ItemViewBinder<AnimalItem>>().apply {
+                    AnimalItem.Type.values().forEach { put(it, ::animalBinder) }
                 })
-                emptyViewBinder.set(EmptyBinder())
             }
         }
 

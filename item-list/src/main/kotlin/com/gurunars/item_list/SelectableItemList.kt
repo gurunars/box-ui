@@ -18,7 +18,7 @@ import java.util.*
 import kotlin.collections.HashSet
 
 
-fun<ItemType : Item> clickableDecorator(
+private fun<ItemType : Item> clickableDecorator(
         itemViewBinder: ItemViewBinder<SelectableItem<ItemType>>,
         selectedItems: BindableField<Set<ItemType>>): ItemViewBinder<SelectableItem<ItemType>> {
     fun clickableWrapper(
@@ -58,7 +58,7 @@ fun<ItemType : Item> clickableDecorator(
 }
 
 
-fun<ItemType: Item> defaultSelectableItemViewBinder(context: Context, payload: BindableField<Pair<SelectableItem<ItemType>?, SelectableItem<ItemType>?>>) : View {
+private fun<ItemType: Item> defaultSelectableItemViewBinder(context: Context, payload: BindableField<Pair<SelectableItem<ItemType>?, SelectableItem<ItemType>?>>) : View {
     return TextView(context).apply {
         setPadding(context.dip(5))
         payload.onChange {
