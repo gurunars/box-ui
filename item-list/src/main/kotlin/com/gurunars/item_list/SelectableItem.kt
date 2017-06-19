@@ -5,7 +5,7 @@ package com.gurunars.item_list
  *
  * @param <ItemType> type of the actual item.
  */
-class SelectableItem<ItemType : Item> internal constructor(val item: ItemType, val isSelected: Boolean) : Item {
+class SelectableItem<out ItemType : Item> internal constructor(val item: ItemType, val isSelected: Boolean) : Item {
 
     override fun getId() = item.getId()
 

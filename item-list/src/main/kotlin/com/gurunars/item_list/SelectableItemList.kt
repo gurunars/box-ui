@@ -1,15 +1,73 @@
 package com.gurunars.item_list
 
 import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
 import android.os.Parcelable
+import android.view.View
 import android.widget.FrameLayout
+import android.widget.TextView
 import com.esotericsoftware.kryo.Kryo
+import com.gurunars.databinding.BindableField
 import com.gurunars.databinding.bindableField
 import com.gurunars.shortcuts.fullSize
+import com.gurunars.shortcuts.setPadding
+import org.jetbrains.anko.dip
 import org.objenesis.strategy.StdInstantiatorStrategy
 import java.util.*
 import kotlin.collections.HashSet
+
+
+fun<ItemType : Item> clickableDecorator(
+        itemViewBinder: ItemViewBinder<SelectableItem<ItemType>>,
+        selectedItems: BindableField<Set<ItemType>>): ItemViewBinder<SelectableItem<ItemType>> {
+    fun clickableWrapper(
+            context: Context,
+            payload: BindableField<Pair<SelectableItem<ItemType>?, SelectableItem<ItemType>?>>
+    ): View {
+        return itemViewBinder(context, payload).apply {
+            isClickable=true
+            setOnClickListener {
+                val item = payload.get().first
+                if (item == null) {
+                    return@setOnClickListener
+                }
+                val sel = selectedItems.get()
+                if (sel.isEmpty()) {
+                    return@setOnClickListener
+                }
+                if (selectedItems.get().indexOfFirst { it.getId() == item.getId() } == -1) {
+                    selectedItems.set(sel + item.item)
+                } else {
+                    selectedItems.set(sel.filterNot { it.getId() == item.getId() }.toHashSet())
+                }
+            }
+            setOnLongClickListener {
+                val item = payload.get().first
+                if (item == null) {
+                    return@setOnLongClickListener true
+                }
+                val sel = selectedItems.get()
+                if (sel.isEmpty()) selectedItems.set(sel + item.item)
+                true
+            }
+        }
+    }
+
+    return ::clickableWrapper
+}
+
+
+fun<ItemType: Item> defaultSelectableItemViewBinder(context: Context, payload: BindableField<Pair<SelectableItem<ItemType>?, SelectableItem<ItemType>?>>) : View {
+    return TextView(context).apply {
+        setPadding(context.dip(5))
+        payload.onChange {
+            text = it.first.toString()
+            setBackgroundColor(if (it.first?.isSelected ?: false) Color.RED else Color.TRANSPARENT)
+        }
+    }
+}
+
 
 /**
  * Item list that has selection enabled.
@@ -35,11 +93,11 @@ class SelectableItemList<ItemType : Item> constructor(context: Context) : FrameL
         {item -> kryo.copy(ArrayList(item))}
     )
 
-    val emptyViewBinder = bindableField<EmptyViewBinder>(ItemViewBinderEmpty())
-    val defaultViewBinder = bindableField<ItemViewBinder<*, SelectableItem<ItemType>>>(
-        SelectableItemViewBinderString<ItemType>()
+    val emptyViewBinder = bindableField(::defaultEmptyViewBinder)
+    val defaultViewBinder = bindableField<ItemViewBinder<SelectableItem<ItemType>>>(
+        ::defaultSelectableItemViewBinder
     )
-    val itemViewBinders = bindableField<Map<Enum<*>, ItemViewBinder<*, SelectableItem<ItemType>>>>(mapOf())
+    val itemViewBinders = bindableField<Map<Enum<*>, ItemViewBinder<SelectableItem<ItemType>>>>(mapOf())
 
     init {
         itemList<SelectableItem<ItemType>> {
@@ -49,15 +107,15 @@ class SelectableItemList<ItemType : Item> constructor(context: Context) : FrameL
             val self = this@SelectableItemList
 
             self.defaultViewBinder.onChange {
-                defaultViewBinder.set(ClickableItemViewBinder(it, selectedItems))
+                defaultViewBinder.set(clickableDecorator(it, selectedItems))
             }
-            self.emptyViewBinder.onChange { emptyViewBinder.set(it) }
+
             self.itemViewBinders.onChange {
                 val value = it
-                itemViewBinders.set(mutableMapOf<Enum<*>, ItemViewBinder<*, SelectableItem<ItemType>>>().apply {
+                itemViewBinders.set(mutableMapOf<Enum<*>, ItemViewBinder<SelectableItem<ItemType>>>().apply {
                     value.forEach { type, view ->
                         run {
-                            put(type, ClickableItemViewBinder(view, selectedItems))
+                            put(type, clickableDecorator(view, selectedItems))
                         }
                     }
                 })
