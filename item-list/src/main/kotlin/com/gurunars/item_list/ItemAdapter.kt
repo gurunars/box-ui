@@ -70,7 +70,7 @@ internal class ItemAdapter<ItemType : Item>(
             )
             return object : RecyclerView.ViewHolder(viewBinder(parent.context, field).apply {
                 asRow()
-                setTag(PAYLOAD_TAG, field)
+                setTag(R.id.payloadTag, field)
             }) {}
         }
     }
@@ -84,7 +84,7 @@ internal class ItemAdapter<ItemType : Item>(
         val previousIndex = previousList.indexOfFirst { it.getId() == item.getId() }
         val previousItem = if (previousIndex >= 0) previousList[previousIndex] else null
 
-        val field = holder.itemView.getTag(PAYLOAD_TAG) as BindableField<Pair<ItemType?, ItemType?>>
+        val field = holder.itemView.getTag(R.id.payloadTag) as BindableField<Pair<ItemType?, ItemType?>>
 
         field.set(Pair(item, previousItem))
     }
@@ -99,6 +99,5 @@ internal class ItemAdapter<ItemType : Item>(
 
     companion object {
         val EMPTY_TYPE = -404
-        val PAYLOAD_TAG = 42
     }
 }
