@@ -2,13 +2,18 @@ package com.gurunars.crud_item_list.example
 
 import com.gurunars.item_list.Item
 
-internal class AnimalItem @JvmOverloads constructor(id: Long, version: Int, type: AnimalItem.Type = AnimalItem.Type.MONKEY) : Item<AnimalItem.Type>(id, type) {
+internal class AnimalItem(private var id: Long, private var version: Int, private var type: AnimalItem.Type) : Item {
 
-    var version: Int = 0
-        private set
+    override fun getType(): AnimalItem.Type {
+        return type
+    }
+
+    override fun getId(): Long {
+        return id
+    }
 
     override fun payloadsEqual(other: Item): Boolean {
-        return other is AnimalItem && version == (other as AnimalItem).version
+        return other is AnimalItem && version == other.version
     }
 
     internal enum class Type {
@@ -19,16 +24,12 @@ internal class AnimalItem @JvmOverloads constructor(id: Long, version: Int, type
         this.version++
     }
 
-    init {
-        this.version = version
+    fun getVersion(): Int {
+        return version
     }
 
-    constructor(id: Long, type: Type) : this(id, 0, type) {}
-
-    constructor(type: Type) : this(0, 0, type) {}
-
     override fun toString(): String {
-        return "#" + getId() + "{" + getType() + " @ " + version + "}"
+        return "#$id{$type @ $version}"
     }
 
 }

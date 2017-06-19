@@ -2,12 +2,9 @@ package com.gurunars.crud_item_list.example
 
 import android.app.Activity
 import android.content.Context
-import android.content.SharedPreferences
-
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-
-import java.util.ArrayList
+import java.util.*
 
 internal class Model(private val activity: Activity) {
 
@@ -27,7 +24,7 @@ internal class Model(private val activity: Activity) {
         val preferences = activity.getPreferences(Context.MODE_PRIVATE)
         wasInited = preferences.getBoolean("wasInited", false)
         maxItemId = preferences.getInt("maxItemId", 0)
-        items = Gson().fromJson<List<AnimalItem>>(preferences.getString("data", "[]"),
+        items = Gson().fromJson<MutableList<AnimalItem>>(preferences.getString("data", "[]"),
                 object : TypeToken<ArrayList<AnimalItem>>() {
 
                 }.type)
@@ -63,7 +60,7 @@ internal class Model(private val activity: Activity) {
 
     fun createItem(payload: AnimalItem) {
         maxItemId++
-        items.add(AnimalItem(maxItemId.toLong(), payload.version, payload.getType()))
+        items.add(AnimalItem(maxItemId.toLong(), payload.getVersion(), payload.getType()))
         save()
     }
 }

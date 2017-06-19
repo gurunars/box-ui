@@ -1,46 +1,78 @@
 package com.gurunars.crud_item_list.example
 
 import android.app.Activity
+import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
 import android.support.annotation.IdRes
+import android.view.Gravity
 import android.view.Menu
-import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
-
+import android.widget.TextView
 import com.gurunars.crud_item_list.CrudItemList
-import com.gurunars.crud_item_list.ItemEditListener
-import com.gurunars.crud_item_list.ListChangeListener
+import com.gurunars.item_list.EmptyViewBinder
+import com.gurunars.item_list.ItemViewBinder
+import com.gurunars.item_list.SelectableItem
+import com.gurunars.shortcuts.setPadding
+import org.jetbrains.anko.dip
 
 
 class ActivityMain : Activity() {
 
-    private var crudItemList: CrudItemList<AnimalItem>? = null
-    private var model: Model? = null
-    private var creationMenu: View? = null
+    internal class AnimalBinder : ItemViewBinder<TextView, SelectableItem<AnimalItem>> {
+
+        override fun getView(context: Context): TextView {
+            return TextView(context).apply {
+                setPadding(context.dip(5))
+            }
+        }
+
+        override fun bind(itemView: TextView, item: SelectableItem<AnimalItem>, previousItem: SelectableItem<AnimalItem>?) {
+            itemView.text = "$item"
+            itemView.setBackgroundColor(if (item.isSelected) Color.RED else Color.WHITE)
+        }
+
+    }
+
+    internal class EmptyBinder : EmptyViewBinder {
+
+        override fun getView(context: Context): View {
+            val view = TextView(context)
+            view.gravity = Gravity.CENTER
+            view.setText(R.string.empty)
+            return view
+        }
+
+    }
+
+    private val model = Model(this)
+
+    private lateinit var crudItemList: CrudItemList<AnimalItem>
+    private lateinit var creationMenu: View
 
     private fun initData(force: Boolean) {
-        if (model!!.wasInited() && !force) {
-            crudItemList!!.setItems(model!!.items)
+        if (model.wasInited() && !force) {
+            crudItemList.setItems(model.items)
             return
         }
-        model!!.clear()
+        model.clear()
         for (i in 0..0) {
-            model!!.createItem(AnimalItem(AnimalItem.Type.LION))
-            model!!.createItem(AnimalItem(AnimalItem.Type.TIGER))
-            model!!.createItem(AnimalItem(AnimalItem.Type.MONKEY))
-            model!!.createItem(AnimalItem(AnimalItem.Type.WOLF))
+            model.createItem(AnimalItem(AnimalItem.Type.LION))
+            model.createItem(AnimalItem(AnimalItem.Type.TIGER))
+            model.createItem(AnimalItem(AnimalItem.Type.MONKEY))
+            model.createItem(AnimalItem(AnimalItem.Type.WOLF))
         }
 
-        crudItemList!!.setItems(model!!.items)
+        crudItemList.setItems(model.items)
     }
 
     private fun confItemType(@IdRes id: Int, type: AnimalItem.Type) {
-        creationMenu!!.findViewById(id).setOnClickListener {
-            model!!.createItem(AnimalItem(type))
-            crudItemList!!.setItems(model!!.items)
+        creationMenu.findViewById(id).setOnClickListener {
+            model.createItem(AnimalItem(type))
+            crudItemList.setItems(model.items)
         }
-        crudItemList!!.registerItemType(type, AnimalRowBinder())
+        crudItemList.registerItemType(type, AnimalRowBinder())
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,21 +84,21 @@ class ActivityMain : Activity() {
 
         crudItemList = ButterKnife.findById(this, R.id.customView)
 
-        crudItemList!!.setListChangeListener(object : ListChangeListener<AnimalItem>() {
+        crudItemList.setListChangeListener(object : ListChangeListener<AnimalItem>() {
             fun onChange(items: List<AnimalItem>) {
                 for (item in items) {
-                    model!!.updateItem(item)
+                    model.updateItem(item)
                 }
             }
 
         })
-        crudItemList!!.setEmptyViewBinder(EmptyBinder())
-        crudItemList!!.setCreationMenu(creationMenu)
-        crudItemList!!.setItemEditListener(object : ItemEditListener<AnimalItem>() {
+        crudItemList.setEmptyViewBinder(EmptyBinder())
+        crudItemList.setCreationMenu(creationMenu)
+        crudItemList.setItemEditListener(object : ItemEditListener<AnimalItem>() {
             fun onEdit(editableItem: AnimalItem) {
                 editableItem.update()
-                model!!.updateItem(editableItem)
-                crudItemList!!.setItems(model!!.items)
+                model.updateItem(editableItem)
+                crudItemList.setItems(model.items)
             }
 
         })
@@ -90,16 +122,16 @@ class ActivityMain : Activity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val i = item.itemId
         when (i) {
-            R.id.leftHanded -> crudItemList!!.setLeftHanded(true)
-            R.id.rightHanded -> crudItemList!!.setLeftHanded(false)
+            R.id.leftHanded -> crudItemList.setLeftHanded(true)
+            R.id.rightHanded -> crudItemList.setLeftHanded(false)
             R.id.reset -> initData(true)
             R.id.lock -> {
                 setTitle(R.string.unsortable)
-                crudItemList!!.setSortable(false)
+                crudItemList.setSortable(false)
             }
             R.id.unlock -> {
                 setTitle(R.string.sortable)
-                crudItemList!!.setSortable(true)
+                crudItemList.setSortable(true)
             }
             R.id.addMany -> addMany()
         }
@@ -107,14 +139,14 @@ class ActivityMain : Activity() {
     }
 
     private fun addMany() {
-        model!!.clear()
+        model.clear()
         for (i in 0..19) {
-            model!!.createItem(AnimalItem(AnimalItem.Type.LION))
-            model!!.createItem(AnimalItem(AnimalItem.Type.TIGER))
-            model!!.createItem(AnimalItem(AnimalItem.Type.MONKEY))
-            model!!.createItem(AnimalItem(AnimalItem.Type.WOLF))
+            model.createItem(AnimalItem(AnimalItem.Type.LION))
+            model.createItem(AnimalItem(AnimalItem.Type.TIGER))
+            model.createItem(AnimalItem(AnimalItem.Type.MONKEY))
+            model.createItem(AnimalItem(AnimalItem.Type.WOLF))
         }
-        crudItemList!!.setItems(model!!.items)
+        crudItemList.setItems(model.items)
     }
 
 }
