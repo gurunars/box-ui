@@ -49,9 +49,10 @@ internal class ItemAdapter<ItemType : Item>(
 
 
     init {
-        items.onChange {
-            DiffUtil.calculateDiff(ItemCallback(previousList, it)).dispatchUpdatesTo(this)
+        items.onChange({
             previousList = kryo.copy(ArrayList(it))
+        }) {
+            DiffUtil.calculateDiff(ItemCallback(previousList, it)).dispatchUpdatesTo(this)
         }
     }
 
