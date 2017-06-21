@@ -7,12 +7,10 @@ import android.view.View
 import android.widget.FrameLayout
 import android.widget.TextView
 import com.esotericsoftware.kryo.Kryo
-import com.gurunars.databinding.BindableField
 import com.gurunars.databinding.bindableField
 import com.gurunars.shortcuts.fullSize
 import org.jetbrains.anko.bottomPadding
 import org.jetbrains.anko.dip
-import org.jetbrains.anko.padding
 import org.jetbrains.anko.recyclerview.v7.recyclerView
 import org.objenesis.strategy.StdInstantiatorStrategy
 
@@ -22,16 +20,6 @@ internal fun defaultEmptyViewBinder(context: Context): View {
         fullSize()
         setText(R.string.empty)
         gravity = Gravity.CENTER
-    }
-}
-
-
-private fun<ItemType> defaultItemViewBinder(context: Context, payload: BindableField<Pair<ItemType?, ItemType?>>) : View {
-    return TextView(context).apply {
-        padding = context.dip(5)
-        payload.onChange {
-            text = it.first.toString()
-        }
     }
 }
 
@@ -48,9 +36,10 @@ class ItemList<ItemType : Item> constructor(context: Context) : FrameLayout(cont
         {item -> kryo.copy(ArrayList(item))}
     )
 
+    // TODO: default view binder must be passed from selectable list
+
     val emptyViewBinder = bindableField<EmptyViewBinder>(::defaultEmptyViewBinder)
-    val itemViewBinders = bindableField<Map<Enum<*>, ItemViewBinder<ItemType>>>(mapOf())
-    val defaultViewBinder = bindableField<ItemViewBinder<ItemType>>(::defaultItemViewBinder)
+    val itemViewBinders = bindableField<Map<Enum<*>, Pair<ItemViewBinder<ItemType>, ItemType>>>(mapOf())
 
     init {
 
@@ -60,11 +49,10 @@ class ItemList<ItemType : Item> constructor(context: Context) : FrameLayout(cont
             clipToPadding=false
             bottomPadding=dip(60)
             isSaveEnabled=false
-            adapter = ItemAdapter(
+            adapter = ItemAdapter<ItemType>(
                 items,
                 emptyViewBinder,
-                itemViewBinders,
-                defaultViewBinder
+                itemViewBinders
             )
             layoutManager = LinearLayoutManager(context).apply {
                 orientation = LinearLayoutManager.VERTICAL

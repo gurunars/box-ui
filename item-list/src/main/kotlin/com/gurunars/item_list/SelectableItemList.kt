@@ -23,15 +23,12 @@ private fun<ItemType : Item> clickableDecorator(
         selectedItems: BindableField<Set<ItemType>>): ItemViewBinder<SelectableItem<ItemType>> {
     fun clickableWrapper(
             context: Context,
-            payload: BindableField<Pair<SelectableItem<ItemType>?, SelectableItem<ItemType>?>>
+            payload: BindableField<Pair<SelectableItem<ItemType>, SelectableItem<ItemType>?>>
     ): View {
         return itemViewBinder(context, payload).apply {
             isClickable=true
             setOnClickListener {
                 val item = payload.get().first
-                if (item == null) {
-                    return@setOnClickListener
-                }
                 val sel = selectedItems.get()
                 if (sel.isEmpty()) {
                     return@setOnClickListener
@@ -44,9 +41,6 @@ private fun<ItemType : Item> clickableDecorator(
             }
             setOnLongClickListener {
                 val item = payload.get().first
-                if (item == null) {
-                    return@setOnLongClickListener true
-                }
                 val sel = selectedItems.get()
                 if (sel.isEmpty()) selectedItems.set(sel + item.item)
                 true
@@ -58,12 +52,12 @@ private fun<ItemType : Item> clickableDecorator(
 }
 
 
-private fun<ItemType: Item> defaultSelectableItemViewBinder(context: Context, payload: BindableField<Pair<SelectableItem<ItemType>?, SelectableItem<ItemType>?>>) : View {
+private fun<ItemType: Item> defaultSelectableItemViewBinder(context: Context, payload: BindableField<Pair<SelectableItem<ItemType>, SelectableItem<ItemType>?>>) : View {
     return TextView(context).apply {
         padding = context.dip(5)
         payload.onChange {
             text = it.first.toString()
-            setBackgroundColor(if (it.first?.isSelected ?: false) Color.RED else Color.TRANSPARENT)
+            setBackgroundColor(if (it.first.isSelected) Color.RED else Color.TRANSPARENT)
         }
     }
 }
@@ -97,7 +91,10 @@ class SelectableItemList<ItemType : Item> constructor(context: Context) : FrameL
     val defaultViewBinder = bindableField<ItemViewBinder<SelectableItem<ItemType>>>(
         ::defaultSelectableItemViewBinder
     )
-    val itemViewBinders = bindableField<Map<Enum<*>, ItemViewBinder<SelectableItem<ItemType>>>>(mapOf())
+    val itemViewBinders = bindableField<
+        Map<Enum<*>,
+        Pair<ItemViewBinder<SelectableItem<ItemType>>, SelectableItem<ItemType>>>
+    >(mapOf())
 
     init {
         itemList<SelectableItem<ItemType>> {
@@ -106,16 +103,22 @@ class SelectableItemList<ItemType : Item> constructor(context: Context) : FrameL
 
             val self = this@SelectableItemList
 
+            self.emptyViewBinder.onChange {
+                emptyViewBinder.set(it)
+            }
+
             self.defaultViewBinder.onChange {
                 defaultViewBinder.set(clickableDecorator(it, selectedItems))
             }
 
             self.itemViewBinders.onChange {
-                val value = it
-                itemViewBinders.set(mutableMapOf<Enum<*>, ItemViewBinder<SelectableItem<ItemType>>>().apply {
-                    value.forEach { type, view ->
+                itemViewBinders.set(mutableMapOf<
+                    Enum<*>,
+                    Pair<ItemViewBinder<SelectableItem<ItemType>>, SelectableItem<ItemType>>
+                >().apply {
+                    it.forEach { type, pair ->
                         run {
-                            put(type, clickableDecorator(view, selectedItems))
+                            put(type, Pair(clickableDecorator(pair.first, selectedItems), pair.second))
                         }
                     }
                 })
