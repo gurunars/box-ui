@@ -14,9 +14,9 @@ import android.widget.Toast
 import com.gurunars.databinding.contains
 import com.gurunars.item_list.*
 import com.gurunars.shortcuts.fullSize
-import com.gurunars.shortcuts.setPadding
 import org.jetbrains.anko.dip
 import org.jetbrains.anko.frameLayout
+import org.jetbrains.anko.padding
 import java.util.*
 
 
@@ -26,7 +26,7 @@ class ActivityMain : Activity() {
 
         override fun getView(context: Context): TextView {
             return TextView(context).apply {
-                setPadding(context.dip(5))
+                padding = context.dip(5)
             }
         }
 

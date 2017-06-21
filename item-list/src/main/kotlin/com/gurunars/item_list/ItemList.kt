@@ -10,9 +10,9 @@ import com.esotericsoftware.kryo.Kryo
 import com.gurunars.databinding.BindableField
 import com.gurunars.databinding.bindableField
 import com.gurunars.shortcuts.fullSize
-import com.gurunars.shortcuts.setPadding
 import org.jetbrains.anko.bottomPadding
 import org.jetbrains.anko.dip
+import org.jetbrains.anko.padding
 import org.jetbrains.anko.recyclerview.v7.recyclerView
 import org.objenesis.strategy.StdInstantiatorStrategy
 
@@ -28,7 +28,7 @@ internal fun defaultEmptyViewBinder(context: Context): View {
 
 private fun<ItemType> defaultItemViewBinder(context: Context, payload: BindableField<Pair<ItemType?, ItemType?>>) : View {
     return TextView(context).apply {
-        setPadding(context.dip(5))
+        padding = context.dip(5)
         payload.onChange {
             text = it.first.toString()
         }

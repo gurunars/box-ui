@@ -11,8 +11,8 @@ import com.esotericsoftware.kryo.Kryo
 import com.gurunars.databinding.BindableField
 import com.gurunars.databinding.bindableField
 import com.gurunars.shortcuts.fullSize
-import com.gurunars.shortcuts.setPadding
 import org.jetbrains.anko.dip
+import org.jetbrains.anko.padding
 import org.objenesis.strategy.StdInstantiatorStrategy
 import java.util.*
 import kotlin.collections.HashSet
@@ -60,7 +60,7 @@ private fun<ItemType : Item> clickableDecorator(
 
 private fun<ItemType: Item> defaultSelectableItemViewBinder(context: Context, payload: BindableField<Pair<SelectableItem<ItemType>?, SelectableItem<ItemType>?>>) : View {
     return TextView(context).apply {
-        setPadding(context.dip(5))
+        padding = context.dip(5)
         payload.onChange {
             text = it.first.toString()
             setBackgroundColor(if (it.first?.isSelected ?: false) Color.RED else Color.TRANSPARENT)

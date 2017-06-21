@@ -16,17 +16,13 @@ import com.gurunars.item_list.ItemList
 import com.gurunars.item_list.ItemViewBinder
 import com.gurunars.item_list.itemList
 import com.gurunars.shortcuts.fullSize
-import org.jetbrains.anko.dip
-import org.jetbrains.anko.frameLayout
-import org.jetbrains.anko.matchParent
-import org.jetbrains.anko.wrapContent
+import org.jetbrains.anko.*
 
 
 internal fun animalBinder(context: Context, payload: BindableField<Pair<AnimalItem?, AnimalItem?>>) : View {
     return TextView(context).apply {
         layoutParams = ViewGroup.LayoutParams(matchParent, wrapContent)
-        val padding = context.dip(5)
-        setPadding(padding, padding, padding, padding)
+        padding = context.dip(5)
         payload.onChange {
             text = it.first.toString()
             if (it.second != null) {

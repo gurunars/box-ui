@@ -64,11 +64,7 @@ internal class ItemAdapter<ItemType : Item>(
         } else {
             val viewBinder = itemViewBinders.get().entries.find { it.key.ordinal == viewType }?.value
                     ?: defaultViewBinder.get()
-            val field = parent.bindableField(
-                Pair<ItemType?, ItemType?>(null, null),
-                {one, two -> one.first?.getId() == two.first?.getId() &&
-                             one.second?.getId() == two.second?.getId() }
-            )
+            val field = parent.bindableField( Pair<ItemType?, ItemType?>(null, null))
             return object : RecyclerView.ViewHolder(viewBinder(parent.context, field).apply {
                 asRow()
                 setTag(R.id.payloadTag, field)
@@ -84,10 +80,10 @@ internal class ItemAdapter<ItemType : Item>(
         val item = items.get()[position]
         val previousIndex = previousList.indexOfFirst { it.getId() == item.getId() }
         val previousItem = if (previousIndex >= 0) previousList[previousIndex] else null
-
         val field = holder.itemView.getTag(R.id.payloadTag) as BindableField<Pair<ItemType?, ItemType?>>
 
-        field.set(Pair(item, previousItem))
+        // we know for sure because of DiffUtil that the pair was updated
+        field.set(Pair(item, previousItem), true)
     }
 
     override fun getItemViewType(position: Int) =

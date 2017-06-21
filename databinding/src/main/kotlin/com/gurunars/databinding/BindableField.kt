@@ -20,16 +20,12 @@ class BindableField<Type>(
     private val beforeChangeListeners: MutableList<(value: Type) -> Unit> = mutableListOf()
     private val bindings: MutableList<Binding> = mutableListOf()
 
-    fun onChange(beforeChange:((value: Type) -> Unit)? = null, listener: (value: Type) -> Unit): Binding {
-        if (beforeChange != null) {
-            beforeChangeListeners.add(beforeChange)
-        }
+    fun onChange(beforeChange:((value: Type) -> Unit) = {}, listener: (value: Type) -> Unit): Binding {
+        beforeChangeListeners.add(beforeChange)
         listeners.add(listener)
         val binding = object : Binding {
             override fun unbind() {
-                if (beforeChange != null) {
-                    beforeChangeListeners.remove(beforeChange)
-                }
+                beforeChangeListeners.remove(beforeChange)
                 listeners.remove(listener)
                 bindings.remove(this)
             }

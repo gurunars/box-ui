@@ -14,8 +14,8 @@ import com.gurunars.crud_item_list.CrudItemList
 import com.gurunars.item_list.EmptyViewBinder
 import com.gurunars.item_list.ItemViewBinder
 import com.gurunars.item_list.SelectableItem
-import com.gurunars.shortcuts.setPadding
 import org.jetbrains.anko.dip
+import org.jetbrains.anko.padding
 
 
 class ActivityMain : Activity() {
@@ -24,7 +24,7 @@ class ActivityMain : Activity() {
 
         override fun getView(context: Context): TextView {
             return TextView(context).apply {
-                setPadding(context.dip(5))
+                padding = context.dip(5)
             }
         }
 
