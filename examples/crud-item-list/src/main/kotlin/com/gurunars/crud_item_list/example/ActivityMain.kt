@@ -1,50 +1,15 @@
 package com.gurunars.crud_item_list.example
 
 import android.app.Activity
-import android.content.Context
-import android.graphics.Color
 import android.os.Bundle
 import android.support.annotation.IdRes
-import android.view.Gravity
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.TextView
 import com.gurunars.crud_item_list.CrudItemList
-import com.gurunars.item_list.EmptyViewBinder
-import com.gurunars.item_list.ItemViewBinder
-import com.gurunars.item_list.SelectableItem
-import org.jetbrains.anko.dip
-import org.jetbrains.anko.padding
 
 
 class ActivityMain : Activity() {
-
-    internal class AnimalBinder : ItemViewBinder<TextView, SelectableItem<AnimalItem>> {
-
-        override fun getView(context: Context): TextView {
-            return TextView(context).apply {
-                padding = context.dip(5)
-            }
-        }
-
-        override fun bind(itemView: TextView, item: SelectableItem<AnimalItem>, previousItem: SelectableItem<AnimalItem>?) {
-            itemView.text = "$item"
-            itemView.setBackgroundColor(if (item.isSelected) Color.RED else Color.WHITE)
-        }
-
-    }
-
-    internal class EmptyBinder : EmptyViewBinder {
-
-        override fun getView(context: Context): View {
-            val view = TextView(context)
-            view.gravity = Gravity.CENTER
-            view.setText(R.string.empty)
-            return view
-        }
-
-    }
 
     private val model = Model(this)
 
