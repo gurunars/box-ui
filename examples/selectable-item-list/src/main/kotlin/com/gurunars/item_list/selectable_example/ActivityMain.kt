@@ -26,7 +26,8 @@ internal class AnimalBinder: SelectableItemViewBinder<AnimalItem> {
             payload.onChange {
                 setBackgroundColor(if (it.first.isSelected) Color.RED else Color.WHITE)
                 text = it.first.toString()
-                if (it.second != null) {
+                val other = it.second
+                if (other != null && !it.first.item.payloadsEqual(other.item)) {
                     clearAnimation()
                     ValueAnimator().apply {
                         setFloatValues(1.0f, 0.0f, 1.0f)
