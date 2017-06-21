@@ -4,9 +4,19 @@ import android.view.ViewManager
 import org.jetbrains.anko.custom.ankoView
 
 
-inline fun <ItemT: Item> ViewManager.itemList(theme: Int = 0): ItemList<ItemT> = itemList(theme) {}
-inline fun <ItemT: Item> ViewManager.itemList(theme: Int = 0, init: ItemList<ItemT>.() -> Unit) = ankoView({ ItemList(it) }, theme, init)
+fun <ItemT: Item> ViewManager.itemList(
+    itemViewBinderFetcher: (Int) -> ItemViewBinder<ItemT>,
+    emptyViewBinder: EmptyViewBinder = ::defaultEmptyViewBinder,
+    init: ItemList<ItemT>.() -> Unit = {}) =
+ankoView({
+    ItemList(it, itemViewBinderFetcher, emptyViewBinder)
+}, 0, init)
 
 
-inline fun <ItemT: Item> ViewManager.selectableItemList(theme: Int = 0): SelectableItemList<ItemT> = selectableItemList(theme) {}
-inline fun <ItemT: Item> ViewManager.selectableItemList(theme: Int = 0, init: SelectableItemList<ItemT>.() -> Unit) = ankoView({ SelectableItemList(it) }, theme, init)
+fun <ItemT: Item> ViewManager.selectableItemList(
+    itemViewBinderFetcher: (Int) -> SelectableItemViewBinder<ItemT>,
+    emptyViewBinder: EmptyViewBinder = ::defaultEmptyViewBinder,
+    init: SelectableItemList<ItemT>.() -> Unit = {}) =
+ankoView({
+    SelectableItemList(it, itemViewBinderFetcher, emptyViewBinder)
+}, 0, init)

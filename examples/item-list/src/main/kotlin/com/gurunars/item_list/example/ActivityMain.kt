@@ -19,23 +19,30 @@ import com.gurunars.shortcuts.fullSize
 import org.jetbrains.anko.*
 
 
-internal fun animalBinder(context: Context, payload: BindableField<Pair<AnimalItem?, AnimalItem?>>) : View {
-    return TextView(context).apply {
-        layoutParams = ViewGroup.LayoutParams(matchParent, wrapContent)
-        padding = context.dip(5)
-        payload.onChange {
-            text = it.first.toString()
-            if (it.second != null) {
-                clearAnimation()
-                ValueAnimator().apply {
-                    setFloatValues(1.0.toFloat(), 0.0.toFloat(), 1.0.toFloat())
-                    addUpdateListener { animation -> alpha = animation.animatedValue as Float }
-                    duration = 1300
-                    start()
+
+
+internal class AnimalBinder: ItemViewBinder<AnimalItem> {
+
+    override fun bind(context: Context, payload: BindableField<Pair<AnimalItem, AnimalItem?>>): View {
+        return TextView(context).apply {
+            layoutParams = ViewGroup.LayoutParams(matchParent, wrapContent)
+            padding = context.dip(5)
+            payload.onChange {
+                text = it.first.toString()
+                if (it.second != null) {
+                    clearAnimation()
+                    ValueAnimator().apply {
+                        setFloatValues(1.0f, 0.0f, 1.0f)
+                        addUpdateListener { animation -> alpha = animation.animatedValue as Float }
+                        duration = 1300
+                        start()
+                    }
                 }
             }
         }
     }
+
+    override fun getEmptyPayload() = AnimalItem(0, 0, AnimalItem.Type.EMPTY)
 }
 
 
@@ -54,13 +61,9 @@ class ActivityMain : Activity() {
 
         frameLayout {
             layoutParams=ViewGroup.LayoutParams(matchParent, matchParent)
-            itemList=itemList<AnimalItem> {
+            itemList=itemList({ AnimalBinder() }) {
                 fullSize()
                 id=R.id.itemList
-
-                itemViewBinders.set(mutableMapOf<Enum<*>, ItemViewBinder<AnimalItem>>().apply {
-                    AnimalItem.Type.values().forEach { put(it, ::animalBinder) }
-                })
             }
         }
 

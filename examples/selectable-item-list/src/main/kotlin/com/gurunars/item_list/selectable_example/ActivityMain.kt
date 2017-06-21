@@ -17,26 +17,30 @@ import org.jetbrains.anko.*
 import java.util.*
 
 
-internal fun animalBinder(context: Context, payload: BindableField<Pair<SelectableItem<AnimalItem>?, SelectableItem<AnimalItem>?>>) : View {
-    return TextView(context).apply {
-        layoutParams = ViewGroup.LayoutParams(matchParent, wrapContent)
-        padding = context.dip(5)
-        payload.onChange {
-            setBackgroundColor(if (it.first?.isSelected ?: false) Color.RED else Color.WHITE)
-            text = it.first.toString()
-            if (it.second != null) {
-                clearAnimation()
-                ValueAnimator().apply {
-                    setFloatValues(1.0.toFloat(), 0.0.toFloat(), 1.0.toFloat())
-                    addUpdateListener { animation -> alpha = animation.animatedValue as Float }
-                    duration = 1300
-                    start()
+internal class AnimalBinder: SelectableItemViewBinder<AnimalItem> {
+
+    override fun bind(context: Context, payload: BindableField<Pair<SelectableItem<AnimalItem>, SelectableItem<AnimalItem>?>>): View {
+        return TextView(context).apply {
+            layoutParams = ViewGroup.LayoutParams(matchParent, wrapContent)
+            padding = context.dip(5)
+            payload.onChange {
+                setBackgroundColor(if (it.first.isSelected) Color.RED else Color.WHITE)
+                text = it.first.toString()
+                if (it.second != null) {
+                    clearAnimation()
+                    ValueAnimator().apply {
+                        setFloatValues(1.0f, 0.0f, 1.0f)
+                        addUpdateListener { animation -> alpha = animation.animatedValue as Float }
+                        duration = 1300
+                        start()
+                    }
                 }
             }
         }
     }
-}
 
+    override fun getEmptyPayload() = AnimalItem(0, 0, AnimalItem.Type.EMPTY)
+}
 
 
 class ActivityMain : Activity() {
@@ -55,12 +59,9 @@ class ActivityMain : Activity() {
 
         frameLayout {
             fullSize()
-            itemList=selectableItemList<AnimalItem> {
+            itemList=selectableItemList({ AnimalBinder() }) {
                 fullSize()
                 id=R.id.selectableItemList
-                itemViewBinders.set(mutableMapOf<Enum<*>, ItemViewBinder<SelectableItem<AnimalItem>>>().apply {
-                    AnimalItem.Type.values().forEach { put(it, ::animalBinder) }
-                })
             }
         }
 

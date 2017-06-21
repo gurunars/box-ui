@@ -16,10 +16,10 @@ import kotlin.collections.HashSet
 
 private class ClickableItemViewBinder<ItemType : Item>(
         private val selectedItems: BindableField<Set<ItemType>>,
-        private val itemViewBinder: ItemViewBinder<SelectableItem<ItemType>>
+        private val itemViewBinder: SelectableItemViewBinder<ItemType>
 ): ItemViewBinder<SelectableItem<ItemType>> {
 
-    override fun getEmptyPayload() = itemViewBinder.getEmptyPayload()
+    override fun getEmptyPayload() = SelectableItem(itemViewBinder.getEmptyPayload(), false)
 
     override fun bind(context: Context, payload: BindableField<Pair<SelectableItem<ItemType>, SelectableItem<ItemType>?>>): View {
         return itemViewBinder.bind(context, payload).apply {
@@ -57,7 +57,7 @@ private class ClickableItemViewBinder<ItemType : Item>(
 
 class SelectableItemList<ItemType : Item> constructor(
     context: Context,
-    itemViewBinderFetcher: (Int) -> ItemViewBinder<SelectableItem<ItemType>>,
+    itemViewBinderFetcher: (Int) -> SelectableItemViewBinder<ItemType>,
     emptyViewBinder: EmptyViewBinder = ::defaultEmptyViewBinder
 ) : FrameLayout(context) {
 
@@ -77,7 +77,13 @@ class SelectableItemList<ItemType : Item> constructor(
     )
 
     init {
-        itemList<SelectableItem<ItemType>> {
+        itemList(
+            itemViewBinderFetcher={ type -> ClickableItemViewBinder(
+                selectedItems,
+                itemViewBinderFetcher.invoke(type))
+            },
+            emptyViewBinder=emptyViewBinder
+        ) {
             id = R.id.itemList
             fullSize()
 
