@@ -2,7 +2,7 @@ package com.gurunars.item_list.example
 
 import com.gurunars.item_list.Item
 
-internal class AnimalItem(private val id: Long, private var version: Int, private val type: AnimalItem.Type) : Item {
+internal data class AnimalItem(private val id: Long, val version: Int, private val type: AnimalItem.Type) : Item {
 
     override fun getType(): Enum<*> {
         return type
@@ -18,10 +18,6 @@ internal class AnimalItem(private val id: Long, private var version: Int, privat
 
     internal enum class Type {
         MONKEY, TIGER, WOLF, LION, EMPTY
-    }
-
-    fun update() {
-        this.version++
     }
 
     override fun toString(): String {

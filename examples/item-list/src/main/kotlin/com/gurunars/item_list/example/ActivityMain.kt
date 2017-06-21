@@ -16,9 +16,8 @@ import com.gurunars.item_list.ItemList
 import com.gurunars.item_list.ItemViewBinder
 import com.gurunars.item_list.itemList
 import com.gurunars.shortcuts.fullSize
+import com.gurunars.storage.PersistentStorage
 import org.jetbrains.anko.*
-
-
 
 
 internal class AnimalBinder: ItemViewBinder<AnimalItem> {
@@ -47,13 +46,16 @@ internal class AnimalBinder: ItemViewBinder<AnimalItem> {
 
 
 class ActivityMain : Activity() {
+    private val storage= PersistentStorage(this, "main")
+
+    private val items = storage.storageField("items", listOf<AnimalItem>())
+    private val count = storage.storageField("count", 0)
+
     private lateinit var itemList: ItemList<AnimalItem>
-    private val items = ArrayList<AnimalItem>()
-    private var count = 0
 
     private fun add(type: AnimalItem.Type) {
-        items.add(AnimalItem(count.toLong(), 0, type))
-        count++
+        items.set(items.get() + AnimalItem(count.get().toLong(), 0, type))
+        count.set(count.get() + 1)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -64,10 +66,10 @@ class ActivityMain : Activity() {
             itemList=itemList({ AnimalBinder() }) {
                 fullSize()
                 id=R.id.itemList
+                this@ActivityMain.items.bind(items)
             }
         }
 
-        reset()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -95,8 +97,7 @@ class ActivityMain : Activity() {
     }
 
     @StringRes private fun clear(): Int {
-        items.clear()
-        itemList.items.set(items)
+        items.set(listOf())
         return R.string.did_clear
     }
 
@@ -105,35 +106,31 @@ class ActivityMain : Activity() {
         add(AnimalItem.Type.WOLF)
         add(AnimalItem.Type.MONKEY)
         add(AnimalItem.Type.LION)
-        itemList.items.set(items)
         return R.string.did_create
     }
 
     @StringRes private fun delete(): Int {
-        for (i in items.indices.reversed()) {
-            if (i % 2 != 0) {
-                items.removeAt(i)
-            }
-        }
-        itemList.items.set(items)
+        this.items.set(this.items.get().filterIndexed({
+            index, item -> index % 2 == 0
+        }))
         return R.string.did_delete
     }
 
     @StringRes private fun update(): Int {
-        for (i in items.indices) {
-            if (i % 2 != 0) {
-                items[i].update()
-            }
-        }
-        itemList.items.set(items)
+        itemList.items.set(items.get().mapIndexed { index, animalItem ->
+            if (index % 2 != 0)
+                animalItem.copy(version = animalItem.version + 1 )
+            else
+                animalItem
+        } )
         return R.string.did_update
     }
 
     @StringRes private fun moveBottomToTop(): Int {
-        if (items.size <= 0) {
+        if (items.get().isEmpty()) {
             return R.string.no_action
         }
-        itemList.items.set(items.apply {
+        itemList.items.set(items.get().toMutableList().apply {
             val item = get(size - 1)
             removeAt(size - 1)
             add(0, item)
@@ -142,10 +139,10 @@ class ActivityMain : Activity() {
     }
 
     @StringRes private fun moveTopToBottom(): Int {
-        if (items.size <= 0) {
+        if (items.get().isEmpty()) {
             return R.string.no_action
         }
-        itemList.items.set(items.apply {
+        itemList.items.set(items.get().toMutableList().apply {
             val item = get(0)
             removeAt(0)
             add(item)
@@ -154,10 +151,15 @@ class ActivityMain : Activity() {
     }
 
     @StringRes private fun reset(): Int {
-        count = 0
-        items.clear()
+        count.set(0)
+        items.set(listOf())
         create()
         return R.string.did_reset
+    }
+
+    override fun onDetachedFromWindow() {
+        super.onDetachedFromWindow()
+        storage.unbindAll()
     }
 
 }

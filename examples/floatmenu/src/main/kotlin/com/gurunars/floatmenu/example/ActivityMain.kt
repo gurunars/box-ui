@@ -17,7 +17,7 @@ import org.jetbrains.anko.*
 
 
 class ActivityMain : Activity() {
-    private val storage= PersistentStorage(this, "main")
+    private val storage=PersistentStorage(this, "main")
 
     private val buttonColorFlag = storage.storageField("buttonColorFlag", false)
     private val hasOverlay = storage.storageField("hasOverlay", true)
