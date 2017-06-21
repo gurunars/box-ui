@@ -10,9 +10,9 @@ import android.view.*
 import android.widget.TextView
 import android.widget.Toast
 import com.gurunars.databinding.BindableField
-import com.gurunars.databinding.contains
 import com.gurunars.item_list.*
 import com.gurunars.shortcuts.fullSize
+import com.gurunars.storage.PersistentStorage
 import org.jetbrains.anko.*
 import java.util.*
 
@@ -46,13 +46,16 @@ internal class AnimalBinder: SelectableItemViewBinder<AnimalItem> {
 
 class ActivityMain : Activity() {
 
+    private val storage = PersistentStorage(this, "main")
+
+    private val items = storage.storageField("items", listOf<AnimalItem>())
+    private val count = storage.storageField("count", 0)
+
     private lateinit var itemList: SelectableItemList<AnimalItem>
-    private val items = ArrayList<AnimalItem>()
-    private var count = 0
 
     private fun add(type: AnimalItem.Type) {
-        items.add(AnimalItem(count.toLong(), 0, type))
-        count++
+        items.set(items.get() + AnimalItem(count.get().toLong(), 0, type))
+        count.set(count.get() + 1)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -63,10 +66,10 @@ class ActivityMain : Activity() {
             itemList=selectableItemList({ AnimalBinder() }) {
                 fullSize()
                 id=R.id.selectableItemList
+                this@ActivityMain.items.bind(items)
             }
         }
 
-        reset()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -87,23 +90,20 @@ class ActivityMain : Activity() {
     }
 
     private fun updateSelected(): Int {
-        for (item in itemList.selectedItems.get()) {
-            item.update()
-            for (i in items.indices) {
-                if (item.getId() == items[i].getId()) {
-                    items[i] = item
-                    break
-                }
-            }
-        }
-        itemList.items.set(items)
+        val selected = itemList.selectedItems.get()
+        items.set(items.get().map {
+            if (selected.any { item -> it.getId() == item.getId() })
+                it.copy(version = it.version+1)
+            else
+                it
+        })
         return R.string.did_update_selected
     }
 
     private fun deleteSelected(): Int {
-        fun equal(one: AnimalItem, two: AnimalItem) = one.getId() == two.getId()
-        items.removeIf { itemList.selectedItems.get().contains(it, ::equal) }
-        itemList.items.set(items)
+        itemList.items.set(items.get().filterNot {
+            itemList.selectedItems.get().any { item -> it.getId() == item.getId()}
+        })
         return R.string.did_delete_selected
     }
 
@@ -122,13 +122,12 @@ class ActivityMain : Activity() {
         add(AnimalItem.Type.WOLF)
         add(AnimalItem.Type.MONKEY)
         add(AnimalItem.Type.LION)
-        itemList.items.set(items)
         return R.string.did_create
     }
 
     @StringRes private fun reset(): Int {
-        count = 0
-        items.clear()
+        items.set(listOf())
+        count.set(0)
         create()
         return R.string.did_reset
     }

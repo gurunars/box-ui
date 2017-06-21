@@ -47,7 +47,7 @@ internal class AnimalBinder: ItemViewBinder<AnimalItem> {
 
 
 class ActivityMain : Activity() {
-    private val storage= PersistentStorage(this, "main")
+    private val storage = PersistentStorage(this, "main")
 
     private val items = storage.storageField("items", listOf<AnimalItem>())
     private val count = storage.storageField("count", 0)
