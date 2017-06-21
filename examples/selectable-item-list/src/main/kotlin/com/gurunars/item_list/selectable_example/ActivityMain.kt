@@ -1,52 +1,45 @@
 package com.gurunars.item_list.selectable_example
 
+import android.animation.ValueAnimator
 import android.app.Activity
 import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
 import android.support.annotation.StringRes
-import android.view.Gravity
-import android.view.Menu
-import android.view.MenuItem
-import android.view.View
+import android.view.*
 import android.widget.TextView
 import android.widget.Toast
+import com.gurunars.databinding.BindableField
 import com.gurunars.databinding.contains
 import com.gurunars.item_list.*
 import com.gurunars.shortcuts.fullSize
-import org.jetbrains.anko.dip
-import org.jetbrains.anko.frameLayout
-import org.jetbrains.anko.padding
+import org.jetbrains.anko.*
 import java.util.*
 
 
-class ActivityMain : Activity() {
-
-    internal class AnimalBinder : ItemViewBinder<TextView, SelectableItem<AnimalItem>> {
-
-        override fun getView(context: Context): TextView {
-            return TextView(context).apply {
-                padding = context.dip(5)
+internal fun animalBinder(context: Context, payload: BindableField<Pair<SelectableItem<AnimalItem>?, SelectableItem<AnimalItem>?>>) : View {
+    return TextView(context).apply {
+        layoutParams = ViewGroup.LayoutParams(matchParent, wrapContent)
+        padding = context.dip(5)
+        payload.onChange {
+            setBackgroundColor(if (it.first?.isSelected ?: false) Color.RED else Color.WHITE)
+            text = it.first.toString()
+            if (it.second != null) {
+                clearAnimation()
+                ValueAnimator().apply {
+                    setFloatValues(1.0.toFloat(), 0.0.toFloat(), 1.0.toFloat())
+                    addUpdateListener { animation -> alpha = animation.animatedValue as Float }
+                    duration = 1300
+                    start()
+                }
             }
         }
-
-        override fun bind(itemView: TextView, item: SelectableItem<AnimalItem>, previousItem: SelectableItem<AnimalItem>?) {
-            itemView.text = "$item"
-            itemView.setBackgroundColor(if (item.isSelected) Color.RED else Color.WHITE)
-        }
-
     }
+}
 
-    internal class EmptyBinder : EmptyViewBinder {
 
-        override fun getView(context: Context): View {
-            val view = TextView(context)
-            view.gravity = Gravity.CENTER
-            view.setText(R.string.empty)
-            return view
-        }
 
-    }
+class ActivityMain : Activity() {
 
     private lateinit var itemList: SelectableItemList<AnimalItem>
     private val items = ArrayList<AnimalItem>()
@@ -65,10 +58,9 @@ class ActivityMain : Activity() {
             itemList=selectableItemList<AnimalItem> {
                 fullSize()
                 id=R.id.selectableItemList
-                itemViewBinders.set(mutableMapOf<Enum<*>, ItemViewBinder<*, SelectableItem<AnimalItem>>>().apply {
-                    AnimalItem.Type.values().forEach { put(it, AnimalBinder()) }
+                itemViewBinders.set(mutableMapOf<Enum<*>, ItemViewBinder<SelectableItem<AnimalItem>>>().apply {
+                    AnimalItem.Type.values().forEach { put(it, ::animalBinder) }
                 })
-                emptyViewBinder.set(EmptyBinder())
             }
         }
 
