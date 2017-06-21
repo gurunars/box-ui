@@ -5,35 +5,26 @@ import android.support.v7.util.DiffUtil
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import com.esotericsoftware.kryo.Kryo
 import com.gurunars.databinding.BindableField
 import com.gurunars.databinding.bindableField
 import com.gurunars.shortcuts.asRow
 import com.gurunars.shortcuts.fullSize
-import org.jetbrains.anko.dip
-import org.jetbrains.anko.padding
 import org.objenesis.strategy.StdInstantiatorStrategy
 
 typealias EmptyViewBinder = (context: Context) -> View
-typealias ItemViewBinder<ItemType> =
-(context: Context, payload: BindableField<Pair<ItemType, ItemType?>>) -> View
 
 
-private fun defaultItemViewBinder(context: Context, payload: BindableField<Pair<Any, Any?>>) : View {
-    return TextView(context).apply {
-        padding = context.dip(5)
-        payload.onChange {
-            text = it.first.toString()
-        }
-    }
+interface ItemViewBinder<ItemType> {
+    fun bind(context: Context, payload: BindableField<Pair<ItemType, ItemType?>>): View
+    fun getEmptyPayload(): ItemType
 }
 
 
 internal class ItemAdapter<ItemType : Item>(
         private val items: BindableField<List<ItemType>>,
-        private val emptyViewBinder: BindableField<EmptyViewBinder>,
-        private val itemViewBinders: BindableField<Map<Enum<*>, Pair<ItemViewBinder<ItemType>, ItemType>>>
+        private val emptyViewBinder: EmptyViewBinder,
+        private val itemViewBinderFetcher: (Int) -> ItemViewBinder<ItemType>
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var previousList: List<ItemType> = ArrayList()
@@ -71,32 +62,16 @@ internal class ItemAdapter<ItemType : Item>(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         if (viewType == EMPTY_TYPE) {
-            return object : RecyclerView.ViewHolder(emptyViewBinder.get()(parent.context).apply {
+            return object : RecyclerView.ViewHolder(emptyViewBinder(parent.context).apply {
                 fullSize()
             }) {}
         } else {
-            val pair = itemViewBinders.get().entries.find { it.key.ordinal == viewType }?.value
-
-            fun<SubType> getHolder(
-                    viewBinder: ItemViewBinder<SubType>,
-                    field: BindableField<Pair<SubType, SubType?>>): RecyclerView.ViewHolder {
-                return object : RecyclerView.ViewHolder(viewBinder(parent.context, field).apply {
-                    asRow()
-                    setTag(R.id.payloadTag, field)
-                }) {}
-            }
-
-            if (pair == null) {
-                return getHolder(
-                    ::defaultItemViewBinder,
-                    parent.bindableField(Pair<Any, Any?>("Nothing", null))
-                )
-            } else {
-                return getHolder(
-                    pair.first,
-                    parent.bindableField(Pair<ItemType, ItemType?>(pair.second, null))
-                )
-            }
+            val binder = itemViewBinderFetcher.invoke(viewType)
+            val field = parent.bindableField(Pair<ItemType, ItemType?>(binder.getEmptyPayload(), null))
+            return object : RecyclerView.ViewHolder(binder.bind(parent.context, field).apply {
+                asRow()
+                setTag(R.id.payloadTag, field)
+            }) {}
         }
     }
 

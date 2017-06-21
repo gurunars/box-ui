@@ -24,7 +24,11 @@ internal fun defaultEmptyViewBinder(context: Context): View {
 }
 
 
-class ItemList<ItemType : Item> constructor(context: Context) : FrameLayout(context) {
+class ItemList<ItemType : Item> constructor(
+    context: Context,
+    itemViewBinderFetcher: (Int) -> ItemViewBinder<ItemType>,
+    emptyViewBinder: EmptyViewBinder = ::defaultEmptyViewBinder
+) : FrameLayout(context) {
 
     private val kryo = Kryo().apply {
         instantiatorStrategy = Kryo.DefaultInstantiatorStrategy(StdInstantiatorStrategy())
@@ -35,11 +39,6 @@ class ItemList<ItemType : Item> constructor(context: Context) : FrameLayout(cont
         {one, two -> equal(one, two) },
         {item -> kryo.copy(ArrayList(item))}
     )
-
-    // TODO: default view binder must be passed from selectable list
-
-    val emptyViewBinder = bindableField<EmptyViewBinder>(::defaultEmptyViewBinder)
-    val itemViewBinders = bindableField<Map<Enum<*>, Pair<ItemViewBinder<ItemType>, ItemType>>>(mapOf())
 
     init {
 
@@ -52,7 +51,7 @@ class ItemList<ItemType : Item> constructor(context: Context) : FrameLayout(cont
             adapter = ItemAdapter<ItemType>(
                 items,
                 emptyViewBinder,
-                itemViewBinders
+                itemViewBinderFetcher
             )
             layoutManager = LinearLayoutManager(context).apply {
                 orientation = LinearLayoutManager.VERTICAL

@@ -1,31 +1,28 @@
 package com.gurunars.item_list
 
 import android.content.Context
-import android.graphics.Color
 import android.os.Bundle
 import android.os.Parcelable
 import android.view.View
 import android.widget.FrameLayout
-import android.widget.TextView
 import com.esotericsoftware.kryo.Kryo
 import com.gurunars.databinding.BindableField
 import com.gurunars.databinding.bindableField
 import com.gurunars.shortcuts.fullSize
-import org.jetbrains.anko.dip
-import org.jetbrains.anko.padding
 import org.objenesis.strategy.StdInstantiatorStrategy
 import java.util.*
 import kotlin.collections.HashSet
 
 
-private fun<ItemType : Item> clickableDecorator(
-        itemViewBinder: ItemViewBinder<SelectableItem<ItemType>>,
-        selectedItems: BindableField<Set<ItemType>>): ItemViewBinder<SelectableItem<ItemType>> {
-    fun clickableWrapper(
-            context: Context,
-            payload: BindableField<Pair<SelectableItem<ItemType>, SelectableItem<ItemType>?>>
-    ): View {
-        return itemViewBinder(context, payload).apply {
+private class ClickableItemViewBinder<ItemType : Item>(
+        private val selectedItems: BindableField<Set<ItemType>>,
+        private val itemViewBinder: ItemViewBinder<SelectableItem<ItemType>>
+): ItemViewBinder<SelectableItem<ItemType>> {
+
+    override fun getEmptyPayload() = itemViewBinder.getEmptyPayload()
+
+    override fun bind(context: Context, payload: BindableField<Pair<SelectableItem<ItemType>, SelectableItem<ItemType>?>>): View {
+        return itemViewBinder.bind(context, payload).apply {
             isClickable=true
             setOnClickListener {
                 val item = payload.get().first
@@ -47,19 +44,6 @@ private fun<ItemType : Item> clickableDecorator(
             }
         }
     }
-
-    return ::clickableWrapper
-}
-
-
-private fun<ItemType: Item> defaultSelectableItemViewBinder(context: Context, payload: BindableField<Pair<SelectableItem<ItemType>, SelectableItem<ItemType>?>>) : View {
-    return TextView(context).apply {
-        padding = context.dip(5)
-        payload.onChange {
-            text = it.first.toString()
-            setBackgroundColor(if (it.first.isSelected) Color.RED else Color.TRANSPARENT)
-        }
-    }
 }
 
 
@@ -70,7 +54,12 @@ private fun<ItemType: Item> defaultSelectableItemViewBinder(context: Context, pa
  *
  * @param <ItemType> class describing item payload
  */
-class SelectableItemList<ItemType : Item> constructor(context: Context) : FrameLayout(context) {
+
+class SelectableItemList<ItemType : Item> constructor(
+    context: Context,
+    itemViewBinderFetcher: (Int) -> ItemViewBinder<SelectableItem<ItemType>>,
+    emptyViewBinder: EmptyViewBinder = ::defaultEmptyViewBinder
+) : FrameLayout(context) {
 
     private val kryo = Kryo().apply {
         instantiatorStrategy = Kryo.DefaultInstantiatorStrategy(StdInstantiatorStrategy())
@@ -87,42 +76,12 @@ class SelectableItemList<ItemType : Item> constructor(context: Context) : FrameL
         {item -> kryo.copy(ArrayList(item))}
     )
 
-    val emptyViewBinder = bindableField(::defaultEmptyViewBinder)
-    val defaultViewBinder = bindableField<ItemViewBinder<SelectableItem<ItemType>>>(
-        ::defaultSelectableItemViewBinder
-    )
-    val itemViewBinders = bindableField<
-        Map<Enum<*>,
-        Pair<ItemViewBinder<SelectableItem<ItemType>>, SelectableItem<ItemType>>>
-    >(mapOf())
-
     init {
         itemList<SelectableItem<ItemType>> {
             id = R.id.itemList
             fullSize()
 
             val self = this@SelectableItemList
-
-            self.emptyViewBinder.onChange {
-                emptyViewBinder.set(it)
-            }
-
-            self.defaultViewBinder.onChange {
-                defaultViewBinder.set(clickableDecorator(it, selectedItems))
-            }
-
-            self.itemViewBinders.onChange {
-                itemViewBinders.set(mutableMapOf<
-                    Enum<*>,
-                    Pair<ItemViewBinder<SelectableItem<ItemType>>, SelectableItem<ItemType>>
-                >().apply {
-                    it.forEach { type, pair ->
-                        run {
-                            put(type, Pair(clickableDecorator(pair.first, selectedItems), pair.second))
-                        }
-                    }
-                })
-            }
 
             fun isSelected(item: ItemType): Boolean {
                 return selectedItems.get().find { item.getId() == it.getId() } != null
