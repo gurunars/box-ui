@@ -28,7 +28,8 @@ internal class AnimalBinder: ItemViewBinder<AnimalItem> {
             padding = context.dip(5)
             payload.onChange {
                 text = it.first.toString()
-                if (it.second != null) {
+                val other = it.second
+                if (other != null && !it.first.payloadsEqual(other)) {
                     clearAnimation()
                     ValueAnimator().apply {
                         setFloatValues(1.0f, 0.0f, 1.0f)
@@ -111,7 +112,7 @@ class ActivityMain : Activity() {
 
     @StringRes private fun delete(): Int {
         this.items.set(this.items.get().filterIndexed({
-            index, item -> index % 2 == 0
+            index, _ -> index % 2 == 0
         }))
         return R.string.did_delete
     }
