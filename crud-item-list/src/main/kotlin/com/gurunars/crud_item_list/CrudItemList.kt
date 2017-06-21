@@ -9,14 +9,17 @@ import com.gurunars.databinding.BindableField
 import com.gurunars.databinding.bindableField
 import com.gurunars.floatmenu.FloatMenu
 import com.gurunars.floatmenu.floatMenu
-import com.gurunars.item_list.Item
-import com.gurunars.item_list.SelectableItemList
+import com.gurunars.item_list.*
 import com.gurunars.shortcuts.fullSize
 
 /**
  * Widget to be used for manipulating a collection of items.
  */
-class CrudItemList<ItemType : Item>  constructor(context: Context) : FrameLayout(context) {
+class CrudItemList<ItemType : Item>  constructor(
+    context: Context,
+    itemViewBinderFetcher: (Int) -> SelectableItemViewBinder<ItemType>,
+    emptyViewBinder: EmptyViewBinder = ::defaultEmptyViewBinder
+) : FrameLayout(context) {
 
     data class IconColorBundle(
         val bgColor: Int = Color.RED,
@@ -40,7 +43,7 @@ class CrudItemList<ItemType : Item>  constructor(context: Context) : FrameLayout
 
     init {
 
-        itemList = SelectableItemList<ItemType>(context).apply {
+        itemList = SelectableItemList(context, itemViewBinderFetcher, emptyViewBinder).apply {
             fullSize()
             id = R.id.rawItemList
         }

@@ -15,7 +15,7 @@ import org.jetbrains.anko.recyclerview.v7.recyclerView
 import org.objenesis.strategy.StdInstantiatorStrategy
 
 
-internal fun defaultEmptyViewBinder(context: Context): View {
+fun defaultEmptyViewBinder(context: Context): View {
     return TextView(context).apply {
         fullSize()
         setText(R.string.empty)
