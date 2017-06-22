@@ -11,10 +11,10 @@ import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
 import com.gurunars.crud_item_list.CrudItemList
+import com.gurunars.crud_item_list.crudItemList
 import com.gurunars.databinding.BindableField
 import com.gurunars.item_list.SelectableItem
 import com.gurunars.item_list.SelectableItemViewBinder
-import com.gurunars.item_list.crudItemList
 import com.gurunars.shortcuts.color
 import com.gurunars.shortcuts.fullSize
 import com.gurunars.storage.PersistentStorage

@@ -23,8 +23,6 @@ internal class ContextualMenu<ItemType: Item> constructor(
     itemEditListener: BindableField<(item: ItemType) -> Unit>
 ) : FrameLayout(context) {
 
-    private val ACTION = 42
-
     init {
 
         isLeftHanded.onChange {
@@ -38,7 +36,7 @@ internal class ContextualMenu<ItemType: Item> constructor(
             iconView {
                 id=R.id.moveUp
             }.lparams {
-                setTag(ACTION, ActionMoveUp<ItemType>())
+                setTag(R.id.action, ActionMoveUp<ItemType>())
                 isLeftHanded.onChange {
                     if (it) {
                         alignParentLeft()
@@ -58,7 +56,7 @@ internal class ContextualMenu<ItemType: Item> constructor(
             iconView {
                 id=R.id.moveDown
             }.lparams {
-                setTag(ACTION, ActionMoveDown<ItemType>())
+                setTag(R.id.action, ActionMoveDown<ItemType>())
                 alignParentBottom()
                 isLeftHanded.onChange {
                     if (it) {
@@ -78,7 +76,7 @@ internal class ContextualMenu<ItemType: Item> constructor(
             iconView {
                 id=R.id.delete
             }.lparams {
-                setTag(ACTION, ActionDelete<ItemType>())
+                setTag(R.id.action, ActionDelete<ItemType>())
                 alignParentBottom()
                 isLeftHanded.onChange {
                     if (it) {
@@ -96,7 +94,7 @@ internal class ContextualMenu<ItemType: Item> constructor(
             iconView {
                 id=R.id.selectAll
             }.lparams {
-                setTag(ACTION, ActionSelectAll<ItemType>())
+                setTag(R.id.action, ActionSelectAll<ItemType>())
                 alignParentBottom()
                 isLeftHanded.onChange {
                     if (it) {
@@ -113,7 +111,7 @@ internal class ContextualMenu<ItemType: Item> constructor(
             iconView {
                 id=R.id.edit
             }.lparams {
-                setTag(ACTION, ActionEdit({ payload: ItemType -> itemEditListener.get()(payload) }))
+                setTag(R.id.action, ActionEdit({ payload: ItemType -> itemEditListener.get()(payload) }))
                 alignParentBottom()
                 isLeftHanded.onChange {
                     if (it) {
@@ -136,7 +134,7 @@ internal class ContextualMenu<ItemType: Item> constructor(
                     width=dip(45)
                     height=dip(45)
                 }
-                val action = getTag(ACTION) as Action<ItemType>
+                val action = getTag(R.id.action) as Action<ItemType>
 
                 fun configureAbility() {
                     isEnabled = action.canPerform(items.get(), selectedItems.get())

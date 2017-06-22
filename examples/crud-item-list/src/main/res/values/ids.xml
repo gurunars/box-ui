@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="customView" type="id" />
+    <item name="monkey" type="id" />
+    <item name="lion" type="id" />
+    <item name="tiger" type="id" />
+    <item name="wolf" type="id" />
+</resources>

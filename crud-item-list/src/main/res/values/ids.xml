@@ -5,4 +5,11 @@
     <item name="rawItemList" type="id" />
     <item name="floatingMenu" type="id" />
     <item name="creationMenu" type="id" />
+    <item name="menuContainer" type="id" />
+    <item name="moveUp" type="id" />
+    <item name="moveDown" type="id" />
+    <item name="delete" type="id" />
+    <item name="selectAll" type="id" />
+    <item name="edit" type="id" />
+    <item name="action" type="id" />
 </resources>
