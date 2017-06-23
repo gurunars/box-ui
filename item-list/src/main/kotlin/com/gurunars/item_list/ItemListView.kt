@@ -2,10 +2,7 @@ package com.gurunars.item_list
 
 import android.content.Context
 import android.support.v7.widget.LinearLayoutManager
-import android.view.Gravity
-import android.view.View
 import android.widget.FrameLayout
-import android.widget.TextView
 import com.esotericsoftware.kryo.Kryo
 import com.gurunars.databinding.bindableField
 import com.gurunars.shortcuts.fullSize
@@ -15,19 +12,10 @@ import org.jetbrains.anko.recyclerview.v7.recyclerView
 import org.objenesis.strategy.StdInstantiatorStrategy
 
 
-fun defaultEmptyViewBinder(context: Context): View {
-    return TextView(context).apply {
-        fullSize()
-        setText(R.string.empty)
-        gravity = Gravity.CENTER
-    }
-}
-
-
 class ItemListView<ItemType : Item> constructor(
-    context: Context,
-    itemViewBinderFetcher: (Int) -> ItemViewBinder<ItemType>,
-    emptyViewBinder: EmptyViewBinder = ::defaultEmptyViewBinder
+        context: Context,
+        itemViewBinderFetcher: (Int) -> ItemViewBinder<ItemType>,
+        emptyViewBinder: EmptyViewBinder = ::defaultEmptyViewBinder
 ) : FrameLayout(context) {
 
     private val kryo = Kryo().apply {

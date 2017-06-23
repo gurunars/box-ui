@@ -1,9 +1,7 @@
 package com.gurunars.item_list
 
-import android.content.Context
 import android.support.v7.util.DiffUtil
 import android.support.v7.widget.RecyclerView
-import android.view.View
 import android.view.ViewGroup
 import com.esotericsoftware.kryo.Kryo
 import com.gurunars.databinding.BindableField
@@ -11,14 +9,6 @@ import com.gurunars.databinding.bindableField
 import com.gurunars.shortcuts.asRow
 import com.gurunars.shortcuts.fullSize
 import org.objenesis.strategy.StdInstantiatorStrategy
-
-typealias EmptyViewBinder = (context: Context) -> View
-
-
-interface ItemViewBinder<ItemType> {
-    fun bind(context: Context, payload: BindableField<Pair<ItemType, ItemType?>>): View
-    fun getEmptyPayload(): ItemType
-}
 
 
 internal class ItemAdapter<ItemType : Item>(

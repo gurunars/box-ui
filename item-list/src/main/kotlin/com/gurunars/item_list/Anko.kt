@@ -5,18 +5,18 @@ import org.jetbrains.anko.custom.ankoView
 
 
 fun <ItemT: Item> ViewManager.itemListView(
-    itemViewBinderFetcher: (Int) -> ItemViewBinder<ItemT>,
-    emptyViewBinder: EmptyViewBinder = ::defaultEmptyViewBinder,
-    init: ItemListView<ItemT>.() -> Unit = {}) =
+        itemViewBinderFetcher: (Int) -> ItemViewBinder<ItemT>,
+        emptyViewBinder: EmptyViewBinder = ::defaultEmptyViewBinder,
+        init: ItemListView<ItemT>.() -> Unit = {}) =
 ankoView({
     ItemListView(it, itemViewBinderFetcher, emptyViewBinder)
 }, 0, init)
 
 
 fun <ItemT: Item> ViewManager.selectableItemListView(
-    itemViewBinderFetcher: (Int) -> SelectableItemViewBinder<ItemT>,
-    emptyViewBinder: EmptyViewBinder = ::defaultEmptyViewBinder,
-    init: SelectableItemListView<ItemT>.() -> Unit = {}) =
+        itemViewBinderFetcher: (Int) -> SelectableItemViewBinder<ItemT>,
+        emptyViewBinder: EmptyViewBinder = ::defaultEmptyViewBinder,
+        init: SelectableItemListView<ItemT>.() -> Unit = {}) =
 ankoView({
     SelectableItemListView(it, itemViewBinderFetcher, emptyViewBinder)
 }, 0, init)
