@@ -82,28 +82,36 @@ class ActivityMain : Activity() {
     }
 
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        this.crudItemList = crudItemList({ AnimalBinder() }) {
+        this.crudItemList = crudItemList(
+            { AnimalBinder() },
+            { item -> this@ActivityMain.items.set(
+                items.get().toMutableList().apply {
+                    val id = indexOfFirst { item.getId() == it.getId() }
+                    set(id, item.copy(version = item.version+1))
+                })
+            }
+        ) {
             fullSize()
             id=R.id.customView
+            this@ActivityMain.items.bind(items)
             actionIcon.set(CrudItemList.IconColorBundle(
-                fgColor=R.color.Yellow,
-                bgColor=R.color.Blue
+                fgColor=color(R.color.Yellow),
+                bgColor=color(R.color.Blue)
             ))
             contextualIcon.set(CrudItemList.IconColorBundle(
-                bgColor=R.color.Black,
-                fgColor=R.color.White
+                bgColor=color(R.color.Black),
+                fgColor=color(R.color.White)
             ))
             createCloseIcon.set(CrudItemList.IconColorBundle(
-                bgColor=R.color.Red,
-                fgColor=R.color.White
+                bgColor=color(R.color.Red),
+                fgColor=color(R.color.White)
             ))
             openIcon.set(CrudItemList.IconColorBundle(
-                bgColor=R.color.Green,
-                fgColor=R.color.Yellow
+                bgColor=color(R.color.Green),
+                fgColor=color(R.color.Yellow)
             ))
             creationMenu.set(UI(false) {
                 relativeLayout {
@@ -121,6 +129,7 @@ class ActivityMain : Activity() {
                             padding=dip(10)
                             setOnClickListener {
                                 add(itemType)
+                                dismiss()
                             }
                         }.lparams {
                             margin=dip(10)
@@ -162,12 +171,6 @@ class ActivityMain : Activity() {
                     }
                 }
             }.view)
-            itemEditListener.set({ item -> this@ActivityMain.items.set(
-                items.get().toMutableList().apply {
-                    val id = indexOfFirst { item.getId() == it.getId() }
-                    set(id, item.copy(version = item.version+1))
-                })
-            })
         }
 
     }

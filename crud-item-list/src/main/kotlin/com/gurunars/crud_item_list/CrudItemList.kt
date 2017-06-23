@@ -18,6 +18,7 @@ import com.gurunars.shortcuts.fullSize
 class CrudItemList<ItemType : Item>  constructor(
     context: Context,
     itemViewBinderFetcher: (Int) -> SelectableItemViewBinder<ItemType>,
+    itemEditListener: (item: ItemType) -> Unit,
     emptyViewBinder: EmptyViewBinder = ::defaultEmptyViewBinder
 ) : FrameLayout(context) {
 
@@ -33,7 +34,6 @@ class CrudItemList<ItemType : Item>  constructor(
     val isLeftHanded = bindableField(false)
     val creationMenu = bindableField(View(context))
     val isSortable = bindableField(true)
-    val itemEditListener = bindableField<(item: ItemType) -> Unit>({})
 
     val items: BindableField<List<ItemType>>
 
@@ -93,10 +93,13 @@ class CrudItemList<ItemType : Item>  constructor(
             }
 
             isOpen.onChange {
+                if (!it) itemList.selectedItems.set(hashSetOf())
                 hasOverlay.set(itemList.selectedItems.get().isEmpty())
                 configureMenuView()
                 configureCloseIcon()
             }
+
+            itemList.selectedItems.onChange { isOpen.set(it.isNotEmpty()) }
 
             creationMenu.onChange {
                 configureMenuView()
@@ -113,6 +116,11 @@ class CrudItemList<ItemType : Item>  constructor(
             createCloseIcon.onChange { configureCloseIcon() }
         }
 
+    }
+
+    fun dismiss() {
+        floatingMenu.isOpen.set(false)
+        itemList.selectedItems.set(hashSetOf())
     }
 
 }
