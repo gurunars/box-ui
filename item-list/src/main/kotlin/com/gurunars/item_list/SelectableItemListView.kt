@@ -55,7 +55,7 @@ private class ClickableItemViewBinder<ItemType : Item>(
  * @param <ItemType> class describing item payload
  */
 
-class SelectableItemList<ItemType : Item> constructor(
+class SelectableItemListView<ItemType : Item> constructor(
     context: Context,
     itemViewBinderFetcher: (Int) -> SelectableItemViewBinder<ItemType>,
     emptyViewBinder: EmptyViewBinder = ::defaultEmptyViewBinder
@@ -77,7 +77,7 @@ class SelectableItemList<ItemType : Item> constructor(
     )
 
     init {
-        itemList(
+        itemListView(
             itemViewBinderFetcher={ type -> ClickableItemViewBinder(
                 selectedItems,
                 itemViewBinderFetcher.invoke(type))
@@ -87,7 +87,7 @@ class SelectableItemList<ItemType : Item> constructor(
             id = R.id.itemList
             fullSize()
 
-            val self = this@SelectableItemList
+            val self = this@SelectableItemListView
 
             fun isSelected(item: ItemType): Boolean {
                 return selectedItems.get().find { item.getId() == it.getId() } != null

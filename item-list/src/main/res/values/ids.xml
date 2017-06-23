@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <item name="recyclerView" type="id" />
-    <item name="itemList" type="id" />
+    <item name="itemListView" type="id" />
     <item name="payloadTag" type="id" />
 </resources>

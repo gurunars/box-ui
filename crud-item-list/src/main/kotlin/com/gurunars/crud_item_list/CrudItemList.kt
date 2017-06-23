@@ -39,23 +39,23 @@ class CrudItemList<ItemType : Item>  constructor(
 
     private val contextualMenu: ContextualMenu<ItemType>
     private val floatingMenu: FloatMenu
-    private val itemList: SelectableItemList<ItemType>
+    private val itemListView: SelectableItemListView<ItemType>
 
     init {
 
-        itemList = SelectableItemList(context, itemViewBinderFetcher, emptyViewBinder).apply {
+        itemListView = SelectableItemListView(context, itemViewBinderFetcher, emptyViewBinder).apply {
             fullSize()
             id = R.id.rawItemList
         }
 
-        items = itemList.items
+        items = itemListView.items
 
         contextualMenu = ContextualMenu(context,
             actionIcon,
             isLeftHanded,
             isSortable,
-            itemList.items,
-            itemList.selectedItems,
+            itemListView.items,
+            itemListView.selectedItems,
             itemEditListener
         ).apply {
             fullSize()
@@ -65,11 +65,11 @@ class CrudItemList<ItemType : Item>  constructor(
         floatingMenu = floatMenu {
             fullSize()
             id = R.id.floatingMenu
-            contentView.set(itemList)
+            contentView.set(itemListView)
             this@CrudItemList.isLeftHanded.bind(isLeftHanded)
 
             fun configureCloseIcon() {
-                if (itemList.selectedItems.get().isEmpty()) {
+                if (itemListView.selectedItems.get().isEmpty()) {
                     closeIcon.set(IconView.Icon(
                         icon = R.drawable.ic_menu_close,
                         bgColor = createCloseIcon.get().bgColor,
@@ -85,7 +85,7 @@ class CrudItemList<ItemType : Item>  constructor(
             }
 
             fun configureMenuView() {
-                if (itemList.selectedItems.get().isEmpty()) {
+                if (itemListView.selectedItems.get().isEmpty()) {
                     menuView.set(creationMenu.get())
                 } else {
                     menuView.set(contextualMenu)
@@ -94,15 +94,15 @@ class CrudItemList<ItemType : Item>  constructor(
 
             isOpen.onChange {
                 if (it) {
-                    hasOverlay.set(itemList.selectedItems.get().isEmpty())
+                    hasOverlay.set(itemListView.selectedItems.get().isEmpty())
                     configureMenuView()
                     configureCloseIcon()
                 } else {
-                    itemList.selectedItems.set(hashSetOf())
+                    itemListView.selectedItems.set(hashSetOf())
                 }
             }
 
-            itemList.selectedItems.onChange { isOpen.set(it.isNotEmpty()) }
+            itemListView.selectedItems.onChange { isOpen.set(it.isNotEmpty()) }
 
             creationMenu.onChange {
                 configureMenuView()
@@ -123,7 +123,7 @@ class CrudItemList<ItemType : Item>  constructor(
 
     fun dismiss() {
         floatingMenu.isOpen.set(false)
-        itemList.selectedItems.set(hashSetOf())
+        itemListView.selectedItems.set(hashSetOf())
     }
 
 }

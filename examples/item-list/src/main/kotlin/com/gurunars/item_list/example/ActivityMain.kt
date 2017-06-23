@@ -12,9 +12,9 @@ import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
 import com.gurunars.databinding.BindableField
-import com.gurunars.item_list.ItemList
+import com.gurunars.item_list.ItemListView
 import com.gurunars.item_list.ItemViewBinder
-import com.gurunars.item_list.itemList
+import com.gurunars.item_list.itemListView
 import com.gurunars.shortcuts.fullSize
 import com.gurunars.storage.PersistentStorage
 import org.jetbrains.anko.*
@@ -52,7 +52,7 @@ class ActivityMain : Activity() {
     private val items = storage.storageField("items", listOf<AnimalItem>())
     private val count = storage.storageField("count", 0)
 
-    private lateinit var itemList: ItemList<AnimalItem>
+    private lateinit var itemListView: ItemListView<AnimalItem>
 
     private fun add(type: AnimalItem.Type) {
         items.set(items.get() + AnimalItem(count.get().toLong(), 0, type))
@@ -64,7 +64,7 @@ class ActivityMain : Activity() {
 
         frameLayout {
             layoutParams=ViewGroup.LayoutParams(matchParent, matchParent)
-            itemList=itemList({ AnimalBinder() }) {
+            itemListView = itemListView({ AnimalBinder() }) {
                 fullSize()
                 id=R.id.itemList
                 this@ActivityMain.items.bind(items)
@@ -118,7 +118,7 @@ class ActivityMain : Activity() {
     }
 
     @StringRes private fun update(): Int {
-        itemList.items.set(items.get().mapIndexed { index, animalItem ->
+        itemListView.items.set(items.get().mapIndexed { index, animalItem ->
             if (index % 2 != 0)
                 animalItem.copy(version = animalItem.version + 1 )
             else
@@ -131,7 +131,7 @@ class ActivityMain : Activity() {
         if (items.get().isEmpty()) {
             return R.string.no_action
         }
-        itemList.items.set(items.get().toMutableList().apply {
+        itemListView.items.set(items.get().toMutableList().apply {
             val item = get(size - 1)
             removeAt(size - 1)
             add(0, item)
@@ -143,7 +143,7 @@ class ActivityMain : Activity() {
         if (items.get().isEmpty()) {
             return R.string.no_action
         }
-        itemList.items.set(items.get().toMutableList().apply {
+        itemListView.items.set(items.get().toMutableList().apply {
             val item = get(0)
             removeAt(0)
             add(item)

@@ -51,7 +51,7 @@ class ActivityMain : Activity() {
     private val items = storage.storageField("items", listOf<AnimalItem>())
     private val count = storage.storageField("count", 0)
 
-    private lateinit var itemList: SelectableItemList<AnimalItem>
+    private lateinit var itemListView: SelectableItemListView<AnimalItem>
 
     private fun add(type: AnimalItem.Type) {
         items.set(items.get() + AnimalItem(count.get().toLong(), 0, type))
@@ -63,7 +63,7 @@ class ActivityMain : Activity() {
 
         frameLayout {
             fullSize()
-            itemList=selectableItemList({ AnimalBinder() }) {
+            itemListView = selectableItemListView({ AnimalBinder() }) {
                 fullSize()
                 id=R.id.selectableItemList
                 this@ActivityMain.items.bind(items)
@@ -90,7 +90,7 @@ class ActivityMain : Activity() {
     }
 
     private fun updateSelected(): Int {
-        val selected = itemList.selectedItems.get()
+        val selected = itemListView.selectedItems.get()
         items.set(items.get().map {
             if (selected.any { item -> it.getId() == item.getId() })
                 it.copy(version = it.version+1)
@@ -101,8 +101,8 @@ class ActivityMain : Activity() {
     }
 
     private fun deleteSelected(): Int {
-        itemList.items.set(items.get().filterNot {
-            itemList.selectedItems.get().any { item -> it.getId() == item.getId()}
+        itemListView.items.set(items.get().filterNot {
+            itemListView.selectedItems.get().any { item -> it.getId() == item.getId()}
         })
         return R.string.did_delete_selected
     }
@@ -113,7 +113,7 @@ class ActivityMain : Activity() {
     }
 
     @StringRes private fun clearSelection(): Int {
-        itemList.selectedItems.set(HashSet<AnimalItem>())
+        itemListView.selectedItems.set(HashSet<AnimalItem>())
         return R.string.did_clear_selection
     }
 

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <item name="contextualMenu" type="id" />
-    <item name="itemList" type="id" />
+    <item name="itemListView" type="id" />
     <item name="rawItemList" type="id" />
     <item name="floatingMenu" type="id" />
     <item name="creationMenu" type="id" />

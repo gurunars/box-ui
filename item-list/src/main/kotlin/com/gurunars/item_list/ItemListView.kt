@@ -24,7 +24,7 @@ fun defaultEmptyViewBinder(context: Context): View {
 }
 
 
-class ItemList<ItemType : Item> constructor(
+class ItemListView<ItemType : Item> constructor(
     context: Context,
     itemViewBinderFetcher: (Int) -> ItemViewBinder<ItemType>,
     emptyViewBinder: EmptyViewBinder = ::defaultEmptyViewBinder
