@@ -93,10 +93,13 @@ class CrudItemList<ItemType : Item>  constructor(
             }
 
             isOpen.onChange {
-                if (!it) itemList.selectedItems.set(hashSetOf())
-                hasOverlay.set(itemList.selectedItems.get().isEmpty())
-                configureMenuView()
-                configureCloseIcon()
+                if (it) {
+                    hasOverlay.set(itemList.selectedItems.get().isEmpty())
+                    configureMenuView()
+                    configureCloseIcon()
+                } else {
+                    itemList.selectedItems.set(hashSetOf())
+                }
             }
 
             itemList.selectedItems.onChange { isOpen.set(it.isNotEmpty()) }
