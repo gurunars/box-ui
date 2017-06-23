@@ -84,6 +84,7 @@ class ActivityMain : Activity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        storage.load()
 
         this.crudItemList = crudItemList(
             { AnimalBinder() },

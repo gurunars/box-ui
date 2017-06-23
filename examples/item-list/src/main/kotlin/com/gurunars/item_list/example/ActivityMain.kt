@@ -61,6 +61,7 @@ class ActivityMain : Activity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        storage.load()
 
         frameLayout {
             layoutParams=ViewGroup.LayoutParams(matchParent, matchParent)
