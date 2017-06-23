@@ -32,12 +32,10 @@ class SelectableItemListView<ItemType : Item> constructor(
 
     val selectedItems = bindableField<Set<ItemType>>(
         hashSetOf(),
-        {one, two -> equal(one, two) },
         {item -> kryo.copy(HashSet(item))}
     )
     val items = bindableField<List<ItemType>>(
         listOf(),
-        {one, two -> equal(one, two) },
         {item -> kryo.copy(ArrayList(item))}
     )
 

@@ -19,7 +19,7 @@ class CrudItemList<ItemType : Item>  constructor(
         context: Context,
         itemViewBinderFetcher: (Int) -> SelectableItemViewBinder<ItemType>,
         itemEditListener: (item: ItemType) -> Unit,
-        emptyViewBinder: EmptyViewBinder = com.gurunars.item_list::defaultEmptyViewBinder
+        emptyViewBinder: EmptyViewBinder = ::defaultEmptyViewBinder
 ) : FrameLayout(context) {
 
     data class IconColorBundle(

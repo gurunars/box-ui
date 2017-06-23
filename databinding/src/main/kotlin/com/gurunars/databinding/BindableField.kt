@@ -3,7 +3,6 @@ package com.gurunars.databinding
 
 class BindableField<Type>(
         private var value: Type,
-        private val equal: (one: Type, two: Type) -> Boolean = ::equal,
         private val preset: (one: Type) -> Type = { item -> item }
 ) : Disposable {
 

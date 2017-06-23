@@ -24,7 +24,6 @@ class ItemListView<ItemType : Item> constructor(
 
     val items = bindableField(
         listOf<ItemType>(),
-        {one, two -> equal(one, two) },
         {item -> kryo.copy(ArrayList(item))}
     )
 

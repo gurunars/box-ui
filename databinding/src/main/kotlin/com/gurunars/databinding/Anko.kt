@@ -2,10 +2,9 @@ package com.gurunars.databinding
 
 import android.view.View
 
-fun<Type> View.bindableField(value: Type,
-                             equal: (one: Type, two: Type) -> Boolean = ::equal,
-                             preset: (one: Type) -> Type = { item -> item }): BindableField<Type> {
-    val field = BindableField(value, equal, preset)
+fun<Type> View.bindableField(
+        value: Type, preset: (one: Type) -> Type = { item -> item }): BindableField<Type> {
+    val field = BindableField(value, preset)
     this.addOnAttachStateChangeListener(object: View.OnAttachStateChangeListener {
         override fun onViewAttachedToWindow(v: View) {
 
@@ -19,10 +18,9 @@ fun<Type> View.bindableField(value: Type,
 }
 
 
-fun<Type> DisposableRegistryService.bindableField(value: Type,
-                                                  equal: (one: Type, two: Type) -> Boolean = ::equal,
-                                                  preset: (one: Type) -> Type = { item -> item }): BindableField<Type> {
-    val field = BindableField(value, equal, preset)
+fun<Type> DisposableRegistryService.bindableField(
+        value: Type, preset: (one: Type) -> Type = { item -> item }): BindableField<Type> {
+    val field = BindableField(value, preset)
     this.add(field)
     return field
 }

@@ -5,22 +5,27 @@ import java.io.Serializable
 /**
  * Abstraction of the entity that can be shown in the ItemListView.
  */
-interface Item: Serializable {
+abstract class Item: Serializable {
 
     /**
      * Item unique identifier
      */
-    fun getId(): Long
+    abstract fun getId(): Long
 
     /**
      * Item type
      */
-    fun getType(): Enum<*>
+    abstract fun getType(): Enum<*>
 
     /**
      * @param other another object to compare payload with
      * @return true if payloads are the same
      */
-    fun payloadsEqual(other: Item): Boolean
+    abstract fun payloadsEqual(other: Item): Boolean
+
+    final override fun equals(other: Any?) =
+        other is Item &&
+        getId() == other.getId() &&
+        payloadsEqual(other)
 
 }

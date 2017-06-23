@@ -7,7 +7,6 @@ private fun <Type: Map<*, *>> mapsEqual(one: Type, two: Type) =
         collectionsEqual(one.entries.map { it.toPair() }, two.entries.map { it.toPair() })
 
 internal fun <Type> equal(one: Type, two: Type) = when(one) {
-    is RegularObject -> one == two
     is Map<*, *> -> mapsEqual(one, two as Map<*, *>)
     is Collection<*> -> collectionsEqual(one, two as Collection<*>)
     else -> one == two
