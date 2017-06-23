@@ -142,7 +142,7 @@ internal class ContextualMenu<ItemType: Item> constructor(
                 val action = it.getTag(R.id.action) as Action<ItemType>
 
                 fun configureAbility() {
-                    isEnabled = action.canPerform(items.get(), selectedItems.get())
+                    it.isEnabled = action.canPerform(items.get(), selectedItems.get())
                 }
 
                 items.onChange { configureAbility() }
