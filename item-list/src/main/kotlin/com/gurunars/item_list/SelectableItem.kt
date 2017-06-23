@@ -10,7 +10,7 @@ import com.gurunars.databinding.BindableField
  *
  * @param <ItemType> type of the actual item.
  */
-class SelectableItem<out ItemType : Item> internal constructor(val item: ItemType, val isSelected: Boolean) : Item {
+class SelectableItem<out ItemType : Item> internal constructor(val item: ItemType, val isSelected: Boolean) : Item() {
 
     override fun getId() = item.getId()
 
@@ -21,9 +21,6 @@ class SelectableItem<out ItemType : Item> internal constructor(val item: ItemTyp
 
     override fun toString() =
         item.toString() + "|" + isSelected
-
-    override fun equals(other: Any?) =
-        other is SelectableItem<*> && other.getId() == getId()
 
     override fun hashCode() = getId().hashCode()
 }
