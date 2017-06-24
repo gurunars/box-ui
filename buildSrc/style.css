@@ -19,6 +19,13 @@ body, table {
     margin-left: 10px;
 }
 
+.section > p {
+    max-width: 600px;
+    color: Black;
+    font-size: 12px;
+    margin-bottom: 10px;
+}
+
 .section > code {
     border: 1px dotted Black;
 }

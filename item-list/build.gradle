@@ -1,5 +1,13 @@
 apply from: '../all-modules.gradle'
 
+description = """
+A component based on RecyclerView with a simplified interface capable of
+detecting payload changes in the collection items and triggering proper
+animations based on those changes.
+
+Apart from the animations the component handles custom empty pages and
+can optionally handle item selection.
+"""
 
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"

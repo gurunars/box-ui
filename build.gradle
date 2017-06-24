@@ -45,7 +45,7 @@ task dokka() {
         }.collect {
             def description = ""
             if (it.description != null) {
-                description = "<p><i>${it.description}</i></p>"
+                description = "<p>${it.description}</p>"
             }
             """
             <div class="section">

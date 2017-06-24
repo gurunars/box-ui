@@ -1,5 +1,11 @@
 apply from: '../all-modules.gradle'
 
+description = """
+A component for creating FAB based menus
+to manipulate the app. In contrast with the toolbar it aims to simplify the
+way the app can be managed with left or right hand thumb on a large phone
+screen.
+"""
 
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"

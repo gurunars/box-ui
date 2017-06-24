@@ -1,5 +1,9 @@
 apply from: '../all-modules.gradle'
 
+description = """
+A set of helpers for working with Android.
+"""
+
 dependencies {
     compile 'com.android.support:support-v4:25.2.0'
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
