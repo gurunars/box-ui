@@ -27,5 +27,19 @@ task clean(type: Delete) {
     delete rootProject.buildDir
 }
 
+task dokka() {
+    description 'Aggregates API docs of all subprojects with custom styles.'
+    group JavaBasePlugin.DOCUMENTATION_GROUP
+    dependsOn project.subprojects.findAll {
+        module -> module.plugins.findPlugin("com.android.library")
+    }.collect { it.getTasksByName("dokka", true) }
+    doLast {
+        copy {
+            from "."
+            into "html-docs"
+            include "style.css"
+        }
+    }
+}
 
 apply plugin: StyledDokka
