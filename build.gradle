@@ -30,17 +30,13 @@ task clean(type: Delete) {
 task dokka() {
     description 'Aggregate API docs of all subprojects with custom styles.'
     group JavaBasePlugin.DOCUMENTATION_GROUP
-    /*
     dependsOn project.subprojects.findAll {
         module -> module.plugins.findPlugin("com.android.library")
     }.collect { it.getTasksByName("dokka", true) }
-    */
     doLast {
-        copy {
-            from "."
-            into "html-docs"
-            include "style.css"
-        }
+        def styleIn = new File("style.css")
+        def styleOut = new File("html-docs/style.css")
+        styleOut.write(styleIn.readLines().join("\n"))
 
         def indexFile = new File("html-docs/index.html")
 
