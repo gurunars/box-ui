@@ -19,6 +19,10 @@ body, table {
     margin-left: 10px;
 }
 
+.section > code {
+    border: 1px dotted Black;
+}
+
 .keyword {
     color:black;
     font-family:monospace;
@@ -31,9 +35,14 @@ body, table {
 }
 
 .identifier {
-    color: Blue;
+    color: MidnightBlue;
     font-size:12px;
     font-family:monospace;
+}
+
+a > .identifier {
+    color: Blue;
+    text-decoration: underline;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -65,12 +74,11 @@ h3, h4, h5, h6 {
 a {
     color:MidnightBlue;
     font-weight:400;
-    text-decoration:none;
+    text-decoration: none;
 }
 
-a:hover {
-    color: inherit;
-    text-decoration:underline;
+td > p > a {
+    border-bottom: 1px dotted MidnightBlue;
 }
 
 a small {
@@ -97,17 +105,10 @@ code, pre {
     color:Black;
     font-size:12px;
     padding: 4px;
-    border: 1px dotted Black;
 }
 
 pre {
     display: block;
-/*
-    padding:8px 8px;
-    background: #f8f8f8;
-    border-radius:5px;
-    border:1px solid #e5e5e5;
-*/
     overflow-x: auto;
 }
 
