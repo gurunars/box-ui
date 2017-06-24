@@ -69,6 +69,7 @@ bintrayUpload.dependsOn([build, sourcesJar])
 dokka {
     outputFormat = 'html'
     outputDirectory = "html-docs"
+    includes = ['README.md']
 
     externalDocumentationLink {
         url = new URL ("https://developer.android.com/reference/")
