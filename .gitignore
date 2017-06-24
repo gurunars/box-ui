@@ -1,4 +1,3 @@
-buildSrc
 *.iml
 .gradle
 local.properties
@@ -7,3 +6,4 @@ build
 captures
 mipmap*
 .idea
+html-docs
