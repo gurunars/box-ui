@@ -28,17 +28,54 @@ task clean(type: Delete) {
 }
 
 task dokka() {
-    description 'Aggregates API docs of all subprojects with custom styles.'
+    description 'Aggregate API docs of all subprojects with custom styles.'
     group JavaBasePlugin.DOCUMENTATION_GROUP
+    /*
     dependsOn project.subprojects.findAll {
         module -> module.plugins.findPlugin("com.android.library")
     }.collect { it.getTasksByName("dokka", true) }
+    */
     doLast {
         copy {
             from "."
             into "html-docs"
             include "style.css"
         }
+
+        def indexFile = new File("html-docs/index.html")
+
+        def projects = project.subprojects.findAll {
+            module -> module.plugins.findPlugin("com.android.library")
+        }.collect {
+            def description = ""
+            if (it.description != null) {
+                description = "<p><i>${it.description}</i></p>"
+            }
+            """
+            <div class="section">
+                <h3><a href="${it.name}">${it.name} (${it.version})</a></h3>
+                ${description}
+                <code>
+                compile ('${it.group}.${it.name}:${it.version}@aar') {
+                    transitive = true
+                }
+                </code>
+            </div>
+            """
+        }
+
+        indexFile.write("""
+            <html>
+                <head>
+                    <meta charset="UTF-8">
+                    <title>${project.name} ($project.version)</title>
+                    <link rel="stylesheet" href="style.css">
+                </head>
+                <body>
+                    ${projects.join("\n")}
+                </body>
+            </html>
+        """)
     }
 }
 

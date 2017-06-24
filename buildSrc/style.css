@@ -11,6 +11,14 @@ body, table {
     background-color: WhiteSmoke;
 }
 
+.section {
+    margin-bottom: 20px;
+}
+
+.section > code, .section > p {
+    margin-left: 10px;
+}
+
 .keyword {
     color:black;
     font-family:monospace;
@@ -88,6 +96,8 @@ code, pre {
     font-family:monospace;
     color:Black;
     font-size:12px;
+    padding: 4px;
+    border: 1px dotted Black;
 }
 
 pre {
