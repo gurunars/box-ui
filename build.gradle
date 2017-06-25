@@ -27,22 +27,44 @@ task clean(type: Delete) {
     delete rootProject.buildDir
 }
 
-task dokka() {
+task dokka {
     description 'Aggregate API docs of all subprojects with custom styles.'
     group JavaBasePlugin.DOCUMENTATION_GROUP
-    dependsOn project.subprojects.findAll {
-        module -> module.plugins.findPlugin("com.android.library")
-    }.collect { it.getTasksByName("dokka", true) }
+
+    evaluationDependsOnChildren()
+
+    project.afterEvaluate {
+        def dokkas = project.subprojects.findAll {
+            module -> module.plugins.findPlugin("com.android.library")
+        }.collect { it.getTasksByName("dokka", true) }.flatten()
+
+        dependsOn dokkas
+        mustRunAfter dokkas
+    }
+
     doLast {
-        def styleIn = new File("style.css")
-        def styleOut = new File("html-docs/style.css")
-        styleOut.write(styleIn.readLines().join("\n"))
+
+        copy {
+            from "."
+            into "html-docs"
+            include(["style.css"])
+        }
 
         def indexFile = new File("html-docs/index.html")
 
-        def projects = project.subprojects.findAll {
+        def modules = project.subprojects.findAll {
             module -> module.plugins.findPlugin("com.android.library")
-        }.collect {
+        }
+
+        modules.each {
+            def module = it
+            copy {
+                from "${module.name}/static"
+                into "html-docs/${module.name}/static"
+            }
+        }
+
+        def projects = modules.collect {
             def description = ""
             if (it.description != null) {
                 description = "<p>${it.description}</p>"
