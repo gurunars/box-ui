@@ -45,9 +45,8 @@ task dokka {
     doLast {
 
         copy {
-            from "."
+            from "docs-base"
             into "html-docs"
-            include(["style.css"])
         }
 
         def indexFile = new File("html-docs/index.html")
@@ -58,10 +57,23 @@ task dokka {
 
         modules.each {
             def module = it
+
             copy {
                 from "${module.name}/static"
                 into "html-docs/${module.name}/static"
             }
+
+            def projectDocs = File("html-docs/${module.name}")
+            projectDocs.eachFileRecurse {
+                if (it.isFile() && it.name.endsWith(".html")) {
+                    // read from file into a string
+                    // find all links with \dx\d as text and replace them with img tags
+                    // using the text as a size hint
+                    // OR
+
+                }
+            }
+
         }
 
         def projects = modules.collect {
