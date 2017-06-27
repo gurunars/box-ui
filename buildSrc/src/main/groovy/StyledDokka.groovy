@@ -1,6 +1,8 @@
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.plugins.JavaBasePlugin
+import org.cyberneko.html.parsers.SAXParser
+
 
 class StyledDokka implements Plugin<Project> {
 
@@ -10,9 +12,7 @@ class StyledDokka implements Plugin<Project> {
             into "html-docs"
         }
 
-        def parser = new XmlSlurper()
-
-        parser.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false)
+        def parser = new XmlSlurper(new SAXParser())
 
         def indexFile = new File("html-docs/index.html")
 
@@ -70,7 +70,7 @@ class StyledDokka implements Plugin<Project> {
     @Override
     void apply(Project project) {
         project.gradle.projectsEvaluated {
-            project.task('dokka') {
+            project.task('styledDokka') {
                 description 'Aggregate API docs of all subprojects with custom styles.'
                 group JavaBasePlugin.DOCUMENTATION_GROUP
 
