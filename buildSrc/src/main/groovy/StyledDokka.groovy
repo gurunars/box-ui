@@ -2,7 +2,6 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.plugins.JavaBasePlugin
 
-
 class StyledDokka implements Plugin<Project> {
 
     private void doJob(Project project, Set<Project> modules) {
@@ -10,6 +9,10 @@ class StyledDokka implements Plugin<Project> {
             from "docs-base"
             into "html-docs"
         }
+
+        def parser = new XmlSlurper()
+
+        parser.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false)
 
         def indexFile = new File("html-docs/index.html")
 
@@ -24,11 +27,9 @@ class StyledDokka implements Plugin<Project> {
             def projectDocs = new File("html-docs/${module.name}")
             projectDocs.eachFileRecurse {
                 if (it.isFile() && it.name.endsWith(".html")) {
-                    // read from file into a string
-                    // find all links with \dx\d as text and replace them with img tags
-                    // using the text as a size hint
-                    // OR
-
+                    def nodes = parser.parse(it)
+                    def links = nodes."**".findAll { it.A.text() == "320x570" }
+                    println "${links}"
                 }
             }
 
