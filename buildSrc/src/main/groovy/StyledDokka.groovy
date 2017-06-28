@@ -1,6 +1,10 @@
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.plugins.JavaBasePlugin
+
+import groovy.xml.XmlUtil
+import groovy.xml.StreamingMarkupBuilder
+
 import org.cyberneko.html.parsers.SAXParser
 
 
@@ -27,9 +31,22 @@ class StyledDokka implements Plugin<Project> {
             def projectDocs = new File("html-docs/${module.name}")
             projectDocs.eachFileRecurse {
                 if (it.isFile() && it.name.endsWith(".html")) {
-                    def nodes = parser.parse(it)
-                    def links = nodes."**".findAll { it.A.text() == "320x570" }
-                    println "${links}"
+                    def page = parser.parse(it)
+                    def links = page."**".findAll { it.name() == "A" && it.text() =~ /^\d+x\d+$/ }
+                    if(!links.isEmpty()) {
+                        links.each {
+                            def parts = node.text().split("x")
+
+                            node.replaceNode(new Node(node.parent(), "img", [
+                                src: node.@href.text(),
+                                width: parts[0],
+                                height: parts[1]
+                            ]))
+                        }
+                        println XmlUtil.serialize(new StreamingMarkupBuilder().bind {
+                            mkp.yield page
+                        } )
+                    }
                 }
             }
 
