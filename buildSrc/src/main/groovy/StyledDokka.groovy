@@ -12,9 +12,9 @@ class StyledDokka implements Plugin<Project> {
 
     private void doJob(Project project, Set<Project> modules) {
         project.copy {
-            from "docs-base"
+            from "buildSrc"
             into "html-docs"
-            include
+            include "*.css"
         }
 
         def parser = new XmlSlurper(new SAXParser())
@@ -91,7 +91,7 @@ class StyledDokka implements Plugin<Project> {
     @Override
     void apply(Project project) {
         project.gradle.projectsEvaluated {
-            project.task('styledDokka') {
+            project.task('dokka') {
                 description 'Aggregate API docs of all subprojects with custom styles.'
                 group JavaBasePlugin.DOCUMENTATION_GROUP
 
