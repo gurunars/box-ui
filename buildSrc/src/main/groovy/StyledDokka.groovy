@@ -14,11 +14,10 @@ class StyledDokka implements Plugin<Project> {
         project.copy {
             from "docs-base"
             into "html-docs"
+            include
         }
 
         def parser = new XmlSlurper(new SAXParser())
-
-        def indexFile = new File("html-docs/index.html")
 
         modules.each {
             def module = it
@@ -29,23 +28,26 @@ class StyledDokka implements Plugin<Project> {
             }
 
             def projectDocs = new File("html-docs/${module.name}")
+            // Nasty hack to treat specially formatted links as inline images
             projectDocs.eachFileRecurse {
+                def file = it
                 if (it.isFile() && it.name.endsWith(".html")) {
                     def page = parser.parse(it)
                     def links = page."**".findAll { it.name() == "A" && it.text() =~ /^\d+x\d+$/ }
                     if(!links.isEmpty()) {
-                        links.each {
+                        links.collect {
+                            def node = it
                             def parts = node.text().split("x")
 
-                            node.replaceNode(new Node(node.parent(), "img", [
+                            node.replaceNode { img(
                                 src: node.@href.text(),
                                 width: parts[0],
                                 height: parts[1]
-                            ]))
+                            ) }
                         }
-                        println XmlUtil.serialize(new StreamingMarkupBuilder().bind {
+                        file.write(XmlUtil.serialize(new StreamingMarkupBuilder().bind {
                             mkp.yield page
-                        } )
+                        }))
                     }
                 }
             }
@@ -69,6 +71,8 @@ class StyledDokka implements Plugin<Project> {
             </div>
             """
         }
+
+        def indexFile = new File("html-docs/index.html")
 
         indexFile.write("""
         <html>
