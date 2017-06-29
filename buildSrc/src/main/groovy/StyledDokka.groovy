@@ -10,6 +10,29 @@ import org.cyberneko.html.parsers.SAXParser
 
 class StyledDokka implements Plugin<Project> {
 
+    private void beautifyHtml(File file) {
+        def page = parser.parse(it)
+        def links = page."**".findAll { it.name() == "A" && it.text() =~ /^\d+x\d+$/ }
+
+        if(links.isEmpty()) {
+            return
+        }
+
+        links.collect {
+            def node = it
+            def parts = node.text().split("x")
+
+            node.replaceNode { img(
+                    src: node.@href.text(),
+                    width: parts[0],
+                    height: parts[1]
+            ) }
+        }
+        file.write(XmlUtil.serialize(new StreamingMarkupBuilder().bind {
+            mkp.yield page
+        }))
+    }
+
     private void doJob(Project project, Set<Project> modules) {
         project.copy {
             from "buildSrc"
@@ -30,26 +53,7 @@ class StyledDokka implements Plugin<Project> {
             def projectDocs = new File("html-docs/${module.name}")
             // Nasty hack to treat specially formatted links as inline images
             projectDocs.eachFileRecurse {
-                def file = it
-                if (it.isFile() && it.name.endsWith(".html")) {
-                    def page = parser.parse(it)
-                    def links = page."**".findAll { it.name() == "A" && it.text() =~ /^\d+x\d+$/ }
-                    if(!links.isEmpty()) {
-                        links.collect {
-                            def node = it
-                            def parts = node.text().split("x")
-
-                            node.replaceNode { img(
-                                src: node.@href.text(),
-                                width: parts[0],
-                                height: parts[1]
-                            ) }
-                        }
-                        file.write(XmlUtil.serialize(new StreamingMarkupBuilder().bind {
-                            mkp.yield page
-                        }))
-                    }
-                }
+                if (it.isFile() && it.name.endsWith(".html")) { beautifyHtml(it) }
             }
 
         }
@@ -91,7 +95,7 @@ class StyledDokka implements Plugin<Project> {
     @Override
     void apply(Project project) {
         project.gradle.projectsEvaluated {
-            project.task('dokka') {
+            project.task('styledDokka') {
                 description 'Aggregate API docs of all subprojects with custom styles.'
                 group JavaBasePlugin.DOCUMENTATION_GROUP
 
