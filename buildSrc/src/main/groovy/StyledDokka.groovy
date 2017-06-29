@@ -19,17 +19,49 @@ class StyledDokka implements Plugin<Project> {
             def parts = node.text().split("x")
 
             node.replaceNode { img(
-                    src: node.@href.text(),
-                    width: parts[0],
-                    height: parts[1]
+                src: node.@href.text(),
+                width: parts[0],
+                height: parts[1]
             ) }
         }
     }
 
+    private void formatBreadCrumbs(GPathResult page) {
+        page.BODY."*".findAll { it.name() == "BR" }.collect {
+            it.replaceNode { }
+        }
+
+        List links = []
+
+        for (tag in page.BODY.children()) {
+            if (tag.name() != "A") {
+                break
+            }
+            links.add(tag)
+        }
+
+        page.BODY.appendNode {
+            div(class: "breadcrumbs") {
+                span("/")
+                a("index", href: "/")
+                links.each {
+                    span("/")
+                    a(it.text(), href: it.@href)
+                }
+            }
+        }
+
+        links.collect { it.replaceNode { } }
+
+    }
+
     private void beautifyHtml(File file) {
-        def page = parser.parse(it)
+        def parser = new XmlSlurper(new SAXParser())
+
+        def page = parser.parseText(file.text.replaceAll(/&nbsp;\/&nbsp;/, ""))
 
         replaceImageLinksWithImgs(page)
+        formatBreadCrumbs(page)
 
         file.write(XmlUtil.serialize(new StreamingMarkupBuilder().bind {
             mkp.yield page
@@ -42,8 +74,6 @@ class StyledDokka implements Plugin<Project> {
             into "html-docs"
             include "*.css"
         }
-
-        def parser = new XmlSlurper(new SAXParser())
 
         modules.each {
             def module = it
@@ -89,6 +119,9 @@ class StyledDokka implements Plugin<Project> {
                 <link rel="stylesheet" href="style.css">
             </head>
             <body>
+                <div class="breadcrumbs">
+                    / <a href="/">index</a>
+                </div>
                 ${projects.join("\n")}
             </body>
         </html>
@@ -98,7 +131,7 @@ class StyledDokka implements Plugin<Project> {
     @Override
     void apply(Project project) {
         project.gradle.projectsEvaluated {
-            project.task('styledDokka') {
+            project.task('dokka') {
                 description 'Aggregate API docs of all subprojects with custom styles.'
                 group JavaBasePlugin.DOCUMENTATION_GROUP
 
