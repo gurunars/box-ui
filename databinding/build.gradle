@@ -1,5 +1,10 @@
 apply from: '../all-modules.gradle'
 
+description = """
+A library to facilitate data binding via observable data containers that can be entangled together,
+manipulated and monitored for changes.
+"""
+
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 }
