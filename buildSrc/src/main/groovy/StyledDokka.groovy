@@ -3,6 +3,7 @@ import org.gradle.api.Project
 import org.gradle.api.plugins.JavaBasePlugin
 
 import groovy.xml.XmlUtil
+import groovy.util.slurpersupport.GPathResult
 import groovy.xml.StreamingMarkupBuilder
 
 import org.cyberneko.html.parsers.SAXParser
@@ -10,13 +11,8 @@ import org.cyberneko.html.parsers.SAXParser
 
 class StyledDokka implements Plugin<Project> {
 
-    private void beautifyHtml(File file) {
-        def page = parser.parse(it)
+    private replaceImageLinksWithImgs(GPathResult page) {
         def links = page."**".findAll { it.name() == "A" && it.text() =~ /^\d+x\d+$/ }
-
-        if(links.isEmpty()) {
-            return
-        }
 
         links.collect {
             def node = it
@@ -28,6 +24,13 @@ class StyledDokka implements Plugin<Project> {
                     height: parts[1]
             ) }
         }
+    }
+
+    private void beautifyHtml(File file) {
+        def page = parser.parse(it)
+
+        replaceImageLinksWithImgs(page)
+
         file.write(XmlUtil.serialize(new StreamingMarkupBuilder().bind {
             mkp.yield page
         }))
