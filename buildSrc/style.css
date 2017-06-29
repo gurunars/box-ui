@@ -14,6 +14,10 @@
     color: LightBlue;
 }
 
+img {
+    margin: 7px;
+}
+
 body, table {
     padding:10px;
     padding-top: 30px;
