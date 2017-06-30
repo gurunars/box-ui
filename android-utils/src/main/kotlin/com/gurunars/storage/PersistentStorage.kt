@@ -6,7 +6,12 @@ import com.gurunars.databinding.BindableField
 import com.gurunars.databinding.Disposable
 import com.gurunars.databinding.DisposableRegistryService
 
-
+/**
+ * Observable storage based on SharedPreferences
+ *
+ * @property activity Android activity to be used for instantiation of SharedPreferences
+ * @property storageName name of the data store in SharedPreferences
+ */
 class PersistentStorage(
         private val activity: Activity,
         private val storageName: String
@@ -41,6 +46,11 @@ class PersistentStorage(
 
     private var wasLoaded = false
 
+    /**
+     * @param name used internally to persist the field in SharedPreferences
+     * @param defaultValue value to be used if none was set yet
+     * @param Type data type of the value to be stored
+     */
     fun<Type> storageField(name: String, defaultValue: Type): BindableField<Type> {
         val field = BindableField(defaultValue)
         val wrapper = PersistentField(this, name, field)
@@ -49,6 +59,9 @@ class PersistentStorage(
         return field
     }
 
+    /**
+     * Load all the fields from SharedPreferences.
+     */
     fun load() {
         fields.forEach {
             val field = it
@@ -58,6 +71,9 @@ class PersistentStorage(
         wasLoaded = true
     }
 
+    /**
+     * Drop all the field listeners.
+     */
     fun unbindAll() = registry.unbindAll()
 
 }

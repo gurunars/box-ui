@@ -20,6 +20,14 @@ import com.gurunars.databinding.bindableField
  */
 class IconView constructor(context: Context) : ImageView(context) {
 
+    /**
+     * Data class holding the values to be used for icon drawable creation
+     *
+     * @param bgColor background color integer
+     * @param fgColor icon color integer
+     * @param icon drawable resource ID
+     * @param shape shape of the drawable
+     */
     data class Icon(
         val bgColor: Int= Color.RED,
         val fgColor: Int= Color.WHITE,
@@ -27,12 +35,18 @@ class IconView constructor(context: Context) : ImageView(context) {
         val shape: Shape = OvalShape()
     )
 
+    /**
+     * Button icon descriptor
+     */
     val icon = bindableField(Icon(
         bgColor = ContextCompat.getColor(context, R.color.White),
         fgColor = ContextCompat.getColor(context, R.color.Black),
         icon = R.drawable.ic_plus
     ))
 
+    /**
+     * Flag specifying if the icon should be clickable or not
+     */
     val enabled = bindableField(true)
 
     private lateinit var iconDrawable: Drawable
@@ -42,12 +56,13 @@ class IconView constructor(context: Context) : ImageView(context) {
         enabled.onChange { reset(icon.get()) }
     }
 
+    // TODO: check if enabled flag actually makes any difference
     private fun reset(currentIcon: Icon) {
         val shadowWidth = 4
         val inset = 50
 
         background = ColoredShapeDrawable(currentIcon.shape, currentIcon.bgColor)
-        AutoBg.apply(this, shadowWidth)
+        setAutoBg(this, shadowWidth)
 
         iconDrawable = InsetDrawable(
             ResourcesCompat.getDrawable(resources, currentIcon.icon, null)?.apply {
