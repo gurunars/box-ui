@@ -3,9 +3,8 @@ package com.gurunars.shortcuts
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
-
-val matchParent = ViewGroup.LayoutParams.MATCH_PARENT
-val wrapContent = ViewGroup.LayoutParams.WRAP_CONTENT
+import org.jetbrains.anko.matchParent
+import org.jetbrains.anko.wrapContent
 
 /**
  * width = matchParent

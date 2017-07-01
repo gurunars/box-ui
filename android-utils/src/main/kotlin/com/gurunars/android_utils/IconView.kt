@@ -23,10 +23,10 @@ class IconView constructor(context: Context) : ImageView(context) {
     /**
      * Data class holding the values to be used for icon drawable creation
      *
-     * @param bgColor background color integer
-     * @param fgColor icon color integer
-     * @param icon drawable resource ID
-     * @param shape shape of the drawable
+     * @property bgColor background color integer
+     * @property fgColor icon color integer
+     * @property icon drawable resource ID
+     * @property shape shape of the drawable
      */
     data class Icon(
         val bgColor: Int= Color.RED,

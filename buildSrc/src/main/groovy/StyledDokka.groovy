@@ -31,28 +31,47 @@ class StyledDokka implements Plugin<Project> {
             it.replaceNode { }
         }
 
-        List links = []
+        List tags = []
 
         for (tag in page.BODY.children()) {
             if (tag.name() != "A") {
                 break
             }
-            links.add(tag)
+            tags.add(tag)
         }
 
         page.BODY.appendNode {
             div(class: "breadcrumbs") {
                 span("/")
                 a("index", href: "/")
-                links.each {
+                tags.each {
                     span("/")
                     a(it.text(), href: it.@href)
                 }
             }
         }
 
-        links.collect { it.replaceNode { } }
+        tags.collect { it.replaceNode { } }
 
+    }
+
+    private void beautifyParameters(GPathResult page) {
+        List tags = []
+
+        Boolean paramsStarted = false
+
+        for (tag in page.BODY.children()) {
+            if (tag.name() == "H3" && tag.text() == "Parameters") {
+                paramsStarted = true
+            }
+            if (paramsStarted) {
+                if (tag.name() == "A") {
+                    tags.add(tag)
+                }
+            }
+        }
+
+        tags.collect { it.replaceNode { } }
     }
 
     private void beautifyHtml(File file) {
@@ -61,6 +80,7 @@ class StyledDokka implements Plugin<Project> {
         def page = parser.parseText(file.text.replaceAll(/&nbsp;\/&nbsp;/, ""))
 
         replaceImageLinksWithImgs(page)
+        beautifyParameters(page)
         formatBreadCrumbs(page)
 
         file.write(XmlUtil.serialize(new StreamingMarkupBuilder().bind {
