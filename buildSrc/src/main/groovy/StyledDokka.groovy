@@ -8,6 +8,8 @@ import groovy.xml.StreamingMarkupBuilder
 
 import org.cyberneko.html.parsers.SAXParser
 
+import java.util.function.Consumer
+
 
 class StyledDokka implements Plugin<Project> {
 
@@ -55,23 +57,75 @@ class StyledDokka implements Plugin<Project> {
 
     }
 
-    private void beautifyParameters(GPathResult page) {
-        List tags = []
+    class ParamParseStateMachine {
 
-        Boolean paramsStarted = false
-
-        for (tag in page.BODY.children()) {
-            if (tag.name() == "H3" && tag.text() == "Parameters") {
-                paramsStarted = true
-            }
-            if (paramsStarted) {
-                if (tag.name() == "A") {
-                    tags.add(tag)
-                }
-            }
+        private enum ParamParseState {
+            NOT_STARTED,
+            STARTED,
+            LINK,
+            CODE
         }
 
-        tags.collect { it.replaceNode { } }
+        private List<GPathResult> externalCollection
+        private Consumer<GPathResult> consumer
+
+        ParamParseStateMachine(
+            List<GPathResult> externalCollection,
+            Consumer<List<GPathResult>> consumer
+        ) {
+            this.externalCollection = externalCollection
+            this.consumer = consumer
+        }
+
+        private ParamParseState state = ParamParseState.NOT_STARTED
+        private List<GPathResult> resultAccumulator = new ArrayList<>()
+
+        private ParamParseState transit(GPathResult child) {
+            switch (state) {
+                case ParamParseState.NOT_STARTED:
+                    if(child.name() == "H3" && child.text() == "Parameters") {
+                        return ParamParseState.STARTED
+                    }
+                    break
+                case ParamParseState.STARTED:
+                    if (child.name() == "A") {
+                        resultAccumulator.add(child)
+                        return ParamParseState.LINK
+                    }
+                    break
+                case ParamParseState.LINK:
+                    if (child.name() == "CODE") {
+                        resultAccumulator.add(child)
+                        return ParamParseState.CODE
+                    }
+                    break
+                case ParamParseState.CODE:
+                    resultAccumulator.add(child)
+                    consumer.accept(resultAccumulator)
+                    resultAccumulator = new ArrayList<>()
+                    return ParamParseState.STARTED
+            }
+            return state
+        }
+
+        void process(GPathResult child) {
+            state = transit(child)
+        }
+
+    }
+
+    private void beautifyParameters(GPathResult page) {
+
+        ParamParseStateMachine stateMachine = ParamParseStateMachine(
+            new Consumer<List<GPathResult>>() {
+                @Override
+                void accept(List<GPathResult> tags) {
+
+                    tags.collect() { it.replaceNode { } }
+                }
+            }
+        )
+        
     }
 
     private void beautifyHtml(File file) {
@@ -83,7 +137,7 @@ class StyledDokka implements Plugin<Project> {
         beautifyParameters(page)
         formatBreadCrumbs(page)
 
-        file.write(XmlUtil.serialize(new StreamingMarkupBuilder().bind {
+        println(XmlUtil.serialize(new StreamingMarkupBuilder().bind {
             mkp.yield page
         }))
     }
@@ -151,7 +205,7 @@ class StyledDokka implements Plugin<Project> {
     @Override
     void apply(Project project) {
         project.gradle.projectsEvaluated {
-            project.task('dokka') {
+            project.task('styledDokka') {
                 description 'Aggregate API docs of all subprojects with custom styles.'
                 group JavaBasePlugin.DOCUMENTATION_GROUP
 
