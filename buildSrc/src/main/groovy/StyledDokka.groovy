@@ -17,7 +17,7 @@ class StyledDokka implements Plugin<Project> {
 
                 def dokkas = modules.collect { it.getTasksByName("dokka", true) }.flatten()
 
-                def beautifier = new Beautifier()
+                def beautifier = new Beautifier(project)
                 beautifier.beautify()
 
                 //dependsOn dokkas
