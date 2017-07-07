@@ -129,8 +129,11 @@ class StyledDokka implements Plugin<Project> {
     }
 
     private void beautifyHtml(File file) {
-        def parser = new XmlSlurper(new SAXParser())
+        def beautifier = new Beautifier()
+        beautifier.beautify()
+        /*
 
+        def parser = new XmlSlurper(new SAXParser())
         def page = parser.parseText(file.text.replaceAll(/&nbsp;\/&nbsp;/, ""))
 
         replaceImageLinksWithImgs(page)
@@ -140,6 +143,7 @@ class StyledDokka implements Plugin<Project> {
         println(XmlUtil.serialize(new StreamingMarkupBuilder().bind {
             mkp.yield page
         }))
+        */
     }
 
     private void doJob(Project project, Set<Project> modules) {
