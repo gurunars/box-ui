@@ -18,6 +18,5 @@ repositories {
 }
 
 dependencies {
-    compile "net.sourceforge.nekohtml:nekohtml:1.9.16"
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 }
