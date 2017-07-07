@@ -17,13 +17,12 @@ class StyledDokka implements Plugin<Project> {
 
                 def dokkas = modules.collect { it.getTasksByName("dokka", true) }.flatten()
 
-                def beautifier = new Beautifier(project)
-                beautifier.beautify()
+                def beautifier = new Beautifier(project, modules)
 
                 //dependsOn dokkas
                 mustRunAfter dokkas
 
-                doLast { this.doJob(project, modules) }
+                doLast { beautifier.beautify() }
             }
         }
     }
