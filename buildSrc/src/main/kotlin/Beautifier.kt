@@ -10,16 +10,27 @@ class Beautifier(private val project: Project, private val modules: Set<Project>
 
     private val dimRegexp = Regex("""^\d+x\d+$""")
 
+    private fun beautifyParameters(doc: Document) {
+
+    }
+
     private fun formatBreadCrumbs(doc: Document) {
         val tag = Element(Tag.valueOf("div"), "", Attributes().apply {
             put("class", "breadcrumbs")
+        })
+
+        tag.appendText(" / ")
+        tag.appendChild(Element(Tag.valueOf("a"), "", Attributes().apply {
+            put("href", "/")
+        }).apply {
+            appendText("index")
         })
 
         for (it in doc.body().select(":root > *")) {
             if (it.tagName() == "br") {
                 break
             }
-            tag.appendText("/")
+            tag.appendText(" / ")
             tag.appendChild(it.clone())
             it.remove()
         }
@@ -48,8 +59,9 @@ class Beautifier(private val project: Project, private val modules: Set<Project>
 
         replaceImageLinksWithImgs(doc)
         formatBreadCrumbs(doc)
+        beautifyParameters(doc)
 
-        println(doc.outerHtml())
+        file.writeText(doc.outerHtml())
     }
 
     private fun copy(from: String, to: String) {
@@ -59,7 +71,7 @@ class Beautifier(private val project: Project, private val modules: Set<Project>
             return
         }
         target.deleteRecursively()
-        source.copyTo(target, true)
+        source.copyRecursively(target, true)
     }
 
     fun beautify() {
