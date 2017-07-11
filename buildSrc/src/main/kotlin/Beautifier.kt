@@ -8,55 +8,28 @@ import java.io.File
 
 class Beautifier(private val project: Project, private val modules: Set<Project>) {
 
-    private class ParamParseStateMachine(
-            private val externalCollection: List<Element>,
-            private val consumer: (tags: List<Element>) -> Unit
-    ) {
-        private enum class ParamParseState {
-            NOT_STARTED,
-            STARTED,
-            LINK,
-            CODE
-        }
-
-        private var state = ParamParseState.NOT_STARTED
-        private val resultAccumulator = mutableListOf<Element>()
-
-        private fun transit(child: Element): ParamParseState {
-
-            fun node(name: String, state: ParamParseState): ParamParseState {
-                if (child.tagName() == name) {
-                    resultAccumulator.add(child)
-                    return state
-                } else {
-                    return this.state
-                }
-            }
-
-            return when (state) {
-                ParamParseState.NOT_STARTED ->
-                    if (child.tagName() == "h3" &&
-                            child.text() == "Parameters") ParamParseState.STARTED else state
-                ParamParseState.STARTED -> node("a", ParamParseState.LINK)
-                ParamParseState.LINK -> node("code", ParamParseState.CODE)
-                ParamParseState.CODE -> {
-                    resultAccumulator.add(child)
-                    consumer(resultAccumulator)
-                    ParamParseState.STARTED
-                }
-            }
-        }
-
-        fun process(child: Element) {
-            state = transit(child)
-        }
-
-    }
-
-
     private val dimRegexp = Regex("""^\d+x\d+$""")
 
-    fun replaceImageLinksWithImgs(doc: Document) {
+    private fun formatBreadCrumbs(doc: Document) {
+        val tag = Element(Tag.valueOf("div"), "", Attributes().apply {
+            put("class", "breadcrumbs")
+        })
+
+        for (it in doc.body().select(":root > *")) {
+            if (it.tagName() == "br") {
+                break
+            }
+            tag.appendText("/")
+            tag.appendChild(it.clone())
+            it.remove()
+        }
+
+        doc.select("br").remove()
+
+        doc.body().appendChild(tag)
+    }
+
+    private fun replaceImageLinksWithImgs(doc: Document) {
         doc.select("a[href]").filter { dimRegexp.matches(it.text()) }.forEach {
             val parts = it.text().split("x")
             it.replaceWith(Element(Tag.valueOf("img"), "", Attributes().apply {
@@ -74,6 +47,7 @@ class Beautifier(private val project: Project, private val modules: Set<Project>
         )
 
         replaceImageLinksWithImgs(doc)
+        formatBreadCrumbs(doc)
 
         println(doc.outerHtml())
     }
