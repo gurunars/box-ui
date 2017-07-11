@@ -29,9 +29,7 @@ class Beautifier(private val project: Project, private val modules: Set<Project>
 
             fun node(name: String, state: ParamParseState): ParamParseState {
                 if (child is Element && child.tagName() == name) {
-                    resultAccumulator.appendChild(Element(Tag.valueOf("b"), "").apply {
-                        appendChild(child.clone())
-                    })
+                    resultAccumulator.appendChild(child.clone())
                     child.attr("hidden", "true")
                     return state
                 } else {

@@ -18,6 +18,10 @@ img {
     margin: 7px;
 }
 
+.parameter code {
+    font-weight: bold;
+}
+
 body, table {
     padding:10px;
     padding-top: 30px;
