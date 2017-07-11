@@ -1,8 +1,6 @@
 import org.gradle.api.Project
 import org.jsoup.Jsoup
-import org.jsoup.nodes.Attributes
-import org.jsoup.nodes.Document
-import org.jsoup.nodes.Element
+import org.jsoup.nodes.*
 import org.jsoup.parser.Tag
 import java.io.File
 
@@ -10,8 +8,75 @@ class Beautifier(private val project: Project, private val modules: Set<Project>
 
     private val dimRegexp = Regex("""^\d+x\d+$""")
 
-    private fun beautifyParameters(doc: Document) {
+    private class ParamParseStateMachine(
+        private val consumer: (tags: Element) -> Unit
+    ) {
+        private enum class ParamParseState {
+            NOT_STARTED,
+            STARTED,
+            LINK,
+            CODE
+        }
 
+        private var state = ParamParseState.NOT_STARTED
+        private var resultAccumulator: Element = initAccumulator()
+
+        private fun initAccumulator() = Element(Tag.valueOf("div"), "", Attributes().apply {
+            put("class", "parameter")
+        })
+
+        private fun transit(child: Node): ParamParseState {
+
+            fun node(name: String, state: ParamParseState): ParamParseState {
+                if (child is Element && child.tagName() == name) {
+                    resultAccumulator.appendChild(Element(Tag.valueOf("b"), "").apply {
+                        appendChild(child.clone())
+                    })
+                    child.attr("hidden", "true")
+                    return state
+                } else {
+                    return this.state
+                }
+            }
+
+            return when (state) {
+                ParamParseState.NOT_STARTED ->
+                    if (child is Element &&
+                        child.tagName() == "h3" &&
+                        child.text() == "Parameters") ParamParseState.STARTED else state
+                ParamParseState.STARTED -> node("a", ParamParseState.LINK)
+                ParamParseState.LINK -> node("code", ParamParseState.CODE)
+                ParamParseState.CODE -> {
+                    if (child is TextNode && child.text().trim().startsWith("- ")) {
+                        resultAccumulator.appendText(child.text().trim())
+                        child.text("")
+                    }
+                    consumer(resultAccumulator)
+                    resultAccumulator = initAccumulator()
+                    ParamParseState.STARTED
+                }
+            }
+        }
+
+        fun process(child: Node) {
+            state = transit(child)
+        }
+
+    }
+
+    private fun beautifyParameters(doc: Document) {
+        val parameters = Element(Tag.valueOf("div"), "", Attributes().apply {
+            put("class", "parameters")
+        })
+        val rmNodes = mutableListOf<Node>()
+        val stateMachine = ParamParseStateMachine({
+            parameters.appendChild(it)
+        })
+        rmNodes.forEach { it.remove() }
+        doc.body().childNodes().forEach {
+            stateMachine.process(it)
+        }
+        doc.body().appendChild(parameters)
     }
 
     private fun formatBreadCrumbs(doc: Document) {
