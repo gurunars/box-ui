@@ -14,6 +14,10 @@
     color: LightBlue;
 }
 
+.breadcrumbs > span {
+    color: Orange
+}
+
 img {
     margin: 7px;
 }

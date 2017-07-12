@@ -86,19 +86,28 @@ class Beautifier(private val project: Project, private val modules: Set<Project>
         tag.appendChild(Element(Tag.valueOf("a"), "", Attributes().apply {
             put("href", "/")
         }).apply {
-            appendText("index")
+            appendText("root")
         })
 
-        for (it in doc.body().select(":root > *")) {
-            if (it.tagName() == "br") {
-                break
-            }
+        if (doc.body().select(":root > br").isEmpty()) { // All types
+            // TODO determine module name and construct index URL based on that
+            // TODO order nodes alphabetically and group by prefix
             tag.appendText(" / ")
-            tag.appendChild(it.clone())
-            it.remove()
-        }
+            tag.appendChild(Element(Tag.valueOf("span"), "").apply {
+                appendText("INDEX")
+            })
+        } else {
+            for (it in doc.body().select(":root > *")) {
+                if (it.tagName() == "br") {
+                    break
+                }
+                tag.appendText(" / ")
+                tag.appendChild(it.clone())
+                it.remove()
+            }
 
-        doc.select("br").remove()
+            doc.select("br").remove()
+        }
 
         doc.body().appendChild(tag)
     }
