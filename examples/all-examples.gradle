@@ -23,3 +23,7 @@ android {
 
     return void
 }
+
+dependencies {
+    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+}

@@ -8,7 +8,6 @@ screen.
 """
 
 dependencies {
-    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     compile "org.jetbrains.anko:anko:$anko_version"
     compile project(':android-utils')
     compile project(':databinding')
