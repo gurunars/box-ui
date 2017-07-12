@@ -77,6 +77,18 @@ class Beautifier(private val project: Project, private val modules: Set<Project>
         doc.body().appendChild(parameters)
     }
 
+    private fun orderAllTypes(doc: Document) {
+        doc.body().select("table").first()?.apply {
+            insertChildren(0,
+                select("tr").sortedWith(
+                    compareBy<Element> {
+                        it.select("a").first().text()
+                    }
+                )
+            )
+        }
+    }
+
     private fun formatBreadCrumbs(moduleName: String, doc: Document) {
         val tag = Element(Tag.valueOf("div"), "", Attributes().apply {
             put("class", "breadcrumbs")
@@ -90,13 +102,13 @@ class Beautifier(private val project: Project, private val modules: Set<Project>
         })
 
         if (doc.body().select(":root > br").isEmpty()) { // All types
-            // TODO order nodes alphabetically and group by prefix
             tag.appendText(" / ")
             tag.appendChild(Element(Tag.valueOf("a"), "", Attributes().apply {
                 put("href", "/" + moduleName + "/alltypes/")
             }).apply {
                 appendText("All Types")
             })
+            orderAllTypes(doc)
         } else {
             for (it in doc.body().select(":root > *")) {
                 if (it.tagName() == "br") {
