@@ -30,7 +30,7 @@ class Beautifier(private val project: Project, private val modules: Set<Project>
             fun node(name: String, state: ParamParseState): ParamParseState {
                 if (child is Element && child.tagName() == name) {
                     resultAccumulator.appendChild(child.clone())
-                    child.attr("hidden", "true")
+                    child.attr("class", "hidden")
                     return state
                 } else {
                     return this.state
@@ -162,7 +162,7 @@ class Beautifier(private val project: Project, private val modules: Set<Project>
             <div class="section">
                 <h3><a href="${it.name}">${it.name} (${it.version})</a></h3>
                 $description
-                <code>
+                <code class="install-line">
                 compile ('${it.group}.${it.name}:${it.version}@aar') {
                     transitive = true
                 }
