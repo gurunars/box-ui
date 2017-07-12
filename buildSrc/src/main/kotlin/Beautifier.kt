@@ -77,7 +77,7 @@ class Beautifier(private val project: Project, private val modules: Set<Project>
         doc.body().appendChild(parameters)
     }
 
-    private fun formatBreadCrumbs(doc: Document) {
+    private fun formatBreadCrumbs(moduleName: String, doc: Document) {
         val tag = Element(Tag.valueOf("div"), "", Attributes().apply {
             put("class", "breadcrumbs")
         })
@@ -90,11 +90,12 @@ class Beautifier(private val project: Project, private val modules: Set<Project>
         })
 
         if (doc.body().select(":root > br").isEmpty()) { // All types
-            // TODO determine module name and construct index URL based on that
             // TODO order nodes alphabetically and group by prefix
             tag.appendText(" / ")
-            tag.appendChild(Element(Tag.valueOf("span"), "").apply {
-                appendText("INDEX")
+            tag.appendChild(Element(Tag.valueOf("a"), "", Attributes().apply {
+                put("href", "/" + moduleName + "/alltypes/")
+            }).apply {
+                appendText("All Types")
             })
         } else {
             for (it in doc.body().select(":root > *")) {
@@ -123,14 +124,14 @@ class Beautifier(private val project: Project, private val modules: Set<Project>
         }
     }
 
-    private fun beautifyHtml(file: File) {
+    private fun beautifyHtml(moduleName: String, file: File) {
         val doc = Jsoup.parse(
                 file.readText().replace("&nbsp;/&nbsp;", ""),
                 "UTF-8"
         )
 
         replaceImageLinksWithImgs(doc)
-        formatBreadCrumbs(doc)
+        formatBreadCrumbs(moduleName, doc)
         beautifyParameters(doc)
 
         file.writeText(doc.outerHtml())
@@ -156,7 +157,7 @@ class Beautifier(private val project: Project, private val modules: Set<Project>
 
             File("html-docs/${module.name}").walk().forEach {
                 if (it.isFile && it.name.endsWith(".html")) {
-                    beautifyHtml(it)
+                    beautifyHtml(module.name, it)
                 }
             }
 
