@@ -93,6 +93,9 @@ class IconView constructor(context: Context) : ImageView(context) {
         }
     }
 
+    /**
+     * @suppress
+     */
     override fun setRotation(rotation: Float) {
         setImageDrawable(getRotateDrawable(iconDrawable, rotation))
     }

@@ -1,4 +1,30 @@
-apply from: '../all-modules.gradle'
+apply plugin: 'com.android.library'
+apply plugin: 'com.github.dcendents.android-maven'
+apply plugin: 'com.jfrog.bintray'
+apply plugin: 'kotlin-android'
+
+
+android {
+    compileSdkVersion compile_sdk_version
+    buildToolsVersion build_tools_version
+
+    lintOptions.abortOnError false
+
+    defaultConfig {
+        minSdkVersion min_sdk_version
+        targetSdkVersion compile_sdk_version
+    }
+
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+        test.java.srcDirs += 'src/main/kotlin'
+        androidTest.java.srcDirs += 'src/main/kotlin'
+        main.jni.srcDirs = []
+    }
+
+    return void
+}
+
 
 dependencies {
     compile 'com.android.support.test:rules:0.5'
