@@ -5,7 +5,6 @@ import android.view.ViewManager
 import com.gurunars.item_list.EmptyViewBinder
 import com.gurunars.item_list.Item
 import com.gurunars.item_list.SelectableItemViewBinder
-import com.gurunars.item_list.defaultEmptyViewBinder
 import org.jetbrains.anko.custom.ankoView
 
 
