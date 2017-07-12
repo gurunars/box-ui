@@ -4,7 +4,7 @@ import org.jsoup.nodes.*
 import org.jsoup.parser.Tag
 import java.io.File
 
-class Beautifier(private val project: Project, private val modules: Set<Project>) {
+class Beautifier(private val project: Project, private val modules: Collection<Project>) {
 
     private val dimRegexp = Regex("""^\d+x\d+$""")
 
