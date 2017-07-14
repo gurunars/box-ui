@@ -68,18 +68,6 @@ bintray {
 bintrayUpload.dependsOn([build, sourcesJar])
 */
 
-
-dokka {
-    outputFormat = 'html'
-    outputDirectory = "html-docs"
-    includes = ['README.md']
-
-    externalDocumentationLink {
-        url = new URL ("https://developer.android.com/reference/")
-        packageListUrl = new URL ("https://developer.android.com/reference/package-list")
-    }
-}
-
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 }

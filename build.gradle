@@ -9,7 +9,9 @@ buildscript {
     ext.min_sdk_version = 21
 
     repositories {
+        //mavenLocal()
         jcenter()
+        maven {url 'https://jitpack.io' }
     }
 
     dependencies {
@@ -17,14 +19,14 @@ buildscript {
         classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3'
         classpath "com.github.dcendents:android-maven-gradle-plugin:1.4.1"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath "org.jetbrains.dokka:dokka-android-gradle-plugin:$dokka_version"
+        classpath 'com.github.gurunars:styled-dokka:1.13.0'
     }
 }
 
 allprojects {
     repositories {
+        //mavenLocal()
         jcenter()
-        mavenLocal()
         maven {url "https://clojars.org/repo/"}
         maven {url "https://maven.google.com"}
     }
@@ -34,4 +36,4 @@ task clean(type: Delete) {
     delete rootProject.buildDir
 }
 
-apply plugin: StyledDokka
+apply plugin: "styled-dokka"
