@@ -16,3 +16,6 @@ dependencies {
     compile project(':databinding')
 }
 
+dokka {
+    includes = ["README.md"]
+}

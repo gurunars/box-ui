@@ -1,44 +1,7 @@
-apply plugin: 'com.android.library'
-apply plugin: 'com.github.dcendents.android-maven'
+apply from: '../all-libs.gradle'
+
+/*
 apply plugin: 'com.jfrog.bintray'
-apply plugin: 'kotlin-android'
-apply plugin: 'org.jetbrains.dokka-android'
-
-def buildInfo = [
-    siteUrl: 'https://gurunars.github.io/android-crud-ui',
-    gitUrl: 'git@github.com:gurunars/android-crud-ui.git',
-    name: MODULE_NAME,
-    group: MODULE_GROUP,
-    version: "0.56",
-    versionCode: 56,
-    license: "Apache-2.0"
-]
-
-group = buildInfo.group
-version = buildInfo.version
-
-android {
-    compileSdkVersion compile_sdk_version
-    buildToolsVersion build_tools_version
-
-    lintOptions.abortOnError false
-
-    defaultConfig {
-        minSdkVersion min_sdk_version
-        targetSdkVersion compile_sdk_version
-        versionCode buildInfo.versionCode
-        versionName buildInfo.version
-    }
-
-    sourceSets {
-        main.java.srcDirs += 'src/main/kotlin'
-        test.java.srcDirs += 'src/main/kotlin'
-        androidTest.java.srcDirs += 'src/main/kotlin'
-        main.jni.srcDirs = []
-    }
-
-    return void
-}
 
 task sourcesJar(type: Jar) {
     from android.sourceSets.main.java.srcDirs
@@ -49,7 +12,6 @@ artifacts {
     archives sourcesJar
 }
 
-/*
 bintray {
     user = bintrayUser
     key = bintrayApikey
@@ -57,17 +19,13 @@ bintray {
     configurations = ['archives']
     pkg {
         repo = "maven"
-        name = buildInfo.name
-        websiteUrl = buildInfo.siteUrl
-        vcsUrl = buildInfo.gitUrl
-        licenses = [buildInfo.license]
+        name = MODULE_NAME
+        websiteUrl = siteUrl
+        vcsUrl = gitUrl
+        licenses = [license]
         publish = true
     }
 }
 
 bintrayUpload.dependsOn([build, sourcesJar])
 */
-
-dependencies {
-    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-}

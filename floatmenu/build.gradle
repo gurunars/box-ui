@@ -12,3 +12,7 @@ dependencies {
     compile project(':android-utils')
     compile project(':databinding')
 }
+
+dokka {
+    includes = ["README.md"]
+}
