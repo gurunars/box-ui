@@ -17,13 +17,41 @@ import org.jetbrains.anko.*
  */
 class FloatMenu constructor(context: Context) : FrameLayout(context) {
 
+    /**
+     * If **true** - is on the left side of the screen. On the right side otherwise.
+     */
     val isLeftHanded = bindableField(false)
+    /**
+     * Time it takes to perform all the animated UI transitions
+     */
     val animationDuration = bindableField(400)
+    /**
+     * If **true** contents are visible. Menu contents are hidden otherwise.
+     */
     val isOpen = bindableField(false)
+    /**
+     * Icon associated with the open state of the menu. Shown when the menu is closed.
+     */
     val openIcon = bindableField(IconView.Icon(icon = R.drawable.ic_menu))
+    /**
+     * Icon associated with the closed state of the menu. Show when the menu is open.
+     */
     val closeIcon = bindableField(IconView.Icon(icon = R.drawable.ic_menu_close))
+    /**
+     * If **true** the menu has a shaded background that intercepts clicks. If **false** - the menu
+     * does not intercept clicks and passes them to the content area. The flag does not affect
+     * clickable elements that are located inside the menu though.
+     */
     val hasOverlay = bindableField(true)
+    /**
+     * View shown in the background layer of the widget. Semantically it represents the data
+     * manipulated by the menu.
+     */
     val contentView = bindableField(View(context))
+    /**
+     * View shown in the foreground layer of the widget when the menu is open. Is supposed to
+     * contain menu's controls.
+     */
     val menuView = bindableField(View(context))
 
     init {

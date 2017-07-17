@@ -1,7 +1,9 @@
 package com.gurunars.item_list
 
+import android.content.Context
 import android.support.v7.util.DiffUtil
 import android.support.v7.widget.RecyclerView
+import android.view.View
 import android.view.ViewGroup
 import com.esotericsoftware.kryo.Kryo
 import com.gurunars.databinding.BindableField
@@ -11,10 +13,13 @@ import com.gurunars.shortcuts.fullSize
 import org.objenesis.strategy.StdInstantiatorStrategy
 
 
+typealias ItemViewBinder<ItemType> = (context: Context, itemType: Enum<*>, payload: BindableField<Pair<ItemType, ItemType?>>) -> View
+
+
 internal class ItemAdapter<ItemType : Item>(
         private val items: BindableField<List<ItemType>>,
         private val emptyViewBinder: EmptyViewBinder,
-        private val itemViewBinderFetcher: (Int) -> ItemViewBinder<ItemType>
+        private val itemViewBinder: ItemViewBinder<ItemType>
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var previousList: List<ItemType> = ArrayList()
@@ -56,11 +61,12 @@ internal class ItemAdapter<ItemType : Item>(
                 fullSize()
             }) {}
         } else {
-            val binder = itemViewBinderFetcher.invoke(viewType)
-            val field = parent.bindableField(Pair<ItemType, ItemType?>(binder.getEmptyPayload(), null))
-            return object : RecyclerView.ViewHolder(binder.bind(parent.context, field).apply {
-                asRow()
-                setTag(R.id.payloadTag, field)
+            val initialPayload = items.get().first { it.getType().ordinal == viewType }
+            val field = parent.bindableField(Pair<ItemType, ItemType?>(initialPayload, null))
+            return object : RecyclerView.ViewHolder(
+                itemViewBinder(parent.context, initialPayload.getType(), field).apply {
+                    asRow()
+                    setTag(R.id.payloadTag, field)
             }) {}
         }
     }

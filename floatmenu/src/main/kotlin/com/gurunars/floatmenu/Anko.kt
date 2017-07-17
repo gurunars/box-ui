@@ -22,5 +22,4 @@ internal inline fun ViewManager.menuPane(
             MenuPane(it, hasOverlay, isVisible, animationDuration)
         }, theme, init)
 
-inline fun ViewManager.floatMenu(theme: Int = 0) = floatMenu(theme) {}
-inline fun ViewManager.floatMenu(theme: Int = 0, init: FloatMenu.() -> Unit) = ankoView({ FloatMenu(it) }, theme, init)
+inline fun ViewManager.floatMenu(init: FloatMenu.() -> Unit) = ankoView({ FloatMenu(it) }, 0, init)

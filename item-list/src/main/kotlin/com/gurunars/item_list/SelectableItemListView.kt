@@ -41,11 +41,10 @@ class SelectableItemListView<ItemType : Item> constructor(
 
     init {
         itemListView(
-            itemViewBinderFetcher={ type ->
+            itemViewBinderFetcher=
                 ClickableItemViewBinder(
                         selectedItems,
-                        itemViewBinderFetcher.invoke(type))
-            },
+                        itemViewBinderFetcher.invoke()),
             emptyViewBinder=emptyViewBinder
         ) {
             id = R.id.itemList

@@ -12,9 +12,14 @@ import org.jetbrains.anko.recyclerview.v7.recyclerView
 import org.objenesis.strategy.StdInstantiatorStrategy
 
 
+/**
+ * @param context Android context
+ * @param itemViewBinder a function binding an observable to the actual view
+ * @param emptyViewBinder a function returning a view to be shown when the list is empty
+ */
 class ItemListView<ItemType : Item> constructor(
         context: Context,
-        itemViewBinderFetcher: (Int) -> ItemViewBinder<ItemType>,
+        itemViewBinder: ItemViewBinder<ItemType>,
         emptyViewBinder: EmptyViewBinder = ::defaultEmptyViewBinder
 ) : FrameLayout(context) {
 
@@ -35,11 +40,7 @@ class ItemListView<ItemType : Item> constructor(
             clipToPadding=false
             bottomPadding=dip(60)
             isSaveEnabled=false
-            adapter = ItemAdapter<ItemType>(
-                items,
-                emptyViewBinder,
-                itemViewBinderFetcher
-            )
+            adapter = ItemAdapter(items, emptyViewBinder, itemViewBinder)
             layoutManager = LinearLayoutManager(context).apply {
                 orientation = LinearLayoutManager.VERTICAL
             }

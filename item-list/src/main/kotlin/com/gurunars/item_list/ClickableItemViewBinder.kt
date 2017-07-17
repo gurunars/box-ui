@@ -9,8 +9,6 @@ internal class ClickableItemViewBinder<ItemType : Item>(
         private val itemViewBinder: SelectableItemViewBinder<ItemType>
 ): ItemViewBinder<SelectableItem<ItemType>> {
 
-    override fun getEmptyPayload() = SelectableItem(itemViewBinder.getEmptyPayload(), false)
-
     override fun bind(context: Context, payload: BindableField<Pair<SelectableItem<ItemType>, SelectableItem<ItemType>?>>): View {
         return itemViewBinder.bind(context, payload).apply {
             isClickable=true

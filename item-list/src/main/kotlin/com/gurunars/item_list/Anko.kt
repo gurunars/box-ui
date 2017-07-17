@@ -5,7 +5,7 @@ import org.jetbrains.anko.custom.ankoView
 
 
 fun <ItemT: Item> ViewManager.itemListView(
-        itemViewBinderFetcher: (Int) -> ItemViewBinder<ItemT>,
+        itemViewBinderFetcher: ItemViewBinder<ItemT>,
         emptyViewBinder: EmptyViewBinder = ::defaultEmptyViewBinder,
         init: ItemListView<ItemT>.() -> Unit = {}) =
 ankoView({
