@@ -14,7 +14,7 @@ ankoView({
 
 
 fun <ItemT: Item> ViewManager.selectableItemListView(
-        itemViewBinderFetcher: (Int) -> SelectableItemViewBinder<ItemT>,
+        itemViewBinderFetcher: SelectableItemViewBinder<ItemT>,
         emptyViewBinder: EmptyViewBinder = ::defaultEmptyViewBinder,
         init: SelectableItemListView<ItemT>.() -> Unit = {}) =
 ankoView({

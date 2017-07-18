@@ -4,14 +4,23 @@ import android.content.Context
 import android.view.View
 import com.gurunars.databinding.BindableField
 
-internal class ClickableItemViewBinder<ItemType : Item>(
-        private val selectedItems: BindableField<Set<ItemType>>,
-        private val itemViewBinder: SelectableItemViewBinder<ItemType>
-): ItemViewBinder<SelectableItem<ItemType>> {
+typealias SelectableItemViewBinder<ItemType> = (
+    context: Context,
+    payload: BindableField<Pair<SelectableItem<ItemType>, SelectableItem<ItemType>?>>
+) -> View
 
-    override fun bind(context: Context, payload: BindableField<Pair<SelectableItem<ItemType>, SelectableItem<ItemType>?>>): View {
-        return itemViewBinder.bind(context, payload).apply {
-            isClickable=true
+internal fun <ItemType : Item> clickableItemViewBinder(
+        selectedItems: BindableField<Set<ItemType>>,
+        itemViewBinder: SelectableItemViewBinder<ItemType>
+) : ItemViewBinder<SelectableItem<ItemType>> {
+
+    return {
+        context: Context,
+        itemType: Enum<*>,
+        payload: BindableField<Pair<SelectableItem<ItemType>, SelectableItem<ItemType>?>>
+    ->
+        itemViewBinder(context, payload).apply {
+            isClickable = true
             setOnClickListener {
                 val item = payload.get().first
                 val sel = selectedItems.get()
@@ -32,4 +41,5 @@ internal class ClickableItemViewBinder<ItemType : Item>(
             }
         }
     }
+
 }

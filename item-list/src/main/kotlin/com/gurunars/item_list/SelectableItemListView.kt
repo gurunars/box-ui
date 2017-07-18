@@ -22,7 +22,7 @@ import kotlin.collections.HashSet
 
 class SelectableItemListView<ItemType : Item> constructor(
         context: Context,
-        itemViewBinderFetcher: (Int) -> SelectableItemViewBinder<ItemType>,
+        itemViewBinderFetcher: SelectableItemViewBinder<ItemType>,
         emptyViewBinder: EmptyViewBinder = ::defaultEmptyViewBinder
 ) : FrameLayout(context) {
 
@@ -41,10 +41,7 @@ class SelectableItemListView<ItemType : Item> constructor(
 
     init {
         itemListView(
-            itemViewBinderFetcher=
-                ClickableItemViewBinder(
-                        selectedItems,
-                        itemViewBinderFetcher.invoke()),
+            itemViewBinderFetcher=clickableItemViewBinder(selectedItems, itemViewBinderFetcher),
             emptyViewBinder=emptyViewBinder
         ) {
             id = R.id.itemList
