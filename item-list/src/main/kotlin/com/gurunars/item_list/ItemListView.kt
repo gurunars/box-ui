@@ -13,11 +13,12 @@ import org.objenesis.strategy.StdInstantiatorStrategy
 
 
 /**
+ * @param ItemType type of the item to be shown in the list
  * @param context Android context
  * @param itemViewBinder a function binding an observable to the actual view
  * @param emptyViewBinder a function returning a view to be shown when the list is empty
  */
-class ItemListView<ItemType : Item> constructor(
+class ItemListView<ItemType : Item> (
     context: Context,
     itemViewBinder: ItemViewBinder<ItemType>,
     emptyViewBinder: EmptyViewBinder = ::defaultEmptyViewBinder

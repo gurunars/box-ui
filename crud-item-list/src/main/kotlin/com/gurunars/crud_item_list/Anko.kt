@@ -8,21 +8,21 @@ import com.gurunars.item_list.SelectableItemViewBinder
 import org.jetbrains.anko.custom.ankoView
 
 
-fun <ItemT: Item> ViewManager.crudItemList(
+fun <ItemT: Item> ViewManager.crudItemListView(
         itemViewBinderFetcher: SelectableItemViewBinder<ItemT>,
         itemEditListener: (item: ItemT) -> Unit,
         emptyViewBinder: EmptyViewBinder = ::defaultEmptyViewBinder,
-        init: CrudItemList<ItemT>.() -> Unit = {}) =
+        init: CrudItemListView<ItemT>.() -> Unit = {}) =
 ankoView({
-    CrudItemList(it, itemViewBinderFetcher, itemEditListener, emptyViewBinder)
+    CrudItemListView(it, itemViewBinderFetcher, itemEditListener, emptyViewBinder)
 }, 0, init)
 
 
-fun <ItemT: Item> Activity.crudItemList(
+fun <ItemT: Item> Activity.crudItemListView(
         itemViewBinderFetcher: SelectableItemViewBinder<ItemT>,
         itemEditListener: (item: ItemT) -> Unit,
         emptyViewBinder: EmptyViewBinder = ::defaultEmptyViewBinder,
-        init: CrudItemList<ItemT>.() -> Unit = {}) =
+        init: CrudItemListView<ItemT>.() -> Unit = {}) =
     ankoView({
-        CrudItemList(it, itemViewBinderFetcher, itemEditListener, emptyViewBinder)
+        CrudItemListView(it, itemViewBinderFetcher, itemEditListener, emptyViewBinder)
     }, 0, init)

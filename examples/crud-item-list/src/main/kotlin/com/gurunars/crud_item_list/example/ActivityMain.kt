@@ -12,8 +12,8 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
-import com.gurunars.crud_item_list.CrudItemList
-import com.gurunars.crud_item_list.crudItemList
+import com.gurunars.crud_item_list.CrudItemListView
+import com.gurunars.crud_item_list.crudItemListView
 import com.gurunars.databinding.BindableField
 import com.gurunars.item_list.SelectableItem
 import com.gurunars.shortcuts.asRow
@@ -54,7 +54,7 @@ class ActivityMain : Activity() {
     private val count = storage.storageField("count", 0)
 
 
-    private lateinit var crudItemList: CrudItemList<AnimalItem>
+    private lateinit var crudItemListView: CrudItemListView<AnimalItem>
 
     private fun add(type: AnimalItem.Type) {
         items.set(items.get() + AnimalItem(count.get().toLong(), 0, type))
@@ -84,7 +84,7 @@ class ActivityMain : Activity() {
         super.onCreate(savedInstanceState)
         storage.load()
 
-        this.crudItemList = crudItemList(
+        this.crudItemListView = crudItemListView(
             ::bindAnimalItem,
             { item -> this@ActivityMain.items.set(
                 items.get().toMutableList().apply {
@@ -96,19 +96,19 @@ class ActivityMain : Activity() {
             fullSize()
             id=R.id.customView
             this@ActivityMain.items.bind(items)
-            actionIcon.set(CrudItemList.IconColorBundle(
+            actionIcon.set(CrudItemListView.IconColorBundle(
                 fgColor=color(R.color.Yellow),
                 bgColor=color(R.color.Blue)
             ))
-            contextualIcon.set(CrudItemList.IconColorBundle(
+            contextualCloseIcon.set(CrudItemListView.IconColorBundle(
                 bgColor=color(R.color.Black),
                 fgColor=color(R.color.White)
             ))
-            createCloseIcon.set(CrudItemList.IconColorBundle(
+            createCloseIcon.set(CrudItemListView.IconColorBundle(
                 bgColor=color(R.color.Red),
                 fgColor=color(R.color.White)
             ))
-            openIcon.set(CrudItemList.IconColorBundle(
+            openIcon.set(CrudItemListView.IconColorBundle(
                 bgColor=color(R.color.Green),
                 fgColor=color(R.color.Yellow)
             ))
@@ -184,16 +184,16 @@ class ActivityMain : Activity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val i = item.itemId
         when (i) {
-            R.id.leftHanded -> crudItemList.isLeftHanded.set(true)
-            R.id.rightHanded -> crudItemList.isLeftHanded.set(false)
+            R.id.leftHanded -> crudItemListView.isLeftHanded.set(true)
+            R.id.rightHanded -> crudItemListView.isLeftHanded.set(false)
             R.id.reset -> initData()
             R.id.lock -> {
                 setTitle(R.string.unsortable)
-                crudItemList.isSortable.set(false)
+                crudItemListView.isSortable.set(false)
             }
             R.id.unlock -> {
                 setTitle(R.string.sortable)
-                crudItemList.isSortable.set(true)
+                crudItemListView.isSortable.set(true)
             }
             R.id.addMany -> addItems(true)
         }

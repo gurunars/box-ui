@@ -13,28 +13,60 @@ import com.gurunars.item_list.*
 import com.gurunars.shortcuts.fullSize
 
 /**
- * Widget to be used for manipulating a collection of items.
+ * Widget to be used for manipulating a collection of items with a dedicated set of UI controls.
+ *
+ * @see ItemListView
  */
-class CrudItemList<ItemType : Item>  constructor(
-        context: Context,
-        itemViewBinderFetcher: SelectableItemViewBinder<ItemType>,
-        itemEditListener: (item: ItemType) -> Unit,
-        emptyViewBinder: EmptyViewBinder = ::defaultEmptyViewBinder
+class CrudItemListView<ItemType : Item>  constructor(
+    context: Context,
+    itemViewBinderFetcher: SelectableItemViewBinder<ItemType>,
+    itemEditListener: (item: ItemType) -> Unit,
+    emptyViewBinder: EmptyViewBinder = ::defaultEmptyViewBinder
 ) : FrameLayout(context) {
 
+    /**
+     * A combination of icon foreground and background color.
+     */
     data class IconColorBundle(
         val bgColor: Int = Color.RED,
         val fgColor: Int = Color.WHITE
     )
 
+    /**
+     * Color of the icons meant to manipulate the collection of items in the contextual menu.
+     */
     val actionIcon = bindableField(IconColorBundle())
-    val contextualIcon = bindableField(IconColorBundle())
+    /**
+     * Check mark icon color settings. The icon is shown when contextual menu is opened. Clicking
+     * the icon closes contextual menu.
+     */
+    val contextualCloseIcon = bindableField(IconColorBundle())
+    /**
+     * Cross icon color settings. The icon is shown when creation menu is opened. Clicking the icon
+     * closes the menu.
+     */
     val createCloseIcon = bindableField(IconColorBundle())
+    /**
+     * Plus icon color settings. The icon is shown when the menu is closed. Clicking the icon opens
+     * the creation menu.
+     */
     val openIcon = bindableField(IconColorBundle())
+    /**
+     * If true all action buttons are show on the left side of the screen. They are shown on the
+     * right side of the screen otherwise.
+     */
     val isLeftHanded = bindableField(false)
+    /**
+     * A set of controls used to create items of various types.
+     */
     val creationMenu = bindableField(View(context))
+    /**
+     * If false move up and move down buttons are hidden.
+     */
     val isSortable = bindableField(true)
-
+    /**
+     * A collection of items shown and manipulated by the view.
+     */
     val items: BindableField<List<ItemType>>
 
     private val contextualMenu: ContextualMenu<ItemType>
@@ -66,7 +98,7 @@ class CrudItemList<ItemType : Item>  constructor(
             fullSize()
             id = R.id.floatingMenu
             contentView.set(itemListView)
-            this@CrudItemList.isLeftHanded.bind(isLeftHanded)
+            this@CrudItemListView.isLeftHanded.bind(isLeftHanded)
 
             fun configureCloseIcon() {
                 if (itemListView.selectedItems.get().isEmpty()) {
@@ -78,8 +110,8 @@ class CrudItemList<ItemType : Item>  constructor(
                 } else {
                     closeIcon.set(IconView.Icon(
                         icon = R.drawable.ic_check,
-                        bgColor = contextualIcon.get().bgColor,
-                        fgColor = contextualIcon.get().fgColor
+                        bgColor = contextualCloseIcon.get().bgColor,
+                        fgColor = contextualCloseIcon.get().fgColor
                     ))
                 }
             }
@@ -108,14 +140,14 @@ class CrudItemList<ItemType : Item>  constructor(
                 configureMenuView()
             }
 
-            this@CrudItemList.openIcon.onChange {
+            this@CrudItemListView.openIcon.onChange {
                 openIcon.set(openIcon.get().copy(
                     bgColor = it.bgColor,
                     fgColor = it.fgColor
                 ))
             }
 
-            contextualIcon.onChange { configureCloseIcon() }
+            contextualCloseIcon.onChange { configureCloseIcon() }
             createCloseIcon.onChange { configureCloseIcon() }
         }
 

@@ -14,13 +14,13 @@ import org.jetbrains.anko.*
 
 
 internal class ContextualMenu<ItemType: Item> constructor(
-    context: Context,
-    actionIcon: BindableField<CrudItemList.IconColorBundle>,
-    isLeftHanded: BindableField<Boolean>,
-    isSortable: BindableField<Boolean>,
-    items: BindableField<List<ItemType>>,
-    selectedItems: BindableField<Set<ItemType>>,
-    itemEditListener: (item: ItemType) -> Unit
+        context: Context,
+        actionIcon: BindableField<CrudItemListView.IconColorBundle>,
+        isLeftHanded: BindableField<Boolean>,
+        isSortable: BindableField<Boolean>,
+        items: BindableField<List<ItemType>>,
+        selectedItems: BindableField<Set<ItemType>>,
+        itemEditListener: (item: ItemType) -> Unit
 ) : FrameLayout(context) {
 
     init {
