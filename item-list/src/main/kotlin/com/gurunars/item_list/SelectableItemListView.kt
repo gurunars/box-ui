@@ -18,7 +18,10 @@ import kotlin.collections.HashSet
  * Items can be selected initially via long clicking and further on by consequentially
  * clicking them.
  *
- * @see ItemListView
+ * @param context @see ItemListView
+ *
+ * @property items A collection of items shown in the list
+ * @property selectedItems A collection of items selected at the moment
  */
 
 class SelectableItemListView<ItemType : Item> constructor(
@@ -31,16 +34,11 @@ class SelectableItemListView<ItemType : Item> constructor(
         instantiatorStrategy = Kryo.DefaultInstantiatorStrategy(StdInstantiatorStrategy())
     }
 
-    /**
-     * A collection of items selected at the moment
-     */
     val selectedItems = bindableField<Set<ItemType>>(
         hashSetOf(),
         {item -> kryo.copy(HashSet(item))}
     )
-    /**
-     * A collection of items shown in the list
-     */
+
     val items = bindableField<List<ItemType>>(
         listOf(),
         {item -> kryo.copy(ArrayList(item))}

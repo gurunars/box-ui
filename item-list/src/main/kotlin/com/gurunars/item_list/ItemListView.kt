@@ -17,6 +17,8 @@ import org.objenesis.strategy.StdInstantiatorStrategy
  * @param context Android context
  * @param itemViewBinder a function binding an observable to the actual view
  * @param emptyViewBinder a function returning a view to be shown when the list is empty
+ *
+ * @property items A collection of items shown in the list
  */
 class ItemListView<ItemType : Item> (
     context: Context,
@@ -29,9 +31,6 @@ class ItemListView<ItemType : Item> (
         instantiatorStrategy = Kryo.DefaultInstantiatorStrategy(StdInstantiatorStrategy())
     }
 
-    /**
-     * A collection of items shown in the list
-     */
     val items = bindableField(
         listOf<ItemType>(),
         {item -> kryo.copy(ArrayList(item))}

@@ -4,6 +4,7 @@ apply plugin: 'org.jetbrains.dokka-android'
 apply plugin: 'com.github.dcendents.android-maven'
 
 group = MODULE_GROUP
+version = package_version
 
 android {
     compileSdkVersion compile_sdk_version
@@ -14,8 +15,8 @@ android {
     defaultConfig {
         minSdkVersion min_sdk_version
         targetSdkVersion compile_sdk_version
-        versionCode version_code
-        versionName version
+        versionCode package_version_code
+        versionName package_version
     }
 
     sourceSets {
