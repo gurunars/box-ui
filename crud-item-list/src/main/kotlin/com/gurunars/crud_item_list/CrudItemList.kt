@@ -17,7 +17,7 @@ import com.gurunars.shortcuts.fullSize
  */
 class CrudItemList<ItemType : Item>  constructor(
         context: Context,
-        itemViewBinderFetcher: (Int) -> SelectableItemViewBinder<ItemType>,
+        itemViewBinderFetcher: SelectableItemViewBinder<ItemType>,
         itemEditListener: (item: ItemType) -> Unit,
         emptyViewBinder: EmptyViewBinder = ::defaultEmptyViewBinder
 ) : FrameLayout(context) {

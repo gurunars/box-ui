@@ -9,7 +9,7 @@ import org.jetbrains.anko.custom.ankoView
 
 
 fun <ItemT: Item> ViewManager.crudItemList(
-        itemViewBinderFetcher: (Int) -> SelectableItemViewBinder<ItemT>,
+        itemViewBinderFetcher: SelectableItemViewBinder<ItemT>,
         itemEditListener: (item: ItemT) -> Unit,
         emptyViewBinder: EmptyViewBinder = ::defaultEmptyViewBinder,
         init: CrudItemList<ItemT>.() -> Unit = {}) =
@@ -19,7 +19,7 @@ ankoView({
 
 
 fun <ItemT: Item> Activity.crudItemList(
-        itemViewBinderFetcher: (Int) -> SelectableItemViewBinder<ItemT>,
+        itemViewBinderFetcher: SelectableItemViewBinder<ItemT>,
         itemEditListener: (item: ItemT) -> Unit,
         emptyViewBinder: EmptyViewBinder = ::defaultEmptyViewBinder,
         init: CrudItemList<ItemT>.() -> Unit = {}) =
