@@ -7,42 +7,36 @@ import android.os.Bundle
 import android.support.annotation.StringRes
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
 import com.gurunars.databinding.BindableField
 import com.gurunars.item_list.ItemListView
-import com.gurunars.item_list.ItemViewBinder
 import com.gurunars.item_list.itemListView
 import com.gurunars.shortcuts.fullSize
 import com.gurunars.storage.PersistentStorage
 import org.jetbrains.anko.*
 
-
-internal class AnimalBinder: ItemViewBinder<AnimalItem> {
-
-    override fun bind(context: Context, payload: BindableField<Pair<AnimalItem, AnimalItem?>>): View {
-        return TextView(context).apply {
-            layoutParams = ViewGroup.LayoutParams(matchParent, wrapContent)
-            padding = context.dip(5)
-            payload.onChange {
-                text = it.first.toString()
-                val other = it.second
-                if (other != null && !it.first.payloadsEqual(other)) {
-                    clearAnimation()
-                    ValueAnimator().apply {
-                        setFloatValues(1.0f, 0.0f, 1.0f)
-                        addUpdateListener { animation -> alpha = animation.animatedValue as Float }
-                        duration = 1300
-                        start()
-                    }
-                }
+internal fun bindAnimalItem(
+    context: Context,
+    itemType: Enum<*>,
+    payload: BindableField<Pair<AnimalItem, AnimalItem?>>
+) = TextView(context).apply {
+    layoutParams = ViewGroup.LayoutParams(matchParent, wrapContent)
+    padding = context.dip(5)
+    payload.onChange {
+        text = it.first.toString()
+        val other = it.second
+        if (other != null && !it.first.payloadsEqual(other)) {
+            clearAnimation()
+            ValueAnimator().apply {
+                setFloatValues(1.0f, 0.0f, 1.0f)
+                addUpdateListener { animation -> alpha = animation.animatedValue as Float }
+                duration = 1300
+                start()
             }
         }
     }
-
-    override fun getEmptyPayload() = AnimalItem(0, 0, AnimalItem.Type.EMPTY)
 }
 
 
@@ -64,8 +58,8 @@ class ActivityMain : Activity() {
         storage.load()
 
         frameLayout {
-            layoutParams=ViewGroup.LayoutParams(matchParent, matchParent)
-            itemListView = itemListView({ AnimalBinder() }) {
+            fullSize()
+            itemListView = itemListView(::bindAnimalItem) {
                 fullSize()
                 id=R.id.itemList
                 this@ActivityMain.items.bind(items)
