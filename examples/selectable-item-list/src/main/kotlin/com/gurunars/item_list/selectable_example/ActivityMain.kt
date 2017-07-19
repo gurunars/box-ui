@@ -59,13 +59,10 @@ class ActivityMain : Activity() {
         super.onCreate(savedInstanceState)
         storage.load()
 
-        frameLayout {
+        itemListView = selectableItemListView(::bindAnimalItem) {
             fullSize()
-            itemListView = selectableItemListView(::bindAnimalItem) {
-                fullSize()
-                id=R.id.selectableItemList
-                this@ActivityMain.items.bind(items)
-            }
+            id=R.id.selectableItemList
+            this@ActivityMain.items.bind(items)
         }
 
     }

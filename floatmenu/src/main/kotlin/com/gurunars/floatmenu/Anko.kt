@@ -1,5 +1,6 @@
 package com.gurunars.floatmenu
 
+import android.app.Activity
 import android.view.ViewManager
 import com.gurunars.android_utils.IconView
 import com.gurunars.databinding.BindableField
@@ -23,3 +24,5 @@ internal inline fun ViewManager.menuPane(
         }, theme, init)
 
 inline fun ViewManager.floatMenu(init: FloatMenu.() -> Unit) = ankoView({ FloatMenu(it) }, 0, init)
+
+inline fun Activity.floatMenu(init: FloatMenu.() -> Unit) = ankoView({ FloatMenu(it) }, 0, init)

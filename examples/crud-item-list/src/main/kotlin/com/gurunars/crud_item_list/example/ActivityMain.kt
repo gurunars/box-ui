@@ -5,7 +5,9 @@ import android.app.Activity
 import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
-import android.view.*
+import android.view.Gravity
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.RelativeLayout
@@ -14,39 +16,35 @@ import com.gurunars.crud_item_list.CrudItemList
 import com.gurunars.crud_item_list.crudItemList
 import com.gurunars.databinding.BindableField
 import com.gurunars.item_list.SelectableItem
-import com.gurunars.item_list.SelectableItemViewBinder
+import com.gurunars.shortcuts.asRow
 import com.gurunars.shortcuts.color
 import com.gurunars.shortcuts.fullSize
 import com.gurunars.storage.PersistentStorage
 import org.jetbrains.anko.*
 
 
-internal class AnimalBinder: SelectableItemViewBinder<AnimalItem> {
-
-    override fun bind(context: Context, payload: BindableField<Pair<SelectableItem<AnimalItem>, SelectableItem<AnimalItem>?>>): View {
-        return TextView(context).apply {
-            layoutParams = ViewGroup.LayoutParams(matchParent, wrapContent)
-            padding = context.dip(5)
-            payload.onChange {
-                setBackgroundColor(if (it.first.isSelected) Color.RED else Color.WHITE)
-                text = it.first.toString()
-                val other = it.second
-                if (other != null && !it.first.item.payloadsEqual(other.item)) {
-                    clearAnimation()
-                    ValueAnimator().apply {
-                        setFloatValues(1.0f, 0.0f, 1.0f)
-                        addUpdateListener { animation -> alpha = animation.animatedValue as Float }
-                        duration = 1300
-                        start()
-                    }
-                }
+internal fun bindAnimalItem(
+    context: Context,
+    itemType: Enum<*>,
+    payload: BindableField<Pair<SelectableItem<AnimalItem>, SelectableItem<AnimalItem>?>>
+) = TextView(context).apply {
+    asRow()
+    padding = context.dip(5)
+    payload.onChange {
+        setBackgroundColor(if (it.first.isSelected) Color.RED else Color.WHITE)
+        text = it.first.toString()
+        val other = it.second
+        if (other != null && !it.first.item.payloadsEqual(other.item)) {
+            clearAnimation()
+            ValueAnimator().apply {
+                setFloatValues(1.0f, 0.0f, 1.0f)
+                addUpdateListener { animation -> alpha = animation.animatedValue as Float }
+                duration = 1300
+                start()
             }
         }
     }
-
-    override fun getEmptyPayload() = AnimalItem(0, 0, AnimalItem.Type.EMPTY)
 }
-
 
 class ActivityMain : Activity() {
 
@@ -87,7 +85,7 @@ class ActivityMain : Activity() {
         storage.load()
 
         this.crudItemList = crudItemList(
-            { AnimalBinder() },
+            ::bindAnimalItem,
             { item -> this@ActivityMain.items.set(
                 items.get().toMutableList().apply {
                     val id = indexOfFirst { item.getId() == it.getId() }
