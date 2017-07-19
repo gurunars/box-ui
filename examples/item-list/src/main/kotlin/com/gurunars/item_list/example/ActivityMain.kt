@@ -13,6 +13,7 @@ import android.widget.Toast
 import com.gurunars.databinding.BindableField
 import com.gurunars.item_list.ItemListView
 import com.gurunars.item_list.itemListView
+import com.gurunars.shortcuts.asRow
 import com.gurunars.shortcuts.fullSize
 import com.gurunars.storage.PersistentStorage
 import org.jetbrains.anko.*
@@ -22,7 +23,7 @@ internal fun bindAnimalItem(
     itemType: Enum<*>,
     payload: BindableField<Pair<AnimalItem, AnimalItem?>>
 ) = TextView(context).apply {
-    layoutParams = ViewGroup.LayoutParams(matchParent, wrapContent)
+    asRow()
     padding = context.dip(5)
     payload.onChange {
         text = it.first.toString()
