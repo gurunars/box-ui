@@ -15,25 +15,34 @@ import kotlin.collections.HashSet
 /**
  * Item list that has selection enabled.
  *
- * Items can be selected via long clicking and consequentially clicking them.
+ * Items can be selected initially via long clicking and further on by consequentially
+ * clicking them.
  *
- * @param <ItemType> class describing item payload
+ * @param context Android context
+ * @param itemViewBinder a function binding an observable to the actual view
+ * @param emptyViewBinder a function returning a view to be shown when the list is empty
  */
 
 class SelectableItemListView<ItemType : Item> constructor(
-        context: Context,
-        itemViewBinderFetcher: SelectableItemViewBinder<ItemType>,
-        emptyViewBinder: EmptyViewBinder = ::defaultEmptyViewBinder
+    context: Context,
+    itemViewBinder: SelectableItemViewBinder<ItemType>,
+    emptyViewBinder: EmptyViewBinder = ::defaultEmptyViewBinder
 ) : FrameLayout(context) {
 
     private val kryo = Kryo().apply {
         instantiatorStrategy = Kryo.DefaultInstantiatorStrategy(StdInstantiatorStrategy())
     }
 
+    /**
+     * A collection of items selected at the moment
+     */
     val selectedItems = bindableField<Set<ItemType>>(
         hashSetOf(),
         {item -> kryo.copy(HashSet(item))}
     )
+    /**
+     * A collection of items shown in the list
+     */
     val items = bindableField<List<ItemType>>(
         listOf(),
         {item -> kryo.copy(ArrayList(item))}
@@ -41,7 +50,7 @@ class SelectableItemListView<ItemType : Item> constructor(
 
     init {
         itemListView(
-            itemViewBinderFetcher=clickableItemViewBinder(selectedItems, itemViewBinderFetcher),
+            itemViewBinder=clickableSelector(selectedItems, itemViewBinder),
             emptyViewBinder=emptyViewBinder
         ) {
             id = R.id.itemList
@@ -69,8 +78,9 @@ class SelectableItemListView<ItemType : Item> constructor(
     }
 
     override fun onRestoreInstanceState(state: Parcelable) {
-        val localState = state as Bundle
-        super.onRestoreInstanceState(localState.getParcelable<Parcelable>("superState"))
-        selectedItems.set(localState.getSerializable("selectedItems") as HashSet<ItemType>)
+        (state as Bundle).apply {
+            super.onRestoreInstanceState(getParcelable<Parcelable>("superState"))
+            selectedItems.set(getSerializable("selectedItems") as HashSet<ItemType>)
+        }
     }
 }

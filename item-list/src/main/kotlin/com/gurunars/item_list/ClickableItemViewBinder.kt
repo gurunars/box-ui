@@ -1,25 +1,21 @@
 package com.gurunars.item_list
 
 import android.content.Context
-import android.view.View
 import com.gurunars.databinding.BindableField
 
-typealias SelectableItemViewBinder<ItemType> = (
-    context: Context,
-    payload: BindableField<Pair<SelectableItem<ItemType>, SelectableItem<ItemType>?>>
-) -> View
+typealias SelectableItemViewBinder<ItemType> = ItemViewBinder<SelectableItem<ItemType>>
 
-internal fun <ItemType : Item> clickableItemViewBinder(
-        selectedItems: BindableField<Set<ItemType>>,
-        itemViewBinder: SelectableItemViewBinder<ItemType>
-) : ItemViewBinder<SelectableItem<ItemType>> {
+internal fun <ItemType : Item> clickableSelector(
+    selectedItems: BindableField<Set<ItemType>>,
+    itemViewBinder: SelectableItemViewBinder<ItemType>
+) :SelectableItemViewBinder<ItemType> {
 
     return {
         context: Context,
         itemType: Enum<*>,
         payload: BindableField<Pair<SelectableItem<ItemType>, SelectableItem<ItemType>?>>
     ->
-        itemViewBinder(context, payload).apply {
+        itemViewBinder(context, itemType, payload).apply {
             isClickable = true
             setOnClickListener {
                 val item = payload.get().first
@@ -40,6 +36,7 @@ internal fun <ItemType : Item> clickableItemViewBinder(
                 true
             }
         }
+
     }
 
 }

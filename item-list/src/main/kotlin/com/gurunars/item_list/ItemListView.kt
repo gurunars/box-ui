@@ -18,15 +18,19 @@ import org.objenesis.strategy.StdInstantiatorStrategy
  * @param emptyViewBinder a function returning a view to be shown when the list is empty
  */
 class ItemListView<ItemType : Item> constructor(
-        context: Context,
-        itemViewBinder: ItemViewBinder<ItemType>,
-        emptyViewBinder: EmptyViewBinder = ::defaultEmptyViewBinder
+    context: Context,
+    itemViewBinder: ItemViewBinder<ItemType>,
+    emptyViewBinder: EmptyViewBinder = ::defaultEmptyViewBinder
 ) : FrameLayout(context) {
+
 
     private val kryo = Kryo().apply {
         instantiatorStrategy = Kryo.DefaultInstantiatorStrategy(StdInstantiatorStrategy())
     }
 
+    /**
+     * A collection of items shown in the list
+     */
     val items = bindableField(
         listOf<ItemType>(),
         {item -> kryo.copy(ArrayList(item))}
