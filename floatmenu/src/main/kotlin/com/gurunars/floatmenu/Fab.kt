@@ -25,6 +25,7 @@ internal class Fab constructor(
         val animatedValue = bindableField(1f)
 
         val actualImageView = IconView(context).apply {
+            id=R.id.iconView
             fullSize()
         }
 

@@ -41,9 +41,9 @@ class ActivityMainTest {
     }
 
     private fun checkFab(contentDescription: String, menuContentDescription: String) {
-        onView(withId(R.id.floatingMenu)).check(matches(
-                withContentDescription(menuContentDescription)))
-        fab().check(matches(withContentDescription(contentDescription)))
+        fab().check(matches(withContentDescription(menuContentDescription)))
+        onView(withId(R.id.iconView)).check(matches(
+                withContentDescription(contentDescription)))
     }
 
     @Test

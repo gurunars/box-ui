@@ -74,7 +74,6 @@ class IconView constructor(context: Context) : ImageView(context) {
                 "|IC:" + currentIcon.fgColor +
                 "|ACT:" + isActivated
 
-
         setImageDrawable(iconDrawable)
     }
 
