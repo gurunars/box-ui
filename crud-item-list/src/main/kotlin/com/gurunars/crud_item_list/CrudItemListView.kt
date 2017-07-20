@@ -25,7 +25,10 @@ class CrudItemListView<ItemType : Item>  constructor(
 ) : FrameLayout(context) {
 
     /**
-     * A combination of icon foreground and background color.
+     * Icon color settings
+     *
+     * @property bgColor background color
+     * @property fgColor foreground color
      */
     data class IconColorBundle(
         val bgColor: Int = Color.RED,
