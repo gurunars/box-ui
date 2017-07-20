@@ -13,7 +13,6 @@ dependencies {
     compile "org.jetbrains.anko:anko:$anko_version"
     compile 'javax.inject:javax.inject:1'
     compile 'com.esotericsoftware:kryo:4.0.0'
-    compile "org.jetbrains.anko:anko-recyclerview-v7:$anko_version"
     compile "com.android.support:recyclerview-v7:$supportlib_version"
     compile project(':android-utils')
     compile project(':databinding')

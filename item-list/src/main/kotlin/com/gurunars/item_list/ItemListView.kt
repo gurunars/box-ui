@@ -2,13 +2,14 @@ package com.gurunars.item_list
 
 import android.content.Context
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.widget.FrameLayout
 import com.esotericsoftware.kryo.Kryo
 import com.gurunars.databinding.bindableField
 import com.gurunars.shortcuts.fullSize
+import com.gurunars.shortcuts.setOneView
 import org.jetbrains.anko.bottomPadding
 import org.jetbrains.anko.dip
-import org.jetbrains.anko.recyclerview.v7.recyclerView
 import org.objenesis.strategy.StdInstantiatorStrategy
 
 
@@ -37,7 +38,7 @@ class ItemListView<ItemType : Item> (
     )
 
     init {
-        recyclerView {
+        setOneView(RecyclerView(context).apply {
             id=R.id.recyclerView
             fullSize()
             clipToPadding=false
@@ -47,7 +48,7 @@ class ItemListView<ItemType : Item> (
             layoutManager = LinearLayoutManager(context).apply {
                 orientation = LinearLayoutManager.VERTICAL
             }
-        }
+        })
 
     }
 
