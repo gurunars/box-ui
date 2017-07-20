@@ -24,7 +24,7 @@ import android.support.test.espresso.matcher.ViewMatchers.withText
 @LargeTest
 class ActivityMainTest {
 
-    @Rule
+    @get:Rule
     var mActivityRule = ActivityTestRule(ActivityMain::class.java)
 
     private fun restart() {

@@ -35,7 +35,7 @@ class ActivitySortableTest {
         mActivityRule.activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
     }
 
-    @Rule
+    @get:Rule
     var mActivityRule = ActivityTestRule(
             ActivityMain::class.java)
 

@@ -33,7 +33,7 @@ class ActivityMainTest {
         onView(withText(text)).perform(click())
     }
 
-    @Test
+    @get:Rule
     fun clickingClear_shouldShowEmptyListView() {
         clickMenu("Clear")
         onView(withText("Empty")).check(matches(isDisplayed()))

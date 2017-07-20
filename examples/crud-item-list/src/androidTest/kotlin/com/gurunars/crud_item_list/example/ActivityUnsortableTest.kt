@@ -34,7 +34,7 @@ class ActivityUnsortableTest {
         onView(withId(id)).check(matches(not<View>(isDisplayed())))
     }
 
-    @Rule
+    @get:Rule
     var mActivityRule = ActivityTestRule(
             ActivityMain::class.java)
 

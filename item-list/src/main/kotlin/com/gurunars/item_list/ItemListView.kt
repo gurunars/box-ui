@@ -37,7 +37,6 @@ class ItemListView<ItemType : Item> (
     )
 
     init {
-
         recyclerView {
             id=R.id.recyclerView
             fullSize()

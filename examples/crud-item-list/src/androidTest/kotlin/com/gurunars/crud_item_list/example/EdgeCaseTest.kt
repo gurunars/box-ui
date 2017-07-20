@@ -21,7 +21,7 @@ import android.support.test.espresso.matcher.ViewMatchers.withText
 @LargeTest
 class EdgeCaseTest {
 
-    @Rule
+    @get:Rule
     var mActivityRule = ActivityTestRule(
             ActivityMain::class.java)
 

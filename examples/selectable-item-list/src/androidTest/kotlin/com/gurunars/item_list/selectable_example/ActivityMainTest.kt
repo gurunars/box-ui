@@ -24,7 +24,7 @@ import com.gurunars.test_utils.Helpers.nthChildOf
 @LargeTest
 class ActivityMainTest {
 
-    @Rule
+    @get:Rule
     var mActivityRule = ActivityTestRule(
             ActivityMain::class.java)
 
