@@ -26,7 +26,7 @@ class ActivityMainTest {
     private fun validateText(text: String) {
         mActivityRule.activity.finish()
         mActivityRule.launchActivity(null)
-        onView(withId(R.id.item)).check(matches(withText(text)))
+        onView(withId(R.id.payloadView)).check(matches(withText(text)))
     }
 
     @Test

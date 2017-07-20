@@ -41,18 +41,21 @@ class ActivityMain : Activity() {
                 gravity=Gravity.CENTER
 
                 textView {
+                    id=R.id.disabled
                     isEnabled=false
                     backgroundColor=color(android.R.color.holo_blue_light)
                     text=getString(R.string.disabled)
                 }.lparams()
 
                 textView {
+                    id=R.id.set
                     background=ColoredShapeDrawable(OvalShape(), Color.YELLOW)
                     text=getString(R.string.set)
                     setOnClickListener { title.set("Configured") }
                 }.lparams()
 
                 textView {
+                    id=R.id.clear
                     backgroundColor=color(android.R.color.holo_green_light)
                     text=getString(R.string.clear)
                     setOnClickListener { title.set("Empty") }
