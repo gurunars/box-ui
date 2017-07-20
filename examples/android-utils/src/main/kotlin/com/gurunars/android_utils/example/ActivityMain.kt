@@ -6,8 +6,8 @@ import android.graphics.drawable.shapes.OvalShape
 import android.os.Bundle
 import android.view.Gravity
 import android.widget.TextView
-import com.gurunars.android_utils.AutoBg
 import com.gurunars.android_utils.ColoredShapeDrawable
+import com.gurunars.android_utils.setAutoBg
 import com.gurunars.shortcuts.color
 import com.gurunars.shortcuts.fullSize
 import com.gurunars.storage.PersistentStorage
@@ -66,7 +66,7 @@ class ActivityMain : Activity() {
                     isClickable=true
                     isFocusable=true
                     padding=dip(20)
-                    AutoBg.apply(this, 6)
+                    setAutoBg(6)
                 } }
             } }
         }

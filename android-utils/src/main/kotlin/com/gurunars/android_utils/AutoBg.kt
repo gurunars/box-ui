@@ -70,26 +70,25 @@ private fun transform(bg: Drawable): Drawable {
  * There is a bug (feature?) in Android that remove the view padding whenever you set the
  * background.
  *
- * @param view the view to apply the background to
  * @param shadowWidth shadow size (can be 0)
  */
-fun setAutoBg(view: View, shadowWidth: Int) {
-    var bg: Drawable = view.background ?: return
+fun View.setAutoBg(shadowWidth: Int) {
+    var bg: Drawable = background ?: return
     bg = transform(bg)
-    val top = view.paddingTop
-    val left = view.paddingLeft
-    val right = view.paddingRight
-    val bottom = view.paddingBottom
+    val top = paddingTop
+    val left = paddingLeft
+    val right = paddingRight
+    val bottom = paddingBottom
 
     if (shadowWidth > 0 && bg is ShapeDrawable) {
         bg.paint.setShadowLayer(shadowWidth.toFloat(), 0f, shadowWidth.toFloat(),
                 Color.parseColor("#68000000"))
-        view.setLayerType(View.LAYER_TYPE_SOFTWARE, null)
-        view.background = AutoBgDrawable(bg, shadowWidth)
+        setLayerType(View.LAYER_TYPE_SOFTWARE, null)
+        background = AutoBgDrawable(bg, shadowWidth)
     } else {
-        view.background = AutoBgDrawable(bg, 0)
+        background = AutoBgDrawable(bg, 0)
     }
 
-    view.setPadding(left, top, right, bottom)
+    setPadding(left, top, right, bottom)
 }
 

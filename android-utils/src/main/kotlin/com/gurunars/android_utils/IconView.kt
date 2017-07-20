@@ -56,13 +56,12 @@ class IconView constructor(context: Context) : ImageView(context) {
         enabled.onChange { reset(icon.get()) }
     }
 
-    // TODO: check if enabled flag actually makes any difference
     private fun reset(currentIcon: Icon) {
         val shadowWidth = 4
         val inset = 50
 
         background = ColoredShapeDrawable(currentIcon.shape, currentIcon.bgColor)
-        setAutoBg(this, shadowWidth)
+        setAutoBg(shadowWidth)
 
         iconDrawable = InsetDrawable(
             ResourcesCompat.getDrawable(resources, currentIcon.icon, null)?.apply {
