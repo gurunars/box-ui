@@ -25,8 +25,7 @@ import android.support.test.espresso.matcher.ViewMatchers.withText
 class ActivityMainTest {
 
     @Rule
-    var mActivityRule = ActivityTestRule(
-            ActivityMain::class.java)
+    var mActivityRule = ActivityTestRule(ActivityMain::class.java)
 
     private fun restart() {
         mActivityRule.activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
