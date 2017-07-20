@@ -25,5 +25,11 @@ android {
 }
 
 dependencies {
+    androidTestCompile 'junit:junit:4.12'
+    androidTestCompile 'com.android.support.test:rules:0.5'
+    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2'
+    androidTestCompile project(':test-utils')
+    compile "org.jetbrains.anko:anko:$anko_version"
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    compile project(':databinding')
 }
