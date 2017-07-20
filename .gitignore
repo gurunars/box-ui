@@ -6,4 +6,5 @@ build
 captures
 mipmap*
 .idea
+buildSrc
 html-docs
