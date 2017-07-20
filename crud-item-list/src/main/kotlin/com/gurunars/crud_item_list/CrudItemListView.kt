@@ -153,9 +153,11 @@ class CrudItemListView<ItemType : Item>  constructor(
 
     }
 
+    /**
+     * Close the menu be it a contextual or a creation one.
+     */
     fun dismiss() {
         floatingMenu.isOpen.set(false)
-        itemListView.selectedItems.set(hashSetOf())
     }
 
 }
