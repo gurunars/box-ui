@@ -8,6 +8,7 @@ import android.support.test.runner.AndroidJUnit4
 
 import org.junit.Rule
 import org.junit.Test
+import org.junit.Before
 import org.junit.runner.RunWith
 
 import android.support.test.InstrumentationRegistry.getInstrumentation
@@ -40,22 +41,28 @@ class ActivityMainTest {
         onView(withId(R.id.alertTitle)).check(matches(withText(title)))
     }
 
-    private fun checkFab(contentDescription: String, menuContentDescription: String) {
+    private fun checkFab(iconDescription: String, menuContentDescription: String) {
         fab().check(matches(withContentDescription(menuContentDescription)))
         onView(withId(R.id.iconView)).check(matches(
-                withContentDescription(contentDescription)))
+                withContentDescription(iconDescription)))
+    }
+
+    @Before
+    fun before() {
+        openActionBarOverflowOrOptionsMenu(getInstrumentation().targetContext)
+        onView(withText("Reset")).perform(click())
     }
 
     @Test
     fun clickingFab_shouldOpenAndCloseMenu() {
         restart()
-        checkFab("|BG:-7667712|IC:-1|ACT:false", "LH:false")
+        checkFab("|BG:-4419697|IC:-16777216", "LH:false")
         fab().perform(click())
         restart()
-        checkFab("|BG:-1|IC:-16777216|ACT:true", "LH:false")
+        checkFab("|BG:-1|IC:-16777216", "LH:false")
         fab().perform(click())
         restart()
-        checkFab("|BG:-7667712|IC:-1|ACT:false", "LH:false")
+        checkFab("|BG:-4419697|IC:-16777216", "LH:false")
     }
 
     @Test
@@ -79,7 +86,7 @@ class ActivityMainTest {
         openActionBarOverflowOrOptionsMenu(getInstrumentation().targetContext)
         onView(withText("Toggle button color")).perform(click())
         restart()
-        checkFab("|BG:-4419697|IC:-16777216|ACT:false", "LH:false")
+        checkFab("|BG:-7667712|IC:-1", "LH:false")
     }
 
     private fun toggleBg() {
@@ -119,7 +126,7 @@ class ActivityMainTest {
         openActionBarOverflowOrOptionsMenu(getInstrumentation().targetContext)
         onView(withText("Toggle left/right hand")).perform(click())
         restart()
-        checkFab("|BG:-7667712|IC:-1|ACT:false", "LH:true")
+        checkFab("|BG:-4419697|IC:-16777216", "LH:true")
     }
 
 }

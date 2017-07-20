@@ -71,8 +71,7 @@ class IconView constructor(context: Context) : ImageView(context) {
 
         // Content description
         contentDescription = "|BG:" + currentIcon.bgColor +
-                "|IC:" + currentIcon.fgColor +
-                "|ACT:" + isActivated
+                "|IC:" + currentIcon.fgColor
 
         setImageDrawable(iconDrawable)
     }

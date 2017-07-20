@@ -21,7 +21,7 @@ class ActivityMain : Activity() {
 
     private val buttonColorFlag = storage.storageField("buttonColorFlag", false)
     private val hasOverlay = storage.storageField("hasOverlay", true)
-    private val isLeftHanded = storage.storageField("isLeftHanded", true)
+    private val isLeftHanded = storage.storageField("isLeftHanded", false)
 
     private lateinit var floatingMenu: FloatMenu
 
@@ -121,6 +121,14 @@ class ActivityMain : Activity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
+            R.id.reset -> {
+                isLeftHanded.set(false)
+                floatingMenu.isOpen.set(false)
+                buttonColorFlag.set(false)
+                isLeftHanded.set(false)
+                hasOverlay.set(true)
+                return true
+            }
             R.id.toggleBackground -> {
                 hasOverlay.set(!hasOverlay.get())
                 return true

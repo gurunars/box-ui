@@ -7,4 +7,5 @@
     <string name="click_me">Click Me</string>
     <string name="toggleMenu">Toggle menu</string>
     <string name="toggleHand">Toggle left/right hand</string>
+    <string name="reset">Reset</string>
 </resources>
