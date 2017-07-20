@@ -36,75 +36,73 @@ class ActivityMain : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        frameLayout {
+        floatingMenu=floatMenu {
             fullSize()
-            floatingMenu=floatMenu {
-                id=R.id.floatingMenu
+            id=R.id.floatingMenu
 
-                closeIcon.set(IconView.Icon(
-                    bgColor = color(R.color.White),
-                    fgColor = color(R.color.Black),
-                    icon = R.drawable.ic_menu_close
+            closeIcon.set(IconView.Icon(
+                bgColor = color(R.color.White),
+                fgColor = color(R.color.Black),
+                icon = R.drawable.ic_menu_close
+            ))
+
+            buttonColorFlag.onChange {
+                openIcon.set(IconView.Icon(
+                    bgColor = color(if (it) R.color.DarkRed else R.color.RosyBrown),
+                    fgColor = color(if (it) R.color.White else R.color.Black),
+                    icon = R.drawable.ic_menu
                 ))
+            }
 
-                buttonColorFlag.onChange {
-                    openIcon.set(IconView.Icon(
-                        bgColor = color(if (it) R.color.DarkRed else R.color.RosyBrown),
-                        fgColor = color(if (it) R.color.White else R.color.Black),
-                        icon = R.drawable.ic_menu
-                    ))
+            this@ActivityMain.hasOverlay.bind(hasOverlay)
+            this@ActivityMain.isLeftHanded.bind(isLeftHanded)
+
+            contentView.set(UI(false) {
+                relativeLayout {
+                    fullSize()
+                    textView {
+                        id=R.id.textView
+                        text=getString(R.string.appName)
+                        isClickable=true
+                    }.lparams {
+                        centerHorizontally()
+                        centerVertically()
+                    }
+
+                    textView {
+                        isOpen.onChange { setText(if (it) R.string.menuOpen else R.string.menuClosed) }
+                        isClickable=true
+                    }.lparams {
+                        below(R.id.textView)
+                        centerHorizontally()
+                        centerVertically()
+                    }
                 }
+            }.view)
 
-                this@ActivityMain.hasOverlay.bind(hasOverlay)
-                this@ActivityMain.isLeftHanded.bind(isLeftHanded)
-
-                contentView.set(UI(false) {
-                    relativeLayout {
-                        fullSize()
-                        textView {
-                            id=R.id.textView
-                            text=getString(R.string.appName)
+            menuView.set(UI(false) {
+                scrollView {
+                    fullSize()
+                    verticalLayout {
+                        gravity=Gravity.CENTER_HORIZONTAL
+                        button {
+                            id=R.id.button
+                            setOnClickListener { show("Button Clicked") }
+                            text=getString(R.string.click_me)
+                            padding=dip(10)
+                        }.lparams()
+                        frameLayout {
+                            id=R.id.buttonFrame
+                            setOnClickListener { show("Button Frame Clicked") }
                             isClickable=true
+                            backgroundColor=color(R.color.AliceBlue)
+                            padding=dip(30)
                         }.lparams {
-                            centerHorizontally()
-                            centerVertically()
+                            topMargin=dip(10)
                         }
-
-                        textView {
-                            isOpen.onChange { setText(if (it) R.string.menuOpen else R.string.menuClosed) }
-                            isClickable=true
-                        }.lparams {
-                            below(R.id.textView)
-                            centerHorizontally()
-                            centerVertically()
-                        }
-                    }
-                }.view)
-
-                menuView.set(UI(false) {
-                    scrollView {
-                        fullSize()
-                        verticalLayout {
-                            gravity=Gravity.CENTER_HORIZONTAL
-                            button {
-                                id=R.id.button
-                                setOnClickListener { show("Button Clicked") }
-                                text=getString(R.string.click_me)
-                                padding=dip(10)
-                            }.lparams()
-                            frameLayout {
-                                id=R.id.buttonFrame
-                                setOnClickListener { show("Button Frame Clicked") }
-                                isClickable=true
-                                backgroundColor=color(R.color.AliceBlue)
-                                padding=dip(30)
-                            }.lparams {
-                                topMargin=dip(10)
-                            }
-                        }.asRow()
-                    }
-                }.view)
-            }.lparams { fullSize() }
+                    }.asRow()
+                }
+            }.view)
         }
 
         storage.load()

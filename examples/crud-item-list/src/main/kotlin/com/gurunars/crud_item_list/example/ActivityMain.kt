@@ -84,7 +84,7 @@ class ActivityMain : Activity() {
         super.onCreate(savedInstanceState)
         storage.load()
 
-        this.crudItemListView = crudItemListView(
+        crudItemListView = crudItemListView(
             ::bindAnimalItem,
             { item -> this@ActivityMain.items.set(
                 items.get().toMutableList().apply {
