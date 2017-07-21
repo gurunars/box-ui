@@ -1,5 +1,4 @@
 buildscript {
-
     ext.siteUrl = 'https://gurunars.github.io/android-crud-ui'
     ext.gitUrl = 'git@github.com:gurunars/android-crud-ui.git'
     ext.license = "Apache-2.0"
