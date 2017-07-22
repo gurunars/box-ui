@@ -42,7 +42,7 @@ class BindableField<Type>(
         }
     }
 
-    internal fun get() : Type = this.value
+    fun get() : Type = this.value
 
     private fun join(field: BindableField<*>, forwardBinding: Binding, backwardBinding: Binding): Binding {
         val twoWayBinding = object: Binding {
