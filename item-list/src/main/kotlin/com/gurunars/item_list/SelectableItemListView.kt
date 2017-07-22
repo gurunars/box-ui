@@ -18,7 +18,10 @@ import kotlin.collections.HashSet
  * Items can be selected initially via long clicking and further on by consequentially
  * clicking them.
  *
- * @param context @see ItemListView
+ * @param ItemType type of the item to be shown in the list
+ * @param context Android context
+ * @param itemViewBinder a function binding an observable to the actual view
+ * @param emptyViewBinder a function returning a view to be shown when the list is empty
  *
  * @property items A collection of items shown in the list
  * @property selectedItems A collection of items selected at the moment

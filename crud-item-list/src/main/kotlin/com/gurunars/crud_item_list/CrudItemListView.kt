@@ -15,11 +15,35 @@ import com.gurunars.shortcuts.fullSize
 /**
  * Widget to be used for manipulating a collection of items with a dedicated set of UI controls.
  *
- * @see ItemListView
+ * @param ItemType type of the item to be shown in the list
+ * @param context Android context
+ * @param itemViewBinder a function binding an observable to the actual view
+ * @param emptyViewBinder a function returning a view to be shown when the list is empty
+ *
+ * @property actionIcon
+ *     Color of the icons meant to manipulate the collection of items in the contextual menu.
+ * @property contextualCloseIcon
+ *     Check mark icon color settings. The icon is shown when contextual menu is opened. Clicking
+ *     the icon closes contextual menu.
+ * @property createCloseIcon
+ *     Cross icon color settings. The icon is shown when creation menu is opened. Clicking the icon
+ *     closes the menu.
+ * @property openIcon
+ *     Plus icon color settings. The icon is shown when the menu is closed. Clicking the icon opens
+ *     the creation menu
+ * @property isLeftHanded
+ *     If true all action buttons are show on the left side of the screen. They are shown on the
+ *     right side of the screen otherwise.
+ * @property creationMenu
+ *     A set of controls used to create items of various types.
+ * @property isSortable
+ *     If false move up and move down buttons are hidden.
+ * @property items
+ *     A collection of items shown and manipulated by the view.
  */
 class CrudItemListView<ItemType : Item>  constructor(
     context: Context,
-    itemViewBinderFetcher: SelectableItemViewBinder<ItemType>,
+    itemViewBinder: SelectableItemViewBinder<ItemType>,
     itemEditListener: (item: ItemType) -> Unit,
     emptyViewBinder: EmptyViewBinder = ::defaultEmptyViewBinder
 ) : FrameLayout(context) {
@@ -35,41 +59,13 @@ class CrudItemListView<ItemType : Item>  constructor(
         val fgColor: Int = Color.WHITE
     )
 
-    /**
-     * Color of the icons meant to manipulate the collection of items in the contextual menu.
-     */
     val actionIcon = bindableField(IconColorBundle())
-    /**
-     * Check mark icon color settings. The icon is shown when contextual menu is opened. Clicking
-     * the icon closes contextual menu.
-     */
     val contextualCloseIcon = bindableField(IconColorBundle())
-    /**
-     * Cross icon color settings. The icon is shown when creation menu is opened. Clicking the icon
-     * closes the menu.
-     */
     val createCloseIcon = bindableField(IconColorBundle())
-    /**
-     * Plus icon color settings. The icon is shown when the menu is closed. Clicking the icon opens
-     * the creation menu.
-     */
     val openIcon = bindableField(IconColorBundle())
-    /**
-     * If true all action buttons are show on the left side of the screen. They are shown on the
-     * right side of the screen otherwise.
-     */
     val isLeftHanded = bindableField(false)
-    /**
-     * A set of controls used to create items of various types.
-     */
     val creationMenu = bindableField(View(context))
-    /**
-     * If false move up and move down buttons are hidden.
-     */
     val isSortable = bindableField(true)
-    /**
-     * A collection of items shown and manipulated by the view.
-     */
     val items: BindableField<List<ItemType>>
 
     private val contextualMenu: ContextualMenu<ItemType>
@@ -78,7 +74,7 @@ class CrudItemListView<ItemType : Item>  constructor(
 
     init {
 
-        itemListView = SelectableItemListView(context, itemViewBinderFetcher, emptyViewBinder).apply {
+        itemListView = SelectableItemListView(context, itemViewBinder, emptyViewBinder).apply {
             fullSize()
             id = R.id.rawItemList
         }
