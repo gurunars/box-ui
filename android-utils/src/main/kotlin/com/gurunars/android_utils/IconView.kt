@@ -13,7 +13,6 @@ import android.support.v4.content.ContextCompat
 import android.support.v4.content.res.ResourcesCompat
 import android.widget.ImageView
 import com.gurunars.databinding.bindableField
-import com.gurunars.databinding.onJointChange
 
 
 /**
@@ -53,8 +52,11 @@ class IconView constructor(context: Context) : ImageView(context) {
     private lateinit var iconDrawable: Drawable
 
     init {
-        onJointChange(icon, enabled) { icon, enabled ->
-            reset(icon, enabled)
+        icon.onChange {
+            reset(it, enabled.get())
+        }
+        enabled.onChange {
+            reset(icon.get(), it)
         }
     }
 

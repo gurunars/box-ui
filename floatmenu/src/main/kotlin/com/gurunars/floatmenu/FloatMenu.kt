@@ -27,7 +27,7 @@ import org.jetbrains.anko.*
  * @property closeIcon
  *     Icon associated with the closed state of the menu. Show when the menu is open.
  * @property hasOverlay
- *     If **true** the menu has a shaded background that intercepts clicks. If **false** - the menu
+ *     If **true** the menu has a shaded background that intercepts clicks. If **false** - the menu \
  *     does not intercept clicks and passes them to the content area. The flag does not affect
  *     clickable elements that are located inside the menu though.
  * @property contentView
