@@ -13,6 +13,7 @@ import android.support.v4.content.ContextCompat
 import android.support.v4.content.res.ResourcesCompat
 import android.widget.ImageView
 import com.gurunars.databinding.bindableField
+import com.gurunars.databinding.onJointChange
 
 
 /**
@@ -52,13 +53,16 @@ class IconView constructor(context: Context) : ImageView(context) {
     private lateinit var iconDrawable: Drawable
 
     init {
-        icon.onChange { reset(it) }
-        enabled.onChange { reset(icon.get()) }
+        onJointChange(icon, enabled) { icon, enabled ->
+            reset(icon, enabled)
+        }
     }
 
-    private fun reset(currentIcon: Icon) {
+    private fun reset(currentIcon: Icon, enabled: Boolean) {
         val shadowWidth = 4
         val inset = 50
+
+        isEnabled = enabled
 
         background = ColoredShapeDrawable(currentIcon.shape, currentIcon.bgColor)
         setAutoBg(shadowWidth)

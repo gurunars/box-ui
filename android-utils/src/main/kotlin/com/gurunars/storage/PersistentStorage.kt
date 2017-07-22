@@ -26,25 +26,24 @@ class PersistentStorage(
         }
 
         fun load() {
-            val loadedValue: Type? = StringSerializer.fromString<Type>(
-                storage.activity.getPreferences(Context.MODE_PRIVATE)
-                .getString(storage.storageName+"/"+name, null))
-            if (loadedValue != null) field.set(loadedValue)
-        }
-        fun save() {
-            if (!storage.wasLoaded) return
-            val editor = storage.activity.getPreferences(Context.MODE_PRIVATE).edit()
-            editor.putString(storage.storageName+"/"+name, StringSerializer.toString(field.get()))
-            editor.apply()
-        }
+            val preferences = storage.activity.getPreferences(Context.MODE_PRIVATE)
+            val key = storage.storageName+"/"+name
 
+            val loadedValue: Type? = StringSerializer.fromString<Type>(preferences.getString(key, null))
+            if (loadedValue != null) field.set(loadedValue)
+
+            field.onChange {
+                val editor = preferences.edit()
+                editor.putString(key, StringSerializer.toString(it))
+                editor.apply()
+            }
+
+        }
 
     }
 
     private val registry = DisposableRegistryService()
     private val fields = mutableListOf<PersistentField<*>>()
-
-    private var wasLoaded = false
 
     /**
      * @param name used internally to persist the field in SharedPreferences
@@ -62,14 +61,7 @@ class PersistentStorage(
     /**
      * Load all the fields from SharedPreferences.
      */
-    fun load() {
-        fields.forEach {
-            val field = it
-            field.load()
-            field.field.onChange { field.save() }
-        }
-        wasLoaded = true
-    }
+    fun load() { fields.forEach { it.load() } }
 
     /**
      * Drop all the field listeners.
