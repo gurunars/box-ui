@@ -27,7 +27,6 @@ class ItemListView<ItemType : Item> (
     emptyViewBinder: EmptyViewBinder = ::defaultEmptyViewBinder
 ) : FrameLayout(context) {
 
-
     private val kryo = Kryo().apply {
         instantiatorStrategy = Kryo.DefaultInstantiatorStrategy(StdInstantiatorStrategy())
     }

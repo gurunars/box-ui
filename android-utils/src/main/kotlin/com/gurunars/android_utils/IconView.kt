@@ -17,6 +17,9 @@ import com.gurunars.databinding.bindableField
 
 /**
  * Button with customizable icon, background and foreground color.
+ *
+ * @property icon Button icon descriptor
+ * @property enabled Flag specifying if the icon should be clickable or not
  */
 class IconView constructor(context: Context) : ImageView(context) {
 
@@ -35,18 +38,12 @@ class IconView constructor(context: Context) : ImageView(context) {
         val shape: Shape = OvalShape()
     )
 
-    /**
-     * Button icon descriptor
-     */
     val icon = bindableField(Icon(
         bgColor = ContextCompat.getColor(context, R.color.White),
         fgColor = ContextCompat.getColor(context, R.color.Black),
         icon = R.drawable.ic_plus
     ))
 
-    /**
-     * Flag specifying if the icon should be clickable or not
-     */
     val enabled = bindableField(true)
 
     private lateinit var iconDrawable: Drawable
@@ -83,16 +80,14 @@ class IconView constructor(context: Context) : ImageView(context) {
     }
 
     private fun getRotateDrawable(d: Drawable, angle: Float): Drawable {
-        val arD = arrayOf(d)
-        return object : LayerDrawable(arD) {
-            override fun draw(canvas: Canvas) {
-                canvas.save()
-                canvas.rotate(angle,
-                        d.bounds.width().toFloat() / 2,
-                        d.bounds.height().toFloat() / 2)
-                super.draw(canvas)
-                canvas.restore()
-            }
+        return object : LayerDrawable(arrayOf(d)) {
+            override fun draw(canvas: Canvas) { canvas.apply {
+                save()
+                fun Int.bound() = toFloat() / 2
+                rotate(angle, d.bounds.width().bound(), d.bounds.height().bound())
+                super.draw(this)
+                restore()
+            } }
         }
     }
 

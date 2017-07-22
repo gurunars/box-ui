@@ -20,26 +20,19 @@ import com.gurunars.shortcuts.fullSize
  * @param itemViewBinder a function binding an observable to the actual view
  * @param emptyViewBinder a function returning a view to be shown when the list is empty
  *
- * @property actionIcon
- *     Color of the icons meant to manipulate the collection of items in the contextual menu.
- * @property contextualCloseIcon
- *     Check mark icon color settings. The icon is shown when contextual menu is opened. Clicking
- *     the icon closes contextual menu.
- * @property createCloseIcon
- *     Cross icon color settings. The icon is shown when creation menu is opened. Clicking the icon
- *     closes the menu.
- * @property openIcon
- *     Plus icon color settings. The icon is shown when the menu is closed. Clicking the icon opens
- *     the creation menu
- * @property isLeftHanded
- *     If true all action buttons are show on the left side of the screen. They are shown on the
- *     right side of the screen otherwise.
- * @property creationMenu
- *     A set of controls used to create items of various types.
- * @property isSortable
- *     If false move up and move down buttons are hidden.
- * @property items
- *     A collection of items shown and manipulated by the view.
+ * @property actionIcon Color of the icons meant to manipulate the collection of items in the
+ * contextual menu.
+ * @property contextualCloseIcon Check mark icon color settings. The icon is shown when contextual
+ * menu is opened. Clicking the icon closes contextual menu.
+ * @property createCloseIcon Cross icon color settings. The icon is shown when creation menu is
+ * opened. Clicking the icon closes the menu.
+ * @property openIcon Plus icon color settings.The icon is shown when the menu is closed. Clicking
+ * the icon opens the creation menu
+ * @property isLeftHanded If true all action buttons are show on the left side of the screen. They
+ * are shown on the right side of the screen otherwise.
+ * @property creationMenu A set of controls used to create items of various types.
+ * @property isSortable If false move up and move down buttons are hidden.
+ * @property items A collection of items shown and manipulated by the view.
  */
 class CrudItemListView<ItemType : Item>  constructor(
     context: Context,

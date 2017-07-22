@@ -72,11 +72,17 @@ class SelectableItemListView<ItemType : Item> constructor(
         }
     }
 
+    /**
+     * @suppress
+     */
     override fun onSaveInstanceState() = Bundle().apply {
         putParcelable("superState", super.onSaveInstanceState())
         putSerializable("selectedItems", HashSet(selectedItems.get()))
     }
 
+    /**
+     * @suppress
+     */
     override fun onRestoreInstanceState(state: Parcelable) {
         (state as Bundle).apply {
             super.onRestoreInstanceState(getParcelable<Parcelable>("superState"))
