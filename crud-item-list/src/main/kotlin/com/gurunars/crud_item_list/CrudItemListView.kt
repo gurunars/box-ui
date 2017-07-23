@@ -8,6 +8,7 @@ import android.widget.FrameLayout
 import com.gurunars.android_utils.IconView
 import com.gurunars.databinding.BindableField
 import com.gurunars.databinding.bindableField
+import com.gurunars.databinding.onChange
 import com.gurunars.floatmenu.FloatMenu
 import com.gurunars.floatmenu.floatMenu
 import com.gurunars.item_list.*
@@ -93,7 +94,32 @@ class CrudItemListView<ItemType : Item>  constructor(
             contentView.set(itemListView)
             this@CrudItemListView.isLeftHanded.bind(isLeftHanded)
 
-            fun configureCloseIcon() {
+            isOpen.onChange {
+                if (!it) itemListView.selectedItems.set(hashSetOf())
+            }
+
+            itemListView.selectedItems.onChange {
+                isOpen.set(it.isNotEmpty())
+            }
+
+            listOf(creationMenu, isOpen).onChange {
+                if (itemListView.selectedItems.get().isEmpty()) {
+                    hasOverlay.set(true)
+                    menuView.set(creationMenu.get())
+                } else {
+                    hasOverlay.set(false)
+                    menuView.set(contextualMenu)
+                }
+            }
+
+            this@CrudItemListView.openIcon.onChange {
+                openIcon.set(openIcon.get().copy(
+                    bgColor = it.bgColor,
+                    fgColor = it.fgColor
+                ))
+            }
+
+            listOf(contextualCloseIcon, createCloseIcon, itemListView.selectedItems).onChange {
                 if (itemListView.selectedItems.get().isEmpty()) {
                     closeIcon.set(IconView.Icon(
                         icon = R.drawable.ic_menu_close,
@@ -109,42 +135,6 @@ class CrudItemListView<ItemType : Item>  constructor(
                 }
             }
 
-            fun configureMenuView() {
-                if (itemListView.selectedItems.get().isEmpty()) {
-                    hasOverlay.set(true)
-                    menuView.set(creationMenu.get())
-                } else {
-                    hasOverlay.set(false)
-                    menuView.set(contextualMenu)
-                }
-            }
-
-            isOpen.onChange {
-                if (it) {
-                    configureMenuView()
-                    configureCloseIcon()
-                } else {
-                    itemListView.selectedItems.set(hashSetOf())
-                }
-            }
-
-            itemListView.selectedItems.onChange {
-                isOpen.set(it.isNotEmpty())
-            }
-
-            creationMenu.onChange {
-                configureMenuView()
-            }
-
-            this@CrudItemListView.openIcon.onChange {
-                openIcon.set(openIcon.get().copy(
-                    bgColor = it.bgColor,
-                    fgColor = it.fgColor
-                ))
-            }
-
-            contextualCloseIcon.onChange { configureCloseIcon() }
-            createCloseIcon.onChange { configureCloseIcon() }
         }
 
     }
