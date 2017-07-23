@@ -2,7 +2,6 @@ package com.gurunars.crud_item_list
 
 import android.content.Context
 import android.graphics.Color
-import android.os.Parcelable
 import android.view.View
 import android.widget.FrameLayout
 import com.gurunars.android_utils.IconView
@@ -11,7 +10,10 @@ import com.gurunars.databinding.bindableField
 import com.gurunars.databinding.onChange
 import com.gurunars.floatmenu.FloatMenu
 import com.gurunars.floatmenu.floatMenu
-import com.gurunars.item_list.*
+import com.gurunars.item_list.EmptyViewBinder
+import com.gurunars.item_list.Item
+import com.gurunars.item_list.SelectableItemListView
+import com.gurunars.item_list.SelectableItemViewBinder
 import com.gurunars.shortcuts.fullSize
 
 /**
@@ -102,7 +104,7 @@ class CrudItemListView<ItemType : Item>  constructor(
                 isOpen.set(it.isNotEmpty())
             }
 
-            listOf(creationMenu, isOpen).onChange {
+            listOf(creationMenu, isOpen, itemListView.selectedItems).onChange {
                 if (itemListView.selectedItems.get().isEmpty()) {
                     hasOverlay.set(true)
                     menuView.set(creationMenu.get())

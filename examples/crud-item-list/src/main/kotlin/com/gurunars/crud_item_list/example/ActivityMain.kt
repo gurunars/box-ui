@@ -19,6 +19,7 @@ import com.gurunars.item_list.SelectableItem
 import com.gurunars.shortcuts.asRow
 import com.gurunars.shortcuts.color
 import com.gurunars.shortcuts.fullSize
+import com.gurunars.shortcuts.log
 import com.gurunars.storage.PersistentStorage
 import org.jetbrains.anko.*
 
@@ -53,7 +54,6 @@ class ActivityMain : Activity() {
     private val items = storage.storageField("items", listOf<AnimalItem>())
     private val count = storage.storageField("count", 0)
 
-
     private lateinit var crudItemListView: CrudItemListView<AnimalItem>
 
     private fun add(type: AnimalItem.Type) {
@@ -86,11 +86,13 @@ class ActivityMain : Activity() {
 
         crudItemListView = crudItemListView(
             ::bindAnimalItem,
-            { item -> this@ActivityMain.items.set(
-                items.get().toMutableList().apply {
-                    val id = indexOfFirst { item.getId() == it.getId() }
-                    set(id, item.copy(version = item.version+1))
-                })
+            {
+                item -> this@ActivityMain.items.set(
+                    items.get().toMutableList().apply {
+                        val index = indexOfFirst { item.getId() == it.getId() }
+                        set(index, item.copy(version = item.version+1))
+                    }
+                )
             },
             {
                 TextView(it).apply {

@@ -179,7 +179,7 @@ class ActivitySortableTest {
         rotate()
         onView(withId(R.id.edit)).perform(click())
         rotate()
-        atIndex(3).check(matches(withText("#4{WOLF @ 1}|true")))
+        atIndex(3).check(matches(withText("#3{WOLF @ 1}|true")))
     }
 
     @Test
@@ -188,7 +188,7 @@ class ActivitySortableTest {
         rotate()
         onView(withId(R.id.lion)).perform(click())
         rotate()
-        atIndex(4).check(matches(withText("#5{LION @ 0}|false")))
+        atIndex(4).check(matches(withText("#4{LION @ 0}|false")))
     }
 
     @Test
