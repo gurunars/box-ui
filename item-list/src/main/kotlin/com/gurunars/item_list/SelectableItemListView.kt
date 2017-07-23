@@ -62,7 +62,9 @@ class SelectableItemListView<ItemType : Item> constructor(
             }
 
             fun updateItemList() {
-                self.selectedItems.set(self.selectedItems.get().filter { self.items.get().contains(it) }.toSet())
+                self.selectedItems.set(self.selectedItems.get().filter { item ->
+                    self.items.get().indexOfFirst { item.getId() == it.getId() } != -1
+                }.toSet())
                 items.set(self.items.get().map { SelectableItem(it, isSelected(it)) })
             }
 
