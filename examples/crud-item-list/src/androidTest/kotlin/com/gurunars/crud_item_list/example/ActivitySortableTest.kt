@@ -220,8 +220,8 @@ class ActivitySortableTest {
         atIndex(1).perform(longClick())
         onView(withId(R.id.moveUp)).perform(click())
         onView(withId(R.id.reset)).perform(click())
-        atIndex(0).check(matches(withText("#1{LION @ 0}|false")))
-        atIndex(1).check(matches(withText("#2{TIGER @ 0}|true")))
+        atIndex(0).check(matches(withText("#0{LION @ 0}|false")))
+        atIndex(1).check(matches(withText("#1{TIGER @ 0}|true")))
     }
 
     @Test
@@ -229,8 +229,8 @@ class ActivitySortableTest {
         atIndex(2).perform(longClick())
         onView(withId(R.id.moveDown)).perform(click())
         onView(withId(R.id.reset)).perform(click())
-        atIndex(2).check(matches(withText("#3{MONKEY @ 0}|true")))
-        atIndex(3).check(matches(withText("#4{WOLF @ 0}|false")))
+        atIndex(2).check(matches(withText("#2{MONKEY @ 0}|true")))
+        atIndex(3).check(matches(withText("#3{WOLF @ 0}|false")))
     }
 
     @Before

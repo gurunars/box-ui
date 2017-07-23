@@ -19,7 +19,6 @@ import com.gurunars.item_list.SelectableItem
 import com.gurunars.shortcuts.asRow
 import com.gurunars.shortcuts.color
 import com.gurunars.shortcuts.fullSize
-import com.gurunars.shortcuts.log
 import com.gurunars.storage.PersistentStorage
 import org.jetbrains.anko.*
 
