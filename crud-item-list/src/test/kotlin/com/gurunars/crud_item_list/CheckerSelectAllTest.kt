@@ -10,7 +10,7 @@ import org.junit.Assert.assertTrue
 
 class CheckerSelectAllTest {
 
-    private val checkerSelectAll = ActionSelectAll<String>()
+    private val checkerSelectAll = ActionSelectAll<StringItem>()
     private val all = Arrays.asList("one", "two")
 
     @Test

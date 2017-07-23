@@ -11,7 +11,7 @@ import org.junit.Assert.assertTrue
 
 class CheckerDeleteTest {
 
-    private val checkerDelete = ActionMoveDown<String>()
+    private val checkerDelete = ActionMoveDown<StringItem>()
     private val all = Arrays.asList("one", "two")
 
     @Test

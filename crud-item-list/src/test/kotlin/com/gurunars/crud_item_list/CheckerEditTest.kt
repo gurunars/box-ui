@@ -1,19 +1,14 @@
 package com.gurunars.crud_item_list
 
-import org.junit.Test
-import org.mockito.internal.util.collections.Sets
-
-import java.util.Arrays
-import java.util.HashSet
-
-import java8.util.function.Consumer
-
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
+import org.junit.Test
+import org.mockito.internal.util.collections.Sets
+import java.util.*
 
 class CheckerEditTest {
 
-    private val checkerEdit = ActionEdit(Consumer<String> { })
+    private val checkerEdit = ActionEdit<StringItem>({})
     private val all = Arrays.asList("one", "two")
 
     @Test

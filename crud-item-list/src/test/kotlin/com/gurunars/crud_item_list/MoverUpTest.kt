@@ -10,7 +10,7 @@ import junit.framework.Assert.assertEquals
 
 class MoverUpTest {
 
-    private val moverUp = ActionMoveUp<String>()
+    private val moverUp = ActionMoveUp<StringItem>()
 
     private val all = Arrays.asList(
             "one",
@@ -43,16 +43,10 @@ class MoverUpTest {
             "ten"
     )
 
-    private fun apply(selected: Set<String>): List<String> {
-        val result = ArrayList(all)
-        moverUp.perform(result, selected)
-        return result
-    }
-
     @Test
     @Throws(Exception::class)
     fun moveUp_isCorrect() {
-        assertEquals(expectedOutcome, apply(selected))
+        assertEquals(expectedOutcome, moverUp.perform(all, selected).first)
     }
 
 }

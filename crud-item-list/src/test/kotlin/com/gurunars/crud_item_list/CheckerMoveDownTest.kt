@@ -10,7 +10,7 @@ import junit.framework.Assert.assertTrue
 
 class CheckerMoveDownTest {
 
-    private val moveDownChecker = ActionMoveDown<String>()
+    private val moveDownChecker = ActionMoveDown<StringItem>()
     private val all = Arrays.asList("one", "two", "three", "four")
 
     @Test
