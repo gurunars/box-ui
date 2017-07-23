@@ -8,6 +8,7 @@ import android.widget.RelativeLayout
 import com.gurunars.android_utils.IconView
 import com.gurunars.android_utils.iconView
 import com.gurunars.databinding.BindableField
+import com.gurunars.databinding.equal
 import com.gurunars.item_list.Item
 import com.gurunars.shortcuts.fullSize
 import org.jetbrains.anko.*
@@ -149,9 +150,12 @@ internal class ContextualMenu<ItemType: Item> constructor(
                 selectedItems.onChange { configureAbility() }
 
                 it.setOnClickListener {
-                    val pair = action.perform(items.get(), selectedItems.get())
-                    items.set(pair.first)
-                    selectedItems.set(pair.second)
+                    val initialItems = items.get()
+                    val initialSelection = selectedItems.get()
+                    action.perform(initialItems, initialSelection).apply {
+                        if (!equal(initialItems, first)) items.set(first)
+                        if (!equal(initialSelection, second)) selectedItems.set(second)
+                    }
                 }
 
                 val iconView = it
