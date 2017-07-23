@@ -23,6 +23,7 @@ import android.support.test.espresso.matcher.ViewMatchers.isEnabled
 import android.support.test.espresso.matcher.ViewMatchers.withContentDescription
 import android.support.test.espresso.matcher.ViewMatchers.withId
 import android.support.test.espresso.matcher.ViewMatchers.withText
+import android.view.View
 import com.gurunars.test_utils.Helpers.nthChildOf
 import org.hamcrest.core.IsNot.not
 
@@ -30,9 +31,10 @@ import org.hamcrest.core.IsNot.not
 @LargeTest
 class ActivitySortableTest {
 
-    private fun restart() {
+    private fun rotate() {
         mActivityRule.activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
         mActivityRule.activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+        Thread.sleep(500)
     }
 
     @get:Rule
@@ -63,7 +65,7 @@ class ActivitySortableTest {
         validateDoesNotExist(R.id.delete)
         validateDoesNotExist(R.id.selectAll)
         atIndex(1).perform(longClick())
-        restart()
+        rotate()
         validateEnabled(R.id.moveUp)
         validateEnabled(R.id.moveDown)
         validateEnabled(R.id.edit)
@@ -74,9 +76,9 @@ class ActivitySortableTest {
     @Test
     fun deselectingLast_shouldCloseContextualMenu() {
         atIndex(0).perform(longClick())
-        restart()
+        rotate()
         atIndex(0).perform(click())
-        restart()
+        rotate()
         validateDoesNotExist(R.id.moveUp)
         validateDoesNotExist(R.id.moveDown)
         validateDoesNotExist(R.id.edit)
@@ -87,9 +89,9 @@ class ActivitySortableTest {
     @Test
     fun clickingCross_shouldCloseContextualMenu() {
         atIndex(0).perform(longClick())
-        restart()
+        rotate()
         onView(withId(R.id.openFab)).perform(click())
-        restart()
+        rotate()
         validateDoesNotExist(R.id.moveUp)
         validateDoesNotExist(R.id.moveDown)
         validateDoesNotExist(R.id.edit)
@@ -100,7 +102,7 @@ class ActivitySortableTest {
     @Test
     fun selectingTopItem_shouldDisableMoveUp() {
         atIndex(0).perform(longClick())
-        restart()
+        rotate()
         validateDisabled(R.id.moveUp)
         validateEnabled(R.id.moveDown)
         validateEnabled(R.id.edit)
@@ -111,7 +113,7 @@ class ActivitySortableTest {
     @Test
     fun selectingBottomItem_shouldDisableMoveDown() {
         atIndex(3).perform(longClick())
-        restart()
+        rotate()
         validateEnabled(R.id.moveUp)
         validateDisabled(R.id.moveDown)
         validateEnabled(R.id.edit)
@@ -122,9 +124,9 @@ class ActivitySortableTest {
     @Test
     fun selectingUnsolidChunk_shouldDisableMoveAndEdit() {
         atIndex(0).perform(longClick())
-        restart()
+        rotate()
         atIndex(3).perform(click())
-        restart()
+        rotate()
         validateDisabled(R.id.moveUp)
         validateDisabled(R.id.moveDown)
         validateDisabled(R.id.edit)
@@ -135,9 +137,9 @@ class ActivitySortableTest {
     @Test
     fun selectingSolidChunk_shouldEnableMoveButDisableEdit() {
         atIndex(1).perform(longClick())
-        restart()
+        rotate()
         atIndex(2).perform(click())
-        restart()
+        rotate()
         validateEnabled(R.id.moveUp)
         validateEnabled(R.id.moveDown)
         validateDisabled(R.id.edit)
@@ -148,9 +150,9 @@ class ActivitySortableTest {
     @Test
     fun movingSelectionToTop_shouldDisableMoveUp() {
         atIndex(1).perform(longClick())
-        restart()
+        rotate()
         onView(withId(R.id.moveUp)).perform(click())
-        restart()
+        rotate()
         validateDisabled(R.id.moveUp)
         validateEnabled(R.id.moveDown)
         validateEnabled(R.id.edit)
@@ -161,9 +163,9 @@ class ActivitySortableTest {
     @Test
     fun movingSelectionToBottom_shouldDisableMoveDown() {
         atIndex(2).perform(longClick())
-        restart()
+        rotate()
         onView(withId(R.id.moveDown)).perform(click())
-        restart()
+        rotate()
         validateEnabled(R.id.moveUp)
         validateDisabled(R.id.moveDown)
         validateEnabled(R.id.edit)
@@ -174,25 +176,25 @@ class ActivitySortableTest {
     @Test
     fun editingItem_shouldIncrementVersion() {
         atIndex(3).perform(longClick())
-        restart()
+        rotate()
         onView(withId(R.id.edit)).perform(click())
-        restart()
+        rotate()
         atIndex(3).check(matches(withText("#4{WOLF @ 1}|true")))
     }
 
     @Test
     fun creatingItem_shouldIncrementItemListSize() {
         onView(withId(R.id.openFab)).perform(click())
-        restart()
+        rotate()
         onView(withId(R.id.lion)).perform(click())
-        restart()
+        rotate()
         atIndex(4).check(matches(withText("#5{LION @ 0}|false")))
     }
 
     @Test
     fun removingAllItems_shouldShowSpecialDefaultLayout() {
         atIndex(1).perform(longClick())
-        restart()
+        rotate()
         onView(withId(R.id.selectAll)).perform(click())
         onView(withId(R.id.delete)).perform(click())
         onView(withId(R.id.noItemsLabel)).check(matches(withText("No items at all")))
@@ -201,15 +203,15 @@ class ActivitySortableTest {
     @Test
     fun leftAndRightHandSwitch() {
         atIndex(3).perform(longClick())
-        restart()
+        rotate()
         onView(withId(R.id.contextualMenu)).check(matches(withContentDescription("RIGHT HANDED")))
         openActionBarOverflowOrOptionsMenu(getInstrumentation().targetContext)
         onView(withText("Left handed")).perform(click())
-        restart()
+        rotate()
         onView(withId(R.id.contextualMenu)).check(matches(withContentDescription("LEFT HANDED")))
         openActionBarOverflowOrOptionsMenu(getInstrumentation().targetContext)
         onView(withText("Right handed")).perform(click())
-        restart()
+        rotate()
         onView(withId(R.id.contextualMenu)).check(matches(withContentDescription("RIGHT HANDED")))
     }
 

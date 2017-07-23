@@ -91,11 +91,20 @@ class ActivityMain : Activity() {
                     val id = indexOfFirst { item.getId() == it.getId() }
                     set(id, item.copy(version = item.version+1))
                 })
+            },
+            {
+                TextView(it).apply {
+                    id=R.id.noItemsLabel
+                    fullSize()
+                    setText(R.string.noItemsAtAll)
+                    gravity = Gravity.CENTER
+                }
             }
         ) {
             fullSize()
             id=R.id.customView
             this@ActivityMain.items.bind(items)
+
             actionIcon.set(CrudItemListView.IconColorBundle(
                 fgColor=color(R.color.Yellow),
                 bgColor=color(R.color.Blue)

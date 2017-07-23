@@ -5,4 +5,5 @@
     <item name="lion" type="id" />
     <item name="tiger" type="id" />
     <item name="wolf" type="id" />
+    <item name="noItemsLabel" type="id" />
 </resources>

@@ -19,6 +19,7 @@ import android.support.test.espresso.matcher.ViewMatchers.isDisplayed
 import android.support.test.espresso.matcher.ViewMatchers.isEnabled
 import android.support.test.espresso.matcher.ViewMatchers.withId
 import android.support.test.espresso.matcher.ViewMatchers.withText
+import android.view.View
 import com.gurunars.test_utils.Helpers.nthChildOf
 import org.hamcrest.core.IsNot.not
 

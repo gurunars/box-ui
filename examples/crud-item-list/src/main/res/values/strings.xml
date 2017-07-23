@@ -12,4 +12,5 @@
     <string name="tiger">Tiger</string>
     <string name="wolf">Wolf</string>
     <string name="addMany">Add many</string>
+    <string name="noItemsAtAll">No items at all</string>
 </resources>
