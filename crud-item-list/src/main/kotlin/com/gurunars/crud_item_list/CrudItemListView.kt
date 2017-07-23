@@ -2,6 +2,7 @@ package com.gurunars.crud_item_list
 
 import android.content.Context
 import android.graphics.Color
+import android.os.Parcelable
 import android.view.View
 import android.widget.FrameLayout
 import com.gurunars.android_utils.IconView
@@ -110,15 +111,16 @@ class CrudItemListView<ItemType : Item>  constructor(
 
             fun configureMenuView() {
                 if (itemListView.selectedItems.get().isEmpty()) {
+                    hasOverlay.set(true)
                     menuView.set(creationMenu.get())
                 } else {
+                    hasOverlay.set(false)
                     menuView.set(contextualMenu)
                 }
             }
 
             isOpen.onChange {
                 if (it) {
-                    hasOverlay.set(itemListView.selectedItems.get().isEmpty())
                     configureMenuView()
                     configureCloseIcon()
                 } else {
@@ -126,7 +128,9 @@ class CrudItemListView<ItemType : Item>  constructor(
                 }
             }
 
-            itemListView.selectedItems.onChange { isOpen.set(it.isNotEmpty()) }
+            itemListView.selectedItems.onChange {
+                isOpen.set(it.isNotEmpty())
+            }
 
             creationMenu.onChange {
                 configureMenuView()
