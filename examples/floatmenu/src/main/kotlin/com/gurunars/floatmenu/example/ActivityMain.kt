@@ -1,12 +1,14 @@
 package com.gurunars.floatmenu.example
 
 import android.app.Activity
-import android.app.AlertDialog
+import android.graphics.Color
 import android.os.Bundle
 import android.view.Gravity
 import android.view.Menu
 import android.view.MenuItem
 import com.gurunars.android_utils.IconView
+import com.gurunars.android_utils.notificationView
+import com.gurunars.databinding.BindableField
 import com.gurunars.floatmenu.FloatMenu
 import com.gurunars.floatmenu.floatMenu
 import com.gurunars.shortcuts.asRow
@@ -24,14 +26,7 @@ class ActivityMain : Activity() {
     private val isLeftHanded = storage.storageField("isLeftHanded", false)
 
     private lateinit var floatingMenu: FloatMenu
-
-    private fun show(value: String) {
-        AlertDialog.Builder(this@ActivityMain)
-                .setTitle(value)
-                .setPositiveButton(android.R.string.yes, null)
-                .setIcon(android.R.drawable.ic_dialog_alert)
-                .show()
-    }
+    private lateinit var notification: BindableField<String>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,11 +55,26 @@ class ActivityMain : Activity() {
             contentView.set(UI(false) {
                 relativeLayout {
                     fullSize()
+
+                    notificationView {
+                        id=R.id.notificationView
+                        padding=dip(15)
+                        gravity=Gravity.CENTER
+                        backgroundColor= Color.parseColor("#FFFFAA")
+                        this@ActivityMain.notification=notification
+                    }.lparams {
+                        asRow()
+                        centerHorizontally()
+                        alignParentTop()
+                    }
+
                     textView {
                         id=R.id.textView
                         text=getString(R.string.appName)
                         isClickable=true
+                        setOnClickListener { notification.set("Content Text Clicked") }
                     }.lparams {
+                        bottomMargin=dip(50)
                         centerHorizontally()
                         centerVertically()
                     }
@@ -87,13 +97,15 @@ class ActivityMain : Activity() {
                         gravity=Gravity.CENTER_HORIZONTAL
                         button {
                             id=R.id.button
-                            setOnClickListener { show("Button Clicked") }
+                            setOnClickListener { notification.set("Menu Button Clicked") }
                             text=getString(R.string.click_me)
                             padding=dip(10)
-                        }.lparams()
+                        }.lparams {
+                            topMargin=dip(50)
+                        }
                         frameLayout {
                             id=R.id.buttonFrame
-                            setOnClickListener { show("Button Frame Clicked") }
+                            setOnClickListener { notification.set("Menu Button Frame Clicked") }
                             isClickable=true
                             backgroundColor=color(R.color.AliceBlue)
                             padding=dip(30)

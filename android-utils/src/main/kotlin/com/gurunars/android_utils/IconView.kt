@@ -21,7 +21,7 @@ import com.gurunars.databinding.bindableField
  * @property icon Button icon descriptor
  * @property enabled Flag specifying if the icon should be clickable or not
  */
-class IconView constructor(context: Context) : ImageView(context) {
+class IconView(context: Context) : ImageView(context) {
 
     /**
      * Data class holding the values to be used for icon drawable creation

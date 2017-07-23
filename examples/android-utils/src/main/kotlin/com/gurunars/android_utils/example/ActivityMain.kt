@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.Gravity
 import android.widget.TextView
 import com.gurunars.android_utils.ColoredShapeDrawable
+import com.gurunars.android_utils.notificationView
 import com.gurunars.android_utils.setAutoBg
 import com.gurunars.shortcuts.color
 import com.gurunars.shortcuts.fullSize
@@ -26,12 +27,12 @@ class ActivityMain : Activity() {
         relativeLayout {
             gravity=Gravity.CENTER
             fullSize()
-            textView {
+            notificationView {
                 id=R.id.payloadView
                 padding=dip(15)
                 gravity=Gravity.CENTER
                 backgroundColor=Color.parseColor("#FFFFAA")
-                title.onChange { text = it }
+                title.bind(notification)
             }.lparams {
                 width=matchParent
                 margin=dip(10)

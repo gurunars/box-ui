@@ -5,4 +5,5 @@
     <item name="button" type="id" />
     <item name="buttonFrame" type="id" />
     <item name="alertTitle" type="id" />
+    <item name="notificationView" type="id" />
 </resources>
