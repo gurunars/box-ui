@@ -1,6 +1,5 @@
 apply from: '../all-libs.gradle'
 
-/*
 apply plugin: 'com.jfrog.bintray'
 
 task sourcesJar(type: Jar) {
@@ -28,4 +27,3 @@ bintray {
 }
 
 bintrayUpload.dependsOn([build, sourcesJar])
-*/
