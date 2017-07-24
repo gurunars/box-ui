@@ -1,4 +1,4 @@
-apply from: '../all-modules.gradle'
+apply from: '../all-libs.gradle'
 
 description = """
 A component based on RecyclerView with a simplified interface capable of

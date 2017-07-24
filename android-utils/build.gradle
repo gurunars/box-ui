@@ -1,4 +1,4 @@
-apply from: '../all-modules.gradle'
+apply from: '../all-libs.gradle'
 
 description = """
 A set of helpers for working with Android.
