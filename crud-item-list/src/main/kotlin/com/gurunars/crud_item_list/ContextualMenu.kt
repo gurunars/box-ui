@@ -147,9 +147,7 @@ internal class ContextualMenu<ItemType: Item> constructor(
                 }
 
                 it.setOnClickListener {
-                    val initialItems = items.get()
-                    val initialSelection = selectedItems.get()
-                    val result = action.perform(initialItems, initialSelection)
+                    val result = action.perform(items.get(), selectedItems.get())
                     if (action.isSynchronous) {
                         result.apply {
                             items.set(first)
