@@ -3,8 +3,8 @@ package com.gurunars.shortcuts
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
-import org.jetbrains.anko.matchParent
-import org.jetbrains.anko.wrapContent
+import android.widget.RelativeLayout
+import org.jetbrains.anko.*
 
 /**
  * width = matchParent
@@ -55,4 +55,30 @@ inline fun FrameLayout.setOneView(view: View) {
  */
 inline fun View.setIsVisible(isVisible: Boolean) {
     visibility = if (isVisible) View.VISIBLE else View.GONE
+}
+
+/**
+ * @param left if true - aligns to the left. Aligns to the right otherwise.
+ */
+inline fun RelativeLayout.LayoutParams.alignHorizontally(left: Boolean) {
+    removeRule(RelativeLayout.ALIGN_PARENT_LEFT)
+    removeRule(RelativeLayout.ALIGN_PARENT_RIGHT)
+    if (left) {
+        alignParentLeft()
+    } else {
+        alignParentRight()
+    }
+}
+
+/**
+ * @param top if true - aligns to the top. Aligns to the bottom otherwise.
+ */
+inline fun RelativeLayout.LayoutParams.alignVertically(top: Boolean) {
+    removeRule(RelativeLayout.ALIGN_PARENT_TOP)
+    removeRule(RelativeLayout.ALIGN_PARENT_BOTTOM)
+    if (top) {
+        alignParentTop()
+    } else {
+        alignParentBottom()
+    }
 }

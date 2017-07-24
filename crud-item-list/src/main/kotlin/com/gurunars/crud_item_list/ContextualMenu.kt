@@ -2,7 +2,6 @@ package com.gurunars.crud_item_list
 
 
 import android.content.Context
-import android.view.View
 import android.widget.FrameLayout
 import android.widget.RelativeLayout
 import com.gurunars.android_utils.IconView
@@ -10,7 +9,9 @@ import com.gurunars.android_utils.iconView
 import com.gurunars.databinding.BindableField
 import com.gurunars.databinding.onChange
 import com.gurunars.item_list.Item
+import com.gurunars.shortcuts.alignHorizontally
 import com.gurunars.shortcuts.fullSize
+import com.gurunars.shortcuts.setIsVisible
 import org.jetbrains.anko.*
 
 
@@ -25,30 +26,21 @@ internal class ContextualMenu<ItemType: Item> constructor(
 ) : FrameLayout(context) {
 
     init {
-
-        isLeftHanded.onChange {
-            contentDescription = if (it) "LEFT HANDED" else "RIGHT HANDED"
-        }
-
         relativeLayout {
             fullSize()
             R.id.menuContainer
+
+            isLeftHanded.onChange {
+                contentDescription = if (it) "LEFT HANDED" else "RIGHT HANDED"
+            }
 
             iconView {
                 id=R.id.moveUp
                 icon.set(IconView.Icon(icon=R.drawable.ic_move_up))
                 setTag(R.id.action, ActionMoveUp<ItemType>())
+                isSortable.onChange(listener=this::setIsVisible)
             }.lparams {
-                isLeftHanded.onChange {
-                    if (it) {
-                        alignParentLeft()
-                    } else {
-                        alignParentRight()
-                    }
-                }
-                isSortable.onChange {
-                    visibility = if (it) View.VISIBLE else View.GONE
-                }
+                isLeftHanded.onChange(listener=this::alignHorizontally)
                 above(R.id.moveDown)
                 bottomMargin=dip(5)
                 leftMargin=dip(23)
@@ -59,18 +51,10 @@ internal class ContextualMenu<ItemType: Item> constructor(
                 id=R.id.moveDown
                 icon.set(IconView.Icon(icon=R.drawable.ic_move_down))
                 setTag(R.id.action, ActionMoveDown<ItemType>())
+                isSortable.onChange(listener=this::setIsVisible)
             }.lparams {
                 alignParentBottom()
-                isLeftHanded.onChange {
-                    if (it) {
-                        alignParentLeft()
-                    } else {
-                        alignParentRight()
-                    }
-                }
-                isSortable.onChange {
-                    visibility = if (it) View.VISIBLE else View.GONE
-                }
+                isLeftHanded.onChange(listener=this::alignHorizontally)
                 bottomMargin=dip(85)
                 leftMargin=dip(23)
                 rightMargin=dip(23)
@@ -120,12 +104,11 @@ internal class ContextualMenu<ItemType: Item> constructor(
             }.lparams {
                 alignParentBottom()
                 isLeftHanded.onChange {
+                    alignHorizontally(it)
                     if (it) {
-                        alignParentLeft()
                         leftMargin=dip(85)
                         rightMargin=dip(5)
                     } else {
-                        alignParentRight()
                         leftMargin=dip(5)
                         rightMargin=dip(85)
                     }
