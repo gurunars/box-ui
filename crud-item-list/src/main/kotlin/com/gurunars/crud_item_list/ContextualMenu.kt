@@ -72,7 +72,6 @@ internal class ContextualMenu<ItemType: Item> constructor(
                 rightMargin=dip(5)
             }
 
-
             iconView {
                 id=R.id.selectAll
                 icon.set(IconView.Icon(icon=R.drawable.ic_select_all))
