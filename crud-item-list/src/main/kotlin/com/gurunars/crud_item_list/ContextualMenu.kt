@@ -26,14 +26,15 @@ internal class ContextualMenu<ItemType: Item> constructor(
 ) : FrameLayout(context) {
 
     init {
+
+        isLeftHanded.onChange {
+            contentDescription = if (it) "LEFT HANDED" else "RIGHT HANDED"
+            requestLayout()
+        }
+
         relativeLayout {
             fullSize()
             R.id.menuContainer
-
-            isLeftHanded.onChange {
-                contentDescription = if (it) "LEFT HANDED" else "RIGHT HANDED"
-                requestLayout()
-            }
 
             iconView {
                 id=R.id.moveUp

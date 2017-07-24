@@ -50,6 +50,8 @@ class ActivityMain : Activity() {
 
     private val storage = PersistentStorage(this, "main")
 
+    private val isLeftHanded = storage.storageField("isLeftHanded", false)
+    private val isSortable = storage.storageField("sSortable", true)
     private val items = storage.storageField("items", listOf<AnimalItem>())
     private val count = storage.storageField("count", 0)
 
@@ -61,15 +63,12 @@ class ActivityMain : Activity() {
     }
 
     private fun initData() {
-        items.set(listOf())
-        count.set(0)
-        addItems()
+        addItems(reset=true)
     }
 
-    private fun addItems(many:Boolean=false) {
+    private fun addItems(many: Boolean=false, reset: Boolean=false) {
         val limit = if (many) 19 else 0
-
-        val newList = mutableListOf<AnimalItem>()
+        val newList = if (reset) mutableListOf<AnimalItem>() else items.get().toMutableList()
 
         for (i in 0..limit) {
             newList.apply {
@@ -88,6 +87,10 @@ class ActivityMain : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         storage.load()
+
+        isSortable.onChange {
+            setTitle(if(it) R.string.sortable else R.string.unsortable)
+        }
 
         crudItemListView = crudItemListView(
             ::bindAnimalItem,
@@ -111,6 +114,8 @@ class ActivityMain : Activity() {
             fullSize()
             id=R.id.customView
             this@ActivityMain.items.bind(items)
+            this@ActivityMain.isSortable.bind(isSortable)
+            this@ActivityMain.isLeftHanded.bind(isLeftHanded)
 
             actionIcon.set(CrudItemListView.IconColorBundle(
                 fgColor=color(R.color.Yellow),
@@ -192,25 +197,18 @@ class ActivityMain : Activity() {
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         super.onCreateOptionsMenu(menu)
-        val inflater = menuInflater
-        inflater.inflate(R.menu.activity_main, menu)
+        menuInflater.inflate(R.menu.activity_main, menu)
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val i = item.itemId
         when (i) {
-            R.id.leftHanded -> crudItemListView.isLeftHanded.set(true)
-            R.id.rightHanded -> crudItemListView.isLeftHanded.set(false)
+            R.id.leftHanded -> isLeftHanded.set(true)
+            R.id.rightHanded -> isLeftHanded.set(false)
             R.id.reset -> initData()
-            R.id.lock -> {
-                setTitle(R.string.unsortable)
-                crudItemListView.isSortable.set(false)
-            }
-            R.id.unlock -> {
-                setTitle(R.string.sortable)
-                crudItemListView.isSortable.set(true)
-            }
+            R.id.lock -> isSortable.set(false)
+            R.id.unlock -> isSortable.set(true)
             R.id.addMany -> addItems(true)
         }
         return super.onOptionsItemSelected(item)

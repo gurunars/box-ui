@@ -83,7 +83,6 @@ class FloatMenu constructor(context: Context) : FrameLayout(context) {
         return Bundle().apply {
             putParcelable("superState", super.onSaveInstanceState())
             putBoolean("isOpen", isOpen.get())
-            putBoolean("isLeftHanded", isLeftHanded.get())
         }
     }
 
@@ -94,7 +93,6 @@ class FloatMenu constructor(context: Context) : FrameLayout(context) {
         val localState = state as Bundle
         super.onRestoreInstanceState(localState.getParcelable("superState"))
         isOpen.set(localState.getBoolean("isOpen"))
-        isLeftHanded.set(localState.getBoolean("isLeftHanded"))
     }
 
 }
