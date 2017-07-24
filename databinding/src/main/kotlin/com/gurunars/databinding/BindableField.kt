@@ -127,8 +127,7 @@ class BindableField<Type>(
      * Dispose all bindings and listener
      */
     override fun unbindAll() {
-        bindings.forEach { it.unbind() }
-        bindings.clear()
+        bindings.toList().forEach { it.unbind() }
         listeners.clear()
         beforeChangeListeners.clear()
     }
