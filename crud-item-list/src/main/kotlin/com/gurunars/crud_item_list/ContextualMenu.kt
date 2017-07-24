@@ -32,6 +32,7 @@ internal class ContextualMenu<ItemType: Item> constructor(
 
             isLeftHanded.onChange {
                 contentDescription = if (it) "LEFT HANDED" else "RIGHT HANDED"
+                requestLayout()
             }
 
             iconView {
