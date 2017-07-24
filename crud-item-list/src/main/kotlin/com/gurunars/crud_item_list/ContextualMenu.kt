@@ -8,7 +8,7 @@ import android.widget.RelativeLayout
 import com.gurunars.android_utils.IconView
 import com.gurunars.android_utils.iconView
 import com.gurunars.databinding.BindableField
-import com.gurunars.databinding.equal
+import com.gurunars.databinding.onChange
 import com.gurunars.item_list.Item
 import com.gurunars.shortcuts.fullSize
 import org.jetbrains.anko.*
@@ -142,28 +142,26 @@ internal class ContextualMenu<ItemType: Item> constructor(
                 }
                 val action = it.getTag(R.id.action) as Action<ItemType>
 
-                fun configureAbility() {
+                listOf(items, selectedItems).onChange {
                     it.isEnabled = action.canPerform(items.get(), selectedItems.get())
                 }
-
-                items.onChange { configureAbility() }
-                selectedItems.onChange { configureAbility() }
 
                 it.setOnClickListener {
                     val initialItems = items.get()
                     val initialSelection = selectedItems.get()
-                    action.perform(initialItems, initialSelection).apply {
-                        if (!equal(initialItems, first)) items.set(first)
-                        if (!equal(initialSelection, second)) selectedItems.set(second)
+                    val result = action.perform(initialItems, initialSelection)
+                    if (action.isSynchronous) {
+                        result.apply {
+                            items.set(first)
+                            selectedItems.set(second)
+                        }
                     }
                 }
 
-                val iconView = it
-
-                actionIcon.onChange {
-                    iconView.icon.set(iconView.icon.get().copy(
-                        bgColor = it.bgColor,
-                        fgColor = it.fgColor
+                actionIcon.onChange { icon ->
+                    it.icon.set(it.icon.get().copy(
+                        bgColor = icon.bgColor,
+                        fgColor = icon.fgColor
                     ))
                 }
             }
