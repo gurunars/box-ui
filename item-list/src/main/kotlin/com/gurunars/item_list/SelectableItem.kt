@@ -37,8 +37,4 @@ class SelectableItem<out ItemType : Item> internal constructor(
     override fun toString() =
         item.toString() + "|" + isSelected
 
-    /**
-     * @suppress
-     */
-    override fun hashCode() = getId().hashCode()
 }

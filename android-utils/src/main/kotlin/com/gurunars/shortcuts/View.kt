@@ -1,6 +1,5 @@
 package com.gurunars.shortcuts
 
-import android.support.annotation.IntegerRes
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout

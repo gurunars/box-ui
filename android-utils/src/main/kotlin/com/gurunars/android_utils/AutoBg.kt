@@ -8,7 +8,6 @@ import android.graphics.drawable.InsetDrawable
 import android.graphics.drawable.ShapeDrawable
 import android.graphics.drawable.shapes.RectShape
 import android.view.View
-import java.util.*
 
 
 private class AutoBgDrawable constructor(private val bg: Drawable, private val shadowWidth: Int) : InsetDrawable(bg, shadowWidth * 2) {
@@ -17,10 +16,7 @@ private class AutoBgDrawable constructor(private val bg: Drawable, private val s
     private val pressedFilter = LightingColorFilter(Color.LTGRAY, 1)
 
     override fun onStateChange(states: IntArray): Boolean {
-        val stateList = ArrayList<Int>()
-        for (state in states) {
-            stateList.add(state)
-        }
+        val stateList = states.toList()
 
         val enabled = stateList.contains(android.R.attr.state_enabled)
         val pressed = stateList.contains(android.R.attr.state_pressed)

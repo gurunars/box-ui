@@ -23,9 +23,17 @@ abstract class Item: Serializable {
      */
     abstract fun payloadsEqual(other: Item): Boolean
 
+    /**
+     * @suppress
+     */
     final override fun equals(other: Any?) =
         other is Item &&
         getId() == other.getId() &&
         payloadsEqual(other)
+
+    /**
+     * @suppress
+     */
+    final override fun hashCode() = getId().hashCode()
 
 }

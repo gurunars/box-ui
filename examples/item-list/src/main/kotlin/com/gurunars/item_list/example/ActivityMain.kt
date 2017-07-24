@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.support.annotation.StringRes
 import android.view.Menu
 import android.view.MenuItem
-import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
 import com.gurunars.databinding.BindableField
@@ -16,7 +15,8 @@ import com.gurunars.item_list.itemListView
 import com.gurunars.shortcuts.asRow
 import com.gurunars.shortcuts.fullSize
 import com.gurunars.storage.PersistentStorage
-import org.jetbrains.anko.*
+import org.jetbrains.anko.dip
+import org.jetbrains.anko.padding
 
 internal fun bindAnimalItem(
     context: Context,

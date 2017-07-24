@@ -34,11 +34,11 @@ internal class ItemAdapter<ItemType : Item>(
 
         override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
             currentList.isNotEmpty() && previousList.isNotEmpty() &&
-            previousList[oldItemPosition].payloadsEqual(currentList.get(newItemPosition))
+            previousList[oldItemPosition].payloadsEqual(currentList[newItemPosition])
 
         override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
             currentList.isNotEmpty() && previousList.isNotEmpty() &&
-            previousList[oldItemPosition].getId() == currentList.get(newItemPosition).getId()
+            previousList[oldItemPosition].getId() == currentList[newItemPosition].getId()
 
     }
 

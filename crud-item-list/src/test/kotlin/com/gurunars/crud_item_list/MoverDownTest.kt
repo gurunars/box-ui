@@ -1,12 +1,9 @@
 package com.gurunars.crud_item_list
 
+import junit.framework.Assert.assertEquals
 import org.junit.Test
 import org.mockito.internal.util.collections.Sets
-
-import java.util.ArrayList
-import java.util.Arrays
-
-import junit.framework.Assert.assertEquals
+import java.util.*
 
 class MoverDownTest {
 

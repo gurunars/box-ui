@@ -64,20 +64,21 @@ internal class MenuPane constructor(
     }
 
     private fun touchBelongsTo(viewGroup: ViewGroup, ev: MotionEvent): Boolean {
-        for (i in 0..viewGroup.childCount - 1) {
-            val child = viewGroup.getChildAt(i) ?: continue
-            if (child is ViewGroup) {
-                // check for all children first
-                if (touchBelongsTo(child, ev)) {
-                    return true
-                    // only after that check view group itself
-                } else if (child.isClickable && isWithinBounds(child, ev)) {
+        (0..viewGroup.childCount - 1)
+            .mapNotNull { viewGroup.getChildAt(it) }
+            .forEach {
+                if (it is ViewGroup) {
+                    // check for all children first
+                    if (touchBelongsTo(it, ev)) {
+                        return true
+                        // only after that check view group itself
+                    } else if (it.isClickable && isWithinBounds(it, ev)) {
+                        return true
+                    }
+                } else if (isWithinBounds(it, ev)) {
                     return true
                 }
-            } else if (isWithinBounds(child, ev)) {
-                return true
             }
-        }
         return false
     }
 
