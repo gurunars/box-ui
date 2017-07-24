@@ -1,6 +1,7 @@
-package com.gurunars.databinding
+package com.gurunars.databinding.android
 
 import android.view.View
+import com.gurunars.databinding.BindableField
 
 fun<Type> View.bindableField(
         value: Type, preset: (one: Type) -> Type = { item -> item }): BindableField<Type> {
@@ -11,16 +12,8 @@ fun<Type> View.bindableField(
         }
 
         override fun onViewDetachedFromWindow(v: View) {
-            field.disposeAll()
+            field.unbindAll()
         }
     })
-    return field
-}
-
-
-fun<Type> DisposableRegistryService.bindableField(
-        value: Type, preset: (one: Type) -> Type = { item -> item }): BindableField<Type> {
-    val field = BindableField(value, preset)
-    this.add(field)
     return field
 }

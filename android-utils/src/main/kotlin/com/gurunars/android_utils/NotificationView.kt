@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.os.Parcelable
 import android.view.View
 import android.widget.TextView
-import com.gurunars.databinding.bindableField
+import com.gurunars.databinding.android.bindableField
 
 /**
  * A text view which is visible only if it has a notification to show. The notification can be

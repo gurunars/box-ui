@@ -9,7 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import com.gurunars.databinding.BindableField
-import com.gurunars.databinding.bindableField
+import com.gurunars.databinding.android.bindableField
 import com.gurunars.shortcuts.setIsVisible
 
 

@@ -12,7 +12,7 @@ import android.graphics.drawable.shapes.Shape
 import android.support.v4.content.ContextCompat
 import android.support.v4.content.res.ResourcesCompat
 import android.widget.ImageView
-import com.gurunars.databinding.bindableField
+import com.gurunars.databinding.android.bindableField
 
 
 /**

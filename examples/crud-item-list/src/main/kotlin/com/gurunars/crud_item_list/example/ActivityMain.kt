@@ -63,19 +63,25 @@ class ActivityMain : Activity() {
     private fun initData() {
         items.set(listOf())
         count.set(0)
-
         addItems()
     }
 
     private fun addItems(many:Boolean=false) {
         val limit = if (many) 19 else 0
 
+        val newList = mutableListOf<AnimalItem>()
+
         for (i in 0..limit) {
-            add(AnimalItem.Type.LION)
-            add(AnimalItem.Type.TIGER)
-            add(AnimalItem.Type.MONKEY)
-            add(AnimalItem.Type.WOLF)
+            newList.apply {
+                add(AnimalItem(i.toLong(), 0, AnimalItem.Type.LION))
+                add(AnimalItem(i.toLong() + 1, 0, AnimalItem.Type.TIGER))
+                add(AnimalItem(i.toLong() + 2, 0, AnimalItem.Type.MONKEY))
+                add(AnimalItem(i.toLong() + 3, 0, AnimalItem.Type.WOLF))
+            }
         }
+
+        items.set(newList)
+        count.set((limit + 1) * 4)
     }
 
 

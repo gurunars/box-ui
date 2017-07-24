@@ -3,8 +3,8 @@ package com.gurunars.storage
 import android.app.Activity
 import android.content.Context
 import com.gurunars.databinding.BindableField
-import com.gurunars.databinding.Disposable
-import com.gurunars.databinding.DisposableRegistryService
+import com.gurunars.databinding.Unbindable
+import com.gurunars.databinding.UnbindableRegistryService
 
 /**
  * Observable storage based on SharedPreferences
@@ -20,9 +20,9 @@ class PersistentStorage(
     internal class PersistentField<Type>(
             val storage: PersistentStorage,
             val name: String,
-            val field: BindableField<Type>): Disposable {
-        override fun disposeAll() {
-            field.disposeAll()
+            val field: BindableField<Type>): Unbindable {
+        override fun unbindAll() {
+            field.unbindAll()
         }
 
         fun load() {
@@ -42,7 +42,7 @@ class PersistentStorage(
 
     }
 
-    private val registry = DisposableRegistryService()
+    private val registry = UnbindableRegistryService()
     private val fields = mutableListOf<PersistentField<*>>()
 
     /**

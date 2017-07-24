@@ -5,7 +5,8 @@ import android.os.Bundle
 import android.os.Parcelable
 import android.widget.FrameLayout
 import com.esotericsoftware.kryo.Kryo
-import com.gurunars.databinding.bindableField
+import com.gurunars.databinding.android.bindableField
+import com.gurunars.databinding.onChange
 import com.gurunars.shortcuts.fullSize
 import org.objenesis.strategy.StdInstantiatorStrategy
 import java.util.*
@@ -57,19 +58,11 @@ class SelectableItemListView<ItemType : Item> constructor(
 
             val self = this@SelectableItemListView
 
-            fun isSelected(item: ItemType): Boolean {
-                return selectedItems.get().find { item.getId() == it.getId() } != null
+            listOf(self.items, self.selectedItems).onChange {
+                self.selectedItems.set(
+                    self.selectedItems.get().filter { self.items.get().has(it) }.toSet())
+                items.set(self.items.get().map { SelectableItem(it, selectedItems.get().has(it)) })
             }
-
-            fun updateItemList() {
-                self.selectedItems.set(self.selectedItems.get().filter { item ->
-                    self.items.get().indexOfFirst { item.getId() == it.getId() } != -1
-                }.toSet())
-                items.set(self.items.get().map { SelectableItem(it, isSelected(it)) })
-            }
-
-            self.items.onChange { updateItemList() }
-            self.selectedItems.onChange { updateItemList() }
 
         }
     }

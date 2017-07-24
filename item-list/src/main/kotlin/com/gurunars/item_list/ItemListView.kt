@@ -5,7 +5,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.widget.FrameLayout
 import com.esotericsoftware.kryo.Kryo
-import com.gurunars.databinding.bindableField
+import com.gurunars.databinding.android.bindableField
 import com.gurunars.shortcuts.fullSize
 import com.gurunars.shortcuts.setOneView
 import org.jetbrains.anko.bottomPadding

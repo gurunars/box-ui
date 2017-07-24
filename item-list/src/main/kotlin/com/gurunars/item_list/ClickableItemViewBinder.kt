@@ -20,19 +20,20 @@ internal fun <ItemType : Item> clickableSelector(
             setOnClickListener {
                 val item = payload.get().first
                 val sel = selectedItems.get()
-                if (sel.isEmpty()) {
-                    return@setOnClickListener
-                }
-                if (selectedItems.get().indexOfFirst { it.getId() == item.getId() } == -1) {
-                    selectedItems.set(sel + item.item)
-                } else {
-                    selectedItems.set(sel.filterNot { it.getId() == item.getId() }.toHashSet())
-                }
+                selectedItems.set(
+                    if (sel.isEmpty())
+                        setOf()
+                    else if (selectedItems.get().has(item))
+                        sel.exclude(item.item)
+                    else
+                        sel.include(item.item)
+                )
+
             }
             setOnLongClickListener {
                 val item = payload.get().first
                 val sel = selectedItems.get()
-                if (sel.isEmpty()) selectedItems.set(sel + item.item)
+                if (sel.isEmpty()) selectedItems.set(sel.include(item.item))
                 true
             }
         }

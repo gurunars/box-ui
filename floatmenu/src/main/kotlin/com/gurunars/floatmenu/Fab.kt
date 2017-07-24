@@ -8,7 +8,7 @@ import android.widget.FrameLayout
 import com.gurunars.android_utils.IconView
 import com.gurunars.android_utils.IconView.Icon
 import com.gurunars.databinding.BindableField
-import com.gurunars.databinding.bindableField
+import com.gurunars.databinding.android.bindableField
 import com.gurunars.shortcuts.fullSize
 
 internal class Fab constructor(

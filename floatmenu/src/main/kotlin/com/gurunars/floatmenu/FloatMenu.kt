@@ -7,7 +7,7 @@ import android.view.View
 import android.widget.FrameLayout
 import android.widget.RelativeLayout
 import com.gurunars.android_utils.IconView
-import com.gurunars.databinding.bindableField
+import com.gurunars.databinding.android.bindableField
 import com.gurunars.shortcuts.fullSize
 import com.gurunars.shortcuts.setOneView
 import org.jetbrains.anko.*
