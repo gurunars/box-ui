@@ -40,7 +40,7 @@ internal class ContextualMenu<ItemType: Item> constructor(
                 setTag(R.id.action, ActionMoveUp<ItemType>())
                 isSortable.onChange(listener=this::setIsVisible)
             }.lparams {
-                isLeftHanded.onChange {alignHorizontally(it)}
+                isLeftHanded.onChange(listener=this::alignHorizontally)
                 above(R.id.moveDown)
                 bottomMargin=dip(5)
                 leftMargin=dip(23)
