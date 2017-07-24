@@ -1,4 +1,4 @@
-apply from: '../all-libs.gradle'
+apply from: '../all-modules.gradle'
 
 description = """
 One more layer of abstraction above the item-list component. It contains the logic and UI controls to
