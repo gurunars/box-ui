@@ -40,7 +40,7 @@ internal class ContextualMenu<ItemType: Item> constructor(
                 setTag(R.id.action, ActionMoveUp<ItemType>())
                 isSortable.onChange(listener=this::setIsVisible)
             }.lparams {
-                isLeftHanded.onChange(listener=this::alignHorizontally)
+                isLeftHanded.onChange {alignHorizontally(it)}
                 above(R.id.moveDown)
                 bottomMargin=dip(5)
                 leftMargin=dip(23)
@@ -66,13 +66,7 @@ internal class ContextualMenu<ItemType: Item> constructor(
                 setTag(R.id.action, ActionDelete<ItemType>())
             }.lparams {
                 alignParentBottom()
-                isLeftHanded.onChange {
-                    if (it) {
-                        rightOf(R.id.selectAll)
-                    } else {
-                        leftOf(R.id.selectAll)
-                    }
-                }
+                isLeftHanded.onChange { alignHorizontally(it, R.id.selectAll)}
                 bottomMargin=dip(23)
                 leftMargin=dip(5)
                 rightMargin=dip(5)
@@ -85,13 +79,7 @@ internal class ContextualMenu<ItemType: Item> constructor(
                 setTag(R.id.action, ActionSelectAll<ItemType>())
             }.lparams {
                 alignParentBottom()
-                isLeftHanded.onChange {
-                    if (it) {
-                        rightOf(R.id.edit)
-                    } else {
-                        leftOf(R.id.edit)
-                    }
-                }
+                isLeftHanded.onChange { alignHorizontally(it, R.id.edit)}
                 bottomMargin=dip(23)
                 leftMargin=dip(5)
                 rightMargin=dip(5)

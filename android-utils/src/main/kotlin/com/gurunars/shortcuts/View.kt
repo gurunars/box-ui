@@ -1,5 +1,6 @@
 package com.gurunars.shortcuts
 
+import android.support.annotation.IntegerRes
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
@@ -67,6 +68,16 @@ inline fun RelativeLayout.LayoutParams.alignHorizontally(left: Boolean) {
         alignParentLeft()
     } else {
         alignParentRight()
+    }
+}
+
+inline fun RelativeLayout.LayoutParams.alignHorizontally(left: Boolean, id: Int) {
+    removeRule(RelativeLayout.LEFT_OF)
+    removeRule(RelativeLayout.RIGHT_OF)
+    if (left) {
+        rightOf(id)
+    } else {
+        leftOf(id)
     }
 }
 
