@@ -4,10 +4,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.RelativeLayout
-import com.gurunars.shortcuts.HorizontalAlignment.CENTER
-import com.gurunars.shortcuts.HorizontalPosition.SAME
-import com.gurunars.shortcuts.VerticalAlignment.BOTTOM
-import com.gurunars.shortcuts.VerticalAlignment.TOP
 import com.gurunars.shortcuts.VerticalPosition.*
 import org.jetbrains.anko.*
 
