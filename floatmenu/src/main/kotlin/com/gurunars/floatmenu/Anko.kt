@@ -6,7 +6,7 @@ import com.gurunars.android_utils.IconView
 import com.gurunars.databinding.BindableField
 import org.jetbrains.anko.custom.ankoView
 
-internal inline fun ViewManager.fab(
+internal fun ViewManager.fab(
         rotationDuration: BindableField<Int>,
         openIcon: BindableField<IconView.Icon>,
         closeIcon: BindableField<IconView.Icon>,
@@ -15,7 +15,7 @@ internal inline fun ViewManager.fab(
             Fab(it, rotationDuration, openIcon, closeIcon, isActivated)
         }, theme, init)
 
-internal inline fun ViewManager.menuPane(
+internal fun ViewManager.menuPane(
         hasOverlay: BindableField<Boolean>,
         isVisible: BindableField<Boolean>,
         animationDuration: BindableField<Int>,
@@ -23,6 +23,16 @@ internal inline fun ViewManager.menuPane(
             MenuPane(it, hasOverlay, isVisible, animationDuration)
         }, theme, init)
 
+/**
+ * Anko specific view function for FloatMenu
+ *
+ * @see FloatMenu
+ */
 inline fun ViewManager.floatMenu(init: FloatMenu.() -> Unit) = ankoView({ FloatMenu(it) }, 0, init)
 
+/**
+ * Anko specific view function for FloatMenu
+ *
+ * @see FloatMenu
+ */
 inline fun Activity.floatMenu(init: FloatMenu.() -> Unit) = ankoView({ FloatMenu(it) }, 0, init)

@@ -4,6 +4,9 @@ import android.widget.TextView
 import com.gurunars.databinding.BindableField
 
 
-inline fun BindableField<String>.bind(textView: TextView) {
+/**
+ * Ensure that a change in a String field triggers change in TextView's payload.
+ */
+fun BindableField<String>.bind(textView: TextView) {
     onChange { textView.text = it }
 }

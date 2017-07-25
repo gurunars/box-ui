@@ -7,4 +7,4 @@ import android.view.View
  * @param colorId color resource ID
  * @return color integer
  */
-inline fun View.color(colorId: Int): Int = ContextCompat.getColor(context, colorId)
+fun View.color(colorId: Int): Int = ContextCompat.getColor(context, colorId)

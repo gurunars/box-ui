@@ -3,6 +3,12 @@ package com.gurunars.item_list
 import android.content.Context
 import com.gurunars.databinding.BindableField
 
+/**
+ * View binder that accepts a selectable item wrapper.
+ *
+ * @see ItemViewBinder
+ * @see SelectableItem
+ */
 typealias SelectableItemViewBinder<ItemType> = ItemViewBinder<SelectableItem<ItemType>>
 
 internal fun <ItemType : Item> clickableSelector(

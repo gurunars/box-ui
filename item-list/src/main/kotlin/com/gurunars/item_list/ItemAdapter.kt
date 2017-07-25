@@ -13,7 +13,17 @@ import com.gurunars.shortcuts.fullSize
 import org.objenesis.strategy.StdInstantiatorStrategy
 
 
-typealias ItemViewBinder<ItemType> = (context: Context, itemType: Enum<*>, payload: BindableField<Pair<ItemType, ItemType?>>) -> View
+/**
+ * @param context Android context
+ * @param itemType type of the item for which the view is supposed to be created
+ * @param field field representing a field
+ * @return a view bound to a field holding the item
+ */
+typealias ItemViewBinder<ItemType> = (
+    context: Context,
+    itemType: Enum<*>,
+    field: BindableField<Pair<ItemType, ItemType?>>
+) -> View
 
 
 internal class ItemAdapter<ItemType : Item>(

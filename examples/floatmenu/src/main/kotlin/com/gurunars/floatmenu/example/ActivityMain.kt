@@ -7,7 +7,6 @@ import android.view.Gravity
 import android.view.Menu
 import android.view.MenuItem
 import com.gurunars.android_utils.IconView
-import com.gurunars.android_utils.notificationView
 import com.gurunars.databinding.BindableField
 import com.gurunars.floatmenu.FloatMenu
 import com.gurunars.floatmenu.floatMenu
@@ -25,8 +24,9 @@ class ActivityMain : Activity() {
     private val hasOverlay = storage.storageField("hasOverlay", true)
     private val isLeftHanded = storage.storageField("isLeftHanded", false)
 
+    private val notification = BindableField("")
+
     private lateinit var floatingMenu: FloatMenu
-    private lateinit var notification: BindableField<String>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,12 +56,21 @@ class ActivityMain : Activity() {
                 relativeLayout {
                     fullSize()
 
-                    notificationView {
+                    textView {
                         id=R.id.notificationView
                         padding=dip(15)
                         gravity=Gravity.CENTER
-                        backgroundColor= Color.parseColor("#FFFFAA")
-                        this@ActivityMain.notification=notification
+                        backgroundColor=Color.parseColor("#FFFFAA")
+
+                        notification.onChange {
+                            text=it
+                        }
+
+                        setOnLongClickListener {
+                            text=""
+                            true
+                        }
+
                     }.lparams {
                         asRow()
                         centerHorizontally()
@@ -123,6 +132,7 @@ class ActivityMain : Activity() {
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
         storage.unbindAll()
+        notification.unbindAll()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

@@ -9,9 +9,7 @@ import com.gurunars.android_utils.iconView
 import com.gurunars.databinding.BindableField
 import com.gurunars.databinding.onChange
 import com.gurunars.item_list.Item
-import com.gurunars.shortcuts.alignHorizontally
-import com.gurunars.shortcuts.fullSize
-import com.gurunars.shortcuts.setIsVisible
+import com.gurunars.shortcuts.*
 import org.jetbrains.anko.*
 
 
@@ -32,6 +30,24 @@ internal class ContextualMenu<ItemType: Item> constructor(
             requestLayout()
         }
 
+        fun RelativeLayout.LayoutParams.isLeftHanded(flag: Boolean) {
+            alignInParent(
+                if (flag)
+                    HorizontalAlignment.LEFT
+                else
+                    HorizontalAlignment.RIGHT
+            )
+        }
+
+        fun RelativeLayout.LayoutParams.alignHorizontallyAroundElement(id: Int, flag: Boolean) {
+            alignWithRespectTo(id,
+                if (flag)
+                    HorizontalPosition.LEFT_OF
+                else
+                    HorizontalPosition.RIGHT_OF
+            )
+        }
+
         relativeLayout {
             fullSize()
             R.id.menuContainer
@@ -42,7 +58,7 @@ internal class ContextualMenu<ItemType: Item> constructor(
                 setTag(R.id.action, ActionMoveUp<ItemType>())
                 isSortable.onChange(listener=this::setIsVisible)
             }.lparams {
-                isLeftHanded.onChange(listener=this::alignHorizontally)
+                isLeftHanded.onChange(listener=this::isLeftHanded)
                 above(R.id.moveDown)
                 bottomMargin=dip(5)
                 leftMargin=dip(23)
@@ -55,8 +71,8 @@ internal class ContextualMenu<ItemType: Item> constructor(
                 setTag(R.id.action, ActionMoveDown<ItemType>())
                 isSortable.onChange(listener=this::setIsVisible)
             }.lparams {
-                alignParentBottom()
-                isLeftHanded.onChange(listener=this::alignHorizontally)
+                alignInParent(verticalAlignment=VerticalAlignment.BOTTOM)
+                isLeftHanded.onChange(listener=this::isLeftHanded)
                 bottomMargin=dip(85)
                 leftMargin=dip(23)
                 rightMargin=dip(23)
@@ -67,8 +83,8 @@ internal class ContextualMenu<ItemType: Item> constructor(
                 icon.set(IconView.Icon(icon=R.drawable.ic_delete))
                 setTag(R.id.action, ActionDelete<ItemType>())
             }.lparams {
-                alignParentBottom()
-                isLeftHanded.onChange { alignHorizontally(it, R.id.selectAll)}
+                alignInParent(verticalAlignment=VerticalAlignment.BOTTOM)
+                isLeftHanded.onChange { alignHorizontallyAroundElement(R.id.selectAll, it)}
                 bottomMargin=dip(23)
                 leftMargin=dip(5)
                 rightMargin=dip(5)
@@ -79,8 +95,8 @@ internal class ContextualMenu<ItemType: Item> constructor(
                 icon.set(IconView.Icon(icon=R.drawable.ic_select_all))
                 setTag(R.id.action, ActionSelectAll<ItemType>())
             }.lparams {
-                alignParentBottom()
-                isLeftHanded.onChange { alignHorizontally(it, R.id.edit)}
+                alignInParent(verticalAlignment=VerticalAlignment.BOTTOM)
+                isLeftHanded.onChange { alignHorizontallyAroundElement(R.id.edit, it)}
                 bottomMargin=dip(23)
                 leftMargin=dip(5)
                 rightMargin=dip(5)
@@ -91,9 +107,9 @@ internal class ContextualMenu<ItemType: Item> constructor(
                 icon.set(IconView.Icon(icon=R.drawable.ic_edit))
                 setTag(R.id.action, ActionEdit({ payload: ItemType -> itemEditListener(payload) }))
             }.lparams {
-                alignParentBottom()
+                alignInParent(verticalAlignment=VerticalAlignment.BOTTOM)
                 isLeftHanded.onChange {
-                    alignHorizontally(it)
+                    this.isLeftHanded(it)
                     if (it) {
                         leftMargin=dip(85)
                         rightMargin=dip(5)

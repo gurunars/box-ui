@@ -18,10 +18,18 @@ class BindableField<Type>(
      * Helper interface to ease field to field binding if the fields happen to have different value
      * types.
      *
-     * Methods **forward** and **backward** are supposed to perform the actual transformation.
+     * @param From source data type
+     * @param To target data type
      */
     interface ValueTransformer<From, To> {
+        /**
+         * Transform from source to target type.
+         */
         fun forward(value: From): To
+
+        /**
+         * Transform from target to source type.
+         */
         fun backward(value: To): From
     }
 
@@ -30,6 +38,9 @@ class BindableField<Type>(
      * another field or a function.
      */
     interface Binding {
+        /**
+         * Dispose the binding.
+         */
         fun unbind()
     }
 

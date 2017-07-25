@@ -5,8 +5,8 @@ package com.gurunars.item_list
  * Wrapper around item item with an "isSelected" flag.
  *
  * @param ItemType type of the actual item
- * @param item the actual item
- * @param isSelected a flag indicating if this particular item should be marked as selected
+ * @property item the actual item
+ * @property isSelected a flag indicating if this particular item should be marked as selected
  */
 class SelectableItem<out ItemType : Item> internal constructor(
     val item: ItemType,
