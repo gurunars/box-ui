@@ -237,6 +237,8 @@ class ActivitySortableTest {
     fun before() {
         onView(withId(R.id.reset)).perform(click())
         onView(withId(R.id.unlock)).perform(click())
+        openActionBarOverflowOrOptionsMenu(getInstrumentation().targetContext)
+        onView(withText("Right handed")).perform(click())
     }
 
     @After
