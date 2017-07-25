@@ -29,6 +29,9 @@ allprojects {
 }
 ```
 
+For installation instractions and API documentation of individual packages
+go [here](https://gurunars.github.io/android-crud-ui/)
+
 ## More information
 
 Check the apps in **examples** folder for a reference.
