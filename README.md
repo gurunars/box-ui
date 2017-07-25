@@ -12,6 +12,8 @@ CRUD apps for Android that require several capabilities:
 The project is split into multiple reusable modules that can be employed on
 their own.
 
+Meant for Kotlin.
+
 NOTE: the project has a very opinionated set of constraints that guarantees
 that simple CRUD apps can be created with as little cognitive effort as
 possible.
