@@ -32,7 +32,7 @@ allprojects {
 ```
 
 For installation instractions and API documentation of individual packages
-go [here](https://gurunars.github.io/android-crud-ui/)
+go [here](http://android-crud-ui.gurunars.com/)
 
 ## More information
 
