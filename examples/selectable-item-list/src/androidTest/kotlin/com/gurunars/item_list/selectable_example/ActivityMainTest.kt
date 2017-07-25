@@ -9,16 +9,21 @@ import android.support.test.espresso.assertion.ViewAssertions.matches
 import android.support.test.espresso.matcher.ViewMatchers.withId
 import android.support.test.espresso.matcher.ViewMatchers.withText
 import android.support.test.filters.LargeTest
+import android.support.test.rule.ActivityTestRule
 import android.support.test.runner.AndroidJUnit4
 import com.gurunars.test_utils.Helpers.nthChildOf
 import org.junit.After
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
 @LargeTest
 class ActivityMainTest {
+
+    @get:Rule
+    var mActivityRule = ActivityTestRule(ActivityMain::class.java)
 
     private fun clickMenu(text: String) {
         openActionBarOverflowOrOptionsMenu(getInstrumentation().targetContext)
