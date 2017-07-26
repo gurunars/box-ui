@@ -4,7 +4,7 @@ import android.content.Context
 import com.gurunars.databinding.BindableField
 
 /**
- * View binder that accepts a selectable item wrapper.
+ * Component binder that accepts a selectable item wrapper.
  *
  * @see ItemViewBinder
  * @see SelectableItem

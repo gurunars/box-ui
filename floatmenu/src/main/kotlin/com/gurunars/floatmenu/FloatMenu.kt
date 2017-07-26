@@ -27,9 +27,9 @@ import org.jetbrains.anko.*
  * @property hasOverlay If **true** the menu has a shaded background that intercepts clicks.
  * If **false** - the menu does not intercept clicks and passes them to the content area.
  * The flag does not affect clickable elements that are located inside the menu though.
- * @property contentView View shown in the background layer of the widget. Semantically it
+ * @property contentView Component shown in the background layer of the widget. Semantically it
  * represents the data manipulated by the menu.
- * @property menuView View shown in the foreground layer of the widget when the menu is open.
+ * @property menuView Component shown in the foreground layer of the widget when the menu is open.
  * Is supposed to contain menu's controls.
  */
 class FloatMenu constructor(context: Context) : FrameLayout(context) {

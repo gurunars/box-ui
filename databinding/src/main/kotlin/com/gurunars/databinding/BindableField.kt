@@ -12,7 +12,7 @@ package com.gurunars.databinding
 class BindableField<Type>(
     private var value: Type,
     private val preset: (one: Type) -> Type = { item -> item }
-) : Unbindable {
+) : Unbindable, Field<Type> {
 
     /**
      * Helper interface to ease field to field binding if the fields happen to have different value
@@ -69,14 +69,7 @@ class BindableField<Type>(
         return binding
     }
 
-    /**
-     * Change fields content to a new value. The change is made only if current and new values
-     * actually differ content-wise.
-     *
-     * @param value payload to set the value to
-     * @param force if true - the change is made even if current and new values are the same
-     */
-    fun set(value: Type, force:Boolean=false) {
+    override fun set(value: Type, force:Boolean) {
         if (force || ! equal(this.value, value)) {
             beforeChangeListeners.forEach { it(this.value) }
             this.value = preset(value)
@@ -84,10 +77,7 @@ class BindableField<Type>(
         }
     }
 
-    /**
-     * @return current value
-     */
-    fun get() : Type = this.value
+    override fun get() = this.value
 
     private fun join(
         field: BindableField<*>,

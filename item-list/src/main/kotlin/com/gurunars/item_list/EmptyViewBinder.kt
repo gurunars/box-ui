@@ -7,7 +7,7 @@ import android.widget.TextView
 import com.gurunars.shortcuts.fullSize
 
 /**
- * View binder for the case when there are no item in the list.
+ * Component binder for the case when there are no item in the list.
  */
 typealias EmptyViewBinder = (context: Context) -> View
 
