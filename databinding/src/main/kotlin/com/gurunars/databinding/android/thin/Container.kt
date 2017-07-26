@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.gurunars.databinding.BindableField
 import com.gurunars.databinding.Field
+import java.io.Serializable
 
 abstract class Container(
     private val component: Component
@@ -16,14 +17,14 @@ abstract class Container(
     val height: Field<Size> = bindableField(Size.WRAP_CONTENT)
     val visible: Field<Boolean> = bindableField(true)
 
-    class Size(val value: Int) {
+    class Size(val value: Int) : Serializable {
         companion object {
             val MATCH_PARENT = Size(ViewGroup.LayoutParams.MATCH_PARENT)
             val WRAP_CONTENT = Size(ViewGroup.LayoutParams.WRAP_CONTENT)
         }
     }
 
-    fun <ItemType> bindableField(defaultValue: ItemType) = BindableField(defaultValue).apply {
+    fun <ItemType: Serializable> bindableField(defaultValue: ItemType) = BindableField(defaultValue).apply {
         fields.add(this)
     }
 
