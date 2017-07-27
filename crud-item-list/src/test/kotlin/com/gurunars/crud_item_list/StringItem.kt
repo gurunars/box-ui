@@ -7,9 +7,9 @@ class StringItem(val text: String): Item() {
 
     enum class Type { ONLY }
 
-    override fun getId() = text.hashCode().toLong()
+    override val id = text.hashCode().toLong()
 
-    override fun getType() = Type.ONLY
+    override val type = Type.ONLY
 
     override fun payloadsEqual(other: Item) =
         other is StringItem && text == other.text

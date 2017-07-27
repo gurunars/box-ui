@@ -12,6 +12,7 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
+import com.gurunars.animal_item.AnimalItem
 import com.gurunars.crud_item_list.CrudItemListView
 import com.gurunars.crud_item_list.crudItemListView
 import com.gurunars.databinding.BindableField
@@ -58,7 +59,7 @@ class ActivityMain : Activity() {
     private lateinit var crudItemListView: CrudItemListView<AnimalItem>
 
     private fun add(type: AnimalItem.Type) {
-        items.set(items.get() + AnimalItem(count.get().toLong(), 0, type))
+        items.set(items.get() + AnimalItem(count.get().toLong(), type, 0))
         count.set(count.get() + 1)
     }
 
@@ -72,10 +73,10 @@ class ActivityMain : Activity() {
 
         for (i in 0..limit) {
             newList.apply {
-                add(AnimalItem(i.toLong(), 0, AnimalItem.Type.LION))
-                add(AnimalItem(i.toLong() + 1, 0, AnimalItem.Type.TIGER))
-                add(AnimalItem(i.toLong() + 2, 0, AnimalItem.Type.MONKEY))
-                add(AnimalItem(i.toLong() + 3, 0, AnimalItem.Type.WOLF))
+                add(AnimalItem(i.toLong(), AnimalItem.Type.LION, 0))
+                add(AnimalItem(i.toLong() + 1, AnimalItem.Type.TIGER, 0))
+                add(AnimalItem(i.toLong() + 2, AnimalItem.Type.MONKEY, 0))
+                add(AnimalItem(i.toLong() + 3, AnimalItem.Type.WOLF, 0))
             }
         }
 
@@ -97,7 +98,7 @@ class ActivityMain : Activity() {
             {
                 item -> this@ActivityMain.items.set(
                     items.get().toMutableList().apply {
-                        val index = indexOfFirst { item.getId() == it.getId() }
+                        val index = indexOfFirst { item.id == it.id }
                         set(index, item.copy(version = item.version+1))
                     }
                 )

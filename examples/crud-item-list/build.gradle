@@ -3,4 +3,5 @@ apply from: '../all-examples.gradle'
 
 dependencies {
     compile project(':crud-item-list')
+    compile project(':example-animal-item')
 }

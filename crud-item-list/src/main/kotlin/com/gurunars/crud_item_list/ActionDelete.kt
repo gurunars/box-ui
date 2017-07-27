@@ -7,7 +7,7 @@ internal class ActionDelete<ItemType: Item> : Action<ItemType> {
 
     override fun perform(all: List<ItemType>, selectedItems: Set<ItemType>): Pair<List<ItemType>, Set<ItemType>> {
         return Pair(
-            all.filter { item -> selectedItems.indexOfFirst { it.getId() == item.getId() } == -1 },
+            all.filter { item -> selectedItems.indexOfFirst { it.id == item.id } == -1 },
             setOf()
         )
     }

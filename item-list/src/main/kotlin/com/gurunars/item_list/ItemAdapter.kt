@@ -48,7 +48,7 @@ internal class ItemAdapter<ItemType : Item>(
 
         override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
             currentList.isNotEmpty() && previousList.isNotEmpty() &&
-            previousList[oldItemPosition].getId() == currentList[newItemPosition].getId()
+            previousList[oldItemPosition].id == currentList[newItemPosition].id
 
     }
 
@@ -71,10 +71,10 @@ internal class ItemAdapter<ItemType : Item>(
                 fullSize()
             }) {}
         } else {
-            val initialPayload = items.get().first { it.getType().ordinal == viewType }
+            val initialPayload = items.get().first { it.type.ordinal == viewType }
             val field = parent.bindableField(Pair<ItemType, ItemType?>(initialPayload, null))
             return object : RecyclerView.ViewHolder(
-                itemViewBinder(parent.context, initialPayload.getType(), field).apply {
+                itemViewBinder(parent.context, initialPayload.type, field).apply {
                     asRow()
                     setTag(R.id.payloadTag, field)
             }) {}
@@ -87,7 +87,7 @@ internal class ItemAdapter<ItemType : Item>(
         }
 
         val item = items.get()[position]
-        val previousIndex = previousList.indexOfFirst { it.getId() == item.getId() }
+        val previousIndex = previousList.indexOfFirst { it.id == item.id }
         val previousItem = if (previousIndex >= 0) previousList[previousIndex] else null
         val field = holder.itemView.getTag(R.id.payloadTag) as BindableField<Pair<ItemType?, ItemType?>>
 
@@ -99,7 +99,7 @@ internal class ItemAdapter<ItemType : Item>(
         if (items.get().isEmpty())
             EMPTY_TYPE
         else
-            items.get()[position].getType().ordinal
+            items.get()[position].type.ordinal
 
     override fun getItemCount() = Math.max(1, items.get().size)
 

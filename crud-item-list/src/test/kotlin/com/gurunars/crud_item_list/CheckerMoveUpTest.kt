@@ -1,12 +1,11 @@
 package com.gurunars.crud_item_list
 
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.mockito.internal.util.collections.Sets
 
 import java.util.Arrays
-
-import junit.framework.Assert.assertFalse
-import junit.framework.Assert.assertTrue
 
 class CheckerMoveUpTest {
 

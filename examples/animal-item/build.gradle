@@ -1,0 +1,7 @@
+apply from: '../../all-libs.gradle'
+
+
+dependencies {
+    compile project(':item-list')
+}
+

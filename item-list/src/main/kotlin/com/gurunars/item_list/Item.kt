@@ -10,12 +10,12 @@ abstract class Item: Serializable {
     /**
      * Item unique identifier
      */
-    abstract fun getId(): Long
+    abstract val id: Long
 
     /**
      * Item type
      */
-    abstract fun getType(): Enum<*>
+    abstract val type: Enum<*>
 
     /**
      * @param other another object to compare payload with
@@ -28,12 +28,12 @@ abstract class Item: Serializable {
      */
     final override fun equals(other: Any?) =
         other is Item &&
-        getId() == other.getId() &&
+        id == other.id &&
         payloadsEqual(other)
 
     /**
      * @suppress
      */
-    final override fun hashCode() = getId().hashCode()
+    final override fun hashCode() = id.hashCode()
 
 }

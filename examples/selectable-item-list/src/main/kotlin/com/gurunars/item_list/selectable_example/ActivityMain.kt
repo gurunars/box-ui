@@ -9,6 +9,7 @@ import android.support.annotation.StringRes
 import android.view.*
 import android.widget.TextView
 import android.widget.Toast
+import com.gurunars.animal_item.AnimalItem
 import com.gurunars.databinding.BindableField
 import com.gurunars.item_list.*
 import com.gurunars.shortcuts.asRow
@@ -51,7 +52,7 @@ class ActivityMain : Activity() {
     private lateinit var itemListView: SelectableItemListView<AnimalItem>
 
     private fun add(type: AnimalItem.Type) {
-        items.set(items.get() + AnimalItem(count.get().toLong(), 0, type))
+        items.set(items.get() + AnimalItem(count.get().toLong(), type, 0))
         count.set(count.get() + 1)
     }
 
@@ -87,7 +88,7 @@ class ActivityMain : Activity() {
     private fun updateSelected(): Int {
         val selected = itemListView.selectedItems.get()
         items.set(items.get().map {
-            if (selected.any { item -> it.getId() == item.getId() })
+            if (selected.any { item -> it.id == item.id })
                 it.copy(version = it.version+1)
             else
                 it
@@ -97,7 +98,7 @@ class ActivityMain : Activity() {
 
     private fun deleteSelected(): Int {
         itemListView.items.set(items.get().filterNot {
-            itemListView.selectedItems.get().any { item -> it.getId() == item.getId()}
+            itemListView.selectedItems.get().any { item -> it.id == item.id}
         })
         return R.string.did_delete_selected
     }

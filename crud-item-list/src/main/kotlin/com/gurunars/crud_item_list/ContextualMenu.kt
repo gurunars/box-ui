@@ -29,18 +29,18 @@ internal class ContextualMenu<ItemType: Item> constructor(
             contentDescription = if (it) "LEFT HANDED" else "RIGHT HANDED"
         }
 
-        fun RelativeLayout.LayoutParams.isLeftHanded(isLeftHanded: Boolean) {
+        fun RelativeLayout.LayoutParams.isLeftHanded(flag: Boolean) {
             alignInParent(
-                if (isLeftHanded)
+                if (flag)
                     HorizontalAlignment.LEFT
                 else
                     HorizontalAlignment.RIGHT
             )
         }
 
-        fun RelativeLayout.LayoutParams.alignHorizontallyAroundElement(id: Int, isLeftHanded: Boolean) {
+        fun RelativeLayout.LayoutParams.alignHorizontallyAroundElement(id: Int, flag: Boolean) {
             alignWithRespectTo(id,
-                if (isLeftHanded)
+                if (flag)
                     HorizontalPosition.RIGHT_OF
                 else
                     HorizontalPosition.LEFT_OF

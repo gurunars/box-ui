@@ -5,8 +5,8 @@ import org.junit.Test
 import java.util.ArrayList
 import java.util.Arrays
 
-import junit.framework.Assert.assertTrue
 import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 
 class CheckerSolidChunkTest {
 

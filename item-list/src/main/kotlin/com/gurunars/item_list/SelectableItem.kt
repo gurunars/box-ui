@@ -16,12 +16,12 @@ class SelectableItem<out ItemType : Item> internal constructor(
     /**
      * @see Item.getId
      */
-    override fun getId() = item.getId()
+    override val id = item.id
 
     /**
      * @see Item.getType
      */
-    override fun getType() = item.getType()
+    override val type = item.type
 
     /**
      * @see Item.payloadsEqual

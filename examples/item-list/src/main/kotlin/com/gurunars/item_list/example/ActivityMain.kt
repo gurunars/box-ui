@@ -9,6 +9,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.TextView
 import android.widget.Toast
+import com.gurunars.animal_item.AnimalItem
 import com.gurunars.databinding.BindableField
 import com.gurunars.item_list.ItemListView
 import com.gurunars.item_list.itemListView
@@ -50,7 +51,7 @@ class ActivityMain : Activity() {
     private lateinit var itemListView: ItemListView<AnimalItem>
 
     private fun add(type: AnimalItem.Type) {
-        items.set(items.get() + AnimalItem(count.get().toLong(), 0, type))
+        items.set(items.get() + AnimalItem(count.get().toLong(), type, 0))
         count.set(count.get() + 1)
     }
 

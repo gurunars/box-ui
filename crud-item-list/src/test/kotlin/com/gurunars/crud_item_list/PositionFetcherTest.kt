@@ -1,5 +1,6 @@
 package com.gurunars.crud_item_list
 
+import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.mockito.internal.util.collections.Sets
 
@@ -7,7 +8,6 @@ import java.util.ArrayList
 import java.util.Arrays
 import java.util.HashSet
 
-import junit.framework.Assert.assertEquals
 
 fun getPositions(items: List<String>, selectedItems: Set<String>) =
     getPositions(items.itemize(), selectedItems.itemize())
