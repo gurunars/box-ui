@@ -23,4 +23,10 @@ data class SelectableItem<out ItemType : Item> internal constructor(
      */
     override val type = item.type
 
+    /**
+     * @suppress
+     */
+    override fun toString() =
+            item.toString() + "|" + isSelected
+
 }
