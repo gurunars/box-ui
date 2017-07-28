@@ -29,8 +29,7 @@ internal fun bindAnimalItem(
     payload.onChange {
         setBackgroundColor(if (it.first.isSelected) Color.RED else Color.WHITE)
         text = it.first.toString()
-        val other = it.second
-        if (other != null && !it.first.item.payloadsEqual(other.item)) {
+        if (it.first.item != it.second?.item) {
             clearAnimation()
             ValueAnimator().apply {
                 setFloatValues(1.0f, 0.0f, 1.0f)

@@ -2,7 +2,6 @@ package com.gurunars.item_list
 
 import android.app.Activity
 import android.view.ViewManager
-import com.gurunars.android_utils.IconView
 import org.jetbrains.anko.custom.ankoView
 
 /**

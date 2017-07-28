@@ -3,21 +3,8 @@ package com.gurunars.crud_item_list
 import com.gurunars.item_list.Item
 
 
-class StringItem(val text: String): Item() {
-
-    enum class Type { ONLY }
-
+data class StringItem(val text: String): Item {
     override val id = text.hashCode().toLong()
-
-    override val type = Type.ONLY
-
-    override fun payloadsEqual(other: Item) =
-        other is StringItem && text == other.text
-
-    override fun toString(): String {
-        return text
-    }
-
 }
 
 fun Set<String>.itemize() = map { StringItem(it) }.toSet()

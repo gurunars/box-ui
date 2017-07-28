@@ -8,33 +8,19 @@ package com.gurunars.item_list
  * @property item the actual item
  * @property isSelected a flag indicating if this particular item should be marked as selected
  */
-class SelectableItem<out ItemType : Item> internal constructor(
+data class SelectableItem<out ItemType : Item> internal constructor(
     val item: ItemType,
     val isSelected: Boolean
-) : Item() {
+) : Item {
 
     /**
-     * @see Item.getId
+     * @see Item.id
      */
     override val id = item.id
 
     /**
-     * @see Item.getType
+     * @see Item.type
      */
     override val type = item.type
-
-    /**
-     * @see Item.payloadsEqual
-     */
-    override fun payloadsEqual(other: Item) =
-        other is SelectableItem<*> &&
-        item.payloadsEqual(other.item) &&
-        isSelected == other.isSelected
-
-    /**
-     * @suppress
-     */
-    override fun toString() =
-        item.toString() + "|" + isSelected
 
 }

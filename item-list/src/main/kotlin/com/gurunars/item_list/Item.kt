@@ -5,35 +5,24 @@ import java.io.Serializable
 /**
  * Abstraction of the entity that can be shown in the ItemListView.
  */
-abstract class Item: Serializable {
+interface Item: Serializable {
+
+    enum class Default {
+        /**
+         * Default type for the cases when the list contains a set of homogeneous items.
+         */
+        ONLY
+    }
 
     /**
-     * Item unique identifier
+     * Item unique identifier.
      */
-    abstract val id: Long
+    val id: Long
 
     /**
-     * Item type
+     * Item type.
      */
-    abstract val type: Enum<*>
-
-    /**
-     * @param other another object to compare payload with
-     * @return true if payloads are the same
-     */
-    abstract fun payloadsEqual(other: Item): Boolean
-
-    /**
-     * @suppress
-     */
-    final override fun equals(other: Any?) =
-        other is Item &&
-        id == other.id &&
-        payloadsEqual(other)
-
-    /**
-     * @suppress
-     */
-    final override fun hashCode() = id.hashCode()
+    val type: Enum<*>
+        get() = Default.ONLY
 
 }

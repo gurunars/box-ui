@@ -28,8 +28,7 @@ internal fun bindAnimalItem(
     padding = context.dip(5)
     payload.onChange {
         text = it.first.toString()
-        val other = it.second
-        if (other != null && !it.first.payloadsEqual(other)) {
+        if (it.first != it.second) {
             clearAnimation()
             ValueAnimator().apply {
                 setFloatValues(1.0f, 0.0f, 1.0f)
