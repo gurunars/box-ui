@@ -1,6 +1,5 @@
 package com.gurunars.item_list.example
 
-import android.animation.ValueAnimator
 import android.app.Activity
 import android.content.Context
 import android.os.Bundle
@@ -9,6 +8,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.TextView
 import android.widget.Toast
+import com.gurunars.android_utils.flicker
 import com.gurunars.animal_item.AnimalItem
 import com.gurunars.databinding.BindableField
 import com.gurunars.item_list.ItemListView
@@ -28,18 +28,9 @@ internal fun bindAnimalItem(
     padding = context.dip(5)
     payload.onChange {
         text = it.first.toString()
-        if (it.first != it.second) {
-            clearAnimation()
-            ValueAnimator().apply {
-                setFloatValues(1.0f, 0.0f, 1.0f)
-                addUpdateListener { animation -> alpha = animation.animatedValue as Float }
-                duration = 1300
-                start()
-            }
-        }
+        if (it.first != it.second) { flicker() }
     }
 }
-
 
 class ActivityMain : Activity() {
     private val storage = PersistentStorage(this, "main")

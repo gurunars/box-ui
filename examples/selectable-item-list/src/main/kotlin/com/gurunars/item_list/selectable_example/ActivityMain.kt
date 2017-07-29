@@ -9,6 +9,7 @@ import android.support.annotation.StringRes
 import android.view.*
 import android.widget.TextView
 import android.widget.Toast
+import com.gurunars.android_utils.flicker
 import com.gurunars.animal_item.AnimalItem
 import com.gurunars.databinding.BindableField
 import com.gurunars.item_list.*
@@ -29,15 +30,7 @@ internal fun bindAnimalItem(
     payload.onChange {
         setBackgroundColor(if (it.first.isSelected) Color.RED else Color.WHITE)
         text = it.first.toString()
-        if (it.first.item != it.second?.item) {
-            clearAnimation()
-            ValueAnimator().apply {
-                setFloatValues(1.0f, 0.0f, 1.0f)
-                addUpdateListener { animation -> alpha = animation.animatedValue as Float }
-                duration = 1300
-                start()
-            }
-        }
+        if (it.first != it.second) { flicker() }
     }
 }
 

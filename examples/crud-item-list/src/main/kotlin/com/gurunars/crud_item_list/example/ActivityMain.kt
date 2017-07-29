@@ -1,6 +1,5 @@
 package com.gurunars.crud_item_list.example
 
-import android.animation.ValueAnimator
 import android.app.Activity
 import android.content.Context
 import android.graphics.Color
@@ -12,6 +11,7 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
+import com.gurunars.android_utils.flicker
 import com.gurunars.animal_item.AnimalItem
 import com.gurunars.crud_item_list.CrudItemListView
 import com.gurunars.crud_item_list.crudItemListView
@@ -23,7 +23,6 @@ import com.gurunars.shortcuts.fullSize
 import com.gurunars.storage.PersistentStorage
 import org.jetbrains.anko.*
 
-
 internal fun bindAnimalItem(
     context: Context,
     itemType: Enum<*>,
@@ -34,15 +33,7 @@ internal fun bindAnimalItem(
     payload.onChange {
         setBackgroundColor(if (it.first.isSelected) Color.RED else Color.WHITE)
         text = it.first.toString()
-        if (it.first.item != it.second?.item) {
-            clearAnimation()
-            ValueAnimator().apply {
-                setFloatValues(1.0f, 0.0f, 1.0f)
-                addUpdateListener { animation -> alpha = animation.animatedValue as Float }
-                duration = 1300
-                start()
-            }
-        }
+        if (it.first.item != it.second?.item) { flicker() }
     }
 }
 
