@@ -16,13 +16,13 @@ import org.objenesis.strategy.StdInstantiatorStrategy
 /**
  * @param context Android context
  * @param itemType type of the item for which the view is supposed to be created
- * @param field field representing a field
+ * @param field field representing item's payload
  * @return a view bound to a field holding the item
  */
 typealias ItemViewBinder<ItemType> = (
     context: Context,
     itemType: Enum<*>,
-    field: BindableField<Pair<ItemType, ItemType?>>
+    field: BindableField<ItemType>
 ) -> View
 
 internal class ItemAdapter<ItemType : Item>(
@@ -68,10 +68,20 @@ internal class ItemAdapter<ItemType : Item>(
         if (viewType == EMPTY_TYPE) {
             return object : RecyclerView.ViewHolder(emptyViewBinder(parent.context).apply {
                 fullSize()
+                addOnAttachStateChangeListener(object : View.OnAttachStateChangeListener {
+                    override fun onViewAttachedToWindow(v: View) {
+
+                    }
+
+                    override fun onViewDetachedFromWindow(v: View) {
+                        clearAnimation()
+                        clearFocus()
+                    }
+                })
             }) {}
         } else {
             val initialPayload = items.get().first { it.type.ordinal == viewType }
-            val field = parent.bindableField(Pair<ItemType, ItemType?>(initialPayload, null))
+            val field = parent.bindableField(initialPayload)
             return object : RecyclerView.ViewHolder(
                 itemViewBinder(parent.context, initialPayload.type, field).apply {
                     asRow()
@@ -85,13 +95,8 @@ internal class ItemAdapter<ItemType : Item>(
             return   // nothing to bind
         }
 
-        val item = items.get()[position]
-        val previousIndex = previousList.indexOfFirst { it.id == item.id }
-        val previousItem = if (previousIndex >= 0) previousList[previousIndex] else null
-        val field = holder.itemView.getTag(R.id.payloadTag) as BindableField<Pair<ItemType?, ItemType?>>
-
-        // we know for sure because of DiffUtil that the pair was updated
-        field.set(Pair(item, previousItem), true)
+        val field = holder.itemView.getTag(R.id.payloadTag) as BindableField<ItemType>
+        field.set(items.get()[position], true)
     }
 
     override fun getItemViewType(position: Int) =

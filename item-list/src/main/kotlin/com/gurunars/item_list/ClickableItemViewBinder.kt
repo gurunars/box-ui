@@ -19,12 +19,12 @@ internal fun <ItemType : Item> clickableSelector(
     return {
         context: Context,
         itemType: Enum<*>,
-        payload: BindableField<Pair<SelectableItem<ItemType>, SelectableItem<ItemType>?>>
+        payload: BindableField<SelectableItem<ItemType>>
     ->
         itemViewBinder(context, itemType, payload).apply {
             isClickable = true
             setOnClickListener {
-                val item = payload.get().first
+                val item = payload.get()
                 val sel = selectedItems.get()
                 selectedItems.set(
                     if (sel.isEmpty())
@@ -37,7 +37,7 @@ internal fun <ItemType : Item> clickableSelector(
 
             }
             setOnLongClickListener {
-                val item = payload.get().first
+                val item = payload.get()
                 val sel = selectedItems.get()
                 if (sel.isEmpty()) selectedItems.set(sel.include(item.item))
                 true

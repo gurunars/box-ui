@@ -8,6 +8,7 @@ import com.esotericsoftware.kryo.Kryo
 import com.gurunars.databinding.android.bindableField
 import com.gurunars.shortcuts.fullSize
 import com.gurunars.shortcuts.setOneView
+import jp.wasabeef.recyclerview.animators.FadeInAnimator
 import org.jetbrains.anko.bottomPadding
 import org.jetbrains.anko.dip
 import org.objenesis.strategy.StdInstantiatorStrategy
@@ -47,6 +48,7 @@ class ItemListView<ItemType : Item> (
             layoutManager = LinearLayoutManager(context).apply {
                 orientation = LinearLayoutManager.VERTICAL
             }
+            itemAnimator= FadeInAnimator()
         })
 
     }

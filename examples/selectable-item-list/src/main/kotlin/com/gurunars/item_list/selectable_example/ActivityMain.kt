@@ -1,36 +1,37 @@
 package com.gurunars.item_list.selectable_example
 
-import android.animation.ValueAnimator
 import android.app.Activity
 import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
 import android.support.annotation.StringRes
-import android.view.*
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.TextView
 import android.widget.Toast
-import com.gurunars.android_utils.flicker
 import com.gurunars.animal_item.AnimalItem
 import com.gurunars.databinding.BindableField
-import com.gurunars.item_list.*
+import com.gurunars.item_list.SelectableItem
+import com.gurunars.item_list.SelectableItemListView
+import com.gurunars.item_list.selectableItemListView
 import com.gurunars.shortcuts.asRow
 import com.gurunars.shortcuts.fullSize
 import com.gurunars.storage.PersistentStorage
-import org.jetbrains.anko.*
+import org.jetbrains.anko.dip
+import org.jetbrains.anko.padding
 import java.util.*
 
 
 internal fun bindAnimalItem(
         context: Context,
         itemType: Enum<*>,
-        payload: BindableField<Pair<SelectableItem<AnimalItem>, SelectableItem<AnimalItem>?>>
+        payload: BindableField<SelectableItem<AnimalItem>>
 ) = TextView(context).apply {
     asRow()
     padding = context.dip(5)
     payload.onChange {
-        setBackgroundColor(if (it.first.isSelected) Color.RED else Color.WHITE)
-        text = it.first.toString()
-        if (it.first != it.second) { flicker() }
+        setBackgroundColor(if (it.isSelected) Color.RED else Color.WHITE)
+        text = it.toString()
     }
 }
 

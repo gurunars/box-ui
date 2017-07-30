@@ -11,7 +11,6 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
-import com.gurunars.android_utils.flicker
 import com.gurunars.animal_item.AnimalItem
 import com.gurunars.crud_item_list.CrudItemListView
 import com.gurunars.crud_item_list.crudItemListView
@@ -26,14 +25,13 @@ import org.jetbrains.anko.*
 internal fun bindAnimalItem(
     context: Context,
     itemType: Enum<*>,
-    payload: BindableField<Pair<SelectableItem<AnimalItem>, SelectableItem<AnimalItem>?>>
+    payload: BindableField<SelectableItem<AnimalItem>>
 ) = TextView(context).apply {
     asRow()
     padding = context.dip(5)
     payload.onChange {
-        setBackgroundColor(if (it.first.isSelected) Color.RED else Color.WHITE)
-        text = it.first.toString()
-        if (it.first.item != it.second?.item) { flicker() }
+        setBackgroundColor(if (it.isSelected) Color.RED else Color.WHITE)
+        text = it.toString()
     }
 }
 

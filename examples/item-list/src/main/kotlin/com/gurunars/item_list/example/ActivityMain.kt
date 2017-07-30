@@ -8,7 +8,6 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.TextView
 import android.widget.Toast
-import com.gurunars.android_utils.flicker
 import com.gurunars.animal_item.AnimalItem
 import com.gurunars.databinding.BindableField
 import com.gurunars.item_list.ItemListView
@@ -22,14 +21,11 @@ import org.jetbrains.anko.padding
 internal fun bindAnimalItem(
     context: Context,
     itemType: Enum<*>,
-    payload: BindableField<Pair<AnimalItem, AnimalItem?>>
+    payload: BindableField<AnimalItem>
 ) = TextView(context).apply {
     asRow()
     padding = context.dip(5)
-    payload.onChange {
-        text = it.first.toString()
-        if (it.first != it.second) { flicker() }
-    }
+    payload.onChange { text = it.toString() }
 }
 
 class ActivityMain : Activity() {

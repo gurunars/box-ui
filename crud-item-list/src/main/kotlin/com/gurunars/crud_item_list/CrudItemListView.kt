@@ -105,10 +105,11 @@ class CrudItemListView<ItemType : Item>  constructor(
             }
 
             listOf(creationMenu, isOpen, itemListView.selectedItems).onChange {
+                if (!isOpen.get()) { return@onChange }
                 if (itemListView.selectedItems.get().isEmpty()) {
                     hasOverlay.set(true)
                     menuView.set(creationMenu.get())
-                } else {
+                } else  {
                     hasOverlay.set(false)
                     menuView.set(contextualMenu)
                 }
