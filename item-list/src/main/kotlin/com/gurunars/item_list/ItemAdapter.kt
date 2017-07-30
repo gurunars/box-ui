@@ -25,7 +25,6 @@ typealias ItemViewBinder<ItemType> = (
     field: BindableField<Pair<ItemType, ItemType?>>
 ) -> View
 
-
 internal class ItemAdapter<ItemType : Item>(
         private val items: BindableField<List<ItemType>>,
         private val emptyViewBinder: EmptyViewBinder,
