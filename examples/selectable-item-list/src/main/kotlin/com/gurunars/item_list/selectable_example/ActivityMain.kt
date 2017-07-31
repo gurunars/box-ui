@@ -13,6 +13,7 @@ import com.gurunars.animal_item.AnimalItem
 import com.gurunars.databinding.BindableField
 import com.gurunars.item_list.SelectableItem
 import com.gurunars.item_list.SelectableItemListView
+import com.gurunars.item_list.coloredRowSelectionDecorator
 import com.gurunars.item_list.selectableItemListView
 import com.gurunars.shortcuts.asRow
 import com.gurunars.shortcuts.fullSize
@@ -25,14 +26,10 @@ import java.util.*
 internal fun bindAnimalItem(
         context: Context,
         itemType: Enum<*>,
-        payload: BindableField<SelectableItem<AnimalItem>>
+        payload: BindableField<AnimalItem>
 ) = TextView(context).apply {
-    asRow()
     padding = context.dip(5)
-    payload.onChange {
-        setBackgroundColor(if (it.isSelected) Color.RED else Color.WHITE)
-        text = it.toString()
-    }
+    payload.onChange { text = it.toString() }
 }
 
 class ActivityMain : Activity() {
@@ -53,7 +50,7 @@ class ActivityMain : Activity() {
         super.onCreate(savedInstanceState)
         storage.load()
 
-        itemListView = selectableItemListView(::bindAnimalItem) {
+        itemListView = selectableItemListView(coloredRowSelectionDecorator(::bindAnimalItem)) {
             fullSize()
             id=R.id.selectableItemList
             this@ActivityMain.items.bind(items)

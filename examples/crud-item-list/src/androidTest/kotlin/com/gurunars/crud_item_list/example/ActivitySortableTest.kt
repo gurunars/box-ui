@@ -19,12 +19,10 @@ import android.support.test.espresso.action.ViewActions.click
 import android.support.test.espresso.action.ViewActions.longClick
 import android.support.test.espresso.assertion.ViewAssertions.doesNotExist
 import android.support.test.espresso.assertion.ViewAssertions.matches
-import android.support.test.espresso.matcher.ViewMatchers.isEnabled
-import android.support.test.espresso.matcher.ViewMatchers.withContentDescription
-import android.support.test.espresso.matcher.ViewMatchers.withId
-import android.support.test.espresso.matcher.ViewMatchers.withText
+import android.support.test.espresso.matcher.ViewMatchers.*
 import android.view.View
 import com.gurunars.test_utils.Helpers.nthChildOf
+import org.hamcrest.core.Is.`is`
 import org.hamcrest.core.IsNot.not
 
 @RunWith(AndroidJUnit4::class)
@@ -55,6 +53,11 @@ class ActivitySortableTest {
 
     private fun atIndex(id: Int): ViewInteraction {
         return onView(nthChildOf(withId(R.id.recyclerView), id))
+    }
+
+    private fun validateSelection(index: Int, text: String, isSelected: Boolean) {
+        atIndex(index).check(matches(withText(text)))
+        atIndex(index).check(matches(withTagKey(R.id.isSelected, `is`(isSelected))))
     }
 
     @Test
@@ -179,7 +182,7 @@ class ActivitySortableTest {
         rotate()
         onView(withId(R.id.edit)).perform(click())
         rotate()
-        atIndex(3).check(matches(withText("#3{WOLF @ 1}|true")))
+        validateSelection(3, "#3{WOLF @ 1}", true)
     }
 
     @Test
@@ -188,7 +191,7 @@ class ActivitySortableTest {
         rotate()
         onView(withId(R.id.lion)).perform(click())
         rotate()
-        atIndex(4).check(matches(withText("#4{LION @ 0}|false")))
+        validateSelection(4, "#4{LION @ 0}", false)
     }
 
     @Test
@@ -215,13 +218,15 @@ class ActivitySortableTest {
         onView(withId(R.id.contextualMenu)).check(matches(withContentDescription("RIGHT HANDED")))
     }
 
+
+
     @Test
     fun testSelectMoveUpAndReset() {
         atIndex(1).perform(longClick())
         onView(withId(R.id.moveUp)).perform(click())
         onView(withId(R.id.reset)).perform(click())
-        atIndex(0).check(matches(withText("#0{LION @ 0}|false")))
-        atIndex(1).check(matches(withText("#1{TIGER @ 0}|true")))
+        validateSelection(0, "#0{LION @ 0}", false)
+        validateSelection(1, "#1{TIGER @ 0}", true)
     }
 
     @Test
@@ -229,8 +234,8 @@ class ActivitySortableTest {
         atIndex(2).perform(longClick())
         onView(withId(R.id.moveDown)).perform(click())
         onView(withId(R.id.reset)).perform(click())
-        atIndex(2).check(matches(withText("#2{MONKEY @ 0}|true")))
-        atIndex(3).check(matches(withText("#3{WOLF @ 0}|false")))
+        validateSelection(2, "#2{MONKEY @ 0}", true)
+        validateSelection(3, "#3{WOLF @ 0}", false)
     }
 
     @Before

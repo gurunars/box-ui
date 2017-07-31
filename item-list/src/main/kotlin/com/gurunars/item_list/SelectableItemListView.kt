@@ -21,7 +21,8 @@ import kotlin.collections.HashSet
  *
  * @param ItemType type of the item to be shown in the list
  * @param context Android context
- * @param itemViewBinder a function binding an observable to the actual view
+ * @param itemViewBinder a function binding an observable of the selectable payload to the actual
+ * view
  * @param emptyViewBinder a function returning a view to be shown when the list is empty
  *
  * @property items A collection of items shown in the list

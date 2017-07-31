@@ -2,7 +2,6 @@ package com.gurunars.crud_item_list.example
 
 import android.app.Activity
 import android.content.Context
-import android.graphics.Color
 import android.os.Bundle
 import android.view.Gravity
 import android.view.Menu
@@ -15,8 +14,7 @@ import com.gurunars.animal_item.AnimalItem
 import com.gurunars.crud_item_list.CrudItemListView
 import com.gurunars.crud_item_list.crudItemListView
 import com.gurunars.databinding.BindableField
-import com.gurunars.item_list.SelectableItem
-import com.gurunars.shortcuts.asRow
+import com.gurunars.item_list.coloredRowSelectionDecorator
 import com.gurunars.shortcuts.color
 import com.gurunars.shortcuts.fullSize
 import com.gurunars.storage.PersistentStorage
@@ -25,14 +23,10 @@ import org.jetbrains.anko.*
 internal fun bindAnimalItem(
     context: Context,
     itemType: Enum<*>,
-    payload: BindableField<SelectableItem<AnimalItem>>
+    payload: BindableField<AnimalItem>
 ) = TextView(context).apply {
-    asRow()
     padding = context.dip(5)
-    payload.onChange {
-        setBackgroundColor(if (it.isSelected) Color.RED else Color.WHITE)
-        text = it.toString()
-    }
+    payload.onChange { text = it.toString() }
 }
 
 class ActivityMain : Activity() {
@@ -82,7 +76,7 @@ class ActivityMain : Activity() {
         }
 
         crudItemListView = crudItemListView(
-            ::bindAnimalItem,
+            coloredRowSelectionDecorator(::bindAnimalItem),
             {
                 item -> this@ActivityMain.items.set(
                     items.get().toMutableList().apply {
