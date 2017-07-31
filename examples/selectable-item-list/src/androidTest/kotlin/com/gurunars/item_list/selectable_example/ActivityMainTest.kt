@@ -3,15 +3,18 @@ package com.gurunars.item_list.selectable_example
 import android.support.test.InstrumentationRegistry.getInstrumentation
 import android.support.test.espresso.Espresso.onView
 import android.support.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu
+import android.support.test.espresso.ViewInteraction
 import android.support.test.espresso.action.ViewActions.click
 import android.support.test.espresso.action.ViewActions.longClick
 import android.support.test.espresso.assertion.ViewAssertions.matches
+import android.support.test.espresso.matcher.ViewMatchers
 import android.support.test.espresso.matcher.ViewMatchers.withId
 import android.support.test.espresso.matcher.ViewMatchers.withText
 import android.support.test.filters.LargeTest
 import android.support.test.rule.ActivityTestRule
 import android.support.test.runner.AndroidJUnit4
 import com.gurunars.test_utils.Helpers.nthChildOf
+import org.hamcrest.core.Is
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
@@ -30,9 +33,18 @@ class ActivityMainTest {
         onView(withText(text)).perform(click())
     }
 
-    private fun assertList(vararg expectedItems: String) {
+    private fun atIndex(id: Int): ViewInteraction {
+        return onView(nthChildOf(withId(R.id.recyclerView), id))
+    }
+
+    private fun validateSelection(index: Int, text: String, isSelected: Boolean) {
+        atIndex(index).check(matches(withText(text)))
+        atIndex(index).check(matches(ViewMatchers.withTagKey(R.id.isSelected, Is.`is`(isSelected))))
+    }
+
+    private fun assertList(vararg expectedItems: Pair<String, Boolean>) {
         for (i in expectedItems.indices) {
-            onView(nthChildOf(withId(R.id.recyclerView), i)).check(matches(withText(expectedItems[i])))
+            validateSelection(i, expectedItems[i].first, expectedItems[i].second)
         }
     }
 
@@ -45,10 +57,10 @@ class ActivityMainTest {
     fun longClickingOneAndClickingAnother_shouldSelectTwoItems() {
         selectTwo()
         assertList(
-                "#0{TIGER @ 0}|true",
-                "#1{WOLF @ 0}|true",
-                "#2{MONKEY @ 0}|false",
-                "#3{LION @ 0}|false"
+            Pair("#0{TIGER @ 0}", true),
+            Pair("#1{WOLF @ 0}", true),
+            Pair("#2{MONKEY @ 0}", false),
+            Pair("#3{LION @ 0}", false)
         )
     }
 
@@ -57,8 +69,8 @@ class ActivityMainTest {
         selectTwo()
         clickMenu("Delete selected")
         assertList(
-                "#2{MONKEY @ 0}|false",
-                "#3{LION @ 0}|false"
+            Pair("#2{MONKEY @ 0}", false),
+            Pair("#3{LION @ 0}", false)
         )
     }
 
@@ -67,10 +79,10 @@ class ActivityMainTest {
         selectTwo()
         clickMenu("Update selected")
         assertList(
-                "#0{TIGER @ 1}|true",
-                "#1{WOLF @ 1}|true",
-                "#2{MONKEY @ 0}|false",
-                "#3{LION @ 0}|false"
+            Pair("#0{TIGER @ 1}", true),
+            Pair("#1{WOLF @ 1}", true),
+            Pair("#2{MONKEY @ 0}", false),
+            Pair("#3{LION @ 0}", false)
         )
     }
 
@@ -79,14 +91,14 @@ class ActivityMainTest {
         selectTwo()
         clickMenu("Create items")
         assertList(
-                "#0{TIGER @ 0}|true",
-                "#1{WOLF @ 0}|true",
-                "#2{MONKEY @ 0}|false",
-                "#3{LION @ 0}|false",
-                "#4{TIGER @ 0}|false",
-                "#5{WOLF @ 0}|false",
-                "#6{MONKEY @ 0}|false",
-                "#7{LION @ 0}|false"
+            Pair("#0{TIGER @ 0}", true),
+            Pair("#1{WOLF @ 0}", true),
+            Pair("#2{MONKEY @ 0}", false),
+            Pair("#3{LION @ 0}", false),
+            Pair("#4{TIGER @ 0}", false),
+            Pair("#5{WOLF @ 0}", false),
+            Pair("#6{MONKEY @ 0}", false),
+            Pair("#7{LION @ 0}", false)
         )
     }
 
