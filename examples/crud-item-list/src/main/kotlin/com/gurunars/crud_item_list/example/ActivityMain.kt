@@ -46,26 +46,25 @@ class ActivityMain : Activity() {
     }
 
     private fun initData() {
-        addItems(reset=true)
+        items.set(listOf(
+            AnimalItem(0, AnimalItem.Type.LION, 0),
+            AnimalItem(1, AnimalItem.Type.TIGER, 0),
+            AnimalItem(2, AnimalItem.Type.MONKEY, 0),
+            AnimalItem(3, AnimalItem.Type.WOLF, 0)
+        ))
+        count.set(4)
     }
 
-    private fun addItems(many: Boolean=false, reset: Boolean=false) {
-        val limit = if (many) 19 else 0
-        val newList = if (reset) mutableListOf<AnimalItem>() else items.get().toMutableList()
-
-        for (i in 0..limit) {
-            newList.apply {
-                add(AnimalItem(i.toLong(), AnimalItem.Type.LION, 0))
-                add(AnimalItem(i.toLong() + 1, AnimalItem.Type.TIGER, 0))
-                add(AnimalItem(i.toLong() + 2, AnimalItem.Type.MONKEY, 0))
-                add(AnimalItem(i.toLong() + 3, AnimalItem.Type.WOLF, 0))
-            }
+    private fun addItems(count: Int) {
+        for (i in 0..count-1) {
+            add(when (i % 4) {
+                0 -> AnimalItem.Type.LION
+                1 -> AnimalItem.Type.TIGER
+                2 -> AnimalItem.Type.MONKEY
+                else -> AnimalItem.Type.WOLF
+            })
         }
-
-        items.set(newList)
-        count.set((limit + 1) * 4)
     }
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -78,12 +77,14 @@ class ActivityMain : Activity() {
         crudItemListView = crudItemListView(
             coloredRowSelectionDecorator(::bindAnimalItem),
             {
-                item -> this@ActivityMain.items.set(
-                    items.get().toMutableList().apply {
-                        val index = indexOfFirst { item.id == it.id }
-                        set(index, item.copy(version = item.version+1))
-                    }
-                )
+                item -> run {
+                    this@ActivityMain.items.set(
+                        items.get().toMutableList().apply {
+                            val index = indexOfFirst { item.id == it.id }
+                            set(index, item.copy(version = item.version+1))
+                        }
+                    )
+                }
             },
             {
                 TextView(it).apply {
@@ -192,7 +193,7 @@ class ActivityMain : Activity() {
             R.id.reset -> initData()
             R.id.lock -> isSortable.set(false)
             R.id.unlock -> isSortable.set(true)
-            R.id.addMany -> addItems(true)
+            R.id.addMany -> addItems(4 * 20)
         }
         return super.onOptionsItemSelected(item)
     }

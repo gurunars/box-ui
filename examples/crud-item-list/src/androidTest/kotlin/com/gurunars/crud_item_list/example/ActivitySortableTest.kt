@@ -218,8 +218,6 @@ class ActivitySortableTest {
         onView(withId(R.id.contextualMenu)).check(matches(withContentDescription("RIGHT HANDED")))
     }
 
-
-
     @Test
     fun testSelectMoveUpAndReset() {
         atIndex(1).perform(longClick())

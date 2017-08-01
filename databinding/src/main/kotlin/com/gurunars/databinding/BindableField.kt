@@ -44,6 +44,10 @@ class BindableField<Type>(
         fun unbind()
     }
 
+    private class Possession(private val target: BindableField<*>): Binding {
+        override fun unbind() = target.unbindAll()
+    }
+
     private val listeners: MutableList<(value: Type) -> Unit> = mutableListOf()
     private val beforeChangeListeners: MutableList<(value: Type) -> Unit> = mutableListOf()
     private val bindings: MutableList<Binding> = mutableListOf()
@@ -80,7 +84,7 @@ class BindableField<Type>(
         if (force || ! equal(this.value, value)) {
             beforeChangeListeners.forEach { it(this.value) }
             this.value = preset(value)
-            listeners.forEach { it(value) }
+            listeners.forEach { it(this.value) }
         }
     }
 
@@ -133,6 +137,12 @@ class BindableField<Type>(
         onChange { target.set(it) },
         target.onChange { this.set(it) }
     )
+
+    /**
+     * Add a target field to the lifecycle of this one. Once this field is disposed all child
+     * fields are disposed as well.
+     */
+    fun possess(target: BindableField<*>) = bindings.add(Possession(target))
 
     /**
      * Dispose all bindings and listener

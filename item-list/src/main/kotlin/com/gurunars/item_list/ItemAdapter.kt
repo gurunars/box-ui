@@ -81,7 +81,8 @@ internal class ItemAdapter<ItemType : Item>(
             }) {}
         } else {
             val initialPayload = items.get().first { it.type.ordinal == viewType }
-            val field = parent.bindableField(initialPayload)
+            val field = BindableField(initialPayload)
+            items.possess(field)
             return object : RecyclerView.ViewHolder(
                 itemViewBinder(parent.context, initialPayload.type, field).apply {
                     asRow()

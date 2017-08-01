@@ -2,9 +2,12 @@ package com.gurunars.storage
 
 import android.app.Activity
 import android.content.Context
+import android.content.SharedPreferences
 import com.gurunars.databinding.BindableField
 import com.gurunars.databinding.Unbindable
 import com.gurunars.databinding.UnbindableRegistryService
+import java.util.*
+import kotlin.concurrent.timerTask
 
 /**
  * Observable storage based on SharedPreferences
@@ -17,27 +20,27 @@ class PersistentStorage(
         private val storageName: String
 ) {
 
+    private val preferences = CachedLazyField { activity.getPreferences(Context.MODE_PRIVATE) }
+    private var timer = Timer()
+
     internal class PersistentField<Type>(
-            val storage: PersistentStorage,
+            val preferences: CachedLazyField<SharedPreferences>,
             val name: String,
             val field: BindableField<Type>): Unbindable {
+
         override fun unbindAll() {
             field.unbindAll()
         }
 
         fun load() {
-            val preferences = storage.activity.getPreferences(Context.MODE_PRIVATE)
-            val key = storage.storageName+"/"+name
-
-            val loadedValue: Type? = StringSerializer.fromString<Type>(preferences.getString(key, null))
+            val loadedValue: Type? = StringSerializer.fromString<Type>(
+                preferences.get().getString(name, null)
+            )
             if (loadedValue != null) field.set(loadedValue)
+        }
 
-            field.onChange {
-                val editor = preferences.edit()
-                editor.putString(key, StringSerializer.toString(it))
-                editor.apply()
-            }
-
+        fun save(editor: SharedPreferences.Editor) {
+            editor.putString(name, StringSerializer.toString(field.get()))
         }
 
     }
@@ -52,7 +55,12 @@ class PersistentStorage(
      */
     fun<Type> storageField(name: String, defaultValue: Type): BindableField<Type> {
         val field = BindableField(defaultValue)
-        val wrapper = PersistentField(this, name, field)
+        field.onChange {
+            timer.cancel()
+            timer = Timer()
+            timer.schedule(timerTask { save() }, 100)
+        }
+        val wrapper = PersistentField(preferences, storageName+"/" +name, field)
         registry.add(wrapper)
         fields.add(wrapper)
         return field
@@ -63,9 +71,19 @@ class PersistentStorage(
      */
     fun load() { fields.forEach { it.load() } }
 
+    private fun save() {
+        val editor = preferences.get().edit()
+        fields.forEach { it.save(editor) }
+        editor.apply()
+    }
+
     /**
      * Drop all the field listeners.
      */
-    fun unbindAll() = registry.unbindAll()
+    fun unbindAll() {
+        timer.cancel()
+        save()
+        registry.unbindAll()
+    }
 
 }

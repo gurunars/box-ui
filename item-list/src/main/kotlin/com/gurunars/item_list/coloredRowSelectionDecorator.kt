@@ -21,19 +21,13 @@ fun<ItemType: Item> coloredRowSelectionDecorator(
 ) = {
     context: Context, itemType: Enum<*>, field: BindableField<SelectableItem<ItemType>> ->
     val newField = BindableField(field.get().item)
+    field.possess(newField)
     itemViewBinder(context, itemType, newField).apply {
         asRow()
         field.onChange {
             setTag(R.id.isSelected, it.isSelected)
             setBackgroundColor(if (it.isSelected) selectionColor else regularColor)
-            newField.set(it.item)
+            newField.set(it.item, true)
         }
-        addOnAttachStateChangeListener(object : View.OnAttachStateChangeListener {
-            override fun onViewDetachedFromWindow(v: View?) {
-                newField.unbindAll()
-            }
-
-            override fun onViewAttachedToWindow(v: View?) {}
-        })
     }
 }
