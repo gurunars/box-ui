@@ -1,7 +1,7 @@
 apply from: '../all-libs.gradle'
 
 dependencies {
-    compile 'com.android.support.test:rules:0.5'
-    compile 'com.android.support.test.espresso:espresso-core:2.2.2'
+    compile 'com.android.support.test:rules:1.0.0'
+    compile 'com.android.support.test.espresso:espresso-core:3.0.0'
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 }
