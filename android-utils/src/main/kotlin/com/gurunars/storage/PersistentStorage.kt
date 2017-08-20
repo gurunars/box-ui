@@ -1,6 +1,5 @@
 package com.gurunars.storage
 
-import android.app.Activity
 import android.content.Context
 import android.content.SharedPreferences
 import com.gurunars.databinding.BindableField
@@ -12,15 +11,17 @@ import kotlin.concurrent.timerTask
 /**
  * Observable storage based on SharedPreferences
  *
- * @property activity Android activity to be used for instantiation of SharedPreferences
+ * @property context Android context to be used for instantiation of SharedPreferences
  * @property storageName name of the data store in SharedPreferences
  */
 class PersistentStorage(
-        private val activity: Activity,
-        private val storageName: String
+    private val context: Context,
+    private val storageName: String
 ) {
 
-    private val preferences = CachedLazyField { activity.getPreferences(Context.MODE_PRIVATE) }
+    private val preferences = CachedLazyField { context.
+        getSharedPreferences(storageName, Context.MODE_PRIVATE)
+    }
     private var timer = Timer()
 
     internal class PersistentField<Type>(
@@ -60,7 +61,7 @@ class PersistentStorage(
             timer = Timer()
             timer.schedule(timerTask { save() }, 100)
         }
-        val wrapper = PersistentField(preferences, storageName+"/" +name, field)
+        val wrapper = PersistentField(preferences, name, field)
         registry.add(wrapper)
         fields.add(wrapper)
         return field
