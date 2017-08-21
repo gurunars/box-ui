@@ -36,6 +36,8 @@ import com.gurunars.shortcuts.fullSize
  * are shown on the right side of the screen otherwise.
  * @property creationMenu A set of controls used to create items of various types.
  * @property items A collection of items shown and manipulated by the view.
+ * @property isOpen A flag specifying if the menu is open or closed. Be it a creation or contextual
+ * one.
  */
 class CrudItemListView<ItemType : Item>  constructor(
     context: Context,
@@ -62,6 +64,7 @@ class CrudItemListView<ItemType : Item>  constructor(
     val isLeftHanded = bindableField(false)
     val creationMenu = bindableField(View(context))
     val items: BindableField<List<ItemType>>
+    val isOpen: BindableField<Boolean>
 
     private val contextualMenu: ContextualMenu<ItemType>
     private val floatingMenu: FloatMenu
@@ -137,13 +140,8 @@ class CrudItemListView<ItemType : Item>  constructor(
 
         }
 
-    }
+        isOpen = floatingMenu.isOpen
 
-    /**
-     * Close the menu be it a contextual or a creation one.
-     */
-    fun dismiss() {
-        floatingMenu.isOpen.set(false)
     }
 
 }

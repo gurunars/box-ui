@@ -127,7 +127,7 @@ class ActivityMain : Activity() {
                             padding=dip(10)
                             setOnClickListener {
                                 add(itemType)
-                                dismiss()
+                                isOpen.set(false)
                             }
                         }.lparams {
                             margin=dip(10)
