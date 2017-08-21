@@ -34,7 +34,6 @@ class ActivityMain : Activity() {
     private val storage = PersistentStorage(this, "main")
 
     private val isLeftHanded = storage.storageField("isLeftHanded", false)
-    private val isSortable = storage.storageField("sSortable", true)
     private val items = storage.storageField("items", listOf<AnimalItem>())
     private val count = storage.storageField("count", 0)
 
@@ -70,10 +69,6 @@ class ActivityMain : Activity() {
         super.onCreate(savedInstanceState)
         storage.load()
 
-        isSortable.onChange {
-            setTitle(if(it) R.string.sortable else R.string.unsortable)
-        }
-
         crudItemListView = crudItemListView(
             coloredRowSelectionDecorator(::bindAnimalItem),
             {
@@ -98,7 +93,6 @@ class ActivityMain : Activity() {
             fullSize()
             id=R.id.customView
             this@ActivityMain.items.bind(items)
-            this@ActivityMain.isSortable.bind(isSortable)
             this@ActivityMain.isLeftHanded.bind(isLeftHanded)
 
             actionIcon.set(CrudItemListView.IconColorBundle(
@@ -191,8 +185,6 @@ class ActivityMain : Activity() {
             R.id.leftHanded -> isLeftHanded.set(true)
             R.id.rightHanded -> isLeftHanded.set(false)
             R.id.reset -> initData()
-            R.id.lock -> isSortable.set(false)
-            R.id.unlock -> isSortable.set(true)
             R.id.addMany -> addItems(4 * 20)
         }
         return super.onOptionsItemSelected(item)
