@@ -8,7 +8,8 @@ Remove the items:
 
 [256x456](static/delete.gif)
 
-Move the items up and down:
+Move the items up and down (holding the up/down buttons starts moving the
+items continuously):
 
 [256x456](static/moves.gif)
 

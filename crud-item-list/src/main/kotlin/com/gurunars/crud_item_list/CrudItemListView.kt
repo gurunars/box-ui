@@ -35,6 +35,7 @@ import com.gurunars.shortcuts.fullSize
  * @property isLeftHanded If true all action buttons are show on the left side of the screen. They
  * are shown on the right side of the screen otherwise.
  * @property creationMenu A set of controls used to create items of various types.
+ * @property isSortable If false move up and move down buttons are hidden.
  * @property items A collection of items shown and manipulated by the view.
  * @property isOpen A flag specifying if the menu is open or closed. Be it a creation or contextual
  * one.
@@ -63,6 +64,7 @@ class CrudItemListView<ItemType : Item>  constructor(
     val openIcon = bindableField(IconColorBundle())
     val isLeftHanded = bindableField(false)
     val creationMenu = bindableField(View(context))
+    val isSortable = bindableField(true)
     val items: BindableField<List<ItemType>>
     val isOpen: BindableField<Boolean>
 
@@ -82,6 +84,7 @@ class CrudItemListView<ItemType : Item>  constructor(
         contextualMenu = ContextualMenu(context,
             actionIcon,
             isLeftHanded,
+            isSortable,
             itemListView.items,
             itemListView.selectedItems,
             itemEditListener

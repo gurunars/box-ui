@@ -10,16 +10,14 @@ import com.gurunars.databinding.BindableField
 import com.gurunars.databinding.onChange
 import com.gurunars.item_list.Item
 import com.gurunars.shortcuts.*
-import org.jetbrains.anko.above
-import org.jetbrains.anko.applyRecursively
-import org.jetbrains.anko.dip
-import org.jetbrains.anko.relativeLayout
+import org.jetbrains.anko.*
 
 
 internal class ContextualMenu<ItemType: Item> constructor(
         context: Context,
         actionIcon: BindableField<CrudItemListView.IconColorBundle>,
         isLeftHanded: BindableField<Boolean>,
+        isSortable: BindableField<Boolean>,
         items: BindableField<List<ItemType>>,
         selectedItems: BindableField<Set<ItemType>>,
         itemEditListener: (item: ItemType) -> Unit
@@ -61,6 +59,7 @@ internal class ContextualMenu<ItemType: Item> constructor(
                 id=R.id.moveUp
                 icon.set(IconView.Icon(icon=R.drawable.ic_move_up))
                 setTag(R.id.action, ActionMoveUp<ItemType>())
+                isSortable.onChange(listener=this::setIsVisible)
             }.lparams {
                 isLeftHanded.onChange(listener=this::isLeftHanded)
                 above(R.id.moveDown)
@@ -73,6 +72,7 @@ internal class ContextualMenu<ItemType: Item> constructor(
                 id=R.id.moveDown
                 icon.set(IconView.Icon(icon=R.drawable.ic_move_down))
                 setTag(R.id.action, ActionMoveDown<ItemType>())
+                isSortable.onChange(listener=this::setIsVisible)
             }.lparams {
                 alignInParent(verticalAlignment=VerticalAlignment.BOTTOM)
                 isLeftHanded.onChange(listener=this::isLeftHanded)

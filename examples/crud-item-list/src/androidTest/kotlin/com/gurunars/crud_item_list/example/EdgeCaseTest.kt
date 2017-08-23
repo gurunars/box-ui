@@ -38,6 +38,7 @@ class EdgeCaseTest {
     private fun init() {
         openActionBarOverflowOrOptionsMenu(getInstrumentation().targetContext)
         onView(withText("Add many")).perform(click())
+        onView(withId(R.id.unlock)).perform(click())
     }
 
     @Test
