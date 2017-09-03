@@ -68,7 +68,7 @@ class CrudItemListView<ItemType : Item>  constructor(
     val items: BindableField<List<ItemType>>
     val isOpen: BindableField<Boolean>
 
-    private val contextualMenu: ContextualMenu<ItemType>
+    private val contextualMenu: View
     private val floatingMenu: FloatMenu
     private val itemListView: SelectableItemListView<ItemType>
 
@@ -81,7 +81,7 @@ class CrudItemListView<ItemType : Item>  constructor(
 
         items = itemListView.items
 
-        contextualMenu = ContextualMenu(context,
+        contextualMenu = contextualMenu(context,
             actionIcon,
             isLeftHanded,
             isSortable,
