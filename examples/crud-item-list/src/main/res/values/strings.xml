@@ -13,4 +13,6 @@
     <string name="wolf">Wolf</string>
     <string name="addMany">Add many</string>
     <string name="noItemsAtAll">No items at all</string>
+    <string name="newVersion">The version is</string>
+    <string name="increment">Increment</string>
 </resources>

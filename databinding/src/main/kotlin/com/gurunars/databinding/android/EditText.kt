@@ -9,14 +9,19 @@ import com.gurunars.databinding.BindableField
  * Ensure that a string field is changed whenever TextView's value changes and vice versa.
  */
 fun TextView.bind(field: BindableField<String>) {
-    field.onChange { setText(it) }
+    field.onChange {
+        if(text.toString() != it) {
+            setText(it)
+        }
+    }
     addTextChangedListener(object: TextWatcher {
-        override fun afterTextChanged(s: Editable?) {}
+        override fun afterTextChanged(s: Editable?) {
+            field.set(s.toString())
+        }
 
         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-            field.set(s.toString())
         }
     })
 }
@@ -30,15 +35,20 @@ fun<From> TextView.bind(
     field: BindableField<From>,
     valueTransformer: BindableField.ValueTransformer<From, String>
 ) {
-    field.onChange { setText(valueTransformer.forward(it)) }
+    field.onChange {
+        val trans = valueTransformer.forward(it)
+        if(text.toString() != trans) {
+            setText(trans)
+        }
+    }
     addTextChangedListener(object: TextWatcher {
-        override fun afterTextChanged(s: Editable?) {}
+        override fun afterTextChanged(s: Editable?) {
+            field.set(valueTransformer.backward(s.toString()))
+        }
 
         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
-        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-            field.set(valueTransformer.backward(s.toString()))
-        }
+        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
     })
 }
 

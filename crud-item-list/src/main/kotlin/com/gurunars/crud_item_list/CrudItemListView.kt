@@ -1,19 +1,14 @@
 package com.gurunars.crud_item_list
 
 import android.content.Context
-import android.graphics.Color
-import android.view.View
+import android.os.Bundle
+import android.os.Parcelable
 import android.widget.FrameLayout
-import com.gurunars.android_utils.IconView
 import com.gurunars.databinding.BindableField
-import com.gurunars.databinding.android.bindableField
-import com.gurunars.databinding.onChange
-import com.gurunars.floatmenu.FloatMenu
-import com.gurunars.floatmenu.floatMenu
 import com.gurunars.item_list.EmptyViewBinder
 import com.gurunars.item_list.Item
-import com.gurunars.item_list.SelectableItemListView
-import com.gurunars.item_list.SelectableItemViewBinder
+import com.gurunars.knob_view.KnobView
+import com.gurunars.knob_view.knobView
 import com.gurunars.shortcuts.fullSize
 
 /**
@@ -21,7 +16,6 @@ import com.gurunars.shortcuts.fullSize
  *
  * @param ItemType type of the item to be shown in the list
  * @param context Android context
- * @param itemViewBinder a function binding an observable to the actual view
  * @param emptyViewBinder a function returning a view to be shown when the list is empty
  *
  * @property actionIcon Color of the icons meant to manipulate the collection of items in the
@@ -34,117 +28,127 @@ import com.gurunars.shortcuts.fullSize
  * the icon opens the creation menu
  * @property isLeftHanded If true all action buttons are show on the left side of the screen. They
  * are shown on the right side of the screen otherwise.
- * @property creationMenu A set of controls used to create items of various types.
  * @property isSortable If false move up and move down buttons are hidden.
  * @property items A collection of items shown and manipulated by the view.
  * @property isOpen A flag specifying if the menu is open or closed. Be it a creation or contextual
  * one.
  */
-class CrudItemListView<ItemType : Item>  constructor(
+class CrudItemListView<ItemType: Item>(
     context: Context,
-    itemViewBinder: SelectableItemViewBinder<ItemType>,
-    itemEditListener: (item: ItemType) -> Unit,
-    emptyViewBinder: EmptyViewBinder = ::defaultEmptyViewBinder
-) : FrameLayout(context) {
+    emptyViewBinder: EmptyViewBinder = ::defaultEmptyViewBinder,
+    groupedItemTypeDescriptors: List<List<ItemTypeDescriptor<ItemType>>>
+): FrameLayout(context) {
 
-    /**
-     * Icon color settings
-     *
-     * @property bgColor background color
-     * @property fgColor foreground color
-     */
-    data class IconColorBundle(
-        val bgColor: Int = Color.RED,
-        val fgColor: Int = Color.WHITE
-    )
+    private enum class ShownView {
+        LIST, FORM
+    }
 
-    val actionIcon = bindableField(IconColorBundle())
-    val contextualCloseIcon = bindableField(IconColorBundle())
-    val createCloseIcon = bindableField(IconColorBundle())
-    val openIcon = bindableField(IconColorBundle())
-    val isLeftHanded = bindableField(false)
-    val creationMenu = bindableField(View(context))
-    val isSortable = bindableField(true)
+    private val itemInEdit = BindableField<ItemType?>(null)
+
+    private val typeCache = with(groupedItemTypeDescriptors) {
+        mutableMapOf<Enum<*>, ItemTypeDescriptor<ItemType>>().apply {
+            this@with.forEach {
+                it.forEach {
+                    this.put(it.type, it)
+                }
+            }
+        }
+    }
+
+    private val itemView: ControllableItemListView<ItemType>
+    private val itemForm: ItemForm<ItemType>
+    private val knobView: KnobView
+
+    val actionIcon: BindableField<IconColorBundle>
+    val contextualCloseIcon: BindableField<IconColorBundle>
+    val createCloseIcon: BindableField<IconColorBundle>
+    val openIcon: BindableField<IconColorBundle>
+    val isSortable: BindableField<Boolean>
+
+    val isLeftHanded: BindableField<Boolean>
     val items: BindableField<List<ItemType>>
     val isOpen: BindableField<Boolean>
 
-    private val contextualMenu: View
-    private val floatingMenu: FloatMenu
-    private val itemListView: SelectableItemListView<ItemType>
-
     init {
 
-        itemListView = SelectableItemListView(context, itemViewBinder, emptyViewBinder).apply {
-            fullSize()
-            id = R.id.rawItemList
-        }
+        // ITEM VIEW
 
-        items = itemListView.items
-
-        contextualMenu = contextualMenu(context,
-            actionIcon,
-            isLeftHanded,
-            isSortable,
-            itemListView.items,
-            itemListView.selectedItems,
-            itemEditListener
-        ).apply {
-            fullSize()
-            id = R.id.contextualMenu
-        }
-
-        floatingMenu = floatMenu {
-            fullSize()
-            id = R.id.floatingMenu
-            contentView.set(itemListView)
-            this@CrudItemListView.isLeftHanded.bind(isLeftHanded)
-
-            isOpen.onChange {
-                if (!it) itemListView.selectedItems.set(hashSetOf())
+        itemView = ControllableItemListView(
+            context,
+            emptyViewBinder,
+            groupedItemTypeDescriptors,
+            {
+                itemInEdit.set(it)
             }
+        )
 
-            itemListView.selectedItems.onChange {
-                isOpen.set(it.isNotEmpty())
-            }
+        actionIcon = itemView.actionIcon
+        contextualCloseIcon = itemView.contextualCloseIcon
+        createCloseIcon = itemView.createCloseIcon
+        openIcon = itemView.openIcon
+        isSortable = itemView.isSortable
+        isLeftHanded = itemView.isLeftHanded
+        items = itemView.items
+        isOpen = itemView.isOpen
 
-            listOf(creationMenu, isOpen, itemListView.selectedItems).onChange {
-                if (!isOpen.get()) { return@onChange }
-                if (itemListView.selectedItems.get().isEmpty()) {
-                    hasOverlay.set(true)
-                    menuView.set(creationMenu.get())
-                } else  {
-                    hasOverlay.set(false)
-                    menuView.set(contextualMenu)
+        // FORM VIEW
+
+        itemForm = ItemForm(
+            context,
+            {
+                isOpen.set(false)
+                itemInEdit.set(null)
+            },
+            {
+                item: ItemType -> run {
+                    val itemsOld = items.get()
+                    val foundIndex = items.get().indexOfFirst { it.id == item.id }
+                    if (foundIndex == -1) {
+                        items.set(itemsOld + item)
+                    } else {
+                        items.set(itemsOld.toMutableList().apply {
+                            set(foundIndex, item)
+                        })
+                    }
                 }
             }
+        )
 
-            this@CrudItemListView.openIcon.onChange {
-                openIcon.set(openIcon.get().copy(
-                    bgColor = it.bgColor,
-                    fgColor = it.fgColor
-                ))
-            }
-
-            listOf(contextualCloseIcon, createCloseIcon, itemListView.selectedItems).onChange {
-                if (itemListView.selectedItems.get().isEmpty()) {
-                    closeIcon.set(IconView.Icon(
-                        icon = R.drawable.ic_menu_close,
-                        bgColor = createCloseIcon.get().bgColor,
-                        fgColor = createCloseIcon.get().fgColor
-                    ))
-                } else {
-                    closeIcon.set(IconView.Icon(
-                        icon = R.drawable.ic_check,
-                        bgColor = contextualCloseIcon.get().bgColor,
-                        fgColor = contextualCloseIcon.get().fgColor
-                    ))
-                }
-            }
-
+        knobView = knobView(mapOf(
+            ShownView.LIST to itemView,
+            ShownView.FORM to itemForm
+        )) {
+            fullSize()
+            id=R.id.knobView
         }
 
-        isOpen = floatingMenu.isOpen
+        itemInEdit.onChange {
+            if (it != null) {
+                itemForm.bind(it, typeCache.get(it.type)!!.formBinder)
+                knobView.selectedView.set(ShownView.FORM)
+            } else {
+                knobView.selectedView.set(ShownView.LIST)
+            }
+        }
 
+    }
+
+    /**
+     * @suppress
+     */
+    override fun onSaveInstanceState() = Bundle().apply {
+        putParcelable("superState", super.onSaveInstanceState())
+        putSerializable("itemInEdit", itemInEdit.get())
+    }
+
+    /**
+     * @suppress
+     */
+    override fun onRestoreInstanceState(state: Parcelable) {
+        (state as Bundle).apply {
+            super.onRestoreInstanceState(getParcelable<Parcelable>("superState"))
+            itemInEdit.set(getSerializable("itemInEdit") as ItemType?)
+        }
     }
 
 }

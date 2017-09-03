@@ -1,6 +1,5 @@
 package com.gurunars.crud_item_list
 
-
 import android.content.Context
 import android.widget.FrameLayout
 import android.widget.RelativeLayout
@@ -15,12 +14,12 @@ import org.jetbrains.anko.*
 
 internal fun<ItemType: Item> contextualMenu (
     context: Context,
-    actionIcon: BindableField<CrudItemListView.IconColorBundle>,
+    actionIcon: BindableField<IconColorBundle>,
     isLeftHanded: BindableField<Boolean>,
     isSortable: BindableField<Boolean>,
     items: BindableField<List<ItemType>>,
     selectedItems: BindableField<Set<ItemType>>,
-    itemEditListener: (item: ItemType) -> Unit
+    onEdit: (item: ItemType) -> Unit
 ) = FrameLayout(context).apply {
 
     isLeftHanded.onChange {
@@ -106,7 +105,7 @@ internal fun<ItemType: Item> contextualMenu (
         iconView {
             id=R.id.edit
             icon.set(IconView.Icon(icon=R.drawable.ic_edit))
-            setTag(R.id.action, ActionEdit({ payload: ItemType -> itemEditListener(payload) }))
+            setTag(R.id.action, ActionEdit({ payload: ItemType -> onEdit(payload) }))
         }.lparams {
             alignInParent(verticalAlignment=VerticalAlignment.BOTTOM)
             isLeftHanded.onChange {

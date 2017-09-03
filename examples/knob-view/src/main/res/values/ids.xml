@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="knobView" type="id" />
+    <item name="one" type="id" />
+    <item name="two" type="id" />
+    <item name="three" type="id" />
+    <item name="four" type="id" />
+    <item name="five" type="id" />
+</resources>

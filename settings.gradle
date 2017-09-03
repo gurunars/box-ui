@@ -1,11 +1,12 @@
 include ':android-utils', ':item-list', ':floatmenu', ':test-utils',
-        ':databinding', ':crud-item-list',
+        ':databinding', ':knob-view', ':crud-item-list',
         ':example-android-utils', ':example-item-list',
         ':example-floatmenu', ':example-selectable-item-list',
-        ':example-crud-item-list', ':example-animal-item'
+        ':example-crud-item-list', ':example-animal-item', ':example-knob-view'
 project(":example-android-utils").projectDir = file("examples/android-utils")
 project(":example-item-list").projectDir = file("examples/item-list")
 project(":example-floatmenu").projectDir = file("examples/floatmenu")
 project(":example-selectable-item-list").projectDir = file("examples/selectable-item-list")
 project(":example-crud-item-list").projectDir = file("examples/crud-item-list")
 project(":example-animal-item").projectDir = file("examples/animal-item")
+project(":example-knob-view").projectDir = file("examples/knob-view")

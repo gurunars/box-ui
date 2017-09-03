@@ -1,5 +1,7 @@
 package com.gurunars.databinding
 
+import android.util.Log
+
 
 /**
  * An observable field capable to emit changes and listen to change events

@@ -6,14 +6,15 @@ import android.os.Bundle
 import android.view.Gravity
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.RelativeLayout
 import android.widget.TextView
+import com.gurunars.android_utils.IconView
 import com.gurunars.animal_item.AnimalItem
 import com.gurunars.crud_item_list.CrudItemListView
+import com.gurunars.crud_item_list.IconColorBundle
+import com.gurunars.crud_item_list.ItemTypeDescriptor
 import com.gurunars.crud_item_list.crudItemListView
 import com.gurunars.databinding.BindableField
+import com.gurunars.databinding.android.bind
 import com.gurunars.item_list.coloredRowSelectionDecorator
 import com.gurunars.shortcuts.color
 import com.gurunars.shortcuts.fullSize
@@ -27,6 +28,30 @@ internal fun bindAnimalItem(
 ) = TextView(context).apply {
     padding = context.dip(5)
     payload.onChange { text = it.toString() }
+}
+
+internal fun Context.bindAnimalForm(
+    field: BindableField<AnimalItem>
+) = verticalLayout {
+    textView {
+        text=getString(R.string.newVersion)
+    }
+    textView {
+        bind(field, object: BindableField.ValueTransformer<AnimalItem, String> {
+            override fun forward(value: AnimalItem) = value.version.toString()
+            override fun backward(value: String) = field.get().copy(version=value.toInt())
+        })
+    }
+    button {
+        text=getString(R.string.increment)
+        setOnClickListener {
+            field.apply {
+                set(get().copy(version=get().version + 1))
+            }
+        }
+    }
+    gravity=Gravity.CENTER
+    backgroundColor=color(R.color.White)
 }
 
 class ActivityMain : Activity() {
@@ -74,18 +99,16 @@ class ActivityMain : Activity() {
             setTitle(if(it) R.string.sortable else R.string.unsortable)
         }
 
+        fun descriptor(icon: Int, type: AnimalItem.Type) =
+            ItemTypeDescriptor(
+                icon = IconView.Icon(icon = icon),
+                type = type,
+                rowBinder = coloredRowSelectionDecorator(::bindAnimalItem),
+                formBinder = Context::bindAnimalForm,
+                newItemCreator = { AnimalItem(id=(count.get() + 1).toLong(), version= 0, type = type) }
+            )
+
         crudItemListView = crudItemListView(
-            coloredRowSelectionDecorator(::bindAnimalItem),
-            {
-                item -> run {
-                    this@ActivityMain.items.set(
-                        items.get().toMutableList().apply {
-                            val index = indexOfFirst { item.id == it.id }
-                            set(index, item.copy(version = item.version+1))
-                        }
-                    )
-                }
-            },
             {
                 TextView(it).apply {
                     id=R.id.noItemsLabel
@@ -93,89 +116,47 @@ class ActivityMain : Activity() {
                     setText(R.string.noItemsAtAll)
                     gravity = Gravity.CENTER
                 }
-            }
+            },
+            listOf(listOf(
+                descriptor(R.drawable.ic_menu_monkey, AnimalItem.Type.MONKEY),
+                descriptor(R.drawable.ic_menu_lion, AnimalItem.Type.LION)
+            ), listOf(
+                descriptor(R.drawable.ic_menu_tiger, AnimalItem.Type.TIGER),
+                descriptor(R.drawable.ic_menu_wolf, AnimalItem.Type.WOLF)
+            ))
         ) {
             fullSize()
             id=R.id.customView
             this@ActivityMain.items.bind(items)
+            items.onChange {
+                count.set(
+                    items.get()
+                        .map { it.id }
+                        .fold(0L) { acc, l -> Math.max(acc, l)  }
+                        .toInt()
+                )
+            }
             this@ActivityMain.isSortable.bind(isSortable)
             this@ActivityMain.isLeftHanded.bind(isLeftHanded)
 
-            actionIcon.set(CrudItemListView.IconColorBundle(
+            actionIcon.set(IconColorBundle(
                 fgColor=color(R.color.Yellow),
                 bgColor=color(R.color.Blue)
             ))
-            contextualCloseIcon.set(CrudItemListView.IconColorBundle(
+            contextualCloseIcon.set(IconColorBundle(
                 bgColor=color(R.color.Black),
                 fgColor=color(R.color.White)
             ))
-            createCloseIcon.set(CrudItemListView.IconColorBundle(
+            createCloseIcon.set(IconColorBundle(
                 bgColor=color(R.color.Red),
                 fgColor=color(R.color.White)
             ))
-            openIcon.set(CrudItemListView.IconColorBundle(
+            openIcon.set(IconColorBundle(
                 bgColor=color(R.color.Green),
                 fgColor=color(R.color.Yellow)
             ))
-            creationMenu.set(UI(false) {
-                relativeLayout {
-                    fullSize()
-                    gravity=Gravity.CENTER
-
-                    fun imgBtn(
-                        itemType: AnimalItem.Type,
-                        extraLayout: RelativeLayout.LayoutParams.() -> Unit={},
-                        custom: ImageButton.() -> Unit)
-                    {
-                        imageButton {
-                            backgroundColor=color(R.color.Red)
-                            scaleType=ImageView.ScaleType.FIT_CENTER
-                            padding=dip(10)
-                            setOnClickListener {
-                                add(itemType)
-                                isOpen.set(false)
-                            }
-                        }.lparams {
-                            margin=dip(10)
-                            width=dip(45)
-                            height=dip(45)
-                            extraLayout()
-                        }.custom()
-                    }
-
-                    imgBtn(AnimalItem.Type.MONKEY) {
-                        contentDescription=getString(R.string.monkey)
-                        id=R.id.monkey
-                        image=getDrawable(R.drawable.ic_menu_monkey)
-                    }
-
-                    imgBtn(AnimalItem.Type.LION, {
-                        below(R.id.monkey)
-                    }) {
-                        contentDescription=getString(R.string.lion)
-                        id=R.id.lion
-                        image=getDrawable(R.drawable.ic_menu_lion)
-                    }
-
-                    imgBtn(AnimalItem.Type.TIGER, {
-                        rightOf(R.id.monkey)
-                    }) {
-                        contentDescription=getString(R.string.tiger)
-                        id=R.id.tiger
-                        image=getDrawable(R.drawable.ic_menu_tiger)
-                    }
-
-                    imgBtn(AnimalItem.Type.WOLF, {
-                        rightOf(R.id.monkey)
-                        below(R.id.tiger)
-                    }) {
-                        contentDescription=getString(R.string.wolf)
-                        id=R.id.wolf
-                        image=getDrawable(R.drawable.ic_menu_wolf)
-                    }
-                }
-            }.view)
         }
+
 
     }
 
