@@ -13,6 +13,7 @@ import com.gurunars.item_list.EmptyViewBinder
 import com.gurunars.item_list.Item
 import com.gurunars.item_list.SelectableItem
 import com.gurunars.item_list.SelectableItemListView
+import com.gurunars.knob_view.KnobView
 import com.gurunars.shortcuts.fullSize
 
 internal class ControllableItemListView<ItemType : Item>  constructor(
@@ -36,6 +37,11 @@ internal class ControllableItemListView<ItemType : Item>  constructor(
     private val contextualMenu: View
     private val floatingMenu: FloatMenu
     private val itemListView: SelectableItemListView<ItemType>
+    private val knobView: KnobView
+
+    private enum class ViewMode {
+        CONTEXTUAL, CREATION
+    }
 
     private val typeCache = mutableMapOf<Enum<*>, ItemTypeDescriptor<ItemType>>()
 
@@ -70,8 +76,6 @@ internal class ControllableItemListView<ItemType : Item>  constructor(
             id = R.id.rawItemList
         }
 
-        items = itemListView.items
-
         contextualMenu = contextualMenu(context,
             actionIcon,
             isLeftHanded,
@@ -82,6 +86,14 @@ internal class ControllableItemListView<ItemType : Item>  constructor(
         ).apply {
             fullSize()
             id = R.id.contextualMenu
+        }
+
+        knobView = KnobView(context, mapOf(
+            ViewMode.CONTEXTUAL to contextualMenu,
+            ViewMode.CREATION to creationMenu
+        )).apply {
+            fullSize()
+            id = R.id.knobMenu
         }
 
         floatingMenu = floatMenu {
@@ -98,14 +110,16 @@ internal class ControllableItemListView<ItemType : Item>  constructor(
                 isOpen.set(it.isNotEmpty())
             }
 
+            menuView.set(knobView)
+
             listOf(isOpen, itemListView.selectedItems).onChange {
                 if (!isOpen.get()) { return@onChange }
                 if (itemListView.selectedItems.get().isEmpty()) {
                     hasOverlay.set(true)
-                    menuView.set(creationMenu)
+                    knobView.selectedView.set(ViewMode.CREATION)
                 } else  {
                     hasOverlay.set(false)
-                    menuView.set(contextualMenu)
+                    knobView.selectedView.set(ViewMode.CONTEXTUAL)
                 }
             }
 
@@ -135,6 +149,7 @@ internal class ControllableItemListView<ItemType : Item>  constructor(
         }
 
         isOpen = floatingMenu.isOpen
+        items = itemListView.items
 
     }
 

@@ -13,4 +13,5 @@
     <item name="edit" type="id" />
     <item name="action" type="id" />
     <item name="knobView" type="id" />
+    <item name="knobMenu" type="id" />
 </resources>
