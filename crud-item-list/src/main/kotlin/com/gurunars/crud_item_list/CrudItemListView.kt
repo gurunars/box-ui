@@ -112,7 +112,9 @@ class CrudItemListView<ItemType: Item>(
                     }
                 }
             }
-        )
+        ).apply {
+            id=R.id.itemForm
+        }
 
         knobView = knobView(mapOf(
             ShownView.LIST to itemView,

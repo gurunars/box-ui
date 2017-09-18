@@ -29,11 +29,12 @@ internal fun<ItemType: Item> creationMenu (
     }
     groupedItemTypeDescriptors.forEach { group ->
         linearLayout {
+            isLeftHanded.onChange {
+                gravity=(if(it) Gravity.LEFT else Gravity.RIGHT)
+            }
             group.forEach { action ->
-                isLeftHanded.onChange {
-                    gravity=(if(it) Gravity.LEFT else Gravity.RIGHT)
-                }
                 iconView {
+                    tag=action.type.name
                     icon.set(action.icon)
                     setOnClickListener {
                         onEdit(action.newItemCreator())

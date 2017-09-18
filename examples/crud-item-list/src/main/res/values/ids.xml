@@ -6,4 +6,7 @@
     <item name="tiger" type="id" />
     <item name="wolf" type="id" />
     <item name="noItemsLabel" type="id" />
+    <item name="increment" type="id" />
+    <item name="cancel" type="id" />
+    <item name="save" type="id" />
 </resources>

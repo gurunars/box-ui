@@ -177,24 +177,6 @@ class ActivitySortableTest {
     }
 
     @Test
-    fun editingItem_shouldIncrementVersion() {
-        atIndex(3).perform(longClick())
-        rotate()
-        onView(withId(R.id.edit)).perform(click())
-        rotate()
-        validateSelection(3, "#3{WOLF @ 1}", true)
-    }
-
-    @Test
-    fun creatingItem_shouldIncrementItemListSize() {
-        onView(withId(R.id.openFab)).perform(click())
-        rotate()
-        onView(withId(R.id.lion)).perform(click())
-        rotate()
-        validateSelection(4, "#4{LION @ 0}", false)
-    }
-
-    @Test
     fun removingAllItems_shouldShowSpecialDefaultLayout() {
         atIndex(1).perform(longClick())
         rotate()
@@ -234,6 +216,29 @@ class ActivitySortableTest {
         onView(withId(R.id.reset)).perform(click())
         validateSelection(2, "#2{MONKEY @ 0}", true)
         validateSelection(3, "#3{WOLF @ 0}", false)
+    }
+
+    @Test
+    fun editingItem_shouldIncrementVersion() {
+        atIndex(3).perform(longClick())
+        rotate()
+        onView(withId(R.id.edit)).perform(click())
+        onView(withId(R.id.increment)).perform(click())
+        rotate()
+        onView(withId(R.id.save)).perform(click())
+        rotate()
+        validateSelection(3, "#3{WOLF @ 1}", false)
+    }
+
+    @Test
+    fun creatingItem_shouldIncrementItemListSize() {
+        onView(withId(R.id.openFab)).perform(click())
+        rotate()
+        onView(withTagValue(`is`("LION"))).perform(click())
+        onView(withId(R.id.increment)).perform(click())
+        rotate()
+        onView(withId(R.id.save)).perform(click())
+        validateSelection(4, "#4{LION @ 1}", false)
     }
 
     @Before

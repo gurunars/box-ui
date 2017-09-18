@@ -46,6 +46,7 @@ internal fun Context.bindAnimalForm(
             })
         }
         button {
+            id=R.id.increment
             text = getString(R.string.increment)
             setOnClickListener {
                 field.apply {
@@ -58,11 +59,13 @@ internal fun Context.bindAnimalForm(
     }
 
     button(R.string.cancel){
+        id=R.id.cancel
         setOnClickListener { closeHandler() }
     }.lparams {
         alignInParent(HorizontalAlignment.LEFT, VerticalAlignment.BOTTOM)
     }
     button(R.string.save){
+        id=R.id.save
         setOnClickListener { confirmationHandler() }
     }.lparams {
         alignInParent(HorizontalAlignment.RIGHT, VerticalAlignment.BOTTOM)
