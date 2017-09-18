@@ -21,7 +21,6 @@ fun<ItemType: Item> coloredRowSelectionDecorator(
 ) = {
     context: Context, itemType: Enum<*>, field: BindableField<SelectableItem<ItemType>> ->
     val newField = BindableField(field.get().item)
-    field.possess(newField)
     itemViewBinder(context, itemType, newField).apply {
         asRow()
         field.onChange {

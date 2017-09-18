@@ -16,8 +16,7 @@ import com.gurunars.crud_item_list.crudItemListView
 import com.gurunars.databinding.BindableField
 import com.gurunars.databinding.android.bind
 import com.gurunars.item_list.coloredRowSelectionDecorator
-import com.gurunars.shortcuts.color
-import com.gurunars.shortcuts.fullSize
+import com.gurunars.shortcuts.*
 import com.gurunars.storage.PersistentStorage
 import org.jetbrains.anko.*
 
@@ -31,27 +30,43 @@ internal fun bindAnimalItem(
 }
 
 internal fun Context.bindAnimalForm(
-    field: BindableField<AnimalItem>
-) = verticalLayout {
-    textView {
-        text=getString(R.string.newVersion)
-    }
-    textView {
-        bind(field, object: BindableField.ValueTransformer<AnimalItem, String> {
-            override fun forward(value: AnimalItem) = value.version.toString()
-            override fun backward(value: String) = field.get().copy(version=value.toInt())
-        })
-    }
-    button {
-        text=getString(R.string.increment)
-        setOnClickListener {
-            field.apply {
-                set(get().copy(version=get().version + 1))
+    field: BindableField<AnimalItem>,
+    closeHandler: () -> Unit,
+    confirmationHandler: () -> Unit
+) = relativeLayout {
+    verticalLayout {
+        fullSize()
+        textView {
+            text = getString(R.string.newVersion)
+        }
+        textView {
+            bind(field, object : BindableField.ValueTransformer<AnimalItem, String> {
+                override fun forward(value: AnimalItem) = value.version.toString()
+                override fun backward(value: String) = field.get().copy(version = value.toInt())
+            })
+        }
+        button {
+            text = getString(R.string.increment)
+            setOnClickListener {
+                field.apply {
+                    set(get().copy(version = get().version + 1))
+                }
             }
         }
+        gravity = Gravity.CENTER
+        backgroundColor = color(R.color.White)
     }
-    gravity=Gravity.CENTER
-    backgroundColor=color(R.color.White)
+
+    button(R.string.cancel){
+        setOnClickListener { closeHandler() }
+    }.lparams {
+        alignInParent(HorizontalAlignment.LEFT, VerticalAlignment.BOTTOM)
+    }
+    button(R.string.save){
+        setOnClickListener { confirmationHandler() }
+    }.lparams {
+        alignInParent(HorizontalAlignment.RIGHT, VerticalAlignment.BOTTOM)
+    }
 }
 
 class ActivityMain : Activity() {
