@@ -146,21 +146,35 @@ class BindableFieldTest {
 
     @Test
     @Throws(Exception::class)
-    fun nestedBindUnbind_shouldAffectNeighbourRelationsOnceTheyArePossessed() {
-        val masterField = BindableField(1)
-        val slaveField1 = BindableField(2)
-        val slaveField2 = BindableField(3)
+    fun pauseResume_shouldWorkAccordingly() {
+        val parent = BindableField(1)
+        val child = BindableField(2)
+        val grandChild = BindableField(3)
 
-        masterField.bind(slaveField1)
-        masterField.possess(slaveField1)
-        slaveField1.bind(slaveField2)
+        parent.bind(child)
+        child.bind(grandChild)
 
-        masterField.unbindAll()
+        fun validate(one: Int, two: Int, three: Int) {
+            assertEquals(one, parent.get())
+            assertEquals(two, child.get())
+            assertEquals(three, grandChild.get())
+        }
 
-        slaveField2.set(2)
+        validate(1, 1, 1)
 
-        assertEquals(1, masterField.get())
-        assertEquals(1, slaveField1.get())
+        parent.pause()
+        child.set(2)
+
+        validate(1, 2, 2)
+
+        parent.resume()
+
+        validate(1, 2, 2)
+
+        child.set(3)
+
+        validate(3, 3, 3)
+
     }
 
 }

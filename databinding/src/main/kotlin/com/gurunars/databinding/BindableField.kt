@@ -1,7 +1,5 @@
 package com.gurunars.databinding
 
-import android.util.Log
-
 
 /**
  * An observable field capable to emit changes and listen to change events
@@ -15,6 +13,8 @@ class BindableField<Type>(
     private var value: Type,
     private val preset: (one: Type) -> Type = { item -> item }
 ) : Unbindable {
+
+    private var isActive = true
 
     /**
      * Helper interface to ease field to field binding if the fields happen to have different value
@@ -46,10 +46,6 @@ class BindableField<Type>(
         fun unbind()
     }
 
-    private class Possession(private val target: BindableField<*>): Binding {
-        override fun unbind() = target.unbindAll()
-    }
-
     private val listeners: MutableList<(value: Type) -> Unit> = mutableListOf()
     private val beforeChangeListeners: MutableList<(value: Type) -> Unit> = mutableListOf()
     private val bindings: MutableList<Binding> = mutableListOf()
@@ -71,7 +67,9 @@ class BindableField<Type>(
             }
         }
         bindings.add(binding)
-        listener(this.value)
+        if(isActive) {
+            listener(this.value)
+        }
         return binding
     }
 
@@ -83,7 +81,7 @@ class BindableField<Type>(
      * @param force if true - the change is made even if current and new values are the same
      */
     fun set(value: Type, force:Boolean=false) {
-        if (force || ! equal(this.value, value)) {
+        if (isActive && (force || ! equal(this.value, value))) {
             beforeChangeListeners.forEach { it(this.value) }
             this.value = preset(value)
             listeners.forEach { it(this.value) }
@@ -141,18 +139,26 @@ class BindableField<Type>(
     )
 
     /**
-     * Add a target field to the lifecycle of this one. Once this field is disposed all child
-     * fields are disposed as well.
-     */
-    fun possess(target: BindableField<*>) = bindings.add(Possession(target))
-
-    /**
-     * Dispose all bindings and listener
+     * Dispose all bindings and listener.
      */
     override fun unbindAll() {
         bindings.toList().forEach { it.unbind() }
         listeners.clear()
         beforeChangeListeners.clear()
+    }
+
+    /**
+     * Start responding to changes.
+     */
+    fun resume() {
+        isActive = true
+    }
+
+    /**
+     * Stop responding to changes.
+     */
+    fun pause() {
+        isActive = false
     }
 
 }
