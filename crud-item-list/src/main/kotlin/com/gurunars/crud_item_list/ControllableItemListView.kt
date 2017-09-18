@@ -130,7 +130,7 @@ internal class ControllableItemListView<ItemType : Item>  constructor(
                 ))
             }
 
-            listOf(contextualCloseIcon, createCloseIcon, itemListView.selectedItems).onChange {
+            fun confCloseIcon() =
                 if (itemListView.selectedItems.get().isEmpty()) {
                     closeIcon.set(IconView.Icon(
                         icon = R.drawable.ic_menu_close,
@@ -143,6 +143,15 @@ internal class ControllableItemListView<ItemType : Item>  constructor(
                         bgColor = contextualCloseIcon.get().bgColor,
                         fgColor = contextualCloseIcon.get().fgColor
                     ))
+                }
+
+            listOf(contextualCloseIcon, createCloseIcon).onChange {
+                confCloseIcon()
+            }
+
+            isOpen.onChange {
+                if(it) {
+                    confCloseIcon()
                 }
             }
 
