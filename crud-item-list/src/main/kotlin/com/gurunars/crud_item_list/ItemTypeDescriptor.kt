@@ -21,28 +21,27 @@ typealias ItemFormBinder<ItemType> =
         confirmationHandler: () -> Unit
     ) -> View
 
+/**
+ * Function that is supposed to return a newly created item of a specific type without saving it.
+ */
 typealias NewItemCreator<ItemType> =
     () -> ItemType
 
+/**
+ * Aggregation of attributes describing a specific item type in the context of showing the item
+ * list and editing individual items.
+ *
+ * @property icon Item icon for the creation menu.
+ * @property type Type of the item the descriptor to be associated to.
+ * @property rowBinder Item's renderer for a list row.
+ * @property formBinder Item's renderer for an editable form view.
+ * @property newItemCreator
+ *
+ */
 data class ItemTypeDescriptor<ItemType: Item>(
-    /**
-     * Item icon for the creation menu.
-     */
     val icon: IconView.Icon,
-    /**
-     * Type of the item the descriptor to be associated to.
-     */
     val type: Enum<*>,
-    /**
-     * Item's renderer for a list row.
-     */
     val rowBinder: SelectableItemViewBinder<ItemType>,
-    /**
-     * Item's renderer for an editable form view.
-     */
     val formBinder: ItemFormBinder<ItemType>,
-    /**
-     * Function that is supposed to return a newly created item of a specific type without saving it.
-     */
     val newItemCreator: NewItemCreator<ItemType>
 )
