@@ -52,6 +52,7 @@ fun<From> TextView.bind(
     })
 }
 
+//TODO: TextView.bind
 
 /**
  * @see TextView.bind

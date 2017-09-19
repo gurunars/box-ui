@@ -7,7 +7,7 @@ PROJECT_NAME=android-crud-ui
 
 TMP=/tmp/pages.${PROJECT_NAME}
 
-./gradlew --rerun-tasks test connectedAndroidTest dokka bintrayUpload
+./gradlew --rerun-tasks dokka bintrayUpload
 
 git push origin master --tags
 

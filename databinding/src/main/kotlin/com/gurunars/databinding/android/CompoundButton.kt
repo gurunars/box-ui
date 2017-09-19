@@ -24,6 +24,8 @@ fun<From> CompoundButton.bind(
     setOnCheckedChangeListener { _, isChecked -> field.set(valueTransformer.backward(isChecked)) }
 }
 
+//TODO: CompoundButton.bind
+
 /**
  * @see CompoundButton.bind
  */

@@ -7,12 +7,10 @@ import java.io.Serializable
  */
 interface Item: Serializable {
 
-    enum class Default {
-        /**
-         * Default type for the cases when the list contains a set of homogeneous items.
-         */
-        ONLY
-    }
+    /**
+     * Default type for the cases when the list contains a set of homogeneous items.
+     */
+    enum class Default { ONLY }
 
     /**
      * Item unique identifier.
