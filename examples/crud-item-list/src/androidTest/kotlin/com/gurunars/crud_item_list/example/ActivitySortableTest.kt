@@ -48,7 +48,11 @@ class ActivitySortableTest {
     }
 
     private fun validateDoesNotExist(id: Int) {
-        onView(withId(id)).check(doesNotExist())
+        onView(withId(id)).check(matches(withEffectiveVisibility(Visibility.GONE)))
+    }
+
+    private fun validateExists(id: Int) {
+        onView(withId(id)).check(matches(withEffectiveVisibility(Visibility.VISIBLE)))
     }
 
     private fun atIndex(id: Int): ViewInteraction {
@@ -62,13 +66,10 @@ class ActivitySortableTest {
 
     @Test
     fun selectingOne_shouldOpenContextualMenu() {
-        validateDoesNotExist(R.id.moveUp)
-        validateDoesNotExist(R.id.moveDown)
-        validateDoesNotExist(R.id.edit)
-        validateDoesNotExist(R.id.delete)
-        validateDoesNotExist(R.id.selectAll)
+        validateDoesNotExist(R.id.menuPane)
         atIndex(1).perform(longClick())
         rotate()
+        validateExists(R.id.menuPane)
         validateEnabled(R.id.moveUp)
         validateEnabled(R.id.moveDown)
         validateEnabled(R.id.edit)
@@ -78,28 +79,26 @@ class ActivitySortableTest {
 
     @Test
     fun deselectingLast_shouldCloseContextualMenu() {
+        validateDoesNotExist(R.id.menuPane)
         atIndex(0).perform(longClick())
+        validateExists(R.id.menuPane)
         rotate()
+        validateExists(R.id.menuPane)
         atIndex(0).perform(click())
         rotate()
-        validateDoesNotExist(R.id.moveUp)
-        validateDoesNotExist(R.id.moveDown)
-        validateDoesNotExist(R.id.edit)
-        validateDoesNotExist(R.id.delete)
-        validateDoesNotExist(R.id.selectAll)
+        validateDoesNotExist(R.id.menuPane)
     }
 
     @Test
     fun clickingCross_shouldCloseContextualMenu() {
+        validateDoesNotExist(R.id.menuPane)
         atIndex(0).perform(longClick())
+        validateExists(R.id.menuPane)
         rotate()
+        validateExists(R.id.menuPane)
         onView(withId(R.id.openFab)).perform(click())
         rotate()
-        validateDoesNotExist(R.id.moveUp)
-        validateDoesNotExist(R.id.moveDown)
-        validateDoesNotExist(R.id.edit)
-        validateDoesNotExist(R.id.delete)
-        validateDoesNotExist(R.id.selectAll)
+        validateDoesNotExist(R.id.menuPane)
     }
 
     @Test
