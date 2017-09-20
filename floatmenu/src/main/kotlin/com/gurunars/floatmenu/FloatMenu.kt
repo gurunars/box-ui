@@ -16,6 +16,11 @@ import org.jetbrains.anko.*
  * Floating menu available via a
  * [FAB](https://material.google.com/components/buttons-floating-action-button.html)
  *
+ * @param contentView View shown in the background layer of the widget. Semantically it
+ * represents the data manipulated by the menu.
+ * @param menuView View shown in the foreground layer of the widget when the menu is open.
+ * Is supposed to contain menu's controls.
+ *
  * @property isLeftHanded If **true** - is on the left side of the screen. On the right side
  * otherwise.
  * @property animationDuration Time it takes to perform all the animated UI transitions.
@@ -27,33 +32,31 @@ import org.jetbrains.anko.*
  * @property hasOverlay If **true** the menu has a shaded background that intercepts clicks.
  * If **false** - the menu does not intercept clicks and passes them to the content area.
  * The flag does not affect clickable elements that are located inside the menu though.
- * @property contentView View shown in the background layer of the widget. Semantically it
- * represents the data manipulated by the menu.
- * @property menuView View shown in the foreground layer of the widget when the menu is open.
- * Is supposed to contain menu's controls.
  */
-class FloatMenu constructor(context: Context) : FrameLayout(context) {
+class FloatMenu constructor(
+    context: Context,
+    contentView: View,
+    menuView: View
+) : FrameLayout(context) {
     val isLeftHanded = bindableField(false)
     val animationDuration = bindableField(400)
     val isOpen = bindableField(false)
     val openIcon = bindableField(IconView.Icon(icon = R.drawable.ic_menu))
     val closeIcon = bindableField(IconView.Icon(icon = R.drawable.ic_menu_close))
     val hasOverlay = bindableField(true)
-    val contentView = bindableField(View(context))
-    val menuView = bindableField(View(context))
 
     init {
         relativeLayout {
             fullSize()
             frameLayout {
                 id=R.id.contentPane
-                contentView.onChange { setOneView(it) }
+                setOneView(contentView)
             }.fullSize()
             menuPane(hasOverlay, isOpen, animationDuration) {
                 id=R.id.menuPane
                 isClickable=true
                 visibility=View.GONE
-                menuView.onChange { setOneView(it) }
+                setOneView(menuView)
             }.fullSize()
             fab(animationDuration, openIcon, closeIcon, isOpen) {
                 id=R.id.openFab

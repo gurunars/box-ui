@@ -18,7 +18,7 @@ import com.gurunars.shortcuts.fullSize
 
 internal class ControllableItemListView<ItemType : Item>  constructor(
     context: Context,
-    emptyViewBinder: EmptyViewBinder = ::defaultEmptyViewBinder,
+    emptyViewBinder: EmptyViewBinder = Context::defaultEmptyViewBinder,
     groupedItemTypeDescriptors: List<List<ItemTypeDescriptor<ItemType>>>,
     onEdit: (item: ItemType) -> Unit
 ) : FrameLayout(context) {
@@ -96,10 +96,9 @@ internal class ControllableItemListView<ItemType : Item>  constructor(
             id = R.id.knobMenu
         }
 
-        floatingMenu = floatMenu {
+        floatingMenu = floatMenu(itemListView, knobView) {
             fullSize()
             id = R.id.floatingMenu
-            contentView.set(itemListView)
             this@ControllableItemListView.isLeftHanded.bind(isLeftHanded)
 
             isOpen.onChange {
@@ -109,8 +108,6 @@ internal class ControllableItemListView<ItemType : Item>  constructor(
             itemListView.selectedItems.onChange {
                 isOpen.set(it.isNotEmpty())
             }
-
-            menuView.set(knobView)
 
             listOf(isOpen, itemListView.selectedItems).onChange {
                 if (!isOpen.get()) { return@onChange }

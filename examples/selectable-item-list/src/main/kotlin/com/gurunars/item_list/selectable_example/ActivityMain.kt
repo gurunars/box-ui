@@ -2,7 +2,6 @@ package com.gurunars.item_list.selectable_example
 
 import android.app.Activity
 import android.content.Context
-import android.graphics.Color
 import android.os.Bundle
 import android.support.annotation.StringRes
 import android.view.Menu
@@ -11,11 +10,9 @@ import android.widget.TextView
 import android.widget.Toast
 import com.gurunars.animal_item.AnimalItem
 import com.gurunars.databinding.BindableField
-import com.gurunars.item_list.SelectableItem
 import com.gurunars.item_list.SelectableItemListView
 import com.gurunars.item_list.coloredRowSelectionDecorator
 import com.gurunars.item_list.selectableItemListView
-import com.gurunars.shortcuts.asRow
 import com.gurunars.shortcuts.fullSize
 import com.gurunars.storage.PersistentStorage
 import org.jetbrains.anko.dip
@@ -23,11 +20,10 @@ import org.jetbrains.anko.padding
 import java.util.*
 
 
-internal fun bindAnimalItem(
-        context: Context,
+internal fun Context.bindAnimalItem(
         itemType: Enum<*>,
         payload: BindableField<AnimalItem>
-) = TextView(context).apply {
+) = TextView(this).apply {
     padding = context.dip(5)
     payload.onChange { text = it.toString() }
 }
@@ -50,7 +46,7 @@ class ActivityMain : Activity() {
         super.onCreate(savedInstanceState)
         storage.load()
 
-        itemListView = selectableItemListView(coloredRowSelectionDecorator(::bindAnimalItem)) {
+        itemListView = selectableItemListView(coloredRowSelectionDecorator(Context::bindAnimalItem)) {
             fullSize()
             id=R.id.selectableItemList
             this@ActivityMain.items.bind(items)

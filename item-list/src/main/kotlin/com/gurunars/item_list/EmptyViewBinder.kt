@@ -9,12 +9,11 @@ import com.gurunars.shortcuts.fullSize
 /**
  * View binder for the case when there are no item in the list.
  */
-typealias EmptyViewBinder = (context: Context) -> View
+typealias EmptyViewBinder = Context.() -> View
 
-internal fun defaultEmptyViewBinder(context: Context): View {
-    return TextView(context).apply {
+internal fun Context.defaultEmptyViewBinder() =
+    TextView(this).apply {
         fullSize()
-        setText(R.string.empty)
+        text = getString(R.string.empty)
         gravity = Gravity.CENTER
     }
-}

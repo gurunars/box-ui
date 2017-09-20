@@ -1,6 +1,7 @@
 package com.gurunars.crud_item_list
 
 import android.app.Activity
+import android.content.Context
 import android.view.ViewManager
 import com.gurunars.item_list.EmptyViewBinder
 import com.gurunars.item_list.Item
@@ -12,7 +13,7 @@ import org.jetbrains.anko.custom.ankoView
  * @see CrudItemListView
  */
 fun <ItemT: Item> ViewManager.crudItemListView(
-    emptyViewBinder: EmptyViewBinder = ::defaultEmptyViewBinder,
+    emptyViewBinder: EmptyViewBinder = Context::defaultEmptyViewBinder,
     groupedItemTypeDescriptors: List<List<ItemTypeDescriptor<ItemT>>>,
     init: CrudItemListView<ItemT>.() -> Unit = {}
 ) = ankoView({
@@ -27,7 +28,7 @@ fun <ItemT: Item> ViewManager.crudItemListView(
  * @see CrudItemListView
  */
 fun <ItemT: Item> Activity.crudItemListView(
-    emptyViewBinder: EmptyViewBinder = ::defaultEmptyViewBinder,
+    emptyViewBinder: EmptyViewBinder = Context::defaultEmptyViewBinder,
     groupedItemTypeDescriptors: List<List<ItemTypeDescriptor<ItemT>>>,
     init: CrudItemListView<ItemT>.() -> Unit = {}
 ) = ankoView({

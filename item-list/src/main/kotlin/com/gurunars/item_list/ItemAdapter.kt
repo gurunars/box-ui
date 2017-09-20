@@ -11,15 +11,12 @@ import com.gurunars.shortcuts.asRow
 import com.gurunars.shortcuts.fullSize
 import org.objenesis.strategy.StdInstantiatorStrategy
 
-
 /**
- * @param context Android context
  * @param itemType type of the item for which the view is supposed to be created
  * @param field field representing item's payload
  * @return a view bound to a field holding the item
  */
-typealias ItemViewBinder<ItemType> = (
-    context: Context,
+typealias ItemViewBinder<ItemType> = Context.(
     itemType: Enum<*>,
     field: BindableField<ItemType>
 ) -> View

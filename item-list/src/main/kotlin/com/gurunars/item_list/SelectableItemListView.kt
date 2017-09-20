@@ -32,7 +32,7 @@ import kotlin.collections.HashSet
 class SelectableItemListView<ItemType : Item> constructor(
     context: Context,
     itemViewBinder: SelectableItemViewBinder<ItemType>,
-    emptyViewBinder: EmptyViewBinder = ::defaultEmptyViewBinder
+    emptyViewBinder: EmptyViewBinder = Context::defaultEmptyViewBinder
 ) : FrameLayout(context) {
 
     private val kryo = Kryo().apply {

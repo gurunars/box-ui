@@ -31,9 +31,86 @@ class ActivityMain : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        floatingMenu=floatMenu {
+        val isOpenT = BindableField(false)
+
+        val menuView = UI(false) {
+            scrollView {
+                fullSize()
+                verticalLayout {
+                    gravity=Gravity.CENTER_HORIZONTAL
+                    button {
+                        id=R.id.button
+                        setOnClickListener { notification.set("Menu Button Clicked") }
+                        text=getString(R.string.click_me)
+                        padding=dip(10)
+                    }.lparams {
+                        topMargin=dip(50)
+                    }
+                    frameLayout {
+                        id=R.id.buttonFrame
+                        setOnClickListener { notification.set("Menu Button Frame Clicked") }
+                        isClickable=true
+                        backgroundColor=color(R.color.AliceBlue)
+                        padding=dip(30)
+                    }.lparams {
+                        topMargin=dip(10)
+                    }
+                }.asRow()
+            }
+        }.view
+
+        val contentView = UI(false) {
+            relativeLayout {
+                fullSize()
+
+                textView {
+                    id=R.id.notificationView
+                    padding=dip(15)
+                    gravity=Gravity.CENTER
+                    backgroundColor=Color.parseColor("#FFFFAA")
+
+                    notification.onChange {
+                        text=it
+                    }
+
+                    setOnLongClickListener {
+                        text=""
+                        true
+                    }
+
+                }.lparams {
+                    asRow()
+                    centerHorizontally()
+                    alignParentTop()
+                }
+
+                textView {
+                    id=R.id.textView
+                    text=getString(R.string.appName)
+                    isClickable=true
+                    setOnClickListener { notification.set("Content Text Clicked") }
+                }.lparams {
+                    bottomMargin=dip(50)
+                    centerHorizontally()
+                    centerVertically()
+                }
+
+                textView {
+                    isOpenT.onChange { setText(if (it) R.string.menuOpen else R.string.menuClosed) }
+                    isClickable=true
+                }.lparams {
+                    below(R.id.textView)
+                    centerHorizontally()
+                    centerVertically()
+                }
+            }
+        }.view
+
+        floatingMenu=floatMenu(contentView, menuView) {
             fullSize()
             id=R.id.floatingMenu
+
+            isOpen.bind(isOpenT)
 
             closeIcon.set(IconView.Icon(
                 bgColor = color(R.color.White),
@@ -51,79 +128,6 @@ class ActivityMain : Activity() {
 
             this@ActivityMain.hasOverlay.bind(hasOverlay)
             this@ActivityMain.isLeftHanded.bind(isLeftHanded)
-
-            contentView.set(UI(false) {
-                relativeLayout {
-                    fullSize()
-
-                    textView {
-                        id=R.id.notificationView
-                        padding=dip(15)
-                        gravity=Gravity.CENTER
-                        backgroundColor=Color.parseColor("#FFFFAA")
-
-                        notification.onChange {
-                            text=it
-                        }
-
-                        setOnLongClickListener {
-                            text=""
-                            true
-                        }
-
-                    }.lparams {
-                        asRow()
-                        centerHorizontally()
-                        alignParentTop()
-                    }
-
-                    textView {
-                        id=R.id.textView
-                        text=getString(R.string.appName)
-                        isClickable=true
-                        setOnClickListener { notification.set("Content Text Clicked") }
-                    }.lparams {
-                        bottomMargin=dip(50)
-                        centerHorizontally()
-                        centerVertically()
-                    }
-
-                    textView {
-                        isOpen.onChange { setText(if (it) R.string.menuOpen else R.string.menuClosed) }
-                        isClickable=true
-                    }.lparams {
-                        below(R.id.textView)
-                        centerHorizontally()
-                        centerVertically()
-                    }
-                }
-            }.view)
-
-            menuView.set(UI(false) {
-                scrollView {
-                    fullSize()
-                    verticalLayout {
-                        gravity=Gravity.CENTER_HORIZONTAL
-                        button {
-                            id=R.id.button
-                            setOnClickListener { notification.set("Menu Button Clicked") }
-                            text=getString(R.string.click_me)
-                            padding=dip(10)
-                        }.lparams {
-                            topMargin=dip(50)
-                        }
-                        frameLayout {
-                            id=R.id.buttonFrame
-                            setOnClickListener { notification.set("Menu Button Frame Clicked") }
-                            isClickable=true
-                            backgroundColor=color(R.color.AliceBlue)
-                            padding=dip(30)
-                        }.lparams {
-                            topMargin=dip(10)
-                        }
-                    }.asRow()
-                }
-            }.view)
         }
 
         storage.load()

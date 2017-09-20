@@ -8,10 +8,9 @@ import com.gurunars.item_list.R
 import com.gurunars.shortcuts.fullSize
 
 
-internal fun defaultEmptyViewBinder(context: Context): View {
-    return TextView(context).apply {
+internal fun Context.defaultEmptyViewBinder() =
+    TextView(this).apply {
         fullSize()
-        setText(R.string.empty)
+        text=getString(R.string.empty)
         gravity = Gravity.CENTER
     }
-}

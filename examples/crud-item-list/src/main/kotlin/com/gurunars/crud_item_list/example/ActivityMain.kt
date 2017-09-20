@@ -20,11 +20,10 @@ import com.gurunars.shortcuts.*
 import com.gurunars.storage.PersistentStorage
 import org.jetbrains.anko.*
 
-internal fun bindAnimalItem(
-    context: Context,
+internal fun Context.bindAnimalItem(
     itemType: Enum<*>,
     payload: BindableField<AnimalItem>
-) = TextView(context).apply {
+) = TextView(this).apply {
     padding = context.dip(5)
     payload.onChange { text = it.toString() }
 }
@@ -121,14 +120,14 @@ class ActivityMain : Activity() {
             ItemTypeDescriptor(
                 icon = IconView.Icon(icon = icon),
                 type = type,
-                rowBinder = coloredRowSelectionDecorator(::bindAnimalItem),
+                rowBinder = coloredRowSelectionDecorator(Context::bindAnimalItem),
                 formBinder = Context::bindAnimalForm,
                 newItemCreator = { AnimalItem(id=(count.get() + 1).toLong(), version= 0, type = type) }
             )
 
         crudItemListView = crudItemListView(
             {
-                TextView(it).apply {
+                TextView(this@crudItemListView).apply {
                     id=R.id.noItemsLabel
                     fullSize()
                     setText(R.string.noItemsAtAll)

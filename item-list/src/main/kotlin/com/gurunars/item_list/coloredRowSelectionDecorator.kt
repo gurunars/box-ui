@@ -1,9 +1,7 @@
 package com.gurunars.item_list
 
-import android.content.Context
 import android.graphics.Color
 import android.support.annotation.ColorInt
-import android.view.View
 import com.gurunars.databinding.BindableField
 import com.gurunars.shortcuts.asRow
 
@@ -18,10 +16,12 @@ fun<ItemType: Item> coloredRowSelectionDecorator(
     itemViewBinder: ItemViewBinder<ItemType>,
     @ColorInt selectionColor: Int=Color.RED,
     @ColorInt regularColor: Int=Color.TRANSPARENT
-) = {
-    context: Context, itemType: Enum<*>, field: BindableField<SelectableItem<ItemType>> ->
+): ItemViewBinder<SelectableItem<ItemType>> = {
+    itemType: Enum<*>,
+    field: BindableField<SelectableItem<ItemType>>
+->
     val newField = BindableField(field.get().item)
-    itemViewBinder(context, itemType, newField).apply {
+    itemViewBinder(itemType, newField).apply {
         asRow()
         field.onChange {
             setTag(R.id.isSelected, it.isSelected)

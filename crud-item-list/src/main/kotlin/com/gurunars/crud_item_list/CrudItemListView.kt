@@ -35,7 +35,7 @@ import com.gurunars.shortcuts.fullSize
  */
 class CrudItemListView<ItemType: Item>(
     context: Context,
-    emptyViewBinder: EmptyViewBinder = ::defaultEmptyViewBinder,
+    emptyViewBinder: EmptyViewBinder = Context::defaultEmptyViewBinder,
     groupedItemTypeDescriptors: List<List<ItemTypeDescriptor<ItemType>>>
 ): FrameLayout(context) {
 

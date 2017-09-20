@@ -18,11 +18,10 @@ import com.gurunars.storage.PersistentStorage
 import org.jetbrains.anko.dip
 import org.jetbrains.anko.padding
 
-internal fun bindAnimalItem(
-    context: Context,
+internal fun Context.bindAnimalItem(
     itemType: Enum<*>,
     payload: BindableField<AnimalItem>
-) = TextView(context).apply {
+) = TextView(this).apply {
     asRow()
     padding = context.dip(5)
     payload.onChange { text = it.toString() }
@@ -45,7 +44,7 @@ class ActivityMain : Activity() {
         super.onCreate(savedInstanceState)
         storage.load()
 
-        itemListView = itemListView(::bindAnimalItem) {
+        itemListView = itemListView(Context::bindAnimalItem) {
             fullSize()
             id=R.id.itemList
             this@ActivityMain.items.bind(items)
