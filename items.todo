@@ -1,4 +1,3 @@
 + row renderer must be Context.renderRow not renderRow(ctx: Context, ...)
 - add a simple decorator for a form with circular buttons and customizable icon colors for
   those
-- for databinding add a field mutator value transformer of a view fieldMutator(fieldName: String)
