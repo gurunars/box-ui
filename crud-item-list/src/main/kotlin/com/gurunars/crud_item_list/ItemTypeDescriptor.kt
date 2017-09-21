@@ -11,14 +11,11 @@ import com.gurunars.item_list.SelectableItemViewBinder
  * Function that needs to return a form
  *
  * @param field - observable of the payload to be edited in the form
- * @param closeHandler - function to be called when the form needs to be closed
- * @param confirmationHandler - function to be called when the payload needs to be saved
+ *
  */
 typealias ItemFormBinder<ItemType> =
     Context.(
-        field: BindableField<ItemType>,
-        closeHandler: () -> Unit,
-        confirmationHandler: () -> Unit
+        field: BindableField<ItemType>
     ) -> View
 
 /**
@@ -26,6 +23,12 @@ typealias ItemFormBinder<ItemType> =
  */
 typealias NewItemCreator<ItemType> =
     () -> ItemType
+
+/**
+ * Function saying if the item can be saved or not.
+ */
+typealias CanSave<ItemType> =
+    (item: ItemType) -> Boolean
 
 /**
  * Aggregation of attributes describing a specific item type in the context of showing the item
@@ -36,6 +39,7 @@ typealias NewItemCreator<ItemType> =
  * @property rowBinder Item's renderer for a list row.
  * @property formBinder Item's renderer for an editable form view.
  * @property newItemCreator
+ * @property canSave
  *
  */
 data class ItemTypeDescriptor<ItemType: Item>(
@@ -43,5 +47,6 @@ data class ItemTypeDescriptor<ItemType: Item>(
     val type: Enum<*>,
     val rowBinder: SelectableItemViewBinder<ItemType>,
     val formBinder: ItemFormBinder<ItemType>,
-    val newItemCreator: NewItemCreator<ItemType>
+    val newItemCreator: NewItemCreator<ItemType>,
+    val canSave: CanSave<ItemType>
 )

@@ -1,62 +1,70 @@
 package com.gurunars.crud_item_list
 
 import android.content.Context
-import android.os.Bundle
-import android.os.Parcelable
 import android.widget.FrameLayout
+import android.widget.RelativeLayout
+import com.gurunars.android_utils.IconView
 import com.gurunars.databinding.BindableField
 import com.gurunars.databinding.android.bindableField
 import com.gurunars.item_list.Item
-import com.gurunars.shortcuts.setOneView
+import com.gurunars.shortcuts.HorizontalAlignment
+import com.gurunars.shortcuts.VerticalAlignment
+import com.gurunars.shortcuts.alignInParent
+import org.jetbrains.anko.dip
+import org.jetbrains.anko.margin
 
 internal class ItemForm<ItemType: Item>(
     context: Context,
-    private val onClose: () -> Unit,
-    private val onConfirm: (item: ItemType) -> Unit
-): FrameLayout(context) {
-    var itemInEdit: BindableField<ItemType>? = null
-
-    fun close() {
-        onClose()
-        itemInEdit?.unbindAll()
-    }
-
-    fun confirm() {
-        val field = itemInEdit
-        if (field != null) {
-            onConfirm(field.get())
-        }
-        close()
-    }
+    private val itemInEdit: BindableField<ItemType?>,
+    private val confirmationHandler: () -> Unit,
+    private val canSave: (item: ItemType) -> Boolean,
+    private val confirmIconColors: BindableField<IconColorBundle>
+): RelativeLayout(context) {
 
     fun bind(
         item: ItemType,
         formBinder: ItemFormBinder<ItemType>
     ) {
         val field = bindableField(item)
-        itemInEdit = field
-        setOneView(formBinder(context, field, this::close, this::confirm))
-    }
+        field.onChange { itemInEdit.set(it) }
+        removeAllViews()
 
-    /**
-     * @suppress
-     */
-    override fun onSaveInstanceState() = Bundle().apply {
-        putParcelable("superState", super.onSaveInstanceState())
-        putSerializable("itemInEdit", itemInEdit?.get())
-    }
-
-    /**
-     * @suppress
-     */
-    override fun onRestoreInstanceState(state: Parcelable) {
-        (state as Bundle).apply {
-            super.onRestoreInstanceState(getParcelable<Parcelable>("superState"))
-            val payload = getSerializable("itemInEdit")
-            if (payload != null) {
-                itemInEdit?.set(payload as ItemType)
+        addView(
+            formBinder(context, field).apply {
+                layoutParams = RelativeLayout.LayoutParams(
+                    LayoutParams.MATCH_PARENT,
+                    LayoutParams.MATCH_PARENT
+                ).apply {
+                    leftMargin = dip(12)
+                    rightMargin = dip(12)
+                    topMargin = dip(12)
+                    bottomMargin = dip(90)
+                }
             }
-        }
+        )
+
+        addView(IconView(context).apply {
+            confirmIconColors.onChange {
+                icon.set(
+                    IconView.Icon(
+                        bgColor = it.bgColor,
+                        fgColor = it.fgColor,
+                        icon = R.drawable.ic_check
+                    )
+                )
+            }
+            id=R.id.save
+            field.onChange { enabled.set(canSave(it)) }
+            setOnClickListener { confirmationHandler() }
+            layoutParams = RelativeLayout.LayoutParams(
+                context.dip(60),
+                context.dip(60)
+            ).apply {
+                margin=dip(16)
+                alignInParent(HorizontalAlignment.LEFT, VerticalAlignment.BOTTOM)
+            }
+        })
+
     }
 
 }

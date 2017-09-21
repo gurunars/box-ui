@@ -1,29 +1,26 @@
 package com.gurunars.crud_item_list.example
 
 import android.content.pm.ActivityInfo
+import android.support.test.InstrumentationRegistry.getInstrumentation
+import android.support.test.espresso.Espresso.onView
+import android.support.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu
 import android.support.test.espresso.ViewInteraction
+import android.support.test.espresso.action.ViewActions.click
+import android.support.test.espresso.action.ViewActions.longClick
+import android.support.test.espresso.assertion.ViewAssertions.matches
+import android.support.test.espresso.matcher.ViewMatchers.*
 import android.support.test.filters.LargeTest
 import android.support.test.rule.ActivityTestRule
 import android.support.test.runner.AndroidJUnit4
-
+import android.view.View
+import com.gurunars.test_utils.Helpers.nthChildOf
+import org.hamcrest.core.Is.`is`
+import org.hamcrest.core.IsNot.not
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-
-import android.support.test.InstrumentationRegistry.getInstrumentation
-import android.support.test.espresso.Espresso.onView
-import android.support.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu
-import android.support.test.espresso.action.ViewActions.click
-import android.support.test.espresso.action.ViewActions.longClick
-import android.support.test.espresso.assertion.ViewAssertions.doesNotExist
-import android.support.test.espresso.assertion.ViewAssertions.matches
-import android.support.test.espresso.matcher.ViewMatchers.*
-import android.view.View
-import com.gurunars.test_utils.Helpers.nthChildOf
-import org.hamcrest.core.Is.`is`
-import org.hamcrest.core.IsNot.not
 
 @RunWith(AndroidJUnit4::class)
 @LargeTest
