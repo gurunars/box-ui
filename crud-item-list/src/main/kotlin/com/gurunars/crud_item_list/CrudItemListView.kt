@@ -18,6 +18,29 @@ import com.gurunars.item_list.SelectableItemListView
 import com.gurunars.knob_view.KnobView
 import com.gurunars.shortcuts.fullSize
 
+/**
+ * Widget to be used for manipulating a collection of items with a dedicated set of UI controls.
+ *
+ * @param ItemType type of the item to be shown in the list
+ * @param context Android context
+ * @param emptyViewBinder a function returning a view to be shown when the list is empty
+ * @param groupedItemTypeDescriptors a collection of item type descriptors
+ *
+ * @property listActionColors Color of the icons meant to manipulate the collection of items in the
+ * contextual menu.
+ * @property confirmationActionColors Check mark icon color settings. The icon is shown when contextual
+ * menu is opened. Clicking the icon closes contextual menu.
+ * @property cancelActionColors Cross icon color settings. The icon is shown when creation menu is
+ * opened. Clicking the icon closes the menu.
+ * @property openIcon Plus icon color settings.The icon is shown when the menu is closed. Clicking
+ * the icon opens the creation menu
+ * @property isLeftHanded If true all action buttons are show on the left side of the screen. They
+ * are shown on the right side of the screen otherwise.
+ * @property isSortable If false move up and move down buttons are hidden.
+ * @property items A collection of items shown and manipulated by the view.
+ * @property isOpen A flag specifying if the menu is open or closed. Be it a creation or contextual
+ * one.
+ */
 class CrudItemListView<ItemType : Item>  constructor(
     context: Context,
     emptyViewBinder: EmptyViewBinder = Context::defaultEmptyViewBinder,
@@ -34,9 +57,9 @@ class CrudItemListView<ItemType : Item>  constructor(
         }
     }
 
-    val actionIcon = bindableField(IconColorBundle())
-    val contextualCloseIcon = bindableField(IconColorBundle())
-    val createCloseIcon = bindableField(IconColorBundle())
+    val listActionColors = bindableField(IconColorBundle())
+    val confirmationActionColors = bindableField(IconColorBundle())
+    val cancelActionColors = bindableField(IconColorBundle())
     val openIcon = bindableField(IconColorBundle())
     val isSortable = bindableField(true)
 
@@ -84,7 +107,7 @@ class CrudItemListView<ItemType : Item>  constructor(
         }
 
         contextualMenu = contextualMenu(context,
-            actionIcon,
+            listActionColors,
             isLeftHanded,
             isSortable,
             itemListView.items,
@@ -119,7 +142,7 @@ class CrudItemListView<ItemType : Item>  constructor(
             {
                 item -> typeCache[item.type]?.canSave?.invoke(item) ?: false
             },
-            contextualCloseIcon
+            confirmationActionColors
         )
 
         knobView = KnobView(context, mapOf(
@@ -139,8 +162,8 @@ class CrudItemListView<ItemType : Item>  constructor(
             fun confCrossIcon() {
                 closeIcon.set(IconView.Icon(
                     icon = R.drawable.ic_menu_close,
-                    bgColor = createCloseIcon.get().bgColor,
-                    fgColor = createCloseIcon.get().fgColor
+                    bgColor = cancelActionColors.get().bgColor,
+                    fgColor = cancelActionColors.get().fgColor
                 ))
             }
 
@@ -153,8 +176,8 @@ class CrudItemListView<ItemType : Item>  constructor(
                 } else {
                     closeIcon.set(IconView.Icon(
                         icon = R.drawable.ic_check,
-                        bgColor = contextualCloseIcon.get().bgColor,
-                        fgColor = contextualCloseIcon.get().fgColor
+                        bgColor = confirmationActionColors.get().bgColor,
+                        fgColor = confirmationActionColors.get().fgColor
                     ))
                 }
 
@@ -202,7 +225,7 @@ class CrudItemListView<ItemType : Item>  constructor(
                 ))
             }
 
-            listOf(contextualCloseIcon, createCloseIcon).onChange {
+            listOf(confirmationActionColors, cancelActionColors).onChange {
                 confCloseIcon()
             }
 

@@ -141,15 +141,15 @@ class ActivityMain : Activity() {
             this@ActivityMain.isSortable.bind(isSortable)
             this@ActivityMain.isLeftHanded.bind(isLeftHanded)
 
-            actionIcon.set(IconColorBundle(
+            listActionColors.set(IconColorBundle(
                 fgColor=color(R.color.Yellow),
                 bgColor=color(R.color.Blue)
             ))
-            contextualCloseIcon.set(IconColorBundle(
+            confirmationActionColors.set(IconColorBundle(
                 bgColor=color(R.color.Black),
                 fgColor=color(R.color.White)
             ))
-            createCloseIcon.set(IconColorBundle(
+            cancelActionColors.set(IconColorBundle(
                 bgColor=color(R.color.Red),
                 fgColor=color(R.color.White)
             ))
