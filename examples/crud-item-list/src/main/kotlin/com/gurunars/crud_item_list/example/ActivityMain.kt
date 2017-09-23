@@ -3,6 +3,7 @@ package com.gurunars.crud_item_list.example
 import android.app.Activity
 import android.content.Context
 import android.os.Bundle
+import android.text.InputType
 import android.view.Gravity
 import android.view.Menu
 import android.view.MenuItem
@@ -36,10 +37,14 @@ internal fun Context.animalFormRenderer(
     textView {
         text = getString(R.string.newVersion)
     }
-    textView {
+    editText {
+        id=R.id.versionValue
+        inputType=InputType.TYPE_CLASS_NUMBER
         bind(field, object : BindableField.ValueTransformer<AnimalItem, String> {
             override fun forward(value: AnimalItem) = value.version.toString()
-            override fun backward(value: String) = field.get().copy(version = value.toInt())
+            override fun backward(value: String) = field.get().copy(
+                version = if (value.isEmpty()) 0 else value.toInt()
+            )
         })
     }
     button {

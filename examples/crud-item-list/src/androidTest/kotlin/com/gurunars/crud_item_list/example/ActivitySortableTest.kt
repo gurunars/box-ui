@@ -5,8 +5,7 @@ import android.support.test.InstrumentationRegistry.getInstrumentation
 import android.support.test.espresso.Espresso.onView
 import android.support.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu
 import android.support.test.espresso.ViewInteraction
-import android.support.test.espresso.action.ViewActions.click
-import android.support.test.espresso.action.ViewActions.longClick
+import android.support.test.espresso.action.ViewActions.*
 import android.support.test.espresso.assertion.ViewAssertions.matches
 import android.support.test.espresso.matcher.ViewMatchers.*
 import android.support.test.filters.LargeTest
@@ -231,10 +230,11 @@ class ActivitySortableTest {
         onView(withId(R.id.openFab)).perform(click())
         rotate()
         onView(withTagValue(`is`("LION"))).perform(click())
+        onView(withId(R.id.versionValue)).perform(typeText("4"))
         onView(withId(R.id.increment)).perform(click())
         rotate()
         onView(withId(R.id.save)).perform(click())
-        validateSelection(4, "#4{LION @ 1}", false)
+        validateSelection(4, "#4{LION @ 5}", false)
     }
 
     @Before

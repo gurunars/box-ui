@@ -167,48 +167,33 @@ class CrudItemListView<ItemType : Item>  constructor(
                 ))
             }
 
-            fun confCloseIcon() =
-                if (
-                    itemListView.selectedItems.get().isEmpty() ||
-                    itemInEdit.get() != null
-                ) {
-                    confCrossIcon()
-                } else {
-                    closeIcon.set(IconView.Icon(
-                        icon = R.drawable.ic_check,
-                        bgColor = confirmationActionColors.get().bgColor,
-                        fgColor = confirmationActionColors.get().fgColor
-                    ))
-                }
+            fun confCheckIcon() {
+                closeIcon.set(IconView.Icon(
+                    icon = R.drawable.ic_check,
+                    bgColor = confirmationActionColors.get().bgColor,
+                    fgColor = confirmationActionColors.get().fgColor
+                ))
+            }
 
             itemListView.selectedItems.onChange {
-                isOpen.set(it.isNotEmpty())
+                isOpen.set(!it.isEmpty())
             }
 
             isOpen.onChange {
-                if (it) {
-                    confCloseIcon()
-                } else {
+                if (!it) {
                     itemInEdit.set(null)
                     itemListView.selectedItems.set(hashSetOf())
                 }
             }
 
-            itemInEdit.onChange {
-                if (it != null) {
-                    itemForm.bind(
-                        it,
-                        typeCache[it.type]!!.formBinder
-                    )
-                    confCloseIcon()
-                }
-            }
-
-            listOf(isOpen, itemListView.selectedItems, itemInEdit).onChange {
-                if (!isOpen.get()) return@onChange
-                if (itemInEdit.get() != null) {
-                    hasOverlay.set(true)
-                    knobView.selectedView.set(ViewMode.FORM)
+            listOf(itemListView.selectedItems, itemInEdit).onChange {
+                val item = itemInEdit.get()
+                if (item != null) {
+                    if ( knobView.selectedView.get() != ViewMode.FORM ) {
+                        hasOverlay.set(true)
+                        itemForm.bind(item, typeCache[item.type]!!.formBinder)
+                        knobView.selectedView.set(ViewMode.FORM)
+                    }
                 } else if (itemListView.selectedItems.get().isNotEmpty()) {
                     hasOverlay.set(false)
                     knobView.selectedView.set(ViewMode.CONTEXTUAL)
@@ -225,8 +210,12 @@ class CrudItemListView<ItemType : Item>  constructor(
                 ))
             }
 
-            listOf(confirmationActionColors, cancelActionColors).onChange {
-                confCloseIcon()
+            listOf(confirmationActionColors, cancelActionColors, knobView.selectedView).onChange {
+                when(knobView.selectedView.get()) {
+                    ViewMode.FORM -> confCrossIcon()
+                    ViewMode.CREATION -> confCrossIcon()
+                    else -> confCheckIcon()
+                }
             }
 
         }
