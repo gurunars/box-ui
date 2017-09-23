@@ -16,14 +16,12 @@ import com.gurunars.crud_item_list.ItemTypeDescriptor
 import com.gurunars.crud_item_list.crudItemListView
 import com.gurunars.databinding.BindableField
 import com.gurunars.databinding.android.bind
-import com.gurunars.item_list.coloredRowSelectionDecorator
 import com.gurunars.shortcuts.color
 import com.gurunars.shortcuts.fullSize
 import com.gurunars.storage.PersistentStorage
 import org.jetbrains.anko.*
 
 internal fun Context.bindAnimalItem(
-    itemType: Enum<*>,
     payload: BindableField<AnimalItem>
 ) = TextView(this).apply {
     padding = context.dip(5)
@@ -109,7 +107,7 @@ class ActivityMain : Activity() {
             ItemTypeDescriptor(
                 icon = IconView.Icon(icon = icon),
                 type = type,
-                rowBinder = coloredRowSelectionDecorator(Context::bindAnimalItem),
+                rowBinder = Context::bindAnimalItem,
                 formBinder = Context::animalFormRenderer,
                 newItemCreator = { AnimalItem(id=(count.get() + 1).toLong(), version= 0, type = type) },
                 canSave = { true }

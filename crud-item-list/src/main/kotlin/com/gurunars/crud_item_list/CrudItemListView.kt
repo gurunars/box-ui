@@ -11,10 +11,7 @@ import com.gurunars.databinding.android.bindableField
 import com.gurunars.databinding.onChange
 import com.gurunars.floatmenu.FloatMenu
 import com.gurunars.floatmenu.floatMenu
-import com.gurunars.item_list.EmptyViewBinder
-import com.gurunars.item_list.Item
-import com.gurunars.item_list.SelectableItem
-import com.gurunars.item_list.SelectableItemListView
+import com.gurunars.item_list.*
 import com.gurunars.knob_view.KnobView
 import com.gurunars.shortcuts.fullSize
 
@@ -85,8 +82,17 @@ class CrudItemListView<ItemType : Item>  constructor(
         context: Context,
         itemType: Enum<*>,
         field: BindableField<SelectableItem<ItemType>>
-    ) = typeCache[itemType]?.rowBinder?.invoke(context, itemType, field) ?:
-        throw RuntimeException("Unknown type ${itemType}")
+    ): View {
+        val binder = typeCache[itemType] ?:
+            throw RuntimeException("Unknown type ${itemType}")
+
+        val wrapper = coloredRowSelectionDecorator(
+            { type, fld: BindableField<ItemType> -> binder.rowBinder(context, fld) },
+            binder.rowSelectionColor,
+            binder.rowRegularColor)
+
+        return context.wrapper(itemType, field)
+    }
 
     init {
 
