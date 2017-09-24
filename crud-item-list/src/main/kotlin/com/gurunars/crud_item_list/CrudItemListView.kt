@@ -203,6 +203,8 @@ class CrudItemListView<ItemType : Item>  constructor(
                 } else if (itemListView.selectedItems.get().isNotEmpty()) {
                     hasOverlay.set(false)
                     knobView.selectedView.set(ViewMode.CONTEXTUAL)
+                } else if (typeCache.size == 1) {
+                    itemInEdit.set(typeCache.values.first().newItemCreator())
                 } else {
                     hasOverlay.set(true)
                     knobView.selectedView.set(ViewMode.CREATION)
