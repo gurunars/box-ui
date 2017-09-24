@@ -192,7 +192,10 @@ class CrudItemListView<ItemType : Item>  constructor(
                 }
             }
 
-            listOf(itemListView.selectedItems, itemInEdit).onChange {
+            listOf(isOpen, itemListView.selectedItems, itemInEdit).onChange {
+                if (! isOpen.get()) {
+                    return@onChange
+                }
                 val item = itemInEdit.get()
                 if (item != null) {
                     if ( knobView.selectedView.get() != ViewMode.FORM ) {
