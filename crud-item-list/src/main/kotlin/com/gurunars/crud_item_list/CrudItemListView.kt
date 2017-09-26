@@ -21,6 +21,7 @@ import com.gurunars.shortcuts.fullSize
  * @param ItemType type of the item to be shown in the list
  * @param context Android context
  * @param emptyViewBinder a function returning a view to be shown when the list is empty
+ * @param isSortable If false move up and move down buttons are hidden.
  * @param groupedItemTypeDescriptors a collection of item type descriptors
  *
  * @property listActionColors Color of the icons meant to manipulate the collection of items in the
@@ -33,7 +34,6 @@ import com.gurunars.shortcuts.fullSize
  * the icon opens the creation menu
  * @property isLeftHanded If true all action buttons are show on the left side of the screen. They
  * are shown on the right side of the screen otherwise.
- * @property isSortable If false move up and move down buttons are hidden.
  * @property items A collection of items shown and manipulated by the view.
  * @property isOpen A flag specifying if the menu is open or closed. Be it a creation or contextual
  * one.
