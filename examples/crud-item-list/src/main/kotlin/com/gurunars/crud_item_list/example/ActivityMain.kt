@@ -66,12 +66,8 @@ class ActivityMain : Activity() {
 
     private lateinit var crudItemListView: CrudItemListView<AnimalItem>
 
-    private fun initData() {
-        addItems(4, true)
-    }
-
-    private fun getType(i: Int): AnimalItem.Type {
-        if (isSortable.get()) {
+    private fun getType(i: Int, sortable: Boolean): AnimalItem.Type {
+        if (sortable) {
             return when (i % 4) {
                 0 -> AnimalItem.Type.LION
                 1 -> AnimalItem.Type.TIGER
@@ -85,11 +81,12 @@ class ActivityMain : Activity() {
 
     private fun addItems(
         count: Int,
+        sortable: Boolean,
         nullify: Boolean = false
     ) {
         val curCount = (if (nullify) 0 else this.count.get())
         items.set((if (nullify) listOf() else items.get()) + (0..count-1).map {
-            AnimalItem(curCount + it.toLong(), getType(it), 0)
+            AnimalItem(curCount + it.toLong(), getType(it, sortable), 0)
         })
         this.count.set(curCount + count)
     }
@@ -180,19 +177,19 @@ class ActivityMain : Activity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val i = item.itemId
+
+        fun setSortable(flag: Boolean) {
+            addItems(4, flag,true)
+            isSortable.set(flag, true)
+        }
+
         when (i) {
             R.id.leftHanded -> isLeftHanded.set(true)
             R.id.rightHanded -> isLeftHanded.set(false)
-            R.id.reset -> initData()
-            R.id.lock -> {
-                initData()
-                isSortable.set(false)
-            }
-            R.id.unlock -> {
-                initData()
-                isSortable.set(true)
-            }
-            R.id.addMany -> addItems(4 * 20)
+            R.id.reset -> addItems(4, isSortable.get(),true)
+            R.id.lock -> setSortable(false)
+            R.id.unlock -> setSortable(true)
+            R.id.addMany -> addItems(4 * 20, isSortable.get())
         }
         return super.onOptionsItemSelected(item)
     }

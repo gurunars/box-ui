@@ -186,7 +186,13 @@ class CrudItemListView<ItemType : Item>  constructor(
                 isOpen.set(!it.isEmpty())
             }
 
-            isOpen.onChange {
+            isOpen.onChange({
+                if (it) {
+                    if (!it) {
+                        knobView.selectedView.set(ViewMode.CREATION)
+                    }
+                }
+            }) {
                 if (!it) {
                     itemInEdit.set(null)
                     itemListView.selectedItems.set(hashSetOf())
@@ -199,9 +205,11 @@ class CrudItemListView<ItemType : Item>  constructor(
                 }
                 val item = itemInEdit.get()
                 if (item != null) {
-                    hasOverlay.set(true)
-                    itemForm.bind(item, typeCache[item.type]!!.formBinder)
-                    knobView.selectedView.set(ViewMode.FORM)
+                    if ( knobView.selectedView.get() != ViewMode.FORM ) {
+                        hasOverlay.set(true)
+                        itemForm.bind(item, typeCache[item.type]!!.formBinder)
+                        knobView.selectedView.set(ViewMode.FORM)
+                    }
                 } else if (itemListView.selectedItems.get().isNotEmpty()) {
                     hasOverlay.set(false)
                     knobView.selectedView.set(ViewMode.CONTEXTUAL)
