@@ -11,7 +11,9 @@ import com.gurunars.shortcuts.HorizontalAlignment
 import com.gurunars.shortcuts.VerticalAlignment
 import com.gurunars.shortcuts.alignInParent
 import org.jetbrains.anko.dip
+import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.margin
+import org.jetbrains.anko.uiThread
 
 internal class ItemForm<ItemType: Item>(
     context: Context,
@@ -54,7 +56,14 @@ internal class ItemForm<ItemType: Item>(
                 )
             }
             id=R.id.save
-            field.onChange { enabled.set(canSave(it)) }
+            field.onChange {
+                doAsync {
+                    val can = canSave(it)
+                    uiThread {
+                        enabled.set(can)
+                    }
+                }
+            }
             setOnClickListener { confirmationHandler() }
             layoutParams = RelativeLayout.LayoutParams(
                 context.dip(60),
