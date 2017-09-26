@@ -41,6 +41,7 @@ import com.gurunars.shortcuts.fullSize
 class CrudItemListView<ItemType : Item>  constructor(
     context: Context,
     emptyViewBinder: EmptyViewBinder = Context::defaultEmptyViewBinder,
+    sortable: Boolean = true,
     groupedItemTypeDescriptors: List<List<ItemTypeDescriptor<ItemType>>>
 ) : FrameLayout(context) {
 
@@ -58,7 +59,6 @@ class CrudItemListView<ItemType : Item>  constructor(
     val confirmationActionColors = bindableField(IconColorBundle())
     val cancelActionColors = bindableField(IconColorBundle())
     val openIcon = bindableField(IconColorBundle())
-    val isSortable = bindableField(true)
 
     val isLeftHanded = bindableField(false)
     val items: BindableField<List<ItemType>>
@@ -112,10 +112,11 @@ class CrudItemListView<ItemType : Item>  constructor(
             id = R.id.rawItemList
         }
 
-        contextualMenu = contextualMenu(context,
+        contextualMenu = contextualMenu(
+            context,
+            sortable,
             listActionColors,
             isLeftHanded,
-            isSortable,
             itemListView.items,
             itemListView.selectedItems,
             { itemInEdit.set(it) }
@@ -198,11 +199,9 @@ class CrudItemListView<ItemType : Item>  constructor(
                 }
                 val item = itemInEdit.get()
                 if (item != null) {
-                    if ( knobView.selectedView.get() != ViewMode.FORM ) {
-                        hasOverlay.set(true)
-                        itemForm.bind(item, typeCache[item.type]!!.formBinder)
-                        knobView.selectedView.set(ViewMode.FORM)
-                    }
+                    hasOverlay.set(true)
+                    itemForm.bind(item, typeCache[item.type]!!.formBinder)
+                    knobView.selectedView.set(ViewMode.FORM)
                 } else if (itemListView.selectedItems.get().isNotEmpty()) {
                     hasOverlay.set(false)
                     knobView.selectedView.set(ViewMode.CONTEXTUAL)

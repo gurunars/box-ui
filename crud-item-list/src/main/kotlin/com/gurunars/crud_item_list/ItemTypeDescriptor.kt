@@ -63,3 +63,8 @@ data class ItemTypeDescriptor<ItemType: Item>(
     val newItemCreator: NewItemCreator<ItemType>,
     val canSave: CanSave<ItemType> = { true }
 )
+
+/**
+ * A shortcut function to wrap a single descriptor into a list of lists.
+ */
+fun<ItemType: Item> ItemTypeDescriptor<ItemType>.oneOf() = listOf(listOf(this))

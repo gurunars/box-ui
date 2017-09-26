@@ -14,9 +14,9 @@ import org.jetbrains.anko.*
 
 internal fun<ItemType: Item> contextualMenu (
     context: Context,
+    sortable: Boolean,
     actionIcon: BindableField<IconColorBundle>,
     isLeftHanded: BindableField<Boolean>,
-    isSortable: BindableField<Boolean>,
     items: BindableField<List<ItemType>>,
     selectedItems: BindableField<Set<ItemType>>,
     onEdit: (item: ItemType) -> Unit
@@ -56,7 +56,7 @@ internal fun<ItemType: Item> contextualMenu (
             id=R.id.moveUp
             icon.set(IconView.Icon(icon=R.drawable.ic_move_up))
             setTag(R.id.action, ActionMoveUp<ItemType>())
-            isSortable.onChange(listener=this::setIsVisible)
+            setIsVisible(sortable)
         }.lparams {
             isLeftHanded.onChange(listener=this::isLeftHanded)
             above(R.id.moveDown)
@@ -69,7 +69,7 @@ internal fun<ItemType: Item> contextualMenu (
             id=R.id.moveDown
             icon.set(IconView.Icon(icon=R.drawable.ic_move_down))
             setTag(R.id.action, ActionMoveDown<ItemType>())
-            isSortable.onChange(listener=this::setIsVisible)
+            setIsVisible(sortable)
         }.lparams {
             alignInParent(verticalAlignment=VerticalAlignment.BOTTOM)
             isLeftHanded.onChange(listener=this::isLeftHanded)

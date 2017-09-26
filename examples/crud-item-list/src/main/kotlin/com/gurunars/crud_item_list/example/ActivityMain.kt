@@ -10,10 +10,7 @@ import android.view.MenuItem
 import android.widget.TextView
 import com.gurunars.android_utils.IconView
 import com.gurunars.animal_item.AnimalItem
-import com.gurunars.crud_item_list.CrudItemListView
-import com.gurunars.crud_item_list.IconColorBundle
-import com.gurunars.crud_item_list.ItemTypeDescriptor
-import com.gurunars.crud_item_list.crudItemListView
+import com.gurunars.crud_item_list.*
 import com.gurunars.databinding.BindableField
 import com.gurunars.databinding.android.bind
 import com.gurunars.shortcuts.color
@@ -63,45 +60,42 @@ class ActivityMain : Activity() {
     private val storage = PersistentStorage(this, "main")
 
     private val isLeftHanded = storage.storageField("isLeftHanded", false)
-    private val isSortable = storage.storageField("sSortable", true)
+    private val isSortable = storage.storageField("isSortable", true)
     private val items = storage.storageField("items", listOf<AnimalItem>())
     private val count = storage.storageField("count", 0)
 
     private lateinit var crudItemListView: CrudItemListView<AnimalItem>
 
-    private fun add(type: AnimalItem.Type) {
-        items.set(items.get() + AnimalItem(count.get().toLong(), type, 0))
-        count.set(count.get() + 1)
-    }
-
     private fun initData() {
-        items.set(listOf(
-            AnimalItem(0, AnimalItem.Type.LION, 0),
-            AnimalItem(1, AnimalItem.Type.TIGER, 0),
-            AnimalItem(2, AnimalItem.Type.MONKEY, 0),
-            AnimalItem(3, AnimalItem.Type.WOLF, 0)
-        ))
-        count.set(4)
+        addItems(4, true)
     }
 
-    private fun addItems(count: Int) {
-        for (i in 0..count-1) {
-            add(when (i % 4) {
+    private fun getType(i: Int): AnimalItem.Type {
+        if (isSortable.get()) {
+            return when (i % 4) {
                 0 -> AnimalItem.Type.LION
                 1 -> AnimalItem.Type.TIGER
                 2 -> AnimalItem.Type.MONKEY
                 else -> AnimalItem.Type.WOLF
-            })
+            }
+        } else {
+            return AnimalItem.Type.MONKEY
         }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        storage.load()
+    private fun addItems(
+        count: Int,
+        nullify: Boolean = false
+    ) {
+        val curCount = (if (nullify) 0 else this.count.get())
+        items.set((if (nullify) listOf() else items.get()) + (0..count-1).map {
+            AnimalItem(curCount + it.toLong(), getType(it), 0)
+        })
+        this.count.set(curCount + count)
+    }
 
-        isSortable.onChange {
-            setTitle(if(it) R.string.sortable else R.string.unsortable)
-        }
+    fun initView(sortable: Boolean) {
+        setTitle(if(sortable) R.string.sortable else R.string.unsortable)
 
         fun descriptor(icon: Int, type: AnimalItem.Type) =
             ItemTypeDescriptor(
@@ -113,6 +107,20 @@ class ActivityMain : Activity() {
                 canSave = { true }
             )
 
+        val descriptors: List<List<ItemTypeDescriptor<AnimalItem>>>
+
+        if (sortable) {
+            descriptors = listOf(listOf(
+                descriptor(R.drawable.ic_menu_monkey, AnimalItem.Type.MONKEY),
+                descriptor(R.drawable.ic_menu_lion, AnimalItem.Type.LION)
+            ), listOf(
+                descriptor(R.drawable.ic_menu_tiger, AnimalItem.Type.TIGER),
+                descriptor(R.drawable.ic_menu_wolf, AnimalItem.Type.WOLF)
+            ))
+        } else {
+            descriptors = descriptor(R.drawable.ic_menu_monkey, AnimalItem.Type.MONKEY).oneOf()
+        }
+
         crudItemListView = crudItemListView(
             {
                 TextView(this@crudItemListView).apply {
@@ -122,13 +130,8 @@ class ActivityMain : Activity() {
                     gravity = Gravity.CENTER
                 }
             },
-            listOf(listOf(
-                descriptor(R.drawable.ic_menu_monkey, AnimalItem.Type.MONKEY),
-                descriptor(R.drawable.ic_menu_lion, AnimalItem.Type.LION)
-            ), listOf(
-                descriptor(R.drawable.ic_menu_tiger, AnimalItem.Type.TIGER),
-                descriptor(R.drawable.ic_menu_wolf, AnimalItem.Type.WOLF)
-            ))
+            sortable,
+            descriptors
         ) {
             fullSize()
             id=R.id.customView
@@ -141,7 +144,6 @@ class ActivityMain : Activity() {
                         .toInt()
                 )
             }
-            this@ActivityMain.isSortable.bind(isSortable)
             this@ActivityMain.isLeftHanded.bind(isLeftHanded)
 
             listActionColors.set(IconColorBundle(
@@ -162,7 +164,12 @@ class ActivityMain : Activity() {
             ))
         }
 
+    }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        storage.load()
+        isSortable.onChange(listener=this::initView)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -177,8 +184,14 @@ class ActivityMain : Activity() {
             R.id.leftHanded -> isLeftHanded.set(true)
             R.id.rightHanded -> isLeftHanded.set(false)
             R.id.reset -> initData()
-            R.id.lock -> isSortable.set(false)
-            R.id.unlock -> isSortable.set(true)
+            R.id.lock -> {
+                initData()
+                isSortable.set(false)
+            }
+            R.id.unlock -> {
+                initData()
+                isSortable.set(true)
+            }
             R.id.addMany -> addItems(4 * 20)
         }
         return super.onOptionsItemSelected(item)

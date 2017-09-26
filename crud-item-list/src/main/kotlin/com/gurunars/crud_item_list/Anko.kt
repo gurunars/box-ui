@@ -14,11 +14,12 @@ import org.jetbrains.anko.custom.ankoView
  */
 fun <ItemT: Item> ViewManager.crudItemListView(
     emptyViewBinder: EmptyViewBinder = Context::defaultEmptyViewBinder,
+    sortable: Boolean = true,
     groupedItemTypeDescriptors: List<List<ItemTypeDescriptor<ItemT>>>,
     init: CrudItemListView<ItemT>.() -> Unit = {}
 ) = ankoView({
     CrudItemListView(
-        it, emptyViewBinder, groupedItemTypeDescriptors
+        it, emptyViewBinder, sortable, groupedItemTypeDescriptors
     )
 }, 0, init)
 
@@ -29,10 +30,11 @@ fun <ItemT: Item> ViewManager.crudItemListView(
  */
 fun <ItemT: Item> Activity.crudItemListView(
     emptyViewBinder: EmptyViewBinder = Context::defaultEmptyViewBinder,
+    sortable: Boolean = true,
     groupedItemTypeDescriptors: List<List<ItemTypeDescriptor<ItemT>>>,
     init: CrudItemListView<ItemT>.() -> Unit = {}
 ) = ankoView({
     CrudItemListView(
-        it, emptyViewBinder, groupedItemTypeDescriptors
+        it, emptyViewBinder, sortable, groupedItemTypeDescriptors
     )
 }, 0, init)
