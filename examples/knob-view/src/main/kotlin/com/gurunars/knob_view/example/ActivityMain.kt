@@ -20,21 +20,21 @@ enum class COUNT {
 }
 
 
-internal class InnerView(ctx: Context): FrameLayout(ctx) {
+internal class InnerView(ctx: Context) : FrameLayout(ctx) {
 
     private val txt = bindableField("")
 
     init {
         verticalLayout {
             textView {
-                padding=dip(10)
+                padding = dip(10)
                 txt.bind(this)
             }
             editText {
-                padding=dip(10)
+                padding = dip(10)
                 txt.bind(this)
             }
-            gravity=Gravity.CENTER
+            gravity = Gravity.CENTER
         }
     }
 
@@ -48,12 +48,12 @@ class ActivityMain : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        knobView=knobView(mapOf<Enum<*>, View>(
-            COUNT.ONE to InnerView(this).apply { id=R.id.one },
-            COUNT.TWO to InnerView(this).apply { id=R.id.two },
-            COUNT.THREE to InnerView(this).apply { id=R.id.three },
-            COUNT.FOUR to InnerView(this).apply { id=R.id.four },
-            COUNT.FIVE to InnerView(this).apply { id=R.id.five }
+        knobView = knobView(mapOf<Enum<*>, View>(
+            COUNT.ONE to InnerView(this).apply { id = R.id.one },
+            COUNT.TWO to InnerView(this).apply { id = R.id.two },
+            COUNT.THREE to InnerView(this).apply { id = R.id.three },
+            COUNT.FOUR to InnerView(this).apply { id = R.id.four },
+            COUNT.FIVE to InnerView(this).apply { id = R.id.five }
         )) {
             fullSize()
         }

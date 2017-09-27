@@ -8,21 +8,21 @@ import com.gurunars.databinding.BindableField
 import org.jetbrains.anko.custom.ankoView
 
 internal fun ViewManager.fab(
-        rotationDuration: BindableField<Int>,
-        openIcon: BindableField<IconView.Icon>,
-        closeIcon: BindableField<IconView.Icon>,
-        isActivated: BindableField<Boolean>,
-        theme: Int = 0, init: Fab.() -> Unit) = ankoView({
-            Fab(it, rotationDuration, openIcon, closeIcon, isActivated)
-        }, theme, init)
+    rotationDuration: BindableField<Int>,
+    openIcon: BindableField<IconView.Icon>,
+    closeIcon: BindableField<IconView.Icon>,
+    isActivated: BindableField<Boolean>,
+    theme: Int = 0, init: Fab.() -> Unit) = ankoView({
+    Fab(it, rotationDuration, openIcon, closeIcon, isActivated)
+}, theme, init)
 
 internal fun ViewManager.menuPane(
-        hasOverlay: BindableField<Boolean>,
-        isVisible: BindableField<Boolean>,
-        animationDuration: BindableField<Int>,
-        theme: Int = 0, init: MenuPane.() -> Unit) = ankoView({
-            MenuPane(it, hasOverlay, isVisible, animationDuration)
-        }, theme, init)
+    hasOverlay: BindableField<Boolean>,
+    isVisible: BindableField<Boolean>,
+    animationDuration: BindableField<Int>,
+    theme: Int = 0, init: MenuPane.() -> Unit) = ankoView({
+    MenuPane(it, hasOverlay, isVisible, animationDuration)
+}, theme, init)
 
 /**
  * Anko specific view function for FloatMenu

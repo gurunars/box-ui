@@ -38,7 +38,7 @@ import com.gurunars.shortcuts.fullSize
  * @property isOpen A flag specifying if the menu is open or closed. Be it a creation or contextual
  * one.
  */
-class CrudItemListView<ItemType : Item>  constructor(
+class CrudItemListView<ItemType : Item> constructor(
     context: Context,
     emptyViewBinder: EmptyViewBinder = Context::defaultEmptyViewBinder,
     sortable: Boolean = true,
@@ -147,7 +147,8 @@ class CrudItemListView<ItemType : Item>  constructor(
                 }
             },
             {
-                item -> typeCache[item.type]?.canSave?.invoke(item) ?: false
+                item ->
+                typeCache[item.type]?.canSave?.invoke(item) ?: false
             },
             confirmationActionColors
         )
@@ -200,12 +201,12 @@ class CrudItemListView<ItemType : Item>  constructor(
             }
 
             listOf(isOpen, itemListView.selectedItems, itemInEdit).onChange {
-                if (! isOpen.get()) {
+                if (!isOpen.get()) {
                     return@onChange
                 }
                 val item = itemInEdit.get()
                 if (item != null) {
-                    if ( knobView.selectedView.get() != ViewMode.FORM ) {
+                    if (knobView.selectedView.get() != ViewMode.FORM) {
                         hasOverlay.set(true)
                         itemForm.bind(item, typeCache[item.type]!!.formBinder)
                         knobView.selectedView.set(ViewMode.FORM)
@@ -229,7 +230,7 @@ class CrudItemListView<ItemType : Item>  constructor(
             }
 
             listOf(confirmationActionColors, cancelActionColors, knobView.selectedView).onChange {
-                when(knobView.selectedView.get()) {
+                when (knobView.selectedView.get()) {
                     ViewMode.FORM -> confCrossIcon()
                     ViewMode.CREATION -> confCrossIcon()
                     else -> confCheckIcon()

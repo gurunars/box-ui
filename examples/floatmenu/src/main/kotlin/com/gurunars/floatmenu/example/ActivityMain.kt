@@ -18,7 +18,7 @@ import org.jetbrains.anko.*
 
 
 class ActivityMain : Activity() {
-    private val storage=PersistentStorage(this, "main")
+    private val storage = PersistentStorage(this, "main")
 
     private val buttonColorFlag = storage.storageField("buttonColorFlag", false)
     private val hasOverlay = storage.storageField("hasOverlay", true)
@@ -37,23 +37,23 @@ class ActivityMain : Activity() {
             scrollView {
                 fullSize()
                 verticalLayout {
-                    gravity=Gravity.CENTER_HORIZONTAL
+                    gravity = Gravity.CENTER_HORIZONTAL
                     button {
-                        id=R.id.button
+                        id = R.id.button
                         setOnClickListener { notification.set("Menu Button Clicked") }
-                        text=getString(R.string.click_me)
-                        padding=dip(10)
+                        text = getString(R.string.click_me)
+                        padding = dip(10)
                     }.lparams {
-                        topMargin=dip(50)
+                        topMargin = dip(50)
                     }
                     frameLayout {
-                        id=R.id.buttonFrame
+                        id = R.id.buttonFrame
                         setOnClickListener { notification.set("Menu Button Frame Clicked") }
-                        isClickable=true
-                        backgroundColor=color(R.color.AliceBlue)
-                        padding=dip(30)
+                        isClickable = true
+                        backgroundColor = color(R.color.AliceBlue)
+                        padding = dip(30)
                     }.lparams {
-                        topMargin=dip(10)
+                        topMargin = dip(10)
                     }
                 }.asRow()
             }
@@ -64,17 +64,17 @@ class ActivityMain : Activity() {
                 fullSize()
 
                 textView {
-                    id=R.id.notificationView
-                    padding=dip(15)
-                    gravity=Gravity.CENTER
-                    backgroundColor=Color.parseColor("#FFFFAA")
+                    id = R.id.notificationView
+                    padding = dip(15)
+                    gravity = Gravity.CENTER
+                    backgroundColor = Color.parseColor("#FFFFAA")
 
                     notification.onChange {
-                        text=it
+                        text = it
                     }
 
                     setOnLongClickListener {
-                        text=""
+                        text = ""
                         true
                     }
 
@@ -85,19 +85,19 @@ class ActivityMain : Activity() {
                 }
 
                 textView {
-                    id=R.id.textView
-                    text=getString(R.string.appName)
-                    isClickable=true
+                    id = R.id.textView
+                    text = getString(R.string.appName)
+                    isClickable = true
                     setOnClickListener { notification.set("Content Text Clicked") }
                 }.lparams {
-                    bottomMargin=dip(50)
+                    bottomMargin = dip(50)
                     centerHorizontally()
                     centerVertically()
                 }
 
                 textView {
                     isOpenT.onChange { setText(if (it) R.string.menuOpen else R.string.menuClosed) }
-                    isClickable=true
+                    isClickable = true
                 }.lparams {
                     below(R.id.textView)
                     centerHorizontally()
@@ -106,9 +106,9 @@ class ActivityMain : Activity() {
             }
         }.view
 
-        floatingMenu=floatMenu(contentView, menuView) {
+        floatingMenu = floatMenu(contentView, menuView) {
             fullSize()
-            id=R.id.floatingMenu
+            id = R.id.floatingMenu
 
             isOpen.bind(isOpenT)
 

@@ -49,29 +49,29 @@ class FloatMenu constructor(
         relativeLayout {
             fullSize()
             frameLayout {
-                id=R.id.contentPane
+                id = R.id.contentPane
                 setOneView(contentView)
             }.fullSize()
             menuPane(hasOverlay, isOpen, animationDuration) {
-                id=R.id.menuPane
-                isClickable=true
-                visibility=View.GONE
+                id = R.id.menuPane
+                isClickable = true
+                visibility = View.GONE
                 setOneView(menuView)
             }.fullSize()
             fab(animationDuration, openIcon, closeIcon, isOpen) {
-                id=R.id.openFab
+                id = R.id.openFab
                 val fab = this
                 isLeftHanded.onChange { fab.contentDescription = "LH:" + it }
             }.lparams {
-                margin=dip(16)
-                width=dip(60)
-                height=dip(60)
+                margin = dip(16)
+                width = dip(60)
+                height = dip(60)
                 alignParentBottom()
                 val fab = this
                 isLeftHanded.onChange {
                     fab.removeRule(RelativeLayout.ALIGN_PARENT_LEFT)
                     fab.removeRule(RelativeLayout.ALIGN_PARENT_RIGHT)
-                    if(it) fab.alignParentLeft() else fab.alignParentRight()
+                    if (it) fab.alignParentLeft() else fab.alignParentRight()
                     requestLayout()
                 }
             }

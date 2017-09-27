@@ -1,24 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:id="@+id/one"
-        android:title="@string/one"
-        android:showAsAction="never" />
+    <item
+        android:id="@+id/one"
+        android:showAsAction="never"
+        android:title="@string/one" />
 
-    <item android:id="@+id/two"
-        android:title="@string/two"
-        android:showAsAction="never" />
+    <item
+        android:id="@+id/two"
+        android:showAsAction="never"
+        android:title="@string/two" />
 
-    <item android:id="@+id/three"
-        android:title="@string/three"
-        android:showAsAction="never" />
+    <item
+        android:id="@+id/three"
+        android:showAsAction="never"
+        android:title="@string/three" />
 
-    <item android:id="@+id/four"
-        android:title="@string/four"
-        android:showAsAction="never" />
+    <item
+        android:id="@+id/four"
+        android:showAsAction="never"
+        android:title="@string/four" />
 
-    <item android:id="@+id/five"
-        android:title="@string/five"
-        android:showAsAction="never" />
+    <item
+        android:id="@+id/five"
+        android:showAsAction="never"
+        android:title="@string/five" />
 
 </menu>

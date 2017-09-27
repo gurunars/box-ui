@@ -3,10 +3,7 @@ package com.gurunars.crud_item_list
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.mockito.internal.util.collections.Sets
-
-import java.util.ArrayList
-import java.util.Arrays
-import java.util.HashSet
+import java.util.*
 
 
 fun getPositions(items: List<String>, selectedItems: Set<String>) =

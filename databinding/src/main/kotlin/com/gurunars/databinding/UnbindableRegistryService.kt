@@ -36,7 +36,7 @@ class UnbindableRegistryService {
      *
      * @return created field
      */
-    fun<Type> bindableField(
+    fun <Type> bindableField(
         value: Type,
         preset: (one: Type) -> Type = { item -> item }
     ) = BindableField(value, preset).apply {

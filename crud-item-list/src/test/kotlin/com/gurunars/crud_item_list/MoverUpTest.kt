@@ -10,34 +10,34 @@ class MoverUpTest {
     private val moverUp = ActionMoveUp<StringItem>()
 
     private val all = Arrays.asList(
-            "one",
-            "two",
-            "three",
-            "four",
-            "five",
-            "six",
-            "seven",
-            "eight",
-            "nine",
-            "ten"
+        "one",
+        "two",
+        "three",
+        "four",
+        "five",
+        "six",
+        "seven",
+        "eight",
+        "nine",
+        "ten"
     )
     private val selected = Sets.newSet(
-            "four",
-            "five",
-            "six",
-            "seven"
+        "four",
+        "five",
+        "six",
+        "seven"
     )
     private val expectedOutcome = Arrays.asList(
-            "one",
-            "two",
-            "four",
-            "five",
-            "six",
-            "seven",
-            "three", // item moved down
-            "eight",
-            "nine",
-            "ten"
+        "one",
+        "two",
+        "four",
+        "five",
+        "six",
+        "seven",
+        "three", // item moved down
+        "eight",
+        "nine",
+        "ten"
     )
 
     @Test

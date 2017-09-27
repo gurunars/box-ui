@@ -56,7 +56,7 @@ class BindableField<Type>(
      * @param beforeChange a function called with a current value before the change takes place
      * @param listener a function called with a new value after the change takes place
      */
-    fun onChange(beforeChange:(value: Type) -> Unit = {}, listener: (value: Type) -> Unit): Binding {
+    fun onChange(beforeChange: (value: Type) -> Unit = {}, listener: (value: Type) -> Unit): Binding {
         beforeChangeListeners.add(beforeChange)
         listeners.add(listener)
         val binding = object : Binding {
@@ -67,7 +67,7 @@ class BindableField<Type>(
             }
         }
         bindings.add(binding)
-        if(isActive) {
+        if (isActive) {
             listener(this.value)
         }
         return binding
@@ -80,8 +80,8 @@ class BindableField<Type>(
      * @param value payload to set the value to
      * @param force if true - the change is made even if current and new values are the same
      */
-    fun set(value: Type, force:Boolean=false) {
-        if (isActive && (force || ! equal(this.value, value))) {
+    fun set(value: Type, force: Boolean = false) {
+        if (isActive && (force || !equal(this.value, value))) {
             beforeChangeListeners.forEach { it(this.value) }
             this.value = preset(value)
             listeners.forEach { it(this.value) }
@@ -91,13 +91,13 @@ class BindableField<Type>(
     /**
      * @return current value
      */
-    fun get() : Type = this.value
+    fun get(): Type = this.value
 
     private fun join(
         field: BindableField<*>,
         forwardBinding: Binding,
         backwardBinding: Binding
-    ) = object: Binding {
+    ) = object : Binding {
         override fun unbind() {
             forwardBinding.unbind()
             backwardBinding.unbind()

@@ -1,7 +1,7 @@
 package com.gurunars.databinding
 
-import org.junit.Test
 import org.junit.Assert.assertEquals
+import org.junit.Test
 
 class BindableFieldTest {
 
@@ -48,7 +48,7 @@ class BindableFieldTest {
 
         masterField.bind(
             slaveField,
-            object: BindableField.ValueTransformer<Int, String> {
+            object : BindableField.ValueTransformer<Int, String> {
                 override fun forward(value: Int) = value.toString()
                 override fun backward(value: String) = Integer.valueOf(value)
             }

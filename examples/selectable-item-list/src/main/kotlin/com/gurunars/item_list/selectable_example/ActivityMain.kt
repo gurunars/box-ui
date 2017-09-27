@@ -21,8 +21,8 @@ import java.util.*
 
 
 internal fun Context.bindAnimalItem(
-        itemType: Enum<*>,
-        payload: BindableField<AnimalItem>
+    itemType: Enum<*>,
+    payload: BindableField<AnimalItem>
 ) = TextView(this).apply {
     padding = context.dip(5)
     payload.onChange { text = it.toString() }
@@ -48,7 +48,7 @@ class ActivityMain : Activity() {
 
         itemListView = selectableItemListView(coloredRowSelectionDecorator(Context::bindAnimalItem)) {
             fullSize()
-            id=R.id.selectableItemList
+            id = R.id.selectableItemList
             this@ActivityMain.items.bind(items)
         }
 
@@ -75,7 +75,7 @@ class ActivityMain : Activity() {
         val selected = itemListView.selectedItems.get()
         items.set(items.get().map {
             if (selected.any { item -> it.id == item.id })
-                it.copy(version = it.version+1)
+                it.copy(version = it.version + 1)
             else
                 it
         })
@@ -84,7 +84,7 @@ class ActivityMain : Activity() {
 
     private fun deleteSelected(): Int {
         itemListView.items.set(items.get().filterNot {
-            itemListView.selectedItems.get().any { item -> it.id == item.id}
+            itemListView.selectedItems.get().any { item -> it.id == item.id }
         })
         return R.string.did_delete_selected
     }

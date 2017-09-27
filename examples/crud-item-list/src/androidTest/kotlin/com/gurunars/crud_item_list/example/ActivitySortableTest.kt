@@ -33,7 +33,7 @@ class ActivitySortableTest {
 
     @get:Rule
     var mActivityRule = ActivityTestRule(
-            ActivityMain::class.java)
+        ActivityMain::class.java)
 
     private fun validateEnabled(id: Int) {
         onView(withId(id)).check(matches(isEnabled()))

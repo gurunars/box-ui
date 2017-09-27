@@ -3,7 +3,7 @@ package com.gurunars.crud_item_list
 import com.gurunars.item_list.Item
 
 
-data class StringItem(val text: String): Item {
+data class StringItem(val text: String) : Item {
     override val id = text.hashCode().toLong()
 }
 

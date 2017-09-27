@@ -4,8 +4,7 @@ import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.mockito.internal.util.collections.Sets
-
-import java.util.Arrays
+import java.util.*
 
 class CheckerMoveUpTest {
 

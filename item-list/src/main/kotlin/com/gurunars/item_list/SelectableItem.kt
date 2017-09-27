@@ -27,6 +27,6 @@ data class SelectableItem<out ItemType : Item> internal constructor(
      * @suppress
      */
     override fun toString() =
-            item.toString() + "|" + isSelected
+        item.toString() + "|" + isSelected
 
 }

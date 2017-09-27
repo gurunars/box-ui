@@ -19,15 +19,16 @@ class PersistentStorage(
     private val storageName: String
 ) {
 
-    private val preferences = CachedLazyField { context.
-        getSharedPreferences(storageName, Context.MODE_PRIVATE)
+    private val preferences = CachedLazyField {
+        context.
+            getSharedPreferences(storageName, Context.MODE_PRIVATE)
     }
     private var timer = Timer()
 
     internal class PersistentField<Type>(
-            val preferences: CachedLazyField<SharedPreferences>,
-            val name: String,
-            val field: BindableField<Type>): Unbindable {
+        val preferences: CachedLazyField<SharedPreferences>,
+        val name: String,
+        val field: BindableField<Type>) : Unbindable {
 
         override fun unbindAll() {
             field.unbindAll()
@@ -54,7 +55,7 @@ class PersistentStorage(
      * @param defaultValue value to be used if none was set yet
      * @param Type data type of the value to be stored
      */
-    fun<Type> storageField(name: String, defaultValue: Type): BindableField<Type> {
+    fun <Type> storageField(name: String, defaultValue: Type): BindableField<Type> {
         val field = BindableField(defaultValue)
         field.onChange {
             timer.cancel()
@@ -70,7 +71,9 @@ class PersistentStorage(
     /**
      * Load all the fields from SharedPreferences.
      */
-    fun load() { fields.forEach { it.load() } }
+    fun load() {
+        fields.forEach { it.load() }
+    }
 
     private fun save() {
         val editor = preferences.get().edit()

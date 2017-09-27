@@ -1,31 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:id="@+id/addMany"
-        android:title="@string/addMany"
-        android:showAsAction="never" />
+    <item
+        android:id="@+id/addMany"
+        android:showAsAction="never"
+        android:title="@string/addMany" />
 
-    <item android:id="@+id/leftHanded"
-        android:title="@string/leftHanded"
-        android:showAsAction="never" />
+    <item
+        android:id="@+id/leftHanded"
+        android:showAsAction="never"
+        android:title="@string/leftHanded" />
 
-    <item android:id="@+id/rightHanded"
-        android:title="@string/rightHanded"
-        android:showAsAction="never" />
+    <item
+        android:id="@+id/rightHanded"
+        android:showAsAction="never"
+        android:title="@string/rightHanded" />
 
-    <item android:id="@+id/lock"
+    <item
+        android:id="@+id/lock"
         android:icon="@drawable/ic_lock"
-        android:title="@string/lock"
-        android:showAsAction="always" />
+        android:showAsAction="always"
+        android:title="@string/lock" />
 
-    <item android:id="@+id/unlock"
+    <item
+        android:id="@+id/unlock"
         android:icon="@drawable/ic_unlock"
-        android:title="@string/unlock"
-        android:showAsAction="always" />
+        android:showAsAction="always"
+        android:title="@string/unlock" />
 
-    <item android:id="@+id/reset"
+    <item
+        android:id="@+id/reset"
         android:icon="@drawable/ic_reload"
-        android:title="@string/reset"
-        android:showAsAction="always" />
+        android:showAsAction="always"
+        android:title="@string/reset" />
 
 </menu>

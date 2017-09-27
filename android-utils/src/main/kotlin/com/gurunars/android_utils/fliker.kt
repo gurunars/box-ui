@@ -8,7 +8,7 @@ import android.view.View
  *
  * @param duration time it take to perform the animation
  */
-fun View.flicker(duration: Long=1300) {
+fun View.flicker(duration: Long = 1300) {
     clearAnimation()
     ValueAnimator().apply {
         setFloatValues(1.0f, 0.0f, 1.0f)

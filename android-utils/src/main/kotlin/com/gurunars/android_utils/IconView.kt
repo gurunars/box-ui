@@ -32,8 +32,8 @@ class IconView(context: Context) : ImageView(context) {
      * @property shape shape of the drawable
      */
     data class Icon(
-        val bgColor: Int= Color.RED,
-        val fgColor: Int= Color.WHITE,
+        val bgColor: Int = Color.RED,
+        val fgColor: Int = Color.WHITE,
         val icon: Int,
         val shape: Shape = OvalShape()
     )
@@ -74,20 +74,22 @@ class IconView(context: Context) : ImageView(context) {
 
         // Content description
         contentDescription = "|BG:" + currentIcon.bgColor +
-                "|IC:" + currentIcon.fgColor
+            "|IC:" + currentIcon.fgColor
 
         setImageDrawable(iconDrawable)
     }
 
     private fun getRotateDrawable(d: Drawable, angle: Float): Drawable {
         return object : LayerDrawable(arrayOf(d)) {
-            override fun draw(canvas: Canvas) { canvas.apply {
-                save()
-                fun Int.bound() = toFloat() / 2
-                rotate(angle, d.bounds.width().bound(), d.bounds.height().bound())
-                super.draw(this)
-                restore()
-            } }
+            override fun draw(canvas: Canvas) {
+                canvas.apply {
+                    save()
+                    fun Int.bound() = toFloat() / 2
+                    rotate(angle, d.bounds.width().bound(), d.bounds.height().bound())
+                    super.draw(this)
+                    restore()
+                }
+            }
         }
     }
 

@@ -9,35 +9,35 @@ class MoverDownTest {
 
     private val moverDown = ActionMoveDown<StringItem>()
     private val all = Arrays.asList(
-            "one",
-            "two",
-            "three",
-            "four",
-            "five",
-            "six",
-            "seven",
-            "eight",
-            "nine",
-            "ten"
+        "one",
+        "two",
+        "three",
+        "four",
+        "five",
+        "six",
+        "seven",
+        "eight",
+        "nine",
+        "ten"
     )
     private val selected = Sets.newSet(
-            "four",
-            "five",
-            "six",
-            "seven"
+        "four",
+        "five",
+        "six",
+        "seven"
     )
 
     private val expectedOutcome = Arrays.asList(
-            "one",
-            "two",
-            "three",
-            "eight", // item moved up
-            "four",
-            "five",
-            "six",
-            "seven",
-            "nine",
-            "ten"
+        "one",
+        "two",
+        "three",
+        "eight", // item moved up
+        "four",
+        "five",
+        "six",
+        "seven",
+        "nine",
+        "ten"
     )
 
     @Test

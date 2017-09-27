@@ -5,7 +5,7 @@ import java.io.Serializable
 /**
  * Abstraction of the entity that can be shown in the ItemListView.
  */
-interface Item: Serializable {
+interface Item : Serializable {
 
     /**
      * Default type for the cases when the list contains a set of homogeneous items.

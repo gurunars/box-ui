@@ -12,14 +12,14 @@ import com.gurunars.shortcuts.asRow
  * @param selectionColor color integer applied when the row is selected
  * @param regularColor color integer applied when the row is not selected
  */
-fun<ItemType: Item> coloredRowSelectionDecorator(
+fun <ItemType : Item> coloredRowSelectionDecorator(
     itemViewBinder: ItemViewBinder<ItemType>,
-    @ColorInt selectionColor: Int=Color.RED,
-    @ColorInt regularColor: Int=Color.TRANSPARENT
+    @ColorInt selectionColor: Int = Color.RED,
+    @ColorInt regularColor: Int = Color.TRANSPARENT
 ): ItemViewBinder<SelectableItem<ItemType>> = {
     itemType: Enum<*>,
     field: BindableField<SelectableItem<ItemType>>
-->
+    ->
     val newField = BindableField(field.get().item)
     itemViewBinder(itemType, newField).apply {
         asRow()

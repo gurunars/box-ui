@@ -33,8 +33,8 @@ internal fun Context.animalFormRenderer(
         text = getString(R.string.newVersion)
     }
     editText {
-        id=R.id.versionValue
-        inputType=InputType.TYPE_CLASS_NUMBER
+        id = R.id.versionValue
+        inputType = InputType.TYPE_CLASS_NUMBER
         bind(field, object : BindableField.ValueTransformer<AnimalItem, String> {
             override fun forward(value: AnimalItem) = value.version.toString()
             override fun backward(value: String) = field.get().copy(
@@ -43,7 +43,7 @@ internal fun Context.animalFormRenderer(
         })
     }
     button {
-        id=R.id.increment
+        id = R.id.increment
         text = getString(R.string.increment)
         setOnClickListener {
             field.apply {
@@ -85,14 +85,14 @@ class ActivityMain : Activity() {
         nullify: Boolean = false
     ) {
         val curCount = (if (nullify) 0 else this.count.get())
-        items.set((if (nullify) listOf() else items.get()) + (0..count-1).map {
+        items.set((if (nullify) listOf() else items.get()) + (0..count - 1).map {
             AnimalItem(curCount + it.toLong(), getType(it, sortable), 0)
         })
         this.count.set(curCount + count)
     }
 
     fun initView(sortable: Boolean) {
-        setTitle(if(sortable) R.string.sortable else R.string.unsortable)
+        setTitle(if (sortable) R.string.sortable else R.string.unsortable)
 
         fun descriptor(icon: Int, type: AnimalItem.Type) =
             ItemTypeDescriptor(
@@ -100,7 +100,7 @@ class ActivityMain : Activity() {
                 type = type,
                 rowBinder = Context::bindAnimalItem,
                 formBinder = Context::animalFormRenderer,
-                newItemCreator = { AnimalItem(id=(count.get() + 1).toLong(), version= 0, type = type) },
+                newItemCreator = { AnimalItem(id = (count.get() + 1).toLong(), version = 0, type = type) },
                 canSave = { true }
             )
 
@@ -121,7 +121,7 @@ class ActivityMain : Activity() {
         crudItemListView = crudItemListView(
             {
                 TextView(this@crudItemListView).apply {
-                    id=R.id.noItemsLabel
+                    id = R.id.noItemsLabel
                     fullSize()
                     setText(R.string.noItemsAtAll)
                     gravity = Gravity.CENTER
@@ -131,33 +131,33 @@ class ActivityMain : Activity() {
             descriptors
         ) {
             fullSize()
-            id=R.id.customView
+            id = R.id.customView
             this@ActivityMain.items.bind(items)
             items.onChange {
                 count.set(
                     items.get()
                         .map { it.id }
-                        .fold(0L) { acc, l -> Math.max(acc, l)  }
+                        .fold(0L) { acc, l -> Math.max(acc, l) }
                         .toInt()
                 )
             }
             this@ActivityMain.isLeftHanded.bind(isLeftHanded)
 
             listActionColors.set(IconColorBundle(
-                fgColor=color(R.color.Yellow),
-                bgColor=color(R.color.Blue)
+                fgColor = color(R.color.Yellow),
+                bgColor = color(R.color.Blue)
             ))
             confirmationActionColors.set(IconColorBundle(
-                bgColor=color(R.color.Black),
-                fgColor=color(R.color.White)
+                bgColor = color(R.color.Black),
+                fgColor = color(R.color.White)
             ))
             cancelActionColors.set(IconColorBundle(
-                bgColor=color(R.color.Red),
-                fgColor=color(R.color.White)
+                bgColor = color(R.color.Red),
+                fgColor = color(R.color.White)
             ))
             openIcon.set(IconColorBundle(
-                bgColor=color(R.color.Green),
-                fgColor=color(R.color.Yellow)
+                bgColor = color(R.color.Green),
+                fgColor = color(R.color.Yellow)
             ))
         }
 
@@ -166,7 +166,7 @@ class ActivityMain : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         storage.load()
-        isSortable.onChange(listener=this::initView)
+        isSortable.onChange(listener = this::initView)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -179,14 +179,14 @@ class ActivityMain : Activity() {
         val i = item.itemId
 
         fun setSortable(flag: Boolean) {
-            addItems(4, flag,true)
+            addItems(4, flag, true)
             isSortable.set(flag, true)
         }
 
         when (i) {
             R.id.leftHanded -> isLeftHanded.set(true)
             R.id.rightHanded -> isLeftHanded.set(false)
-            R.id.reset -> addItems(4, isSortable.get(),true)
+            R.id.reset -> addItems(4, isSortable.get(), true)
             R.id.lock -> setSortable(false)
             R.id.unlock -> setSortable(true)
             R.id.addMany -> addItems(4 * 20, isSortable.get())

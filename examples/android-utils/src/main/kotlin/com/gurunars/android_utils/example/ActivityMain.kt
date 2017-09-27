@@ -25,54 +25,58 @@ class ActivityMain : Activity() {
         super.onCreate(savedInstanceState)
 
         relativeLayout {
-            gravity=Gravity.CENTER
+            gravity = Gravity.CENTER
             fullSize()
             textView {
-                id=R.id.payloadView
-                padding=dip(15)
-                gravity=Gravity.CENTER
-                backgroundColor=Color.parseColor("#FFFFAA")
+                id = R.id.payloadView
+                padding = dip(15)
+                gravity = Gravity.CENTER
+                backgroundColor = Color.parseColor("#FFFFAA")
                 bind(title)
             }.lparams {
-                width=matchParent
-                margin=dip(10)
+                width = matchParent
+                margin = dip(10)
             }
 
             linearLayout {
-                gravity=Gravity.CENTER
+                gravity = Gravity.CENTER
 
                 textView {
-                    id=R.id.disabled
-                    isEnabled=false
-                    backgroundColor=color(android.R.color.holo_blue_light)
-                    text=getString(R.string.disabled)
+                    id = R.id.disabled
+                    isEnabled = false
+                    backgroundColor = color(android.R.color.holo_blue_light)
+                    text = getString(R.string.disabled)
                 }.lparams()
 
                 textView {
-                    id=R.id.set
-                    background=ColoredShapeDrawable(OvalShape(), Color.YELLOW)
-                    text=getString(R.string.set)
+                    id = R.id.set
+                    background = ColoredShapeDrawable(OvalShape(), Color.YELLOW)
+                    text = getString(R.string.set)
                     setOnClickListener { title.set("Configured") }
                 }.lparams()
 
                 textView {
-                    id=R.id.clear
-                    backgroundColor=color(android.R.color.holo_green_light)
-                    text=getString(R.string.clear)
+                    id = R.id.clear
+                    backgroundColor = color(android.R.color.holo_green_light)
+                    text = getString(R.string.clear)
                     setOnClickListener { title.set("Empty") }
                 }.lparams()
 
             }.lparams {
-                width=matchParent
+                width = matchParent
                 below(R.id.payloadView)
-            }.applyRecursively { view -> when(view) {
-                is TextView -> { view.apply {
-                    isClickable=true
-                    isFocusable=true
-                    padding=dip(20)
-                    setAutoBg(6)
-                } }
-            } }
+            }.applyRecursively { view ->
+                when (view) {
+                    is TextView -> {
+                        view.apply {
+                            isClickable = true
+                            isFocusable = true
+                            padding = dip(20)
+                            setAutoBg(6)
+                        }
+                    }
+                }
+            }
         }
 
     }

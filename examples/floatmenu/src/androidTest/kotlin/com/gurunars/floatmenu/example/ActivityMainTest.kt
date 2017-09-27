@@ -42,7 +42,7 @@ class ActivityMainTest {
     private fun checkFab(iconDescription: String, menuContentDescription: String) {
         fab().check(matches(withContentDescription(menuContentDescription)))
         onView(withId(R.id.iconView)).check(matches(
-                withContentDescription(iconDescription)))
+            withContentDescription(iconDescription)))
     }
 
     @Before

@@ -9,10 +9,13 @@ import com.gurunars.databinding.BindableField
 import com.gurunars.databinding.onChange
 import com.gurunars.item_list.Item
 import com.gurunars.shortcuts.*
-import org.jetbrains.anko.*
+import org.jetbrains.anko.above
+import org.jetbrains.anko.applyRecursively
+import org.jetbrains.anko.dip
+import org.jetbrains.anko.relativeLayout
 
 
-internal fun<ItemType: Item> contextualMenu (
+internal fun <ItemType : Item> contextualMenu(
     context: Context,
     sortable: Boolean,
     actionIcon: BindableField<IconColorBundle>,
@@ -53,102 +56,104 @@ internal fun<ItemType: Item> contextualMenu (
         }
 
         iconView {
-            id=R.id.moveUp
-            icon.set(IconView.Icon(icon=R.drawable.ic_move_up))
+            id = R.id.moveUp
+            icon.set(IconView.Icon(icon = R.drawable.ic_move_up))
             setTag(R.id.action, ActionMoveUp<ItemType>())
             setIsVisible(sortable)
         }.lparams {
-            isLeftHanded.onChange(listener=this::isLeftHanded)
+            isLeftHanded.onChange(listener = this::isLeftHanded)
             above(R.id.moveDown)
-            bottomMargin=dip(5)
-            leftMargin=dip(23)
-            rightMargin=dip(23)
+            bottomMargin = dip(5)
+            leftMargin = dip(23)
+            rightMargin = dip(23)
         }
 
         iconView {
-            id=R.id.moveDown
-            icon.set(IconView.Icon(icon=R.drawable.ic_move_down))
+            id = R.id.moveDown
+            icon.set(IconView.Icon(icon = R.drawable.ic_move_down))
             setTag(R.id.action, ActionMoveDown<ItemType>())
             setIsVisible(sortable)
         }.lparams {
-            alignInParent(verticalAlignment=VerticalAlignment.BOTTOM)
-            isLeftHanded.onChange(listener=this::isLeftHanded)
-            bottomMargin=dip(85)
-            leftMargin=dip(23)
-            rightMargin=dip(23)
+            alignInParent(verticalAlignment = VerticalAlignment.BOTTOM)
+            isLeftHanded.onChange(listener = this::isLeftHanded)
+            bottomMargin = dip(85)
+            leftMargin = dip(23)
+            rightMargin = dip(23)
         }
 
         iconView {
-            id=R.id.delete
-            icon.set(IconView.Icon(icon=R.drawable.ic_delete))
+            id = R.id.delete
+            icon.set(IconView.Icon(icon = R.drawable.ic_delete))
             setTag(R.id.action, ActionDelete<ItemType>())
         }.lparams {
-            alignInParent(verticalAlignment=VerticalAlignment.BOTTOM)
-            isLeftHanded.onChange { alignHorizontallyAroundElement(R.id.selectAll, it)}
-            bottomMargin=dip(23)
-            leftMargin=dip(5)
-            rightMargin=dip(5)
+            alignInParent(verticalAlignment = VerticalAlignment.BOTTOM)
+            isLeftHanded.onChange { alignHorizontallyAroundElement(R.id.selectAll, it) }
+            bottomMargin = dip(23)
+            leftMargin = dip(5)
+            rightMargin = dip(5)
         }
 
         iconView {
-            id=R.id.selectAll
-            icon.set(IconView.Icon(icon=R.drawable.ic_select_all))
+            id = R.id.selectAll
+            icon.set(IconView.Icon(icon = R.drawable.ic_select_all))
             setTag(R.id.action, ActionSelectAll<ItemType>())
         }.lparams {
-            alignInParent(verticalAlignment=VerticalAlignment.BOTTOM)
-            isLeftHanded.onChange { alignHorizontallyAroundElement(R.id.edit, it)}
-            bottomMargin=dip(23)
-            leftMargin=dip(5)
-            rightMargin=dip(5)
+            alignInParent(verticalAlignment = VerticalAlignment.BOTTOM)
+            isLeftHanded.onChange { alignHorizontallyAroundElement(R.id.edit, it) }
+            bottomMargin = dip(23)
+            leftMargin = dip(5)
+            rightMargin = dip(5)
         }
 
         iconView {
-            id=R.id.edit
-            icon.set(IconView.Icon(icon=R.drawable.ic_edit))
+            id = R.id.edit
+            icon.set(IconView.Icon(icon = R.drawable.ic_edit))
             setTag(R.id.action, ActionEdit({ payload: ItemType -> onEdit(payload) }))
         }.lparams {
-            alignInParent(verticalAlignment=VerticalAlignment.BOTTOM)
+            alignInParent(verticalAlignment = VerticalAlignment.BOTTOM)
             isLeftHanded.onChange {
                 this.isLeftHanded(it)
                 if (it) {
-                    leftMargin=dip(85)
-                    rightMargin=dip(5)
+                    leftMargin = dip(85)
+                    rightMargin = dip(5)
                 } else {
-                    leftMargin=dip(5)
-                    rightMargin=dip(85)
+                    leftMargin = dip(5)
+                    rightMargin = dip(85)
                 }
             }
-            bottomMargin=dip(23)
+            bottomMargin = dip(23)
         }
 
-    }.applyRecursively { when(it) {
-        is IconView -> {
-            (it.layoutParams as RelativeLayout.LayoutParams).apply {
-                topMargin=dip(5)
-                width=dip(45)
-                height=dip(45)
-            }
-            val action = it.getTag(R.id.action) as Action<ItemType>
+    }.applyRecursively {
+        when (it) {
+            is IconView -> {
+                (it.layoutParams as RelativeLayout.LayoutParams).apply {
+                    topMargin = dip(5)
+                    width = dip(45)
+                    height = dip(45)
+                }
+                val action = it.getTag(R.id.action) as Action<ItemType>
 
-            listOf(items, selectedItems).onChange {
-                it.isEnabled = action.canPerform(items.get(), selectedItems.get())
-            }
+                listOf(items, selectedItems).onChange {
+                    it.isEnabled = action.canPerform(items.get(), selectedItems.get())
+                }
 
-            it.setOnClickListener {
-                action.perform(items.get(), selectedItems.get()).apply {
-                    if (action.isSynchronous) {
-                        items.set(first)
-                        selectedItems.set(second)
+                it.setOnClickListener {
+                    action.perform(items.get(), selectedItems.get()).apply {
+                        if (action.isSynchronous) {
+                            items.set(first)
+                            selectedItems.set(second)
+                        }
                     }
                 }
-            }
 
-            actionIcon.onChange { icon ->
-                it.icon.set(it.icon.get().copy(
-                    bgColor = icon.bgColor,
-                    fgColor = icon.fgColor
-                ))
+                actionIcon.onChange { icon ->
+                    it.icon.set(it.icon.get().copy(
+                        bgColor = icon.bgColor,
+                        fgColor = icon.fgColor
+                    ))
+                }
             }
         }
-    } }
+    }
 }

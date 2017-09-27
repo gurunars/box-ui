@@ -22,16 +22,16 @@ typealias ItemViewBinder<ItemType> = Context.(
 ) -> View
 
 internal class ItemAdapter<ItemType : Item>(
-        private val items: BindableField<List<ItemType>>,
-        private val emptyViewBinder: EmptyViewBinder,
-        private val itemViewBinder: ItemViewBinder<ItemType>
+    private val items: BindableField<List<ItemType>>,
+    private val emptyViewBinder: EmptyViewBinder,
+    private val itemViewBinder: ItemViewBinder<ItemType>
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var previousList: List<ItemType> = ArrayList()
 
-    private class ItemCallback<out ItemType: Item>(
-            val previousList: List<ItemType>,
-            val currentList: List<ItemType>): DiffUtil.Callback() {
+    private class ItemCallback<out ItemType : Item>(
+        val previousList: List<ItemType>,
+        val currentList: List<ItemType>) : DiffUtil.Callback() {
 
         override fun getOldListSize() = Math.max(1, previousList.size)
 
@@ -39,11 +39,11 @@ internal class ItemAdapter<ItemType : Item>(
 
         override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
             currentList.isNotEmpty() && previousList.isNotEmpty() &&
-            previousList[oldItemPosition] == currentList[newItemPosition]
+                previousList[oldItemPosition] == currentList[newItemPosition]
 
         override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
             currentList.isNotEmpty() && previousList.isNotEmpty() &&
-            previousList[oldItemPosition].id == currentList[newItemPosition].id
+                previousList[oldItemPosition].id == currentList[newItemPosition].id
 
     }
 
@@ -82,7 +82,7 @@ internal class ItemAdapter<ItemType : Item>(
                 itemViewBinder(parent.context, initialPayload.type, field).apply {
                     asRow()
                     setTag(R.id.payloadTag, field)
-            }) {}
+                }) {}
         }
     }
 

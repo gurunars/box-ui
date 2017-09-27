@@ -13,10 +13,10 @@ typealias SelectableItemViewBinder<ItemType> = ItemViewBinder<SelectableItem<Ite
 internal fun <ItemType : Item> clickableSelector(
     selectedItems: BindableField<Set<ItemType>>,
     itemViewBinder: SelectableItemViewBinder<ItemType>
-) : SelectableItemViewBinder<ItemType> = {
+): SelectableItemViewBinder<ItemType> = {
     itemType: Enum<*>,
     payload: BindableField<SelectableItem<ItemType>>
-->
+    ->
     itemViewBinder(itemType, payload).apply {
         isClickable = true
         setOnClickListener {

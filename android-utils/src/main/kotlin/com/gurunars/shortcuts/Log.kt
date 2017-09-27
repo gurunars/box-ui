@@ -7,6 +7,7 @@ import android.util.Log
  *
  * @param tag tag to be used in for the log message
  */
-fun log(vararg params: Any?, tag: String="MSG") = Log.e(tag, params.fold("", {
-    acc, obj -> if (acc.isNotEmpty()) acc + ", " + obj else acc + obj
+fun log(vararg params: Any?, tag: String = "MSG") = Log.e(tag, params.fold("", {
+    acc, obj ->
+    if (acc.isNotEmpty()) acc + ", " + obj else acc + obj
 }))

@@ -41,18 +41,18 @@ class SelectableItemListView<ItemType : Item> constructor(
 
     val selectedItems = bindableField<Set<ItemType>>(
         hashSetOf(),
-        {item -> kryo.copy(HashSet(item))}
+        { item -> kryo.copy(HashSet(item)) }
     )
 
     val items = bindableField<List<ItemType>>(
         listOf(),
-        {item -> kryo.copy(ArrayList(item))}
+        { item -> kryo.copy(ArrayList(item)) }
     )
 
     init {
         itemListView(
-            itemViewBinder=clickableSelector(selectedItems, itemViewBinder),
-            emptyViewBinder=emptyViewBinder
+            itemViewBinder = clickableSelector(selectedItems, itemViewBinder),
+            emptyViewBinder = emptyViewBinder
         ) {
             id = R.id.itemList
             fullSize()

@@ -1,7 +1,6 @@
 package com.gurunars.crud_item_list
 
 import android.content.Context
-import android.widget.FrameLayout
 import android.widget.RelativeLayout
 import com.gurunars.android_utils.IconView
 import com.gurunars.databinding.BindableField
@@ -15,13 +14,13 @@ import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.margin
 import org.jetbrains.anko.uiThread
 
-internal class ItemForm<ItemType: Item>(
+internal class ItemForm<ItemType : Item>(
     context: Context,
     private val itemInEdit: BindableField<ItemType?>,
     private val confirmationHandler: () -> Unit,
     private val canSave: (item: ItemType) -> Boolean,
     private val confirmIconColors: BindableField<IconColorBundle>
-): RelativeLayout(context) {
+) : RelativeLayout(context) {
 
     fun bind(
         item: ItemType,
@@ -55,7 +54,7 @@ internal class ItemForm<ItemType: Item>(
                     )
                 )
             }
-            id=R.id.save
+            id = R.id.save
             field.onChange {
                 doAsync {
                     val can = canSave(it)
@@ -69,7 +68,7 @@ internal class ItemForm<ItemType: Item>(
                 context.dip(60),
                 context.dip(60)
             ).apply {
-                margin=dip(16)
+                margin = dip(16)
                 alignInParent(HorizontalAlignment.LEFT, VerticalAlignment.BOTTOM)
             }
         })

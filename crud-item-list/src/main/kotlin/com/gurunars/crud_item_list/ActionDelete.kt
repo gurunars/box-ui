@@ -2,7 +2,7 @@ package com.gurunars.crud_item_list
 
 import com.gurunars.item_list.Item
 
-internal class ActionDelete<ItemType: Item> : Action<ItemType> {
+internal class ActionDelete<ItemType : Item> : Action<ItemType> {
     override val isSynchronous = true
 
     override fun perform(all: List<ItemType>, selectedItems: Set<ItemType>): Pair<List<ItemType>, Set<ItemType>> {

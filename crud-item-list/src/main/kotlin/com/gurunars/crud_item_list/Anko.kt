@@ -12,7 +12,7 @@ import org.jetbrains.anko.custom.ankoView
  *
  * @see CrudItemListView
  */
-fun <ItemT: Item> ViewManager.crudItemListView(
+fun <ItemT : Item> ViewManager.crudItemListView(
     emptyViewBinder: EmptyViewBinder = Context::defaultEmptyViewBinder,
     sortable: Boolean = true,
     groupedItemTypeDescriptors: List<List<ItemTypeDescriptor<ItemT>>>,
@@ -28,7 +28,7 @@ fun <ItemT: Item> ViewManager.crudItemListView(
  *
  * @see CrudItemListView
  */
-fun <ItemT: Item> Activity.crudItemListView(
+fun <ItemT : Item> Activity.crudItemListView(
     emptyViewBinder: EmptyViewBinder = Context::defaultEmptyViewBinder,
     sortable: Boolean = true,
     groupedItemTypeDescriptors: List<List<ItemTypeDescriptor<ItemT>>>,

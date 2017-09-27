@@ -2,8 +2,8 @@ package com.gurunars.crud_item_list
 
 import com.gurunars.item_list.Item
 
-internal class ActionEdit<ItemType: Item>(
-    private val itemConsumer: (item: ItemType)-> Unit
+internal class ActionEdit<ItemType : Item>(
+    private val itemConsumer: (item: ItemType) -> Unit
 ) : Action<ItemType> {
     override val isSynchronous = false
 

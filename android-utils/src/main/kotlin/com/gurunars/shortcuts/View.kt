@@ -109,8 +109,8 @@ enum class VerticalAlignment {
  * @param verticalAlignment position on Y axis
  */
 fun RelativeLayout.LayoutParams.alignInParent(
-    horizontalAlignment: HorizontalAlignment=HorizontalAlignment.SAME,
-    verticalAlignment: VerticalAlignment=VerticalAlignment.SAME
+    horizontalAlignment: HorizontalAlignment = HorizontalAlignment.SAME,
+    verticalAlignment: VerticalAlignment = VerticalAlignment.SAME
 ) {
     if (horizontalAlignment != HorizontalAlignment.SAME) {
         removeRule(RelativeLayout.ALIGN_PARENT_LEFT)
@@ -185,8 +185,8 @@ enum class VerticalPosition {
  */
 fun RelativeLayout.LayoutParams.alignWithRespectTo(
     id: Int,
-    horizontalPosition: HorizontalPosition=HorizontalPosition.SAME,
-    verticalPosition: VerticalPosition=VerticalPosition.SAME
+    horizontalPosition: HorizontalPosition = HorizontalPosition.SAME,
+    verticalPosition: VerticalPosition = VerticalPosition.SAME
 ) {
     if (horizontalPosition != HorizontalPosition.SAME) {
         removeRule(RelativeLayout.LEFT_OF)

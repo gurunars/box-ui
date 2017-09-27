@@ -10,11 +10,11 @@ import com.gurunars.databinding.BindableField
  */
 fun TextView.bind(field: BindableField<String>) {
     field.onChange {
-        if(text.toString() != it) {
+        if (text.toString() != it) {
             setText(it)
         }
     }
-    addTextChangedListener(object: TextWatcher {
+    addTextChangedListener(object : TextWatcher {
         override fun afterTextChanged(s: Editable?) {
             field.set(s.toString())
         }
@@ -31,17 +31,17 @@ fun TextView.bind(field: BindableField<String>) {
  *
  * @param From - type of payload to be transformed into a string and to be generated out of a string
  */
-fun<From> TextView.bind(
+fun <From> TextView.bind(
     field: BindableField<From>,
     valueTransformer: BindableField.ValueTransformer<From, String>
 ) {
     field.onChange {
         val trans = valueTransformer.forward(it)
-        if(text.toString() != trans) {
+        if (text.toString() != trans) {
             setText(trans)
         }
     }
-    addTextChangedListener(object: TextWatcher {
+    addTextChangedListener(object : TextWatcher {
         override fun afterTextChanged(s: Editable?) {
             field.set(valueTransformer.backward(s.toString()))
         }
@@ -64,7 +64,7 @@ fun BindableField<String>.bind(textView: TextView) {
 /**
  * @see TextView.bind with value transformation
  */
-fun<From> BindableField<From>.bind(
+fun <From> BindableField<From>.bind(
     textView: TextView,
     valueTransformer: BindableField.ValueTransformer<From, String>
 ) {

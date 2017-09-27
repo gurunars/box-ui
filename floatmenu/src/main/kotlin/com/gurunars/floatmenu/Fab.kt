@@ -25,7 +25,7 @@ internal class Fab constructor(
         val animatedValue = bindableField(1f)
 
         val actualImageView = IconView(context).apply {
-            id=R.id.iconView
+            id = R.id.iconView
             fullSize()
         }
 
@@ -41,19 +41,19 @@ internal class Fab constructor(
             val targetIcon: Icon = if (isActivated.get()) closeIcon.get() else openIcon.get()
 
             actualImageView.icon.set(Icon(
-                    bgColor = argbEvaluator.evaluate(
-                            animatedValue.get(),
-                            sourceIcon.bgColor,
-                            targetIcon.bgColor) as Int,
-                    fgColor = argbEvaluator.evaluate(
-                            animatedValue.get(),
-                            sourceIcon.fgColor,
-                            targetIcon.fgColor) as Int,
-                    icon = if (animatedValue.get() < 0.5f) sourceIcon.icon else targetIcon.icon
+                bgColor = argbEvaluator.evaluate(
+                    animatedValue.get(),
+                    sourceIcon.bgColor,
+                    targetIcon.bgColor) as Int,
+                fgColor = argbEvaluator.evaluate(
+                    animatedValue.get(),
+                    sourceIcon.fgColor,
+                    targetIcon.fgColor) as Int,
+                icon = if (animatedValue.get() < 0.5f) sourceIcon.icon else targetIcon.icon
             ))
             actualImageView.rotation = floatEvaluator.evaluate(animatedValue.get(),
-                    if (isActivated.get()) 0f else 360f,
-                    if (isActivated.get()) 360f else 0f
+                if (isActivated.get()) 0f else 360f,
+                if (isActivated.get()) 360f else 0f
             )
         }
 

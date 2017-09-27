@@ -20,12 +20,14 @@ class KnobView constructor(
     val selectedView = bindableField(viewSelector.keys.toList()[0])
 
     init {
-        viewSelector.forEach { type, view -> addView(
-            view.apply {
-                tag=type
-                visibility = View.GONE
-            }
-        ) }
+        viewSelector.forEach { type, view ->
+            addView(
+                view.apply {
+                    tag = type
+                    visibility = View.GONE
+                }
+            )
+        }
 
         selectedView.onChange(
             beforeChange = {

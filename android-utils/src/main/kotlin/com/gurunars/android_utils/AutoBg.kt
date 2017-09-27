@@ -78,7 +78,7 @@ fun View.setAutoBg(shadowWidth: Int) {
 
     if (shadowWidth > 0 && bg is ShapeDrawable) {
         bg.paint.setShadowLayer(shadowWidth.toFloat(), 0f, shadowWidth.toFloat(),
-                Color.parseColor("#68000000"))
+            Color.parseColor("#68000000"))
         setLayerType(View.LAYER_TYPE_SOFTWARE, null)
         background = AutoBgDrawable(bg, shadowWidth)
     } else {

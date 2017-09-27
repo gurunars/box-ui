@@ -22,7 +22,7 @@ import org.objenesis.strategy.StdInstantiatorStrategy
  *
  * @property items A collection of items shown in the list
  */
-class ItemListView<ItemType : Item> (
+class ItemListView<ItemType : Item>(
     context: Context,
     itemViewBinder: ItemViewBinder<ItemType>,
     emptyViewBinder: EmptyViewBinder = Context::defaultEmptyViewBinder
@@ -34,21 +34,21 @@ class ItemListView<ItemType : Item> (
 
     val items = bindableField(
         listOf<ItemType>(),
-        {item -> kryo.copy(ArrayList(item))}
+        { item -> kryo.copy(ArrayList(item)) }
     )
 
     init {
         setOneView(RecyclerView(context).apply {
-            id=R.id.recyclerView
+            id = R.id.recyclerView
             fullSize()
-            clipToPadding=false
-            bottomPadding=dip(60)
-            isSaveEnabled=false
+            clipToPadding = false
+            bottomPadding = dip(60)
+            isSaveEnabled = false
             adapter = ItemAdapter(items, emptyViewBinder, itemViewBinder)
             layoutManager = LinearLayoutManager(context).apply {
                 orientation = LinearLayoutManager.VERTICAL
             }
-            itemAnimator= FadeInAnimator()
+            itemAnimator = FadeInAnimator()
         })
 
     }

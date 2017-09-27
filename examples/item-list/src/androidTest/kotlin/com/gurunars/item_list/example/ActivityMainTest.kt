@@ -1,24 +1,20 @@
 package com.gurunars.item_list.example
 
-import android.support.test.filters.LargeTest
-import android.support.test.rule.ActivityTestRule
-import android.support.test.runner.AndroidJUnit4
-
-import org.junit.After
-import org.junit.Before
-import org.junit.Rule
-import org.junit.Test
-import org.junit.runner.RunWith
-
 import android.support.test.InstrumentationRegistry.getInstrumentation
 import android.support.test.espresso.Espresso.onView
 import android.support.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu
 import android.support.test.espresso.action.ViewActions.click
 import android.support.test.espresso.assertion.ViewAssertions.matches
-import android.support.test.espresso.matcher.ViewMatchers.isDisplayed
-import android.support.test.espresso.matcher.ViewMatchers.withId
-import android.support.test.espresso.matcher.ViewMatchers.withText
+import android.support.test.espresso.matcher.ViewMatchers.*
+import android.support.test.filters.LargeTest
+import android.support.test.rule.ActivityTestRule
+import android.support.test.runner.AndroidJUnit4
 import com.gurunars.test_utils.Helpers.nthChildOf
+import org.junit.After
+import org.junit.Before
+import org.junit.Rule
+import org.junit.Test
+import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
 @LargeTest
@@ -26,7 +22,7 @@ class ActivityMainTest {
 
     @get:Rule
     var mActivityRule = ActivityTestRule(
-            ActivityMain::class.java)
+        ActivityMain::class.java)
 
     private fun clickMenu(text: String) {
         openActionBarOverflowOrOptionsMenu(getInstrumentation().targetContext)
@@ -49,8 +45,8 @@ class ActivityMainTest {
     fun deletingItems_shouldLeadToPartialRemoval() {
         clickMenu("Delete items")
         assertList(
-                "#0{TIGER @ 0}",
-                "#2{MONKEY @ 0}"
+            "#0{TIGER @ 0}",
+            "#2{MONKEY @ 0}"
         )
     }
 
@@ -58,14 +54,14 @@ class ActivityMainTest {
     fun createItems_shouldAppendItemsToTheEnd() {
         clickMenu("Create items")
         assertList(
-                "#0{TIGER @ 0}",
-                "#1{WOLF @ 0}",
-                "#2{MONKEY @ 0}",
-                "#3{LION @ 0}",
-                "#4{TIGER @ 0}",
-                "#5{WOLF @ 0}",
-                "#6{MONKEY @ 0}",
-                "#7{LION @ 0}"
+            "#0{TIGER @ 0}",
+            "#1{WOLF @ 0}",
+            "#2{MONKEY @ 0}",
+            "#3{LION @ 0}",
+            "#4{TIGER @ 0}",
+            "#5{WOLF @ 0}",
+            "#6{MONKEY @ 0}",
+            "#7{LION @ 0}"
         )
     }
 
@@ -73,10 +69,10 @@ class ActivityMainTest {
     fun updateItems_shouldChangeSomeOfItems() {
         clickMenu("Update items")
         assertList(
-                "#0{TIGER @ 0}",
-                "#1{WOLF @ 1}",
-                "#2{MONKEY @ 0}",
-                "#3{LION @ 1}"
+            "#0{TIGER @ 0}",
+            "#1{WOLF @ 1}",
+            "#2{MONKEY @ 0}",
+            "#3{LION @ 1}"
         )
     }
 
@@ -84,10 +80,10 @@ class ActivityMainTest {
     fun moveUp_shouldPutItemFromBottomToTop() {
         clickMenu("Move up")
         assertList(
-                "#3{LION @ 0}",
-                "#0{TIGER @ 0}",
-                "#1{WOLF @ 0}",
-                "#2{MONKEY @ 0}"
+            "#3{LION @ 0}",
+            "#0{TIGER @ 0}",
+            "#1{WOLF @ 0}",
+            "#2{MONKEY @ 0}"
         )
     }
 
@@ -95,10 +91,10 @@ class ActivityMainTest {
     fun moveDown_shouldPutItemFromTopToBottom() {
         clickMenu("Move down")
         assertList(
-                "#1{WOLF @ 0}",
-                "#2{MONKEY @ 0}",
-                "#3{LION @ 0}",
-                "#0{TIGER @ 0}"
+            "#1{WOLF @ 0}",
+            "#2{MONKEY @ 0}",
+            "#3{LION @ 0}",
+            "#0{TIGER @ 0}"
         )
     }
 
@@ -106,10 +102,10 @@ class ActivityMainTest {
     fun resetItems_shouldSetItemsToInitialList() {
         clickMenu("Reset items")
         assertList(
-                "#0{TIGER @ 0}",
-                "#1{WOLF @ 0}",
-                "#2{MONKEY @ 0}",
-                "#3{LION @ 0}"
+            "#0{TIGER @ 0}",
+            "#1{WOLF @ 0}",
+            "#2{MONKEY @ 0}",
+            "#3{LION @ 0}"
         )
     }
 

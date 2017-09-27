@@ -46,7 +46,7 @@ class ActivityMain : Activity() {
 
         itemListView = itemListView(Context::bindAnimalItem) {
             fullSize()
-            id=R.id.itemList
+            id = R.id.itemList
             this@ActivityMain.items.bind(items)
         }
 
@@ -91,7 +91,8 @@ class ActivityMain : Activity() {
 
     @StringRes private fun delete(): Int {
         this.items.set(this.items.get().filterIndexed({
-            index, _ -> index % 2 == 0
+            index, _ ->
+            index % 2 == 0
         }))
         return R.string.did_delete
     }
@@ -99,10 +100,10 @@ class ActivityMain : Activity() {
     @StringRes private fun update(): Int {
         itemListView.items.set(items.get().mapIndexed { index, animalItem ->
             if (index % 2 != 0)
-                animalItem.copy(version = animalItem.version + 1 )
+                animalItem.copy(version = animalItem.version + 1)
             else
                 animalItem
-        } )
+        })
         return R.string.did_update
     }
 

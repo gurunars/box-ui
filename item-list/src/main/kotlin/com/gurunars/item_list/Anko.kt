@@ -10,49 +10,49 @@ import org.jetbrains.anko.custom.ankoView
  *
  * @see ItemListView
  */
-fun <ItemT: Item> ViewManager.itemListView(
+fun <ItemT : Item> ViewManager.itemListView(
     itemViewBinder: ItemViewBinder<ItemT>,
     emptyViewBinder: EmptyViewBinder = Context::defaultEmptyViewBinder,
     init: ItemListView<ItemT>.() -> Unit = {}) =
-ankoView({
-    ItemListView(it, itemViewBinder, emptyViewBinder)
-}, 0, init)
+    ankoView({
+        ItemListView(it, itemViewBinder, emptyViewBinder)
+    }, 0, init)
 
 /**
  * Anko specific view function for ItemListView
  *
  * @see ItemListView
  */
-fun <ItemT: Item> Activity.itemListView(
+fun <ItemT : Item> Activity.itemListView(
     itemViewBinder: ItemViewBinder<ItemT>,
     emptyViewBinder: EmptyViewBinder = Context::defaultEmptyViewBinder,
     init: ItemListView<ItemT>.() -> Unit = {}) =
-ankoView({
-    ItemListView(it, itemViewBinder, emptyViewBinder)
-}, 0, init)
+    ankoView({
+        ItemListView(it, itemViewBinder, emptyViewBinder)
+    }, 0, init)
 
 /**
  * Anko specific view function for SelectableItemViewBinder
  *
  * @see SelectableItemViewBinder
  */
-fun <ItemT: Item> ViewManager.selectableItemListView(
+fun <ItemT : Item> ViewManager.selectableItemListView(
     itemViewBinder: SelectableItemViewBinder<ItemT>,
     emptyViewBinder: EmptyViewBinder = Context::defaultEmptyViewBinder,
     init: SelectableItemListView<ItemT>.() -> Unit = {}) =
-ankoView({
-    SelectableItemListView(it, itemViewBinder, emptyViewBinder)
-}, 0, init)
+    ankoView({
+        SelectableItemListView(it, itemViewBinder, emptyViewBinder)
+    }, 0, init)
 
 /**
  * Anko specific view function for SelectableItemViewBinder
  *
  * @see SelectableItemViewBinder
  */
-fun <ItemT: Item> Activity.selectableItemListView(
+fun <ItemT : Item> Activity.selectableItemListView(
     itemViewBinder: SelectableItemViewBinder<ItemT>,
     emptyViewBinder: EmptyViewBinder = Context::defaultEmptyViewBinder,
     init: SelectableItemListView<ItemT>.() -> Unit = {}) =
-ankoView({
-    SelectableItemListView(it, itemViewBinder, emptyViewBinder)
-}, 0, init)
+    ankoView({
+        SelectableItemListView(it, itemViewBinder, emptyViewBinder)
+    }, 0, init)
