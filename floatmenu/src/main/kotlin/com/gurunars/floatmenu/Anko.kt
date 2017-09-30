@@ -8,11 +8,7 @@ import com.gurunars.databinding.BindableField
 import org.jetbrains.anko.custom.ankoView
 
 inline fun ViewManager.floatMenu(
-    contentView: View,
-    menuView: View,
-    init: FloatMenu.() -> Unit) = ankoView({ FloatMenu(it, contentView, menuView) }, 0, init)
+    init: FloatMenu.() -> Unit) = ankoView({ FloatMenu(it) }, 0, init)
 
 inline fun Activity.floatMenu(
-    contentView: View,
-    menuView: View,
-    init: FloatMenu.() -> Unit) = ankoView({ FloatMenu(it, contentView, menuView) }, 0, init)
+    init: FloatMenu.() -> Unit) = ankoView({ FloatMenu(it) }, 0, init)

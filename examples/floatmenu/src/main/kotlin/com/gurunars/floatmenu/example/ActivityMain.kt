@@ -106,9 +106,12 @@ class ActivityMain : Activity() {
             }
         }.view
 
-        floatingMenu = floatMenu(contentView, menuView) {
+        floatingMenu = floatMenu {
             fullSize()
             id = R.id.floatingMenu
+
+            this.menuView.set(menuView)
+            this.contentView.set(contentView)
 
             isOpen.bind(isOpenT)
 

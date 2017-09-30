@@ -1,22 +1,22 @@
 package com.gurunars.databinding.android
 
-import android.app.Activity
 import android.content.Context
 import android.os.Bundle
 import android.os.IBinder
 import android.os.Parcelable
 import android.util.Size
 import android.util.SizeF
-import android.view.ViewGroup
 import android.widget.FrameLayout
 import com.gurunars.databinding.BindableField
 import java.io.Serializable
 
-class UnsupportedStateType: Exception()
+abstract class StatefulComponent(context: Context): FrameLayout(context) {
 
-class WithState internal constructor(context: Context, vararg fields: BindableField<*>): FrameLayout(context) {
+    class UnsupportedStateType: Exception()
 
-    private val fields: List<BindableField<*>> = fields.asList()
+    private val fields: MutableList<BindableField<*>> = mutableListOf()
+
+    fun retain(vararg fields: BindableField<*>) = this.fields.addAll(fields)
 
     /**
      * @suppress
@@ -122,17 +122,3 @@ class WithState internal constructor(context: Context, vararg fields: BindableFi
     }
 
 }
-
-fun ViewGroup.withState(id: Int, vararg fields: BindableField<*>, init: WithState.() -> Unit ) =
-    WithState(context, *fields).apply {
-        init()
-        this.id = id
-        this@withState.addView(this)
-    }
-
-fun Activity.withState(id: Int, vararg fields: BindableField<*>, init: WithState.() -> Unit ) =
-    WithState(this, *fields).apply {
-        init()
-        this.id = id
-        setContentView(this)
-    }

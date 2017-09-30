@@ -1,25 +1,24 @@
 package com.gurunars.floatmenu
 
 import android.content.Context
-import android.os.Bundle
-import android.os.Parcelable
+import android.support.annotation.StringRes
+import android.view.Gravity
 import android.view.View
-import android.widget.FrameLayout
 import android.widget.RelativeLayout
+import android.widget.TextView
 import com.gurunars.android_utils.IconView
+import com.gurunars.databinding.android.StatefulComponent
 import com.gurunars.databinding.android.bindableField
-import com.gurunars.databinding.android.withState
-import com.gurunars.shortcuts.fullSize
-import com.gurunars.shortcuts.setOneView
+import com.gurunars.shortcuts.*
 import org.jetbrains.anko.*
 
 /**
  * Floating menu available via a
  * [FAB](https://material.google.com/components/buttons-floating-action-button.html)
  *
- * @param contentView View shown in the background layer of the widget. Semantically it
+ * @property contentView View shown in the background layer of the widget. Semantically it
  * represents the data manipulated by the menu.
- * @param menuView View shown in the foreground layer of the widget when the menu is open.
+ * @property menuView View shown in the foreground layer of the widget when the menu is open.
  * Is supposed to contain menu's controls.
  *
  * @property isLeftHanded If **true** - is on the left side of the screen. On the right side
@@ -34,12 +33,18 @@ import org.jetbrains.anko.*
  * If **false** - the menu does not intercept clicks and passes them to the content area.
  * The flag does not affect clickable elements that are located inside the menu though.
  */
-class FloatMenu constructor(
-    context: Context,
-    contentView: View,
-    menuView: View
-) : FrameLayout(context) {
+class FloatMenu constructor(context: Context) : StatefulComponent(context) {
 
+    companion object {
+        private fun Context.getPane(@StringRes stringId: Int): View = TextView(this).apply {
+            gravity=Gravity.CENTER
+            text=context.getString(stringId)
+            fullSize()
+        }
+    }
+
+    val contentView = bindableField(context.getPane(R.string.contentView))
+    val menuView = bindableField(context.getPane(R.string.menuView))
     val isLeftHanded = bindableField(false)
     val animationDuration = bindableField(400)
     val isOpen = bindableField(false)
@@ -48,35 +53,29 @@ class FloatMenu constructor(
     val hasOverlay = bindableField(true)
 
     init {
-        withState(R.id.floatMenu, isOpen) {
-            relativeLayout {
-                fullSize()
-                frameLayout {
-                    id = R.id.contentPane
-                    setOneView(contentView)
-                }.fullSize()
-                menuPane(hasOverlay, isOpen, animationDuration) {
-                    id = R.id.menuPane
-                    isClickable = true
-                    visibility = View.GONE
-                    setOneView(menuView)
-                }.fullSize()
-                fab(animationDuration, openIcon, closeIcon, isOpen) {
-                    id = R.id.openFab
-                    val fab = this
-                    isLeftHanded.onChange { fab.contentDescription = "LH:" + it }
-                }.lparams {
-                    margin = dip(16)
-                    width = dip(60)
-                    height = dip(60)
-                    alignParentBottom()
-                    val fab = this
-                    isLeftHanded.onChange {
-                        fab.removeRule(RelativeLayout.ALIGN_PARENT_LEFT)
-                        fab.removeRule(RelativeLayout.ALIGN_PARENT_RIGHT)
-                        if (it) fab.alignParentLeft() else fab.alignParentRight()
-                        requestLayout()
-                    }
+        retain(isOpen)
+        relativeLayout {
+            fullSize()
+            frameLayout {
+                id = R.id.contentPane
+                contentView.onChange { setOneView(it) }
+            }.fullSize()
+            menuPane(hasOverlay, isOpen, animationDuration) {
+                id = R.id.menuPane
+                isClickable = true
+                menuView.onChange { setOneView(it) }
+            }.fullSize()
+            fab(animationDuration, openIcon, closeIcon, isOpen) {
+                id = R.id.openFab
+                isLeftHanded.onChange { contentDescription = "LH:" + it }
+            }.lparams {
+                margin = dip(16)
+                width = dip(60)
+                height = dip(60)
+                alignParentBottom()
+                isLeftHanded.onChange {
+                    alignInParent(if(it) HorizontalAlignment.LEFT else HorizontalAlignment.RIGHT)
+                    requestLayout()
                 }
             }
         }
