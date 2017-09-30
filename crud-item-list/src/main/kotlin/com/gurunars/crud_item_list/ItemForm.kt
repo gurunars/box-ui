@@ -1,6 +1,7 @@
 package com.gurunars.crud_item_list
 
 import android.content.Context
+import android.util.Log
 import android.widget.RelativeLayout
 import com.gurunars.android_utils.IconView
 import com.gurunars.databinding.BindableField

@@ -1,5 +1,6 @@
 package com.gurunars.crud_item_list
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.view.View
 import com.gurunars.android_utils.IconView
@@ -13,13 +14,14 @@ import com.gurunars.item_list.*
 import com.gurunars.knob_view.KnobView
 import com.gurunars.shortcuts.fullSize
 
+@SuppressLint("ViewConstructor")
 /**
  * Widget to be used for manipulating a collection of items with a dedicated set of UI controls.
  *
  * @param ItemType type of the item to be shown in the list
  * @param context Android context
  * @param emptyViewBinder a function returning a view to be shown when the list is empty
- * @param isSortable If false move up and move down buttons are hidden.
+ * @param sortable If false move up and move down buttons are hidden.
  * @param groupedItemTypeDescriptors a collection of item type descriptors
  *
  * @property listActionColors Color of the icons meant to manipulate the collection of items in the
@@ -61,7 +63,7 @@ class CrudItemListView<ItemType : Item> constructor(
     val isLeftHanded = bindableField(false)
     val items: BindableField<List<ItemType>>
 
-    val isOpen = bindableField(false)
+    val isOpen: BindableField<Boolean>
     private val itemInEdit = BindableField<ItemType?>(null)
 
     private val creationMenu: View
@@ -82,10 +84,10 @@ class CrudItemListView<ItemType : Item> constructor(
         field: BindableField<SelectableItem<ItemType>>
     ): View {
         val binder = typeCache[itemType] ?:
-            throw RuntimeException("Unknown type ${itemType}")
+            throw RuntimeException("Unknown type $itemType")
 
         val wrapper = coloredRowSelectionDecorator(
-            { type, fld: BindableField<ItemType> -> binder.rowBinder(context, fld) },
+            { _, fld: BindableField<ItemType> -> binder.rowBinder(context, fld) },
             binder.rowSelectionColor,
             binder.rowRegularColor)
 
@@ -93,8 +95,6 @@ class CrudItemListView<ItemType : Item> constructor(
     }
 
     init {
-        retain(itemInEdit)
-
         creationMenu = context.creationMenu(
             groupedItemTypeDescriptors,
             { itemInEdit.set(it) },
@@ -149,7 +149,7 @@ class CrudItemListView<ItemType : Item> constructor(
             },
             confirmationActionColors
         ).apply {
-            id=R.id.itemForm
+            id = R.id.itemForm
         }
 
         knobView = KnobView(context, mapOf(
@@ -190,9 +190,7 @@ class CrudItemListView<ItemType : Item> constructor(
 
             isOpen.onChange({
                 if (it) {
-                    if (!it) {
-                        knobView.selectedView.set(ViewMode.CREATION)
-                    }
+                    knobView.selectedView.set(ViewMode.CREATION)
                 }
             }) {
                 if (!it) {
@@ -238,9 +236,10 @@ class CrudItemListView<ItemType : Item> constructor(
                 }
             }
 
+            retain(itemListView.selectedItems, isOpen, itemInEdit)
         }
 
-        isOpen.bind(floatingMenu.isOpen)
+        isOpen = floatingMenu.isOpen
         items = itemListView.items
 
     }

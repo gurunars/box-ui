@@ -86,7 +86,7 @@ class ActivitySortableTest {
     }
 
     @Test
-    fun clickingCross_shouldCloseContextualMenu() {
+    fun clickingTick_shouldCloseContextualMenu() {
         validateDoesNotExist(R.id.menuPane)
         atIndex(0).perform(longClick())
         validateExists(R.id.menuPane)
