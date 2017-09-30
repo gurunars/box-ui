@@ -94,5 +94,5 @@ internal fun ViewGroup.menuPane(
     init: MenuPane.() -> Any
 ) = MenuPane(context, hasOverlay, isVisible, animationDuration).apply {
     init()
-    addView(this)
+    this@menuPane.addView(this)
 }

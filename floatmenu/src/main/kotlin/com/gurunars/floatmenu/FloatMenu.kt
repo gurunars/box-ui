@@ -8,6 +8,7 @@ import android.widget.FrameLayout
 import android.widget.RelativeLayout
 import com.gurunars.android_utils.IconView
 import com.gurunars.databinding.android.bindableField
+import com.gurunars.databinding.android.withState
 import com.gurunars.shortcuts.fullSize
 import com.gurunars.shortcuts.setOneView
 import org.jetbrains.anko.*
@@ -38,6 +39,7 @@ class FloatMenu constructor(
     contentView: View,
     menuView: View
 ) : FrameLayout(context) {
+
     val isLeftHanded = bindableField(false)
     val animationDuration = bindableField(400)
     val isOpen = bindableField(false)
@@ -46,56 +48,38 @@ class FloatMenu constructor(
     val hasOverlay = bindableField(true)
 
     init {
-        relativeLayout {
-            fullSize()
-            frameLayout {
-                id = R.id.contentPane
-                setOneView(contentView)
-            }.fullSize()
-            menuPane(hasOverlay, isOpen, animationDuration) {
-                id = R.id.menuPane
-                isClickable = true
-                visibility = View.GONE
-                setOneView(menuView)
-            }.fullSize()
-            fab(animationDuration, openIcon, closeIcon, isOpen) {
-                id = R.id.openFab
-                val fab = this
-                isLeftHanded.onChange { fab.contentDescription = "LH:" + it }
-            }.lparams {
-                margin = dip(16)
-                width = dip(60)
-                height = dip(60)
-                alignParentBottom()
-                val fab = this
-                isLeftHanded.onChange {
-                    fab.removeRule(RelativeLayout.ALIGN_PARENT_LEFT)
-                    fab.removeRule(RelativeLayout.ALIGN_PARENT_RIGHT)
-                    if (it) fab.alignParentLeft() else fab.alignParentRight()
-                    requestLayout()
+        withState(R.id.floatMenu, isOpen) {
+            relativeLayout {
+                fullSize()
+                frameLayout {
+                    id = R.id.contentPane
+                    setOneView(contentView)
+                }.fullSize()
+                menuPane(hasOverlay, isOpen, animationDuration) {
+                    id = R.id.menuPane
+                    isClickable = true
+                    visibility = View.GONE
+                    setOneView(menuView)
+                }.fullSize()
+                fab(animationDuration, openIcon, closeIcon, isOpen) {
+                    id = R.id.openFab
+                    val fab = this
+                    isLeftHanded.onChange { fab.contentDescription = "LH:" + it }
+                }.lparams {
+                    margin = dip(16)
+                    width = dip(60)
+                    height = dip(60)
+                    alignParentBottom()
+                    val fab = this
+                    isLeftHanded.onChange {
+                        fab.removeRule(RelativeLayout.ALIGN_PARENT_LEFT)
+                        fab.removeRule(RelativeLayout.ALIGN_PARENT_RIGHT)
+                        if (it) fab.alignParentLeft() else fab.alignParentRight()
+                        requestLayout()
+                    }
                 }
             }
         }
-
-    }
-
-    /**
-     * @suppress
-     */
-    override fun onSaveInstanceState(): Parcelable {
-        return Bundle().apply {
-            putParcelable("superState", super.onSaveInstanceState())
-            putBoolean("isOpen", isOpen.get())
-        }
-    }
-
-    /**
-     * @suppress
-     */
-    override fun onRestoreInstanceState(state: Parcelable) {
-        val localState = state as Bundle
-        super.onRestoreInstanceState(localState.getParcelable("superState"))
-        isOpen.set(localState.getBoolean("isOpen"))
     }
 
 }

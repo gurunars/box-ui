@@ -80,5 +80,5 @@ fun ViewGroup.fab(
     init: () -> Any
 ) = context.fab(rotationDuration, openIcon, closeIcon, isActivated).apply {
     init()
-    addView(this)
+    this@fab.addView(this)
 }

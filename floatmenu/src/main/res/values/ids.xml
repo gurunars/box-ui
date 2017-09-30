@@ -4,4 +4,5 @@
     <item name="contentPane" type="id" />
     <item name="openFab" type="id" />
     <item name="iconView" type="id" />
+    <item name="floatMenu" type="id" />
 </resources>

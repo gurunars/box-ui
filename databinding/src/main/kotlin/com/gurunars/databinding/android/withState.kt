@@ -123,14 +123,16 @@ class WithState internal constructor(context: Context, vararg fields: BindableFi
 
 }
 
-fun ViewGroup.withState(vararg fields: BindableField<*>, init: WithState.() -> Unit ) =
+fun ViewGroup.withState(id: Int, vararg fields: BindableField<*>, init: WithState.() -> Unit ) =
     WithState(context, *fields).apply {
         init()
+        this.id = id
         this@withState.addView(this)
     }
 
-fun Activity.withState(vararg fields: BindableField<*>, init: WithState.() -> Unit ) =
+fun Activity.withState(id: Int, vararg fields: BindableField<*>, init: WithState.() -> Unit ) =
     WithState(this, *fields).apply {
         init()
+        this.id = id
         setContentView(this)
     }
