@@ -12,7 +12,6 @@ import com.gurunars.databinding.BindableField
 import com.gurunars.databinding.android.bindableField
 import com.gurunars.shortcuts.setIsVisible
 
-
 internal class MenuPane constructor(
     context: Context,
     hasOverlay: BindableField<Boolean>,
@@ -86,4 +85,14 @@ internal class MenuPane constructor(
     override fun onInterceptTouchEvent(ev: MotionEvent): Boolean =
         !isClickable && !touchBelongsTo(this, ev)
 
+}
+
+internal fun ViewGroup.menuPane(
+    hasOverlay: BindableField<Boolean>,
+    isVisible: BindableField<Boolean>,
+    animationDuration: BindableField<Int>,
+    init: MenuPane.() -> Any
+) = MenuPane(context, hasOverlay, isVisible, animationDuration).apply {
+    init()
+    addView(this)
 }

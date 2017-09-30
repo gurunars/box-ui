@@ -14,7 +14,7 @@ import java.io.Serializable
 
 class UnsupportedStateType: Exception()
 
-class WithState(context: Context, vararg fields: BindableField<*>): FrameLayout(context) {
+class WithState internal constructor(context: Context, vararg fields: BindableField<*>): FrameLayout(context) {
 
     private val fields: List<BindableField<*>> = fields.asList()
 
