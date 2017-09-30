@@ -148,7 +148,9 @@ class CrudItemListView<ItemType : Item> constructor(
                 typeCache[item.type]?.canSave?.invoke(item) ?: false
             },
             confirmationActionColors
-        )
+        ).apply {
+            id=R.id.itemForm
+        }
 
         knobView = KnobView(context, mapOf(
             ViewMode.CONTEXTUAL to contextualMenu,
@@ -160,7 +162,6 @@ class CrudItemListView<ItemType : Item> constructor(
         }
 
         floatingMenu = floatMenu {
-            // itemListView, knobView
             contentView.set(itemListView)
             menuView.set(knobView)
             fullSize()

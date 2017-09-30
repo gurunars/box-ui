@@ -11,7 +11,7 @@ can optionally handle item selection.
 
 dependencies {
     compile "org.jetbrains.anko:anko:$anko_version"
-    compile 'com.esotericsoftware:kryo:4.0.0'
+    compile 'com.esotericsoftware:kryo:4.0.1'
     compile "com.android.support:recyclerview-v7:$supportlib_version"
     compile 'jp.wasabeef:recyclerview-animators:2.2.7'
     compile project(':android-utils')
