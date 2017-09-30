@@ -3,13 +3,14 @@ package com.gurunars.databinding.android
 import android.content.Context
 import android.os.Bundle
 import android.os.Parcelable
+import android.view.ViewGroup
 import android.widget.FrameLayout
 import com.gurunars.databinding.BindableField
 
 /**
  * A base component meant to develop custom stateful UI widgets using bindable fields
  */
-abstract class StatefulComponent(context: Context) : FrameLayout(context) {
+open class StatefulComponent(context: Context) : FrameLayout(context) {
 
     private val fields: MutableList<BindableField<*>> = mutableListOf()
 
@@ -58,3 +59,14 @@ abstract class StatefulComponent(context: Context) : FrameLayout(context) {
     }
 
 }
+
+fun ViewGroup.statefulComponent(
+    id: Int,
+    vararg fields: BindableField<*>,
+    init: StatefulComponent.() -> Any = {}
+): StatefulComponent =
+    StatefulComponent(context).apply {
+        this.id = id
+        init()
+        retain(*fields)
+    }
