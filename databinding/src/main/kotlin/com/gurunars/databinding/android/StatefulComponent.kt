@@ -60,13 +60,18 @@ open class StatefulComponent(context: Context) : FrameLayout(context) {
 
 }
 
-fun ViewGroup.statefulComponent(
+fun Context.statefulComponent(
     id: Int,
-    vararg fields: BindableField<*>,
-    init: StatefulComponent.() -> Any = {}
+    vararg fields: BindableField<*>
 ): StatefulComponent =
-    StatefulComponent(context).apply {
+    StatefulComponent(this).apply {
         this.id = id
-        init()
         retain(*fields)
     }
+
+fun ViewGroup.statefulComponent(
+    id: Int,
+    vararg fields: BindableField<*>
+): StatefulComponent = context.statefulComponent(id, *fields).apply {
+    addView(this)
+}
