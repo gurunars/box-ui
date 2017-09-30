@@ -46,7 +46,7 @@ internal class MenuPane constructor(
                 if (visible) 0f else 1f,
                 if (visible) 1f else 0f
             )
-            setIsVisible(isVisible.get() || animatedValue.get() != 1f)
+            setIsVisible(visible || animatedValue.get() != 1f)
         }
     }
 

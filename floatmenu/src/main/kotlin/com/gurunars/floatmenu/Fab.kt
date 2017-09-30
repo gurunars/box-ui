@@ -77,7 +77,7 @@ fun ViewGroup.fab(
     openIcon: BindableField<Icon>,
     closeIcon: BindableField<Icon>,
     isActivated: BindableField<Boolean>,
-    init: () -> Any
+    init: ViewGroup.() -> Any
 ) = context.fab(rotationDuration, openIcon, closeIcon, isActivated).apply {
     init()
     this@fab.addView(this)
