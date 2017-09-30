@@ -1,7 +1,6 @@
 package com.gurunars.crud_item_list
 
 import android.content.Context
-import android.widget.FrameLayout
 import android.widget.RelativeLayout
 import com.gurunars.android_utils.IconView
 import com.gurunars.android_utils.iconView
@@ -9,21 +8,17 @@ import com.gurunars.databinding.BindableField
 import com.gurunars.databinding.onChange
 import com.gurunars.item_list.Item
 import com.gurunars.shortcuts.*
-import org.jetbrains.anko.above
-import org.jetbrains.anko.applyRecursively
-import org.jetbrains.anko.dip
-import org.jetbrains.anko.relativeLayout
+import org.jetbrains.anko.*
 
 
-internal fun <ItemType : Item> contextualMenu(
-    context: Context,
+internal fun <ItemType : Item> Context.contextualMenu(
     sortable: Boolean,
     actionIcon: BindableField<IconColorBundle>,
     isLeftHanded: BindableField<Boolean>,
     items: BindableField<List<ItemType>>,
     selectedItems: BindableField<Set<ItemType>>,
     onEdit: (item: ItemType) -> Unit
-) = FrameLayout(context).apply {
+) = frameLayout {
 
     isLeftHanded.onChange {
         contentDescription = if (it) "LEFT HANDED" else "RIGHT HANDED"

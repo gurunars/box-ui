@@ -5,6 +5,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.widget.FrameLayout
 import com.esotericsoftware.kryo.Kryo
+import com.gurunars.databinding.android.Component
 import com.gurunars.databinding.android.bindableField
 import com.gurunars.shortcuts.fullSize
 import com.gurunars.shortcuts.setOneView
@@ -26,7 +27,7 @@ class ItemListView<ItemType : Item>(
     context: Context,
     itemViewBinder: ItemViewBinder<ItemType>,
     emptyViewBinder: EmptyViewBinder = Context::defaultEmptyViewBinder
-) : FrameLayout(context) {
+) : Component(context) {
 
     private val kryo = Kryo().apply {
         instantiatorStrategy = Kryo.DefaultInstantiatorStrategy(StdInstantiatorStrategy())

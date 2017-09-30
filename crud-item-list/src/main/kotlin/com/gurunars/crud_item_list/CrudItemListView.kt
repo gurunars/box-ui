@@ -1,12 +1,10 @@
 package com.gurunars.crud_item_list
 
 import android.content.Context
-import android.os.Bundle
-import android.os.Parcelable
 import android.view.View
-import android.widget.FrameLayout
 import com.gurunars.android_utils.IconView
 import com.gurunars.databinding.BindableField
+import com.gurunars.databinding.android.StatefulComponent
 import com.gurunars.databinding.android.bindableField
 import com.gurunars.databinding.onChange
 import com.gurunars.floatmenu.FloatMenu
@@ -43,7 +41,7 @@ class CrudItemListView<ItemType : Item> constructor(
     emptyViewBinder: EmptyViewBinder = Context::defaultEmptyViewBinder,
     sortable: Boolean = true,
     groupedItemTypeDescriptors: List<List<ItemTypeDescriptor<ItemType>>>
-) : FrameLayout(context) {
+) : StatefulComponent(context) {
 
     private val typeCache = with(groupedItemTypeDescriptors) {
         mutableMapOf<Enum<*>, ItemTypeDescriptor<ItemType>>().apply {
@@ -95,9 +93,9 @@ class CrudItemListView<ItemType : Item> constructor(
     }
 
     init {
+        retain(itemInEdit)
 
-        creationMenu = creationMenu(
-            context,
+        creationMenu = context.creationMenu(
             groupedItemTypeDescriptors,
             { itemInEdit.set(it) },
             isLeftHanded
@@ -112,8 +110,7 @@ class CrudItemListView<ItemType : Item> constructor(
             id = R.id.rawItemList
         }
 
-        contextualMenu = contextualMenu(
-            context,
+        contextualMenu = context.contextualMenu(
             sortable,
             listActionColors,
             isLeftHanded,
@@ -162,7 +159,10 @@ class CrudItemListView<ItemType : Item> constructor(
             id = R.id.knobMenu
         }
 
-        floatingMenu = floatMenu(itemListView, knobView) {
+        floatingMenu = floatMenu {
+            // itemListView, knobView
+            contentView.set(itemListView)
+            menuView.set(knobView)
             fullSize()
             id = R.id.floatingMenu
             this@CrudItemListView.isLeftHanded.bind(isLeftHanded)
@@ -242,24 +242,6 @@ class CrudItemListView<ItemType : Item> constructor(
         isOpen.bind(floatingMenu.isOpen)
         items = itemListView.items
 
-    }
-
-    /**
-     * @suppress
-     */
-    override fun onSaveInstanceState() = Bundle().apply {
-        putParcelable("superState", super.onSaveInstanceState())
-        putSerializable("itemInEdit", itemInEdit?.get())
-    }
-
-    /**
-     * @suppress
-     */
-    override fun onRestoreInstanceState(state: Parcelable) {
-        (state as Bundle).apply {
-            super.onRestoreInstanceState(getParcelable<Parcelable>("superState"))
-            itemInEdit.set(getSerializable("itemInEdit") as ItemType?)
-        }
     }
 
 }

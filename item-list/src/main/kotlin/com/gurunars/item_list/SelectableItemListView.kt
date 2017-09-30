@@ -1,10 +1,8 @@
 package com.gurunars.item_list
 
 import android.content.Context
-import android.os.Bundle
-import android.os.Parcelable
-import android.widget.FrameLayout
 import com.esotericsoftware.kryo.Kryo
+import com.gurunars.databinding.android.StatefulComponent
 import com.gurunars.databinding.android.bindableField
 import com.gurunars.databinding.onChange
 import com.gurunars.shortcuts.fullSize
@@ -33,7 +31,7 @@ class SelectableItemListView<ItemType : Item> constructor(
     context: Context,
     itemViewBinder: SelectableItemViewBinder<ItemType>,
     emptyViewBinder: EmptyViewBinder = Context::defaultEmptyViewBinder
-) : FrameLayout(context) {
+) : StatefulComponent(context) {
 
     private val kryo = Kryo().apply {
         instantiatorStrategy = Kryo.DefaultInstantiatorStrategy(StdInstantiatorStrategy())
@@ -50,6 +48,7 @@ class SelectableItemListView<ItemType : Item> constructor(
     )
 
     init {
+        retain(selectedItems)
         itemListView(
             itemViewBinder = clickableSelector(selectedItems, itemViewBinder),
             emptyViewBinder = emptyViewBinder
@@ -65,24 +64,6 @@ class SelectableItemListView<ItemType : Item> constructor(
                 items.set(self.items.get().map { SelectableItem(it, selectedItems.get().has(it)) })
             }
 
-        }
-    }
-
-    /**
-     * @suppress
-     */
-    override fun onSaveInstanceState() = Bundle().apply {
-        putParcelable("superState", super.onSaveInstanceState())
-        putSerializable("selectedItems", HashSet(selectedItems.get()))
-    }
-
-    /**
-     * @suppress
-     */
-    override fun onRestoreInstanceState(state: Parcelable) {
-        (state as Bundle).apply {
-            super.onRestoreInstanceState(getParcelable<Parcelable>("superState"))
-            selectedItems.set(getSerializable("selectedItems") as HashSet<ItemType>)
         }
     }
 }

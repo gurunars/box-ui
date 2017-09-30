@@ -3,6 +3,7 @@ package com.gurunars.knob_view
 import android.content.Context
 import android.view.View
 import android.widget.FrameLayout
+import com.gurunars.databinding.android.Component
 import com.gurunars.databinding.android.bindableField
 
 /**
@@ -15,7 +16,7 @@ import com.gurunars.databinding.android.bindableField
 class KnobView constructor(
     context: Context,
     viewSelector: Map<Enum<*>, View>
-) : FrameLayout(context) {
+) : Component(context) {
 
     val selectedView = bindableField(viewSelector.keys.toList()[0])
 
