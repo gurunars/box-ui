@@ -4,6 +4,9 @@ import android.content.Context
 import android.os.Parcelable
 import android.widget.FrameLayout
 
+/**
+ * A base component meant to develop custom stateless UI widgets using bindable fields
+ */
 abstract class Component(context: Context): FrameLayout(context) {
 
     /**

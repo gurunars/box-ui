@@ -6,10 +6,17 @@ import android.os.Parcelable
 import android.widget.FrameLayout
 import com.gurunars.databinding.BindableField
 
+/**
+ * A base component meant to develop custom stateful UI widgets using bindable fields
+ */
 abstract class StatefulComponent(context: Context) : FrameLayout(context) {
 
     private val fields: MutableList<BindableField<*>> = mutableListOf()
 
+    /**
+     * Call with multiple fields to notify the component that the state of the fields should
+     * be persisted.
+     */
     fun retain(vararg fields: BindableField<*>) = this.fields.addAll(fields)
 
     companion object {
