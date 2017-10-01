@@ -5,11 +5,6 @@ import android.content.Context
 import android.view.ViewManager
 import org.jetbrains.anko.custom.ankoView
 
-/**
- * Anko specific view function for ItemListView
- *
- * @see ItemListView
- */
 fun <ItemT : Item> ViewManager.itemListView(
     itemViewBinder: ItemViewBinder<ItemT>,
     emptyViewBinder: EmptyViewBinder = Context::defaultEmptyViewBinder,
@@ -18,11 +13,6 @@ fun <ItemT : Item> ViewManager.itemListView(
         ItemListView(it, itemViewBinder, emptyViewBinder)
     }, 0, init)
 
-/**
- * Anko specific view function for ItemListView
- *
- * @see ItemListView
- */
 fun <ItemT : Item> Activity.itemListView(
     itemViewBinder: ItemViewBinder<ItemT>,
     emptyViewBinder: EmptyViewBinder = Context::defaultEmptyViewBinder,
@@ -31,11 +21,6 @@ fun <ItemT : Item> Activity.itemListView(
         ItemListView(it, itemViewBinder, emptyViewBinder)
     }, 0, init)
 
-/**
- * Anko specific view function for SelectableItemViewBinder
- *
- * @see SelectableItemViewBinder
- */
 fun <ItemT : Item> ViewManager.selectableItemListView(
     itemViewBinder: SelectableItemViewBinder<ItemT>,
     emptyViewBinder: EmptyViewBinder = Context::defaultEmptyViewBinder,
@@ -44,11 +29,6 @@ fun <ItemT : Item> ViewManager.selectableItemListView(
         SelectableItemListView(it, itemViewBinder, emptyViewBinder)
     }, 0, init)
 
-/**
- * Anko specific view function for SelectableItemViewBinder
- *
- * @see SelectableItemViewBinder
- */
 fun <ItemT : Item> Activity.selectableItemListView(
     itemViewBinder: SelectableItemViewBinder<ItemT>,
     emptyViewBinder: EmptyViewBinder = Context::defaultEmptyViewBinder,
