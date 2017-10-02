@@ -236,7 +236,7 @@ class CrudItemListView<ItemType : Item> constructor(
                 }
             }
 
-            retain(itemListView.selectedItems, isOpen, itemInEdit)
+            retain(itemInEdit, itemListView.selectedItems, isOpen)
         }
 
         isOpen = floatingMenu.isOpen
