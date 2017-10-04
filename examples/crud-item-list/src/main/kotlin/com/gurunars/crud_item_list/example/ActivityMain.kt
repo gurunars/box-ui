@@ -7,52 +7,69 @@ import android.text.InputType
 import android.view.Gravity
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.TextView
 import com.gurunars.android_utils.IconView
 import com.gurunars.animal_item.AnimalItem
-import com.gurunars.crud_item_list.*
+import com.gurunars.crud_item_list.CrudItemListView
+import com.gurunars.crud_item_list.IconColorBundle
+import com.gurunars.crud_item_list.ItemTypeDescriptor
+import com.gurunars.crud_item_list.oneOf
 import com.gurunars.databinding.BindableField
 import com.gurunars.databinding.android.bind
 import com.gurunars.shortcuts.color
 import com.gurunars.shortcuts.fullSize
+import com.gurunars.shortcuts.setAsOne
 import com.gurunars.storage.PersistentStorage
 import org.jetbrains.anko.*
 
-internal fun Context.bindAnimalItem(
-    payload: BindableField<AnimalItem>
-) = TextView(this).apply {
-    padding = context.dip(5)
-    payload.onChange { text = it.toString() }
-}
+class Descriptor(
+    private val count: BindableField<Int>,
+    iconId: Int,
+    override val type: AnimalItem.Type
+) : ItemTypeDescriptor<AnimalItem> {
+    override fun bind(context: Context, field: BindableField<AnimalItem>) = with(context) {
+        UI {
+            textView {
+                padding = context.dip(5)
+                field.onChange { text = it.toString() }
+            }
+        }.view
+    }
 
-internal fun Context.animalFormRenderer(
-    field: BindableField<AnimalItem>
-) = verticalLayout {
-    fullSize()
-    textView {
-        text = getString(R.string.newVersion)
-    }
-    editText {
-        id = R.id.versionValue
-        inputType = InputType.TYPE_CLASS_NUMBER
-        bind(field, object : BindableField.ValueTransformer<AnimalItem, String> {
-            override fun forward(value: AnimalItem) = value.version.toString()
-            override fun backward(value: String) = field.get().copy(
-                version = if (value.isEmpty()) 0 else value.toInt()
+    override val icon = IconView.Icon(icon = iconId)
+    override fun createNewItem() = AnimalItem(
+        id = (count.get() + 1).toLong(),
+        version = 0,
+        type = type)
+
+    override fun bindForm(
+        context: Context,
+        field: BindableField<AnimalItem>
+    ) = context.verticalLayout {
+        fullSize()
+        textView {
+            text = context.getString(R.string.newVersion)
+        }
+        editText {
+            id = R.id.versionValue
+            inputType = InputType.TYPE_CLASS_NUMBER
+            bind(field,
+                { field.get().copy(version = if (isEmpty()) 0 else toInt()) },
+                { version.toString() }
             )
-        })
-    }
-    button {
-        id = R.id.increment
-        text = getString(R.string.increment)
-        setOnClickListener {
-            field.apply {
-                set(get().copy(version = get().version + 1))
+        }
+        button {
+            id = R.id.increment
+            text = context.getString(R.string.increment)
+            setOnClickListener {
+                field.apply {
+                    set(get().copy(version = get().version + 1))
+                }
             }
         }
+        gravity = Gravity.CENTER
+        backgroundColor = color(R.color.White)
     }
-    gravity = Gravity.CENTER
-    backgroundColor = color(R.color.White)
+
 }
 
 class ActivityMain : Activity() {
@@ -94,43 +111,40 @@ class ActivityMain : Activity() {
     fun initView(sortable: Boolean) {
         setTitle(if (sortable) R.string.sortable else R.string.unsortable)
 
-        fun descriptor(icon: Int, type: AnimalItem.Type) =
-            ItemTypeDescriptor(
-                icon = IconView.Icon(icon = icon),
-                type = type,
-                rowBinder = Context::bindAnimalItem,
-                formBinder = Context::animalFormRenderer,
-                newItemCreator = { AnimalItem(id = (count.get() + 1).toLong(), version = 0, type = type) },
-                canSave = { true }
-            )
-
         val descriptors: List<List<ItemTypeDescriptor<AnimalItem>>>
 
         if (sortable) {
             descriptors = listOf(listOf(
-                descriptor(R.drawable.ic_menu_monkey, AnimalItem.Type.MONKEY),
-                descriptor(R.drawable.ic_menu_lion, AnimalItem.Type.LION)
+                Descriptor(
+                    count,
+                    R.drawable.ic_menu_monkey,
+                    AnimalItem.Type.MONKEY),
+                Descriptor(
+                    count,
+                    R.drawable.ic_menu_lion,
+                    AnimalItem.Type.LION)
             ), listOf(
-                descriptor(R.drawable.ic_menu_tiger, AnimalItem.Type.TIGER),
-                descriptor(R.drawable.ic_menu_wolf, AnimalItem.Type.WOLF)
+                Descriptor(
+                    count,
+                    R.drawable.ic_menu_tiger,
+                    AnimalItem.Type.TIGER),
+                Descriptor(
+                    count,
+                    R.drawable.ic_menu_wolf,
+                    AnimalItem.Type.WOLF)
             ))
         } else {
-            descriptors = descriptor(R.drawable.ic_menu_monkey, AnimalItem.Type.MONKEY).oneOf()
+            descriptors = Descriptor(
+                count,
+                R.drawable.ic_menu_monkey,
+                AnimalItem.Type.MONKEY).oneOf()
         }
 
-        crudItemListView = crudItemListView(
-            {
-                TextView(this@crudItemListView).apply {
-                    id = R.id.noItemsLabel
-                    fullSize()
-                    setText(R.string.noItemsAtAll)
-                    gravity = Gravity.CENTER
-                }
-            },
-            sortable,
-            descriptors
-        ) {
-            fullSize()
+        crudItemListView = CrudItemListView(
+            this,
+            sortable = sortable,
+            groupedItemTypeDescriptors = descriptors
+        ).setAsOne(this) {
             id = R.id.customView
             this@ActivityMain.items.bind(items)
             items.onChange {

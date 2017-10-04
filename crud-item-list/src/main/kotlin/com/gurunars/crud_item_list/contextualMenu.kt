@@ -3,13 +3,11 @@ package com.gurunars.crud_item_list
 import android.content.Context
 import android.widget.RelativeLayout
 import com.gurunars.android_utils.IconView
-import com.gurunars.android_utils.iconView
 import com.gurunars.databinding.BindableField
 import com.gurunars.databinding.onChange
 import com.gurunars.item_list.Item
 import com.gurunars.shortcuts.*
 import org.jetbrains.anko.*
-
 
 internal fun <ItemType : Item> Context.contextualMenu(
     sortable: Boolean,
@@ -50,7 +48,7 @@ internal fun <ItemType : Item> Context.contextualMenu(
             requestLayout()
         }
 
-        iconView {
+        IconView(context).addTo(this) {
             id = R.id.moveUp
             icon.set(IconView.Icon(icon = R.drawable.ic_move_up))
             setTag(R.id.action, ActionMoveUp<ItemType>())
@@ -63,7 +61,7 @@ internal fun <ItemType : Item> Context.contextualMenu(
             rightMargin = dip(23)
         }
 
-        iconView {
+        IconView(context).addTo(this) {
             id = R.id.moveDown
             icon.set(IconView.Icon(icon = R.drawable.ic_move_down))
             setTag(R.id.action, ActionMoveDown<ItemType>())
@@ -76,7 +74,7 @@ internal fun <ItemType : Item> Context.contextualMenu(
             rightMargin = dip(23)
         }
 
-        iconView {
+        IconView(context).addTo(this) {
             id = R.id.delete
             icon.set(IconView.Icon(icon = R.drawable.ic_delete))
             setTag(R.id.action, ActionDelete<ItemType>())
@@ -88,7 +86,7 @@ internal fun <ItemType : Item> Context.contextualMenu(
             rightMargin = dip(5)
         }
 
-        iconView {
+        IconView(context).addTo(this) {
             id = R.id.selectAll
             icon.set(IconView.Icon(icon = R.drawable.ic_select_all))
             setTag(R.id.action, ActionSelectAll<ItemType>())
@@ -100,7 +98,7 @@ internal fun <ItemType : Item> Context.contextualMenu(
             rightMargin = dip(5)
         }
 
-        iconView {
+        IconView(context).addTo(this) {
             id = R.id.edit
             icon.set(IconView.Icon(icon = R.drawable.ic_edit))
             setTag(R.id.action, ActionEdit({ payload: ItemType -> onEdit(payload) }))

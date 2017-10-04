@@ -2,9 +2,10 @@ package com.gurunars.crud_item_list
 
 import android.content.Context
 import android.view.Gravity
-import com.gurunars.android_utils.iconView
+import com.gurunars.android_utils.IconView
 import com.gurunars.databinding.BindableField
 import com.gurunars.item_list.Item
+import com.gurunars.shortcuts.addTo
 import com.gurunars.shortcuts.fullSize
 import org.jetbrains.anko.*
 
@@ -32,11 +33,11 @@ internal fun <ItemType : Item> Context.creationMenu(
                 gravity = (if (it) Gravity.LEFT else Gravity.RIGHT)
             }
             group.forEach { action ->
-                iconView {
+                IconView(context).addTo(this) {
                     tag = action.type.name
                     icon.set(action.icon)
                     setOnClickListener {
-                        onEdit(action.newItemCreator())
+                        onEdit(action.createNewItem())
                     }
                 }.lparams {
                     width = dip(45)

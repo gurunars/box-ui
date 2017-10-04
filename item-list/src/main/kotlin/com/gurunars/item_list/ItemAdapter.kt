@@ -1,6 +1,5 @@
 package com.gurunars.item_list
 
-import android.content.Context
 import android.support.v7.util.DiffUtil
 import android.support.v7.widget.RecyclerView
 import android.view.View
@@ -11,20 +10,10 @@ import com.gurunars.shortcuts.asRow
 import com.gurunars.shortcuts.fullSize
 import org.objenesis.strategy.StdInstantiatorStrategy
 
-/**
- * @param itemType type of the item for which the view is supposed to be created
- * @param field field representing item's payload
- * @return a view bound to a field holding the item
- */
-typealias ItemViewBinder<ItemType> = Context.(
-    itemType: Enum<*>,
-    field: BindableField<ItemType>
-) -> View
-
 internal class ItemAdapter<ItemType : Item>(
     private val items: BindableField<List<ItemType>>,
     private val emptyViewBinder: EmptyViewBinder,
-    private val itemViewBinder: ItemViewBinder<ItemType>
+    private val itemViewBinders: Map<Enum<*>, ItemViewBinder<ItemType>>
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var previousList: List<ItemType> = ArrayList()
@@ -62,7 +51,7 @@ internal class ItemAdapter<ItemType : Item>(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         if (viewType == EMPTY_TYPE) {
-            return object : RecyclerView.ViewHolder(emptyViewBinder(parent.context).apply {
+            return object : RecyclerView.ViewHolder(emptyViewBinder.bind(parent.context).apply {
                 fullSize()
                 addOnAttachStateChangeListener(object : View.OnAttachStateChangeListener {
                     override fun onViewAttachedToWindow(v: View) {
@@ -78,8 +67,9 @@ internal class ItemAdapter<ItemType : Item>(
         } else {
             val initialPayload = items.get().first { it.type.ordinal == viewType }
             val field = BindableField(initialPayload)
+            val binder = itemViewBinders[initialPayload.type] ?: DefaultItemViewBinder()
             return object : RecyclerView.ViewHolder(
-                itemViewBinder(parent.context, initialPayload.type, field).apply {
+                binder.bind(parent.context, field).apply {
                     asRow()
                     setTag(R.id.payloadTag, field)
                 }) {}

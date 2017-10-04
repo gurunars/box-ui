@@ -21,6 +21,11 @@ android {
         main.jni.srcDirs = []
     }
 
+    // TODO: fix all the lint issues
+    lintOptions {
+        abortOnError false
+    }
+
     return void
 }
 

@@ -1,15 +1,17 @@
 package com.gurunars.item_list
 
+import android.annotation.SuppressLint
 import android.content.Context
 import com.esotericsoftware.kryo.Kryo
+import com.gurunars.anko_generator.AnkoComponent
 import com.gurunars.databinding.android.StatefulComponent
 import com.gurunars.databinding.android.bindableField
 import com.gurunars.databinding.onChange
 import com.gurunars.shortcuts.fullSize
+import com.gurunars.shortcuts.setAsOne
 import org.objenesis.strategy.StdInstantiatorStrategy
 import java.util.*
 import kotlin.collections.HashSet
-
 
 /**
  * Item list that has selection enabled.
@@ -19,18 +21,18 @@ import kotlin.collections.HashSet
  *
  * @param ItemType type of the item to be shown in the list
  * @param context Android context
- * @param itemViewBinder a function binding an observable of the selectable payload to the actual
- * view
+ * @param itemViewBinders a type based mapping between item type and item renderer
  * @param emptyViewBinder a function returning a view to be shown when the list is empty
  *
  * @property items A collection of items shown in the list
  * @property selectedItems A collection of items selected at the moment
  */
-
+@SuppressLint("ViewConstructor")
+@AnkoComponent
 class SelectableItemListView<ItemType : Item> constructor(
     context: Context,
-    itemViewBinder: SelectableItemViewBinder<ItemType>,
-    emptyViewBinder: EmptyViewBinder = Context::defaultEmptyViewBinder
+    itemViewBinders: Map<Enum<*>, ItemViewBinder<SelectableItem<ItemType>>> = mapOf(),
+    emptyViewBinder: EmptyViewBinder = DefaultEmptyViewBinder()
 ) : StatefulComponent(context) {
 
     private val kryo = Kryo().apply {
@@ -49,10 +51,11 @@ class SelectableItemListView<ItemType : Item> constructor(
 
     init {
         retain(selectedItems)
-        itemListView(
-            itemViewBinder = clickableSelector(selectedItems, itemViewBinder),
+        ItemListView<SelectableItem<ItemType>>(
+            context,
+            itemViewBinders = itemViewBinders.entries.map { it.key to (ClickableItemViewBinder(selectedItems, it.value)) }.toMap(),
             emptyViewBinder = emptyViewBinder
-        ) {
+        ).apply {
             id = R.id.itemList
             fullSize()
 
@@ -63,7 +66,6 @@ class SelectableItemListView<ItemType : Item> constructor(
                     self.selectedItems.get().filter { self.items.get().has(it) }.toSet())
                 items.set(self.items.get().map { SelectableItem(it, selectedItems.get().has(it)) })
             }
-
-        }
+        }.setAsOne(this)
     }
 }
