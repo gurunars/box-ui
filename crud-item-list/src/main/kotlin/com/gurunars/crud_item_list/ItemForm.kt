@@ -1,7 +1,7 @@
 package com.gurunars.crud_item_list
 
+import android.annotation.SuppressLint
 import android.content.Context
-import android.util.Log
 import android.widget.RelativeLayout
 import com.gurunars.android_utils.IconView
 import com.gurunars.databinding.BindableField
@@ -15,6 +15,7 @@ import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.margin
 import org.jetbrains.anko.uiThread
 
+@SuppressLint("ViewConstructor")
 internal class ItemForm<ItemType : Item>(
     context: Context,
     private val itemInEdit: BindableField<ItemType?>,
@@ -25,14 +26,14 @@ internal class ItemForm<ItemType : Item>(
 
     fun bind(
         item: ItemType,
-        formBinder: ItemFormBinder<ItemType>
+        formBinder: ItemTypeDescriptor<ItemType>
     ) {
         val field = bindableField(item)
         field.onChange { itemInEdit.set(it) }
         removeAllViews()
 
         addView(
-            formBinder(context, field).apply {
+            formBinder.bindForm(context, field).apply {
                 layoutParams = RelativeLayout.LayoutParams(
                     LayoutParams.MATCH_PARENT,
                     LayoutParams.MATCH_PARENT

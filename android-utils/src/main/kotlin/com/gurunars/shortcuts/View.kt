@@ -1,5 +1,6 @@
 package com.gurunars.shortcuts
 
+import android.app.Activity
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
@@ -44,11 +45,33 @@ fun View.asRow() {
 }
 
 /**
- * Removes all the views and adds this view as the only child
+ * Removes all the views and adds this view as the only full screen child
  */
-fun FrameLayout.setOneView(view: View) {
-    removeAllViews()
-    addView(view)
+fun<T: View> T.setAsOne(parent: FrameLayout, init: T.() -> Unit = {}): T {
+    fullSize()
+    parent.removeAllViews()
+    parent.addView(this)
+    this.init()
+    return this
+}
+
+/**
+ * Removes all the views and adds this view as the only full screen child
+ */
+fun<T: View> T.setAsOne(parent: Activity, init: T.() -> Unit = {}): T {
+    fullSize()
+    parent.setContentView(this)
+    this.init()
+    return this
+}
+
+/**
+ * Add a view to parent
+ */
+fun<T: View> T.addTo(parent: ViewGroup, init: T.() -> Unit = {}) : T {
+    parent.addView(this)
+    this.init()
+    return this
 }
 
 /**

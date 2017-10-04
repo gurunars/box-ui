@@ -4,17 +4,17 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.view.View
 import com.gurunars.android_utils.IconView
+import com.gurunars.anko_generator.AnkoComponent
 import com.gurunars.databinding.BindableField
 import com.gurunars.databinding.android.StatefulComponent
 import com.gurunars.databinding.android.bindableField
 import com.gurunars.databinding.onChange
 import com.gurunars.floatmenu.FloatMenu
-import com.gurunars.floatmenu.floatMenu
 import com.gurunars.item_list.*
 import com.gurunars.knob_view.KnobView
 import com.gurunars.shortcuts.fullSize
+import com.gurunars.shortcuts.setAsOne
 
-@SuppressLint("ViewConstructor")
 /**
  * Widget to be used for manipulating a collection of items with a dedicated set of UI controls.
  *
@@ -38,22 +38,20 @@ import com.gurunars.shortcuts.fullSize
  * @property isOpen A flag specifying if the menu is open or closed. Be it a creation or contextual
  * one.
  */
+@SuppressLint("ViewConstructor")
+@AnkoComponent
 class CrudItemListView<ItemType : Item> constructor(
     context: Context,
-    emptyViewBinder: EmptyViewBinder = Context::defaultEmptyViewBinder,
+    emptyViewBinder: EmptyViewBinder = DefaultEmptyViewBinder(),
     sortable: Boolean = true,
     groupedItemTypeDescriptors: List<List<ItemTypeDescriptor<ItemType>>>
 ) : StatefulComponent(context) {
 
-    private val typeCache = with(groupedItemTypeDescriptors) {
-        mutableMapOf<Enum<*>, ItemTypeDescriptor<ItemType>>().apply {
-            this@with.forEach {
-                it.forEach {
-                    this.put(it.type, it)
-                }
-            }
-        }
-    }
+    private val typeCache = groupedItemTypeDescriptors
+        .flatten()
+        .map {
+            Pair(it.type, it)
+        }.toMap()
 
     val listActionColors = bindableField(IconColorBundle())
     val confirmationActionColors = bindableField(IconColorBundle())
@@ -61,8 +59,8 @@ class CrudItemListView<ItemType : Item> constructor(
     val openIcon = bindableField(IconColorBundle())
 
     val isLeftHanded = bindableField(false)
-    val items: BindableField<List<ItemType>>
 
+    val items: BindableField<List<ItemType>>
     val isOpen: BindableField<Boolean>
     private val itemInEdit = BindableField<ItemType?>(null)
 
@@ -78,22 +76,6 @@ class CrudItemListView<ItemType : Item> constructor(
         CONTEXTUAL, CREATION, FORM
     }
 
-    private fun itemViewBinder(
-        context: Context,
-        itemType: Enum<*>,
-        field: BindableField<SelectableItem<ItemType>>
-    ): View {
-        val binder = typeCache[itemType] ?:
-            throw RuntimeException("Unknown type $itemType")
-
-        val wrapper = coloredRowSelectionDecorator(
-            { _, fld: BindableField<ItemType> -> binder.rowBinder(context, fld) },
-            binder.rowSelectionColor,
-            binder.rowRegularColor)
-
-        return context.wrapper(itemType, field)
-    }
-
     init {
         creationMenu = context.creationMenu(
             groupedItemTypeDescriptors,
@@ -103,7 +85,15 @@ class CrudItemListView<ItemType : Item> constructor(
 
         itemListView = SelectableItemListView(
             context,
-            this::itemViewBinder,
+            groupedItemTypeDescriptors
+                .flatten()
+                .map {
+                    Pair(it.type, ColoredItemViewBinder(
+                        it,
+                        it.rowSelectionColor,
+                        it.rowRegularColor
+                    ))
+                }.toMap(),
             emptyViewBinder
         ).apply {
             fullSize()
@@ -145,7 +135,7 @@ class CrudItemListView<ItemType : Item> constructor(
             },
             {
                 item ->
-                typeCache[item.type]?.canSave?.invoke(item) ?: false
+                typeCache[item.type]?.canSave(item) ?: false
             },
             confirmationActionColors
         ).apply {
@@ -161,7 +151,7 @@ class CrudItemListView<ItemType : Item> constructor(
             id = R.id.knobMenu
         }
 
-        floatingMenu = floatMenu {
+        floatingMenu = FloatMenu(context).apply {
             contentView.set(itemListView)
             menuView.set(knobView)
             fullSize()
@@ -207,14 +197,14 @@ class CrudItemListView<ItemType : Item> constructor(
                 if (item != null) {
                     if (knobView.selectedView.get() != ViewMode.FORM) {
                         hasOverlay.set(true)
-                        itemForm.bind(item, typeCache[item.type]!!.formBinder)
+                        itemForm.bind(item, typeCache[item.type]!!)
                         knobView.selectedView.set(ViewMode.FORM)
                     }
                 } else if (itemListView.selectedItems.get().isNotEmpty()) {
                     hasOverlay.set(false)
                     knobView.selectedView.set(ViewMode.CONTEXTUAL)
                 } else if (typeCache.size == 1) {
-                    itemInEdit.set(typeCache.values.first().newItemCreator())
+                    itemInEdit.set(typeCache.values.first().createNewItem())
                 } else {
                     hasOverlay.set(true)
                     knobView.selectedView.set(ViewMode.CREATION)
@@ -237,6 +227,7 @@ class CrudItemListView<ItemType : Item> constructor(
             }
 
             retain(itemListView.selectedItems, isOpen, itemInEdit)
+            setAsOne(this@CrudItemListView)
         }
 
         isOpen = floatingMenu.isOpen

@@ -4,12 +4,15 @@ import android.content.Context
 import android.support.annotation.StringRes
 import android.view.Gravity
 import android.view.View
-import android.widget.RelativeLayout
 import android.widget.TextView
 import com.gurunars.android_utils.IconView
+import com.gurunars.anko_generator.AnkoComponent
 import com.gurunars.databinding.android.StatefulComponent
 import com.gurunars.databinding.android.bindableField
-import com.gurunars.shortcuts.*
+import com.gurunars.shortcuts.HorizontalAlignment
+import com.gurunars.shortcuts.alignInParent
+import com.gurunars.shortcuts.fullSize
+import com.gurunars.shortcuts.setAsOne
 import org.jetbrains.anko.*
 
 /**
@@ -33,12 +36,13 @@ import org.jetbrains.anko.*
  * If **false** - the menu does not intercept clicks and passes them to the content area.
  * The flag does not affect clickable elements that are located inside the menu though.
  */
+@AnkoComponent
 class FloatMenu constructor(context: Context) : StatefulComponent(context) {
 
     companion object {
         private fun Context.getPane(@StringRes stringId: Int): View = TextView(this).apply {
-            gravity=Gravity.CENTER
-            text=context.getString(stringId)
+            gravity = Gravity.CENTER
+            text = context.getString(stringId)
             fullSize()
         }
     }
@@ -58,12 +62,12 @@ class FloatMenu constructor(context: Context) : StatefulComponent(context) {
             fullSize()
             frameLayout {
                 id = R.id.contentPane
-                contentView.onChange { setOneView(it) }
+                contentView.onChange { it.setAsOne(this) }
             }.fullSize()
             menuPane(hasOverlay, isOpen, animationDuration) {
                 id = R.id.menuPane
                 isClickable = true
-                menuView.onChange { setOneView(it) }
+                menuView.onChange { it.setAsOne(this) }
             }.fullSize()
             fab(animationDuration, openIcon, closeIcon, isOpen) {
                 id = R.id.openFab
@@ -74,7 +78,7 @@ class FloatMenu constructor(context: Context) : StatefulComponent(context) {
                 height = dip(60)
                 alignParentBottom()
                 isLeftHanded.onChange {
-                    alignInParent(if(it) HorizontalAlignment.LEFT else HorizontalAlignment.RIGHT)
+                    alignInParent(if (it) HorizontalAlignment.LEFT else HorizontalAlignment.RIGHT)
                     requestLayout()
                 }
             }

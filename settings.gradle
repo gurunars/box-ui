@@ -1,12 +1,23 @@
-include ':android-utils', ':item-list', ':floatmenu', ':test-utils',
-        ':databinding', ':knob-view', ':crud-item-list',
-        ':example-android-utils', ':example-item-list',
-        ':example-floatmenu', ':example-selectable-item-list',
-        ':example-crud-item-list', ':example-animal-item', ':example-knob-view'
-project(":example-android-utils").projectDir = file("examples/android-utils")
+include  \
+    ':android-utils',
+    ':item-list',
+    ':test-utils',
+    ':anko-generator',
+    ':databinding',
+    ':floatmenu',
+    ':knob-view',
+    ':crud-item-list',
+    ':example-android-utils',
+    ':example-animal-item',
+    ':example-item-list',
+    ':example-selectable-item-list',
+    ':example-crud-item-list',
+    ':example-floatmenu',
+    ':example-knob-view'
+project(":example-animal-item").projectDir = file("examples/animal-item")
 project(":example-item-list").projectDir = file("examples/item-list")
-project(":example-floatmenu").projectDir = file("examples/floatmenu")
 project(":example-selectable-item-list").projectDir = file("examples/selectable-item-list")
 project(":example-crud-item-list").projectDir = file("examples/crud-item-list")
-project(":example-animal-item").projectDir = file("examples/animal-item")
+project(":example-android-utils").projectDir = file("examples/android-utils")
+project(":example-floatmenu").projectDir = file("examples/floatmenu")
 project(":example-knob-view").projectDir = file("examples/knob-view")

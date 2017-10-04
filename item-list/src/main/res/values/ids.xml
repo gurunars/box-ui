@@ -4,4 +4,5 @@
     <item name="itemList" type="id" />
     <item name="payloadTag" type="id" />
     <item name="isSelected" type="id" />
+    <item name="noItemsLabel" type="id" />
 </resources>

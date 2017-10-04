@@ -22,7 +22,7 @@ open class StatefulComponent(context: Context) : FrameLayout(context) {
 
     companion object {
 
-        private inline fun <T> BindableField<T>.read(map: HashMap<Int, Any?>, index: Int) {
+        private fun <T> BindableField<T>.read(map: HashMap<Int, Any?>, index: Int) {
             val obtained = map.get(index) as T
             this.set(obtained)
         }

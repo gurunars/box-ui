@@ -12,8 +12,8 @@ import android.graphics.drawable.shapes.Shape
 import android.support.v4.content.ContextCompat
 import android.support.v4.content.res.ResourcesCompat
 import android.widget.ImageView
+import com.gurunars.anko_generator.AnkoComponent
 import com.gurunars.databinding.android.bindableField
-
 
 /**
  * Button with customizable icon, background and foreground color.
@@ -21,6 +21,7 @@ import com.gurunars.databinding.android.bindableField
  * @property icon Button icon descriptor
  * @property enabled Flag specifying if the icon should be clickable or not
  */
+@AnkoComponent
 class IconView(context: Context) : ImageView(context) {
 
     /**

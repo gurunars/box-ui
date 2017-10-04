@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Log
 import android.view.View
 import android.widget.FrameLayout
+import com.gurunars.anko_generator.AnkoComponent
 import com.gurunars.databinding.android.Component
 import com.gurunars.databinding.android.bindableField
 
@@ -14,6 +15,7 @@ import com.gurunars.databinding.android.bindableField
  *
  * @property selectedView an enum field matching the view to be shown at a given moment
  */
+@AnkoComponent
 class KnobView constructor(
     context: Context,
     viewSelector: Map<Enum<*>, View>
