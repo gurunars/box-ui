@@ -9,13 +9,12 @@ import android.view.MenuItem
 import com.gurunars.android_utils.IconView
 import com.gurunars.databinding.BindableField
 import com.gurunars.floatmenu.FloatMenu
-import com.gurunars.floatmenu.floatMenu
 import com.gurunars.shortcuts.asRow
 import com.gurunars.shortcuts.color
 import com.gurunars.shortcuts.fullSize
+import com.gurunars.shortcuts.setAsOne
 import com.gurunars.storage.PersistentStorage
 import org.jetbrains.anko.*
-
 
 class ActivityMain : Activity() {
     private val storage = PersistentStorage(this, "main")
@@ -106,12 +105,9 @@ class ActivityMain : Activity() {
             }
         }.view
 
-        floatingMenu = floatMenu {
+        floatingMenu = FloatMenu(this, contentView, menuView).setAsOne(this) {
             fullSize()
             id = R.id.floatingMenu
-
-            this.menuView.set(menuView)
-            this.contentView.set(contentView)
 
             isOpen.bind(isOpenT)
 
@@ -139,7 +135,6 @@ class ActivityMain : Activity() {
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
         storage.unbindAll()
-        notification.unbindAll()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

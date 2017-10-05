@@ -13,7 +13,7 @@ import android.support.v4.content.ContextCompat
 import android.support.v4.content.res.ResourcesCompat
 import android.widget.ImageView
 import com.gurunars.anko_generator.AnkoComponent
-import com.gurunars.databinding.android.bindableField
+import com.gurunars.databinding.BindableField
 
 /**
  * Button with customizable icon, background and foreground color.
@@ -39,13 +39,13 @@ class IconView(context: Context) : ImageView(context) {
         val shape: Shape = OvalShape()
     )
 
-    val icon = bindableField(Icon(
+    val icon = BindableField(Icon(
         bgColor = ContextCompat.getColor(context, R.color.White),
         fgColor = ContextCompat.getColor(context, R.color.Black),
         icon = R.drawable.ic_plus
     ))
 
-    val enabled = bindableField(true)
+    val enabled = BindableField(true)
 
     private lateinit var iconDrawable: Drawable
 

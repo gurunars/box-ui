@@ -1,5 +1,7 @@
 package com.gurunars.databinding
 
+import java.lang.ref.WeakReference
+
 
 /**
  * An observable field capable to emit changes and listen to change events
@@ -12,9 +14,7 @@ package com.gurunars.databinding
 class BindableField<Type>(
     private var value: Type,
     private val preset: (one: Type) -> Type = { item -> item }
-) : Unbindable {
-
-    private var isActive = true
+) {
 
     /**
      * Representation of a bond between a field and a listener. The listener could be either
@@ -27,9 +27,8 @@ class BindableField<Type>(
         fun unbind()
     }
 
-    private val listeners: MutableList<(value: Type) -> Unit> = mutableListOf()
-    private val beforeChangeListeners: MutableList<(value: Type) -> Unit> = mutableListOf()
-    private val bindings: MutableList<Binding> = mutableListOf()
+    private val listeners: MutableList<WeakReference<(value: Type) -> Unit>> = mutableListOf()
+    private val beforeChangeListeners: MutableList<WeakReference<(value: Type) -> Unit>> = mutableListOf()
 
     /**
      * Subscribe to changes.
@@ -38,19 +37,17 @@ class BindableField<Type>(
      * @param listener a function called with a new value after the change takes place
      */
     fun onChange(beforeChange: (value: Type) -> Unit = {}, listener: (value: Type) -> Unit): Binding {
-        beforeChangeListeners.add(beforeChange)
-        listeners.add(listener)
+        val weakBeforeChangeListener = WeakReference(beforeChange)
+        val weakListener = WeakReference(listener)
+        beforeChangeListeners.add(weakBeforeChangeListener)
+        listeners.add(weakListener)
         val binding = object : Binding {
             override fun unbind() {
-                beforeChangeListeners.remove(beforeChange)
-                listeners.remove(listener)
-                bindings.remove(this)
+                beforeChangeListeners.remove(weakBeforeChangeListener)
+                listeners.remove(weakListener)
             }
         }
-        bindings.add(binding)
-        if (isActive) {
-            listener(this.value)
-        }
+        listener(this.value)
         return binding
     }
 
@@ -62,10 +59,12 @@ class BindableField<Type>(
      * @param force if true - the change is made even if current and new values are the same
      */
     fun set(value: Type, force: Boolean = false) {
-        if (isActive && (force || !equal(this.value, value))) {
-            beforeChangeListeners.forEach { it(this.value) }
+        if (force || !equal(this.value, value)) {
+            beforeChangeListeners.removeAll { it.get() == null }
+            listeners.removeAll { it.get() == null }
+            beforeChangeListeners.forEach { it.get()?.invoke(this.value) }
             this.value = preset(value)
-            listeners.forEach { it(this.value) }
+            listeners.forEach { it.get()?.invoke(this.value) }
         }
     }
 
@@ -75,19 +74,13 @@ class BindableField<Type>(
     fun get(): Type = this.value
 
     private fun join(
-        field: BindableField<*>,
         forwardBinding: Binding,
         backwardBinding: Binding
     ) = object : Binding {
         override fun unbind() {
             forwardBinding.unbind()
             backwardBinding.unbind()
-            bindings.remove(this)
-            field.bindings.remove(this)
         }
-    }.apply {
-        bindings.add(this)
-        field.bindings.add(this)
     }
 
     /**
@@ -103,7 +96,7 @@ class BindableField<Type>(
         target: BindableField<To>,
         forward: (source: Type) -> To,
         backward: (source: To) -> Type
-    ) = join(target,
+    ) = join(
         onChange { target.set(forward(it)) },
         target.onChange { this.set(backward(it)) }
     )
@@ -115,32 +108,9 @@ class BindableField<Type>(
      * @param target target to bind to
      * @return a disposable bond
      */
-    fun bind(target: BindableField<Type>) = join(target,
+    fun bind(target: BindableField<Type>) = join(
         onChange { target.set(it) },
         target.onChange { this.set(it) }
     )
-
-    /**
-     * Dispose all bindings and listener.
-     */
-    override fun unbindAll() {
-        bindings.toList().forEach { it.unbind() }
-        listeners.clear()
-        beforeChangeListeners.clear()
-    }
-
-    /**
-     * Start responding to changes.
-     */
-    fun resume() {
-        isActive = true
-    }
-
-    /**
-     * Stop responding to changes.
-     */
-    fun pause() {
-        isActive = false
-    }
 
 }

@@ -1,12 +1,10 @@
 package com.gurunars.knob_view
 
 import android.content.Context
-import android.util.Log
 import android.view.View
-import android.widget.FrameLayout
 import com.gurunars.anko_generator.AnkoComponent
+import com.gurunars.databinding.BindableField
 import com.gurunars.databinding.android.Component
-import com.gurunars.databinding.android.bindableField
 
 /**
  * Meta view that displays one of the views listed in a viewSelector.
@@ -21,7 +19,7 @@ class KnobView constructor(
     viewSelector: Map<Enum<*>, View>
 ) : Component(context) {
 
-    val selectedView = bindableField(viewSelector.keys.toList()[0])
+    val selectedView = BindableField(viewSelector.keys.toList()[0])
 
     init {
         viewSelector.forEach { type, view ->

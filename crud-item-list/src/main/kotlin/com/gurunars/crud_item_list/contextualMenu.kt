@@ -48,7 +48,7 @@ internal fun <ItemType : Item> Context.contextualMenu(
             requestLayout()
         }
 
-        IconView(context).addTo(this) {
+        IconView(context).add(this) {
             id = R.id.moveUp
             icon.set(IconView.Icon(icon = R.drawable.ic_move_up))
             setTag(R.id.action, ActionMoveUp<ItemType>())
@@ -61,7 +61,7 @@ internal fun <ItemType : Item> Context.contextualMenu(
             rightMargin = dip(23)
         }
 
-        IconView(context).addTo(this) {
+        IconView(context).add(this) {
             id = R.id.moveDown
             icon.set(IconView.Icon(icon = R.drawable.ic_move_down))
             setTag(R.id.action, ActionMoveDown<ItemType>())
@@ -74,7 +74,7 @@ internal fun <ItemType : Item> Context.contextualMenu(
             rightMargin = dip(23)
         }
 
-        IconView(context).addTo(this) {
+        IconView(context).add(this) {
             id = R.id.delete
             icon.set(IconView.Icon(icon = R.drawable.ic_delete))
             setTag(R.id.action, ActionDelete<ItemType>())
@@ -86,7 +86,7 @@ internal fun <ItemType : Item> Context.contextualMenu(
             rightMargin = dip(5)
         }
 
-        IconView(context).addTo(this) {
+        IconView(context).add(this) {
             id = R.id.selectAll
             icon.set(IconView.Icon(icon = R.drawable.ic_select_all))
             setTag(R.id.action, ActionSelectAll<ItemType>())
@@ -98,7 +98,7 @@ internal fun <ItemType : Item> Context.contextualMenu(
             rightMargin = dip(5)
         }
 
-        IconView(context).addTo(this) {
+        IconView(context).add(this) {
             id = R.id.edit
             icon.set(IconView.Icon(icon = R.drawable.ic_edit))
             setTag(R.id.action, ActionEdit({ payload: ItemType -> onEdit(payload) }))

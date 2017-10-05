@@ -68,7 +68,7 @@ fun<T: View> T.setAsOne(parent: Activity, init: T.() -> Unit = {}): T {
 /**
  * Add a view to parent
  */
-fun<T: View> T.addTo(parent: ViewGroup, init: T.() -> Unit = {}) : T {
+fun<T: View> T.add(parent: ViewGroup, init: T.() -> Unit = {}) : T {
     parent.addView(this)
     this.init()
     return this

@@ -7,7 +7,6 @@ import com.gurunars.android_utils.IconView
 import com.gurunars.anko_generator.AnkoComponent
 import com.gurunars.databinding.BindableField
 import com.gurunars.databinding.android.StatefulComponent
-import com.gurunars.databinding.android.bindableField
 import com.gurunars.databinding.onChange
 import com.gurunars.floatmenu.FloatMenu
 import com.gurunars.item_list.*
@@ -53,12 +52,11 @@ class CrudItemListView<ItemType : Item> constructor(
             Pair(it.type, it)
         }.toMap()
 
-    val listActionColors = bindableField(IconColorBundle())
-    val confirmationActionColors = bindableField(IconColorBundle())
-    val cancelActionColors = bindableField(IconColorBundle())
-    val openIcon = bindableField(IconColorBundle())
-
-    val isLeftHanded = bindableField(false)
+    val listActionColors = BindableField(IconColorBundle())
+    val confirmationActionColors = BindableField(IconColorBundle())
+    val cancelActionColors = BindableField(IconColorBundle())
+    val openIcon = BindableField(IconColorBundle())
+    val isLeftHanded = BindableField(false)
 
     val items: BindableField<List<ItemType>>
     val isOpen: BindableField<Boolean>
@@ -151,10 +149,7 @@ class CrudItemListView<ItemType : Item> constructor(
             id = R.id.knobMenu
         }
 
-        floatingMenu = FloatMenu(context).apply {
-            contentView.set(itemListView)
-            menuView.set(knobView)
-            fullSize()
+        floatingMenu = FloatMenu(context, itemListView, knobView).setAsOne(this) {
             id = R.id.floatingMenu
             this@CrudItemListView.isLeftHanded.bind(isLeftHanded)
 
@@ -228,7 +223,6 @@ class CrudItemListView<ItemType : Item> constructor(
 
             retain(itemInEdit, itemListView.selectedItems, isOpen)
             retain(itemListView.selectedItems, isOpen, itemInEdit)
-            setAsOne(this@CrudItemListView)
         }
 
         isOpen = floatingMenu.isOpen

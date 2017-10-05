@@ -8,11 +8,10 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.FrameLayout
+import com.gurunars.databinding.BindableField
 import com.gurunars.databinding.android.bind
-import com.gurunars.databinding.android.bindableField
 import com.gurunars.knob_view.KnobView
-import com.gurunars.knob_view.knobView
-import com.gurunars.shortcuts.fullSize
+import com.gurunars.shortcuts.setAsOne
 import org.jetbrains.anko.*
 
 enum class COUNT {
@@ -22,7 +21,7 @@ enum class COUNT {
 
 internal class InnerView(ctx: Context) : FrameLayout(ctx) {
 
-    private val txt = bindableField("")
+    private val txt = BindableField("")
 
     init {
         verticalLayout {
@@ -48,15 +47,13 @@ class ActivityMain : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        knobView = knobView(mapOf<Enum<*>, View>(
+        knobView = KnobView(this, mapOf<Enum<*>, View>(
             COUNT.ONE to InnerView(this).apply { id = R.id.one },
             COUNT.TWO to InnerView(this).apply { id = R.id.two },
             COUNT.THREE to InnerView(this).apply { id = R.id.three },
             COUNT.FOUR to InnerView(this).apply { id = R.id.four },
             COUNT.FIVE to InnerView(this).apply { id = R.id.five }
-        )) {
-            fullSize()
-        }
+        )).setAsOne(this)
 
     }
 

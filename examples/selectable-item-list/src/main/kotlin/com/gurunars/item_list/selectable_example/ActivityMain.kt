@@ -21,13 +21,15 @@ import org.jetbrains.anko.padding
 import org.jetbrains.anko.textView
 import java.util.*
 
-private class AnimalBinder: ItemViewBinder<AnimalItem> {
+private class AnimalBinder : ItemViewBinder<AnimalItem> {
     override fun bind(context: Context, field: BindableField<AnimalItem>) = with(context) {
         UI {
             textView {
                 asRow()
                 padding = context.dip(5)
-                field.onChange { text = it.toString() }
+                field.onChange {
+                    text = it.toString()
+                }
             }
         }.view
     }

@@ -2,6 +2,7 @@ package com.gurunars.floatmenu
 
 import android.animation.FloatEvaluator
 import android.animation.ValueAnimator
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
 import android.view.MotionEvent
@@ -9,20 +10,20 @@ import android.view.View
 import android.view.ViewGroup
 import com.gurunars.databinding.BindableField
 import com.gurunars.databinding.android.Component
-import com.gurunars.databinding.android.bindableField
 import com.gurunars.shortcuts.setIsVisible
 
+@SuppressLint("ViewConstructor")
 internal class MenuPane constructor(
     context: Context,
     hasOverlay: BindableField<Boolean>,
     isVisible: BindableField<Boolean>,
-    animationDuration: BindableField<Int>
+    animationDuration: Int
 ) : Component(context) {
 
     init {
 
         val floatEvaluator = FloatEvaluator()
-        val animatedValue = bindableField(1f)
+        val animatedValue = BindableField(1f)
 
         hasOverlay.onChange {
             setBackgroundColor(if (it) Color.parseColor("#99000000") else Color.TRANSPARENT)
@@ -32,7 +33,7 @@ internal class MenuPane constructor(
             if (isAttachedToWindow) {
                 ValueAnimator.ofFloat(0f, 1f).apply {
                     startDelay = 0
-                    duration = animationDuration.get().toLong()
+                    duration = animationDuration.toLong()
                     addUpdateListener { animatedValue.set(it.animatedValue as Float) }
                     start()
                 }
@@ -85,14 +86,4 @@ internal class MenuPane constructor(
     override fun onInterceptTouchEvent(ev: MotionEvent): Boolean =
         !isClickable && !touchBelongsTo(this, ev)
 
-}
-
-internal fun ViewGroup.menuPane(
-    hasOverlay: BindableField<Boolean>,
-    isVisible: BindableField<Boolean>,
-    animationDuration: BindableField<Int>,
-    init: MenuPane.() -> Any
-) = MenuPane(context, hasOverlay, isVisible, animationDuration).apply {
-    init()
-    this@menuPane.addView(this)
 }

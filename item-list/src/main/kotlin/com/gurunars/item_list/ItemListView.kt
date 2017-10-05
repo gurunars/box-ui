@@ -6,8 +6,8 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import com.esotericsoftware.kryo.Kryo
 import com.gurunars.anko_generator.AnkoComponent
+import com.gurunars.databinding.BindableField
 import com.gurunars.databinding.android.Component
-import com.gurunars.databinding.android.bindableField
 import com.gurunars.shortcuts.fullSize
 import com.gurunars.shortcuts.setAsOne
 import jp.wasabeef.recyclerview.animators.FadeInAnimator
@@ -35,7 +35,7 @@ class ItemListView<ItemType : Item>(
         instantiatorStrategy = Kryo.DefaultInstantiatorStrategy(StdInstantiatorStrategy())
     }
 
-    val items = bindableField(
+    val items = BindableField(
         listOf<ItemType>(),
         { item -> kryo.copy(ArrayList(item)) }
     )

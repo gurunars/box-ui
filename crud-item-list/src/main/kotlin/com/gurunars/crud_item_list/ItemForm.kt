@@ -5,7 +5,6 @@ import android.content.Context
 import android.widget.RelativeLayout
 import com.gurunars.android_utils.IconView
 import com.gurunars.databinding.BindableField
-import com.gurunars.databinding.android.bindableField
 import com.gurunars.item_list.Item
 import com.gurunars.shortcuts.HorizontalAlignment
 import com.gurunars.shortcuts.VerticalAlignment
@@ -28,7 +27,7 @@ internal class ItemForm<ItemType : Item>(
         item: ItemType,
         formBinder: ItemTypeDescriptor<ItemType>
     ) {
-        val field = bindableField(item)
+        val field = BindableField(item)
         field.onChange { itemInEdit.set(it) }
         removeAllViews()
 

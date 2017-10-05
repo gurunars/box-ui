@@ -12,9 +12,8 @@ import javax.annotation.processing.SupportedOptions;
 import javax.annotation.processing.SupportedSourceVersion;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.TypeElement;
-import javax.tools.Diagnostic;
 
-@SupportedSourceVersion(SourceVersion.RELEASE_7)
+@SupportedSourceVersion(SourceVersion.RELEASE_8)
 @AutoService(Processor.class)
 @SupportedOptions(AnkoGenerator.KAPT_KOTLIN_GENERATED_OPTION_NAME)
 public class AnkoGenerator extends AbstractProcessor {

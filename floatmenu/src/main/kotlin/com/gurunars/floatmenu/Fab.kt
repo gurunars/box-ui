@@ -4,23 +4,21 @@ import android.animation.ArgbEvaluator
 import android.animation.FloatEvaluator
 import android.animation.ValueAnimator
 import android.content.Context
-import android.view.ViewGroup
 import com.gurunars.android_utils.IconView
 import com.gurunars.android_utils.IconView.Icon
 import com.gurunars.databinding.BindableField
-import com.gurunars.databinding.android.bindableField
 import com.gurunars.shortcuts.fullSize
 import org.jetbrains.anko.frameLayout
 
 internal fun Context.fab(
-    rotationDuration: BindableField<Int>,
+    rotationDuration: Int,
     openIcon: BindableField<Icon>,
     closeIcon: BindableField<Icon>,
     isActivated: BindableField<Boolean>
 ) = frameLayout {
     val argbEvaluator = ArgbEvaluator()
     val floatEvaluator = FloatEvaluator()
-    val animatedValue = bindableField(1f)
+    val animatedValue = BindableField(1f)
 
     val actualImageView = IconView(context).apply {
         id = R.id.iconView
@@ -62,7 +60,7 @@ internal fun Context.fab(
         if (isAttachedToWindow) {
             ValueAnimator.ofFloat(0f, 1f).apply {
                 startDelay = 0
-                duration = rotationDuration.get().toLong()
+                duration = rotationDuration.toLong()
                 addUpdateListener { animatedValue.set(it.animatedValue as Float) }
                 start()
             }
@@ -70,15 +68,4 @@ internal fun Context.fab(
             updateIcon()
         }
     }
-}
-
-fun ViewGroup.fab(
-    rotationDuration: BindableField<Int>,
-    openIcon: BindableField<Icon>,
-    closeIcon: BindableField<Icon>,
-    isActivated: BindableField<Boolean>,
-    init: ViewGroup.() -> Any
-) = context.fab(rotationDuration, openIcon, closeIcon, isActivated).apply {
-    init()
-    this@fab.addView(this)
 }

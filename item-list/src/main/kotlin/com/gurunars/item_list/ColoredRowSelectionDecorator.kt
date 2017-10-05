@@ -5,7 +5,6 @@ import android.graphics.Color
 import android.support.annotation.ColorInt
 import android.view.View
 import com.gurunars.databinding.BindableField
-import com.gurunars.databinding.android.possess
 import com.gurunars.shortcuts.asRow
 
 /**
@@ -24,7 +23,6 @@ class ColoredItemViewBinder<ItemType: Item>(
         val newField = BindableField(field.get().item)
         return itemViewBinder.bind(context, newField).apply {
             asRow()
-            possess(newField)
             field.onChange {
                 setTag(R.id.isSelected, it.isSelected)
                 setBackgroundColor(if (it.isSelected) selectionColor else regularColor)

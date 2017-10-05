@@ -16,6 +16,10 @@ internal class ItemAdapter<ItemType : Item>(
     private val itemViewBinders: Map<Enum<*>, ItemViewBinder<ItemType>>
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
+    init {
+        setHasStableIds(true)
+    }
+
     private var previousList: List<ItemType> = ArrayList()
 
     private class ItemCallback<out ItemType : Item>(
@@ -27,12 +31,10 @@ internal class ItemAdapter<ItemType : Item>(
         override fun getNewListSize() = Math.max(1, currentList.size)
 
         override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
-            currentList.isNotEmpty() && previousList.isNotEmpty() &&
-                previousList[oldItemPosition] == currentList[newItemPosition]
+            previousList.getOrNull(oldItemPosition) == currentList.getOrNull(newItemPosition)
 
         override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
-            currentList.isNotEmpty() && previousList.isNotEmpty() &&
-                previousList[oldItemPosition].id == currentList[newItemPosition].id
+            previousList.getOrNull(oldItemPosition)?.id == currentList.getOrNull(newItemPosition)?.id
 
     }
 
@@ -80,7 +82,6 @@ internal class ItemAdapter<ItemType : Item>(
         if (position == items.get().size) {
             return   // nothing to bind
         }
-
         val field = holder.itemView.getTag(R.id.payloadTag) as BindableField<ItemType>
         field.set(items.get()[position], true)
     }
@@ -92,6 +93,8 @@ internal class ItemAdapter<ItemType : Item>(
             items.get()[position].type.ordinal
 
     override fun getItemCount() = Math.max(1, items.get().size)
+
+    override fun getItemId(position: Int) = items.get()[position].id
 
     companion object {
         val EMPTY_TYPE = -404

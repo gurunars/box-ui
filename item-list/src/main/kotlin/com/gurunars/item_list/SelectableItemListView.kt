@@ -4,8 +4,8 @@ import android.annotation.SuppressLint
 import android.content.Context
 import com.esotericsoftware.kryo.Kryo
 import com.gurunars.anko_generator.AnkoComponent
+import com.gurunars.databinding.BindableField
 import com.gurunars.databinding.android.StatefulComponent
-import com.gurunars.databinding.android.bindableField
 import com.gurunars.databinding.onChange
 import com.gurunars.shortcuts.fullSize
 import com.gurunars.shortcuts.setAsOne
@@ -39,12 +39,12 @@ class SelectableItemListView<ItemType : Item> constructor(
         instantiatorStrategy = Kryo.DefaultInstantiatorStrategy(StdInstantiatorStrategy())
     }
 
-    val selectedItems = bindableField<Set<ItemType>>(
+    val selectedItems = BindableField<Set<ItemType>>(
         hashSetOf(),
         { item -> kryo.copy(HashSet(item)) }
     )
 
-    val items = bindableField<List<ItemType>>(
+    val items = BindableField<List<ItemType>>(
         listOf(),
         { item -> kryo.copy(ArrayList(item)) }
     )

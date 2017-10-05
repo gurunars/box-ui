@@ -3,8 +3,6 @@ package com.gurunars.storage
 import android.content.Context
 import android.content.SharedPreferences
 import com.gurunars.databinding.BindableField
-import com.gurunars.databinding.Unbindable
-import com.gurunars.databinding.UnbindableRegistryService
 import java.util.*
 import kotlin.concurrent.timerTask
 
@@ -28,11 +26,7 @@ class PersistentStorage(
     internal class PersistentField<Type>(
         val preferences: CachedLazyField<SharedPreferences>,
         val name: String,
-        val field: BindableField<Type>) : Unbindable {
-
-        override fun unbindAll() {
-            field.unbindAll()
-        }
+        val field: BindableField<Type>) {
 
         fun load() {
             val loadedValue: Type? = StringSerializer.fromString<Type>(
@@ -47,7 +41,6 @@ class PersistentStorage(
 
     }
 
-    private val registry = UnbindableRegistryService()
     private val fields = mutableListOf<PersistentField<*>>()
 
     /**
@@ -63,7 +56,6 @@ class PersistentStorage(
             timer.schedule(timerTask { save() }, 100)
         }
         val wrapper = PersistentField(preferences, name, field)
-        registry.add(wrapper)
         fields.add(wrapper)
         return field
     }
@@ -87,7 +79,6 @@ class PersistentStorage(
     fun unbindAll() {
         timer.cancel()
         save()
-        registry.unbindAll()
     }
 
 }
