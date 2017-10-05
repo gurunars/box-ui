@@ -64,7 +64,7 @@ class ActivityUnsortableTest {
         atIndex(3).perform(longClick())
         onView(withId(R.id.selectAll)).perform(click())
         onView(withId(R.id.delete)).perform(click())
-        onView(withId(R.id.noItemsLabel)).check(matches(withText("No items at all")))
+        onView(withId(R.id.noItemsLabel)).check(matches(withText("Empty")))
     }
 
     // TODO: add test case for item creation and opening the form again after item creation

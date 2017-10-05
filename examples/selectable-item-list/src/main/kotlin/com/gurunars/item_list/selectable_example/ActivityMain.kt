@@ -6,26 +6,31 @@ import android.os.Bundle
 import android.support.annotation.StringRes
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.TextView
 import android.widget.Toast
 import com.gurunars.animal_item.AnimalItem
 import com.gurunars.databinding.BindableField
+import com.gurunars.item_list.ColoredItemViewBinder
+import com.gurunars.item_list.ItemViewBinder
 import com.gurunars.item_list.SelectableItemListView
-import com.gurunars.item_list.coloredRowSelectionDecorator
-import com.gurunars.item_list.selectableItemListView
-import com.gurunars.shortcuts.fullSize
+import com.gurunars.shortcuts.asRow
+import com.gurunars.shortcuts.setAsOne
 import com.gurunars.storage.PersistentStorage
+import org.jetbrains.anko.UI
 import org.jetbrains.anko.dip
 import org.jetbrains.anko.padding
+import org.jetbrains.anko.textView
 import java.util.*
 
-
-internal fun Context.bindAnimalItem(
-    itemType: Enum<*>,
-    payload: BindableField<AnimalItem>
-) = TextView(this).apply {
-    padding = context.dip(5)
-    payload.onChange { text = it.toString() }
+private class AnimalBinder: ItemViewBinder<AnimalItem> {
+    override fun bind(context: Context, field: BindableField<AnimalItem>) = with(context) {
+        UI {
+            textView {
+                asRow()
+                padding = context.dip(5)
+                field.onChange { text = it.toString() }
+            }
+        }.view
+    }
 }
 
 class ActivityMain : Activity() {
@@ -46,8 +51,9 @@ class ActivityMain : Activity() {
         super.onCreate(savedInstanceState)
         storage.load()
 
-        itemListView = selectableItemListView(coloredRowSelectionDecorator(Context::bindAnimalItem)) {
-            fullSize()
+        itemListView = SelectableItemListView<AnimalItem>(this,
+            AnimalItem.Type.values().map { Pair(it, ColoredItemViewBinder(AnimalBinder())) }.toMap()
+        ).setAsOne(this) {
             id = R.id.selectableItemList
             this@ActivityMain.items.bind(items)
         }

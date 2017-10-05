@@ -47,11 +47,7 @@ class BindableFieldTest {
         val slaveField = BindableField("2")
 
         masterField.bind(
-            slaveField,
-            object : BindableField.ValueTransformer<Int, String> {
-                override fun forward(value: Int) = value.toString()
-                override fun backward(value: String) = Integer.valueOf(value)
-            }
+            slaveField, { it.toString() }, { Integer.valueOf(it) }
         )
         assertEquals(1, masterField.get())
         assertEquals("1", slaveField.get())

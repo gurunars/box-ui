@@ -1,7 +1,5 @@
 package com.gurunars.databinding
 
-import android.util.Log
-
 
 /**
  * An observable field capable to emit changes and listen to change events
@@ -17,25 +15,6 @@ class BindableField<Type>(
 ) : Unbindable {
 
     private var isActive = true
-
-    /**
-     * Helper interface to ease field to field binding if the fields happen to have different value
-     * types.
-     *
-     * @param From source data type
-     * @param To target data type
-     */
-    interface ValueTransformer<From, To> {
-        /**
-         * Transform from source to target type.
-         */
-        fun forward(value: From): To
-
-        /**
-         * Transform from target to source type.
-         */
-        fun backward(value: To): From
-    }
 
     /**
      * Representation of a bond between a field and a listener. The listener could be either
@@ -116,16 +95,17 @@ class BindableField<Type>(
      * get updated automatically.
      *
      * @param target field to bind to
-     * @param transformer entity responsible for handling the transformation of values of two
-     * different types from on type to another.
+     * @param forward function that transforms Type to To
+     * @param backward function that transforms To to Type
      * @return a disposable bond
      */
     fun <To> bind(
         target: BindableField<To>,
-        transformer: ValueTransformer<Type, To>
+        forward: (source: Type) -> To,
+        backward: (source: To) -> Type
     ) = join(target,
-        onChange { target.set(transformer.forward(it)) },
-        target.onChange { this.set(transformer.backward(it)) }
+        onChange { target.set(forward(it)) },
+        target.onChange { this.set(backward(it)) }
     )
 
     /**

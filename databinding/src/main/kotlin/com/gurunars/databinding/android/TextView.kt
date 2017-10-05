@@ -33,17 +33,18 @@ fun TextView.bind(field: BindableField<String>) {
  */
 fun <From> TextView.bind(
     field: BindableField<From>,
-    valueTransformer: BindableField.ValueTransformer<From, String>
+    forward: String.() -> From,
+    backword: From.() -> String
 ) {
     field.onChange {
-        val trans = valueTransformer.forward(it)
+        val trans = backword(it)
         if (text.toString() != trans) {
             setText(trans)
         }
     }
     addTextChangedListener(object : TextWatcher {
         override fun afterTextChanged(s: Editable?) {
-            field.set(valueTransformer.backward(s.toString()))
+            field.set(forward(s.toString()))
         }
 
         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -51,8 +52,6 @@ fun <From> TextView.bind(
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
     })
 }
-
-//TODO: TextView.bind
 
 /**
  * @see TextView.bind
@@ -66,7 +65,8 @@ fun BindableField<String>.bind(textView: TextView) {
  */
 fun <From> BindableField<From>.bind(
     textView: TextView,
-    valueTransformer: BindableField.ValueTransformer<From, String>
+    forward: From.() -> String,
+    backward: String.() -> From
 ) {
-    textView.bind(this, valueTransformer)
+    textView.bind(this, backward, forward)
 }
