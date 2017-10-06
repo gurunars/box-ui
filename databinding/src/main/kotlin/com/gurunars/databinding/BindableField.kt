@@ -1,6 +1,6 @@
 package com.gurunars.databinding
 
-import java.lang.ref.WeakReference
+import java.lang.ref.SoftReference
 
 
 /**
@@ -27,8 +27,8 @@ class BindableField<Type>(
         fun unbind()
     }
 
-    private val listeners: MutableList<WeakReference<(value: Type) -> Unit>> = mutableListOf()
-    private val beforeChangeListeners: MutableList<WeakReference<(value: Type) -> Unit>> = mutableListOf()
+    private val listeners: MutableList<(value: Type) -> Unit> = mutableListOf()
+    private val beforeChangeListeners: MutableList<(value: Type) -> Unit> = mutableListOf()
 
     /**
      * Subscribe to changes.
@@ -37,14 +37,12 @@ class BindableField<Type>(
      * @param listener a function called with a new value after the change takes place
      */
     fun onChange(beforeChange: (value: Type) -> Unit = {}, listener: (value: Type) -> Unit): Binding {
-        val weakBeforeChangeListener = WeakReference(beforeChange)
-        val weakListener = WeakReference(listener)
-        beforeChangeListeners.add(weakBeforeChangeListener)
-        listeners.add(weakListener)
+        beforeChangeListeners.add(beforeChange)
+        listeners.add(listener)
         val binding = object : Binding {
             override fun unbind() {
-                beforeChangeListeners.remove(weakBeforeChangeListener)
-                listeners.remove(weakListener)
+                beforeChangeListeners.remove(beforeChange)
+                listeners.remove(listener)
             }
         }
         listener(this.value)
@@ -60,11 +58,9 @@ class BindableField<Type>(
      */
     fun set(value: Type, force: Boolean = false) {
         if (force || !equal(this.value, value)) {
-            beforeChangeListeners.removeAll { it.get() == null }
-            listeners.removeAll { it.get() == null }
-            beforeChangeListeners.forEach { it.get()?.invoke(this.value) }
+            beforeChangeListeners.forEach { it.invoke(this.value) }
             this.value = preset(value)
-            listeners.forEach { it.get()?.invoke(this.value) }
+            listeners.forEach { it.invoke(this.value) }
         }
     }
 
