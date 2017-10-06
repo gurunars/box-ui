@@ -16,10 +16,6 @@ internal class ItemAdapter<ItemType : Item>(
     private val itemViewBinders: Map<Enum<*>, ItemViewBinder<ItemType>>
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    init {
-        setHasStableIds(true)
-    }
-
     private var previousList: List<ItemType> = ArrayList()
 
     private class ItemCallback<out ItemType : Item>(
@@ -93,8 +89,6 @@ internal class ItemAdapter<ItemType : Item>(
             items.get()[position].type.ordinal
 
     override fun getItemCount() = Math.max(1, items.get().size)
-
-    override fun getItemId(position: Int) = items.get()[position].id
 
     companion object {
         val EMPTY_TYPE = -404
