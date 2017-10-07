@@ -39,7 +39,7 @@ android {
 
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    compileOnly project(':anko-generator')
+    compile project(':anko-generator')
     kapt project(':anko-generator')
 }
 
