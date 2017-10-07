@@ -2,7 +2,6 @@ include  \
     ':android-utils',
     ':item-list',
     ':test-utils',
-    ':anko-generator',
     ':databinding',
     ':floatmenu',
     ':knob-view',

@@ -11,7 +11,6 @@ import android.graphics.drawable.shapes.OvalShape
 import android.graphics.drawable.shapes.Shape
 import android.support.v4.content.res.ResourcesCompat
 import android.widget.ImageView
-import com.gurunars.anko_generator.AnkoComponent
 import com.gurunars.databinding.BindableField
 
 /**
@@ -20,7 +19,6 @@ import com.gurunars.databinding.BindableField
  * @property icon Button icon descriptor
  * @property enabled Flag specifying if the icon should be clickable or not
  */
-@AnkoComponent
 class IconView(context: Context) : ImageView(context) {
 
     /**

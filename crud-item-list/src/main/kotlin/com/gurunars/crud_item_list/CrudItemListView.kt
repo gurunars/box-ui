@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.view.View
 import com.gurunars.android_utils.IconView
-import com.gurunars.anko_generator.AnkoComponent
 import com.gurunars.databinding.BindableField
 import com.gurunars.databinding.android.StatefulComponent
 import com.gurunars.databinding.onChange
@@ -38,12 +37,11 @@ import com.gurunars.shortcuts.setAsOne
  * one.
  */
 @SuppressLint("ViewConstructor")
-@AnkoComponent
 class CrudItemListView<ItemType : Item> constructor(
     context: Context,
+    groupedItemTypeDescriptors: List<List<ItemTypeDescriptor<ItemType>>>,
     emptyViewBinder: EmptyViewBinder = DefaultEmptyViewBinder(),
-    sortable: Boolean = true,
-    groupedItemTypeDescriptors: List<List<ItemTypeDescriptor<ItemType>>>
+    sortable: Boolean = true
 ) : StatefulComponent(context) {
 
     private val typeCache = groupedItemTypeDescriptors

@@ -3,7 +3,6 @@ package com.gurunars.item_list
 import android.annotation.SuppressLint
 import android.content.Context
 import com.esotericsoftware.kryo.Kryo
-import com.gurunars.anko_generator.AnkoComponent
 import com.gurunars.databinding.BindableField
 import com.gurunars.databinding.android.StatefulComponent
 import com.gurunars.databinding.onChange
@@ -28,7 +27,6 @@ import kotlin.collections.HashSet
  * @property selectedItems A collection of items selected at the moment
  */
 @SuppressLint("ViewConstructor")
-@AnkoComponent
 class SelectableItemListView<ItemType : Item> constructor(
     context: Context,
     itemViewBinders: Map<Enum<*>, ItemViewBinder<SelectableItem<ItemType>>> = mapOf(),

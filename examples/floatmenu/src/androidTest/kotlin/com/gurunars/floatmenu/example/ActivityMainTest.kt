@@ -1,6 +1,7 @@
 package com.gurunars.floatmenu.example
 
 import android.content.pm.ActivityInfo
+import android.graphics.Color
 import android.support.test.InstrumentationRegistry.getInstrumentation
 import android.support.test.espresso.Espresso.onView
 import android.support.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu
@@ -54,13 +55,13 @@ class ActivityMainTest {
     @Test
     fun clickingFab_shouldOpenAndCloseMenu() {
         rotate()
-        checkFab("|BG:-4419697|IC:-16777216", "LH:false")
+        checkFab("|BG:${Color.YELLOW}|IC:${Color.BLACK}", "LH:false")
         fab().perform(click())
         rotate()
-        checkFab("|BG:-1|IC:-16777216", "LH:false")
+        checkFab("|BG:${Color.WHITE}|IC:${Color.BLACK}", "LH:false")
         fab().perform(click())
         rotate()
-        checkFab("|BG:-4419697|IC:-16777216", "LH:false")
+        checkFab("|BG:${Color.YELLOW}|IC:${Color.BLACK}", "LH:false")
     }
 
     @Test
@@ -83,7 +84,7 @@ class ActivityMainTest {
         openActionBarOverflowOrOptionsMenu(getInstrumentation().targetContext)
         onView(withText("Toggle button color")).perform(click())
         rotate()
-        checkFab("|BG:-7667712|IC:-1", "LH:false")
+        checkFab("|BG:${Color.RED}|IC:${Color.WHITE}", "LH:false")
     }
 
     private fun toggleBg() {
@@ -121,7 +122,7 @@ class ActivityMainTest {
         openActionBarOverflowOrOptionsMenu(getInstrumentation().targetContext)
         onView(withText("Toggle left/right hand")).perform(click())
         rotate()
-        checkFab("|BG:-4419697|IC:-16777216", "LH:true")
+        checkFab("|BG:${Color.YELLOW}|IC:${Color.BLACK}", "LH:true")
     }
 
 }

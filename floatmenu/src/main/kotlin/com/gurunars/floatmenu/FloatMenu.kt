@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.view.View
 import com.gurunars.android_utils.IconView
-import com.gurunars.anko_generator.AnkoComponent
 import com.gurunars.databinding.BindableField
 import com.gurunars.databinding.android.StatefulComponent
 import com.gurunars.shortcuts.*
@@ -32,7 +31,6 @@ import org.jetbrains.anko.*
  * The flag does not affect clickable elements that are located inside the menu though.
  */
 @SuppressLint("ViewConstructor")
-@AnkoComponent
 class FloatMenu constructor(
     context: Context,
     contentView: View,

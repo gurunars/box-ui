@@ -5,7 +5,6 @@ import android.content.Context
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import com.esotericsoftware.kryo.Kryo
-import com.gurunars.anko_generator.AnkoComponent
 import com.gurunars.databinding.BindableField
 import com.gurunars.databinding.android.Component
 import com.gurunars.shortcuts.fullSize
@@ -25,7 +24,6 @@ import org.objenesis.strategy.StdInstantiatorStrategy
  * @property items A collection of items shown in the list
  */
 @SuppressLint("ViewConstructor")
-@AnkoComponent
 class ItemListView<ItemType : Item>(
     context: Context,
     itemViewBinders: Map<Enum<*>, ItemViewBinder<ItemType>> = mapOf(),
