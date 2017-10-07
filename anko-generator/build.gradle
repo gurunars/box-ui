@@ -15,10 +15,23 @@ dependencies {
 sourceCompatibility = "1.7"
 targetCompatibility = "1.7"
 
+group = "com.gurunars.anko_generator"
+version = package_version
+
+task sourcesJar(type: Jar) {
+    from 'src/main/kotlin'
+    classifier = 'sources'
+}
+
+artifacts {
+    archives sourcesJar
+}
+
 bintray {
     user = bintrayUser
     key = bintrayApikey
 
+    configurations = ['archives']
     pkg {
         repo = "maven"
         name = "anko-generator"
