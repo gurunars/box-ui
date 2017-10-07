@@ -125,6 +125,7 @@ internal fun <ItemType : Item> Context.contextualMenu(
                     width = dip(45)
                     height = dip(45)
                 }
+                @Suppress("UNCHECKED_CAST")
                 val action = it.getTag(R.id.action) as Action<ItemType>
 
                 listOf(items, selectedItems).onChange {

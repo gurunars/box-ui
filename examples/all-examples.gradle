@@ -5,6 +5,8 @@ android {
     compileSdkVersion compile_sdk_version
     buildToolsVersion build_tools_version
 
+    lintOptions.abortOnError false
+
     defaultConfig {
         testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
         applicationId APP_ID
@@ -21,18 +23,13 @@ android {
         main.jni.srcDirs = []
     }
 
-    // TODO: fix all the lint issues
-    lintOptions {
-        abortOnError false
-    }
-
     return void
 }
 
 dependencies {
     androidTestCompile 'junit:junit:4.12'
-    androidTestCompile 'com.android.support.test:rules:0.5'
-    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2'
+    androidTestCompile 'com.android.support.test:rules:1.0.1'
+    androidTestCompile 'com.android.support.test.espresso:espresso-core:3.0.1'
     androidTestCompile "com.android.support:support-annotations:$supportlib_version"
     androidTestCompile project(':test-utils')
     compile "org.jetbrains.anko:anko:$anko_version"

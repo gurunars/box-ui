@@ -9,7 +9,6 @@ import android.graphics.drawable.InsetDrawable
 import android.graphics.drawable.LayerDrawable
 import android.graphics.drawable.shapes.OvalShape
 import android.graphics.drawable.shapes.Shape
-import android.support.v4.content.ContextCompat
 import android.support.v4.content.res.ResourcesCompat
 import android.widget.ImageView
 import com.gurunars.anko_generator.AnkoComponent
@@ -40,8 +39,8 @@ class IconView(context: Context) : ImageView(context) {
     )
 
     val icon = BindableField(Icon(
-        bgColor = ContextCompat.getColor(context, R.color.White),
-        fgColor = ContextCompat.getColor(context, R.color.Black),
+        bgColor = Color.WHITE,
+        fgColor = Color.BLACK,
         icon = R.drawable.ic_plus
     ))
 

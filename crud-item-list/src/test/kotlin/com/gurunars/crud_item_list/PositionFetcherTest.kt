@@ -6,7 +6,7 @@ import org.mockito.internal.util.collections.Sets
 import java.util.*
 
 
-fun getPositions(items: List<String>, selectedItems: Set<String>) =
+fun getRawPositions(items: List<String>, selectedItems: Set<String>): List<Int> =
     getPositions(items.itemize(), selectedItems.itemize())
 
 class PositionFetcherTest {
@@ -17,19 +17,19 @@ class PositionFetcherTest {
     @Test
     @Throws(Exception::class)
     fun emptyAll_leadToNoPositions() {
-        assertEquals(getPositions(ArrayList<String>(), selected), ArrayList<Any>())
+        assertEquals(getRawPositions(ArrayList<String>(), selected), ArrayList<Any>())
     }
 
     @Test
     @Throws(Exception::class)
     fun emptySelections_leadToNoPositions() {
-        assertEquals(getPositions(all, HashSet<String>()), ArrayList<Any>())
+        assertEquals(getRawPositions(all, HashSet<String>()), ArrayList<Any>())
     }
 
     @Test
     @Throws(Exception::class)
     fun properSelections_leadProperPositions() {
-        assertEquals(Arrays.asList(1, 2), getPositions(all, selected))
+        assertEquals(Arrays.asList(1, 2), getRawPositions(all, selected))
     }
 
 }

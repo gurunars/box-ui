@@ -30,6 +30,10 @@ android {
         main.jni.srcDirs = []
     }
 
+    lintOptions {
+        disable 'UnusedResources'
+    }
+
     return void
 }
 

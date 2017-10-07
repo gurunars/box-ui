@@ -2,6 +2,7 @@ package com.gurunars.crud_item_list.example
 
 import android.app.Activity
 import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
 import android.text.InputType
 import android.view.Gravity
@@ -67,7 +68,7 @@ class Descriptor(
             }
         }
         gravity = Gravity.CENTER
-        backgroundColor = color(R.color.White)
+        backgroundColor = Color.WHITE
     }
 
 }
@@ -158,20 +159,20 @@ class ActivityMain : Activity() {
             this@ActivityMain.isLeftHanded.bind(isLeftHanded)
 
             listActionColors.set(IconColorBundle(
-                fgColor = color(R.color.Yellow),
-                bgColor = color(R.color.Blue)
+                fgColor = Color.YELLOW,
+                bgColor = Color.BLUE
             ))
             confirmationActionColors.set(IconColorBundle(
-                bgColor = color(R.color.Black),
-                fgColor = color(R.color.White)
+                bgColor = Color.BLACK,
+                fgColor = Color.WHITE
             ))
             cancelActionColors.set(IconColorBundle(
-                bgColor = color(R.color.Red),
-                fgColor = color(R.color.White)
+                bgColor = Color.RED,
+                fgColor = Color.WHITE
             ))
             openIcon.set(IconColorBundle(
-                bgColor = color(R.color.Green),
-                fgColor = color(R.color.Yellow)
+                bgColor = Color.GREEN,
+                fgColor = Color.YELLOW
             ))
         }
 

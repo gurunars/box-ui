@@ -78,6 +78,7 @@ internal class ItemAdapter<ItemType : Item>(
         if (position == items.get().size) {
             return   // nothing to bind
         }
+        @Suppress("UNCHECKED_CAST")
         val field = holder.itemView.getTag(R.id.payloadTag) as BindableField<ItemType>
         field.set(items.get()[position], true)
     }

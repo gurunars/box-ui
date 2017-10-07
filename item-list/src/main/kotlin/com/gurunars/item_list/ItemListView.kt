@@ -28,7 +28,7 @@ import org.objenesis.strategy.StdInstantiatorStrategy
 @AnkoComponent
 class ItemListView<ItemType : Item>(
     context: Context,
-    itemViewBinders: Map<Enum<*>, out ItemViewBinder<ItemType>> = mapOf(),
+    itemViewBinders: Map<Enum<*>, ItemViewBinder<ItemType>> = mapOf(),
     emptyViewBinder: EmptyViewBinder = DefaultEmptyViewBinder()
 ) : Component(context) {
 

@@ -13,6 +13,7 @@ internal object StringSerializer {
     fun <ObjType> fromString(serializedObject: String?): ObjType? {
         if (serializedObject == null) return null
         try {
+            @Suppress("UNCHECKED_CAST")
             return ObjectInputStream(
                 Base64InputStream(
                     ByteArrayInputStream(serializedObject.toByteArray()),

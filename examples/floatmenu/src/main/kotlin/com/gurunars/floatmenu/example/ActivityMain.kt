@@ -10,7 +10,6 @@ import com.gurunars.android_utils.IconView
 import com.gurunars.databinding.BindableField
 import com.gurunars.floatmenu.FloatMenu
 import com.gurunars.shortcuts.asRow
-import com.gurunars.shortcuts.color
 import com.gurunars.shortcuts.fullSize
 import com.gurunars.shortcuts.setAsOne
 import com.gurunars.storage.PersistentStorage
@@ -49,7 +48,7 @@ class ActivityMain : Activity() {
                         id = R.id.buttonFrame
                         setOnClickListener { notification.set("Menu Button Frame Clicked") }
                         isClickable = true
-                        backgroundColor = color(R.color.AliceBlue)
+                        backgroundColor = Color.MAGENTA
                         padding = dip(30)
                     }.lparams {
                         topMargin = dip(10)
@@ -112,15 +111,15 @@ class ActivityMain : Activity() {
             isOpen.bind(isOpenT)
 
             closeIcon.set(IconView.Icon(
-                bgColor = color(R.color.White),
-                fgColor = color(R.color.Black),
+                bgColor = Color.WHITE,
+                fgColor = Color.BLACK,
                 icon = R.drawable.ic_menu_close
             ))
 
             buttonColorFlag.onChange {
                 openIcon.set(IconView.Icon(
-                    bgColor = color(if (it) R.color.DarkRed else R.color.RosyBrown),
-                    fgColor = color(if (it) R.color.White else R.color.Black),
+                    bgColor = if (it) Color.RED else Color.YELLOW,
+                    fgColor = if (it) Color.WHITE else Color.BLACK,
                     icon = R.drawable.ic_menu
                 ))
             }

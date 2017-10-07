@@ -23,6 +23,7 @@ open class StatefulComponent(context: Context) : FrameLayout(context) {
     companion object {
 
         private fun <T> BindableField<T>.read(map: HashMap<Int, Any?>, index: Int) {
+            @Suppress("UNCHECKED_CAST")
             val obtained = map[index] as T
             this.set(obtained)
         }
@@ -48,6 +49,7 @@ open class StatefulComponent(context: Context) : FrameLayout(context) {
         (state as Bundle).apply {
             super.onRestoreInstanceState(getParcelable<Parcelable>("superState"))
             val payload = getSerializable("payload") ?: return
+            @Suppress("UNCHECKED_CAST")
             payload as HashMap<Int, Any?>
             fields.forEachIndexed { index, bindableField ->
                 bindableField.read(payload, index)

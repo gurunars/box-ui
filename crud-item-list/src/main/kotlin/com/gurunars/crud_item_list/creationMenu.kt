@@ -1,5 +1,6 @@
 package com.gurunars.crud_item_list
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.view.Gravity
 import com.gurunars.android_utils.IconView
@@ -30,6 +31,7 @@ internal fun <ItemType : Item> Context.creationMenu(
     groupedItemTypeDescriptors.forEach { group ->
         linearLayout {
             isLeftHanded.onChange {
+                @SuppressLint("RtlHardcoded")
                 gravity = (if (it) Gravity.LEFT else Gravity.RIGHT)
             }
             group.forEach { action ->
