@@ -51,7 +51,7 @@ class SelectableItemListView<ItemType : Item> constructor(
 
     init {
         retain(selectedItems)
-        ItemListView<SelectableItem<ItemType>>(
+        ItemListView(
             context,
             itemViewBinders = itemViewBinders.entries.map { it.key to (ClickableItemViewBinder(selectedItems, it.value)) }.toMap(),
             emptyViewBinder = emptyViewBinder

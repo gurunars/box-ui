@@ -11,7 +11,7 @@ import com.gurunars.databinding.BindableField
 fun TextView.bind(field: BindableField<String>) {
     field.onChange {
         if (text.toString() != it) {
-            setText(it)
+            text = it
         }
     }
     addTextChangedListener(object : TextWatcher {
@@ -39,7 +39,7 @@ fun <From> TextView.bind(
     field.onChange {
         val trans = backword(it)
         if (text.toString() != trans) {
-            setText(trans)
+            text = trans
         }
     }
     addTextChangedListener(object : TextWatcher {
@@ -53,16 +53,10 @@ fun <From> TextView.bind(
     })
 }
 
-/**
- * @see TextView.bind
- */
 fun BindableField<String>.bind(textView: TextView) {
     textView.bind(this)
 }
 
-/**
- * @see TextView.bind with value transformation
- */
 fun <From> BindableField<From>.bind(
     textView: TextView,
     forward: From.() -> String,

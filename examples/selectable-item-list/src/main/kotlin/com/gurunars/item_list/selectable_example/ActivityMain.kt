@@ -82,7 +82,7 @@ class ActivityMain : Activity() {
     private fun updateSelected(): Int {
         val selected = itemListView.selectedItems.get()
         items.set(items.get().map {
-            if (selected.any { item -> it.id == item.id })
+            if (selected.any { (id) -> it.id == id })
                 it.copy(version = it.version + 1)
             else
                 it
@@ -92,7 +92,7 @@ class ActivityMain : Activity() {
 
     private fun deleteSelected(): Int {
         itemListView.items.set(items.get().filterNot {
-            itemListView.selectedItems.get().any { item -> it.id == item.id }
+            itemListView.selectedItems.get().any { (id) -> it.id == id }
         })
         return R.string.did_delete_selected
     }

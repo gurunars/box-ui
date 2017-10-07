@@ -1,7 +1,5 @@
 package com.gurunars.databinding
 
-import java.lang.ref.SoftReference
-
 
 /**
  * An observable field capable to emit changes and listen to change events

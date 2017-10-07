@@ -25,16 +25,10 @@ fun <From> CompoundButton.bind(
     field.onChange { isChecked = backword(it) }
 }
 
-/**
- * @see CompoundButton.bind
- */
 fun BindableField<Boolean>.bind(compoundButton: CompoundButton) {
     compoundButton.bind(this)
 }
 
-/**
- * @see CompoundButton.bind with value transformation
- */
 fun <From> BindableField<From>.bind(
     compoundButton: CompoundButton,
     forward: From.() -> Boolean,

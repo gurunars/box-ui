@@ -94,7 +94,7 @@ fun ProcessingEnvironment.processElement(
             "java.util.Map",
             "java.util.List"
         ).forEach {
-            value = value.replace("import ${it}", "")
+            value = value.replace("import $it", "")
         }
         File(kaptKotlinGeneratedDir, "${generatedClassName.decapitalize()}.kt").apply {
             parentFile.mkdirs()

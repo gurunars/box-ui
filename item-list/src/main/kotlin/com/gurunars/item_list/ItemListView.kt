@@ -18,7 +18,8 @@ import org.objenesis.strategy.StdInstantiatorStrategy
 /**
  * @param ItemType type of the item to be shown in the list
  * @param context Android context
- * @param itemViewBinder a binder of an observable of the payload to the actual view
+ * @param itemViewBinders a mapping between item types and view binders
+ * meant  to render the respective items
  * @param emptyViewBinder a function returning a view to be shown when the list is empty
  *
  * @property items A collection of items shown in the list

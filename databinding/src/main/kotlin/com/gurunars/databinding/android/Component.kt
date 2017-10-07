@@ -12,7 +12,7 @@ abstract class Component(context: Context): FrameLayout(context) {
     /**
      * @suppress
      */
-    final override fun onSaveInstanceState() = super.onSaveInstanceState()
+    final override fun onSaveInstanceState(): Parcelable = super.onSaveInstanceState()
 
     /**
      * @suppress
