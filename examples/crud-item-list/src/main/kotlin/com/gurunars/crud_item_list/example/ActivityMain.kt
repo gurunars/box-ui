@@ -16,18 +16,18 @@ import com.gurunars.crud_item_list.ItemTypeDescriptor
 import com.gurunars.crud_item_list.oneOf
 import com.gurunars.databinding.BindableField
 import com.gurunars.databinding.android.bind
-import com.gurunars.shortcuts.color
 import com.gurunars.shortcuts.fullSize
 import com.gurunars.shortcuts.setAsOne
 import com.gurunars.storage.PersistentStorage
 import org.jetbrains.anko.*
 
 class Descriptor(
+    private val context: Context,
     private val count: BindableField<Int>,
     iconId: Int,
     override val type: AnimalItem.Type
 ) : ItemTypeDescriptor<AnimalItem> {
-    override fun bind(context: Context, field: BindableField<AnimalItem>) = with(context) {
+    override fun bind(field: BindableField<AnimalItem>) = with(context) {
         UI {
             textView {
                 padding = context.dip(5)
@@ -43,7 +43,6 @@ class Descriptor(
         type = type)
 
     override fun bindForm(
-        context: Context,
         field: BindableField<AnimalItem>
     ) = context.verticalLayout {
         fullSize()
@@ -117,25 +116,30 @@ class ActivityMain : Activity() {
         if (sortable) {
             descriptors = listOf(listOf(
                 Descriptor(
+                    this,
                     count,
                     R.drawable.ic_menu_monkey,
                     AnimalItem.Type.MONKEY),
                 Descriptor(
+                    this,
                     count,
                     R.drawable.ic_menu_lion,
                     AnimalItem.Type.LION)
             ), listOf(
                 Descriptor(
+                    this,
                     count,
                     R.drawable.ic_menu_tiger,
                     AnimalItem.Type.TIGER),
                 Descriptor(
+                    this,
                     count,
                     R.drawable.ic_menu_wolf,
                     AnimalItem.Type.WOLF)
             ))
         } else {
             descriptors = Descriptor(
+                this,
                 count,
                 R.drawable.ic_menu_monkey,
                 AnimalItem.Type.MONKEY).oneOf()

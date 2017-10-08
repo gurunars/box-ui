@@ -30,7 +30,7 @@ import kotlin.collections.HashSet
 class SelectableItemListView<ItemType : Item> constructor(
     context: Context,
     itemViewBinders: Map<Enum<*>, ItemViewBinder<SelectableItem<ItemType>>> = mapOf(),
-    emptyViewBinder: EmptyViewBinder = DefaultEmptyViewBinder()
+    emptyViewBinder: EmptyViewBinder = DefaultEmptyViewBinder(context)
 ) : StatefulComponent(context) {
 
     private val kryo = Kryo().apply {

@@ -32,7 +32,7 @@ internal class ItemForm<ItemType : Item>(
         removeAllViews()
 
         addView(
-            formBinder.bindForm(context, field).apply {
+            formBinder.bindForm(field).apply {
                 layoutParams = RelativeLayout.LayoutParams(
                     LayoutParams.MATCH_PARENT,
                     LayoutParams.MATCH_PARENT

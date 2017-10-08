@@ -40,7 +40,7 @@ import com.gurunars.shortcuts.setAsOne
 class CrudItemListView<ItemType : Item> constructor(
     context: Context,
     groupedItemTypeDescriptors: List<List<ItemTypeDescriptor<ItemType>>>,
-    emptyViewBinder: EmptyViewBinder = DefaultEmptyViewBinder(),
+    emptyViewBinder: EmptyViewBinder = DefaultEmptyViewBinder(context),
     sortable: Boolean = true
 ) : StatefulComponent(context) {
 

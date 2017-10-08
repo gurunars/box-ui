@@ -27,7 +27,7 @@ import org.objenesis.strategy.StdInstantiatorStrategy
 class ItemListView<ItemType : Item>(
     context: Context,
     itemViewBinders: Map<Enum<*>, ItemViewBinder<ItemType>> = mapOf(),
-    emptyViewBinder: EmptyViewBinder = DefaultEmptyViewBinder()
+    emptyViewBinder: EmptyViewBinder = DefaultEmptyViewBinder(context)
 ) : Component(context) {
 
     private val kryo = Kryo().apply {

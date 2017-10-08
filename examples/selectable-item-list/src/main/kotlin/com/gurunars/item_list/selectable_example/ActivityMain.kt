@@ -21,8 +21,8 @@ import org.jetbrains.anko.padding
 import org.jetbrains.anko.textView
 import java.util.*
 
-private class AnimalBinder : ItemViewBinder<AnimalItem> {
-    override fun bind(context: Context, field: BindableField<AnimalItem>) = with(context) {
+private class AnimalBinder(private val context: Context) : ItemViewBinder<AnimalItem> {
+    override fun bind(field: BindableField<AnimalItem>) = with(context) {
         UI {
             textView {
                 asRow()
@@ -54,7 +54,7 @@ class ActivityMain : Activity() {
         storage.load()
 
         itemListView = SelectableItemListView<AnimalItem>(this,
-            AnimalItem.Type.values().map { Pair(it, ColoredItemViewBinder(AnimalBinder())) }.toMap()
+            AnimalItem.Type.values().map { Pair(it, ColoredItemViewBinder(AnimalBinder(this))) }.toMap()
         ).setAsOne(this) {
             id = R.id.selectableItemList
             this@ActivityMain.items.bind(items)

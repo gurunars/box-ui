@@ -1,6 +1,5 @@
 package com.gurunars.item_list
 
-import android.content.Context
 import android.graphics.Color
 import android.support.annotation.ColorInt
 import android.view.View
@@ -14,14 +13,14 @@ import com.gurunars.shortcuts.asRow
  * @param selectionColor color integer applied when the row is selected
  * @param regularColor color integer applied when the row is not selected
  */
-class ColoredItemViewBinder<ItemType: Item>(
+class ColoredItemViewBinder<ItemType : Item>(
     private val itemViewBinder: ItemViewBinder<ItemType>,
     @ColorInt private val selectionColor: Int = Color.RED,
     @ColorInt private val regularColor: Int = Color.TRANSPARENT
-): ItemViewBinder<SelectableItem<ItemType>>{
-    override fun bind(context: Context, field: BindableField<SelectableItem<ItemType>>): View {
+) : ItemViewBinder<SelectableItem<ItemType>> {
+    override fun bind(field: BindableField<SelectableItem<ItemType>>): View {
         val newField = BindableField(field.get().item)
-        return itemViewBinder.bind(context, newField).apply {
+        return itemViewBinder.bind(newField).apply {
             asRow()
             field.onChange {
                 setTag(R.id.isSelected, it.isSelected)

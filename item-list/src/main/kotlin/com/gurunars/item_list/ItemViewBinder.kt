@@ -15,11 +15,13 @@ interface ItemViewBinder<ItemType : Item> {
      * @param field field representing item's payload
      * @return a view bound to a field holding the item
      */
-    fun bind(context: Context, field: BindableField<ItemType>): View
+    fun bind(field: BindableField<ItemType>): View
 }
 
-class DefaultItemViewBinder<ItemType : Item> : ItemViewBinder<ItemType> {
-    override fun bind(context: Context, field: BindableField<ItemType>) = with(context) {
+class DefaultItemViewBinder<ItemType : Item>(
+    private val context: Context
+) : ItemViewBinder<ItemType> {
+    override fun bind(field: BindableField<ItemType>) = with(context) {
         UI {
             textView {
                 backgroundColor = Color.YELLOW

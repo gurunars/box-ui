@@ -49,7 +49,7 @@ internal class ItemAdapter<ItemType : Item>(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         if (viewType == EMPTY_TYPE) {
-            return object : RecyclerView.ViewHolder(emptyViewBinder.bind(parent.context).apply {
+            return object : RecyclerView.ViewHolder(emptyViewBinder.bind().apply {
                 fullSize()
                 addOnAttachStateChangeListener(object : View.OnAttachStateChangeListener {
                     override fun onViewAttachedToWindow(v: View) {
@@ -65,9 +65,9 @@ internal class ItemAdapter<ItemType : Item>(
         } else {
             val initialPayload = items.get().first { it.type.ordinal == viewType }
             val field = BindableField(initialPayload)
-            val binder = itemViewBinders[initialPayload.type] ?: DefaultItemViewBinder()
+            val binder = itemViewBinders[initialPayload.type] ?: DefaultItemViewBinder(parent.context)
             return object : RecyclerView.ViewHolder(
-                binder.bind(parent.context, field).apply {
+                binder.bind(field).apply {
                     asRow()
                     setTag(R.id.payloadTag, field)
                 }) {}

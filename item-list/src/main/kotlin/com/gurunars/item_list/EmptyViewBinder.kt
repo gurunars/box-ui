@@ -11,11 +11,11 @@ import org.jetbrains.anko.textView
  * View binder for the case when there are no item in the list.
  */
 interface EmptyViewBinder {
-    fun bind(context: Context): View
+    fun bind(): View
 }
 
-class DefaultEmptyViewBinder: EmptyViewBinder {
-    override fun bind(context: Context) = with(context) {
+class DefaultEmptyViewBinder(private val context: Context): EmptyViewBinder {
+    override fun bind() = with(context) {
         UI {
             textView {
                 id=R.id.noItemsLabel

@@ -36,7 +36,7 @@ interface ItemTypeDescriptor<ItemType : Item> : ItemViewBinder<ItemType> {
      * @param field - observable of the payload to be edited in the form
      * @return rendered form
      */
-    fun bindForm(context: Context, field: BindableField<ItemType>): View
+    fun bindForm(field: BindableField<ItemType>): View
 }
 
 /**
