@@ -18,10 +18,10 @@ fun CompoundButton.bind(field: BindableField<Boolean>) {
  */
 fun <From> CompoundButton.bind(
     field: BindableField<From>,
-    forward: Boolean.() -> From,
+    forward: From.(value: Boolean) -> From,
     backword: From.() -> Boolean
 ) {
-    setOnCheckedChangeListener { _, isChecked -> field.set(forward(isChecked)) }
+    setOnCheckedChangeListener { _, isChecked -> field.set(field.get().forward(isChecked)) }
     field.onChange { isChecked = backword(it) }
 }
 
@@ -32,7 +32,7 @@ fun BindableField<Boolean>.bind(compoundButton: CompoundButton) {
 fun <From> BindableField<From>.bind(
     compoundButton: CompoundButton,
     forward: From.() -> Boolean,
-    backward: Boolean.() -> From
+    backward: From.(value: Boolean) -> From
 ) {
     compoundButton.bind(this, backward, forward)
 }

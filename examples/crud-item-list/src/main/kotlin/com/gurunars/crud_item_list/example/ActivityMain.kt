@@ -53,7 +53,7 @@ class Descriptor(
             id = R.id.versionValue
             inputType = InputType.TYPE_CLASS_NUMBER
             bind(field,
-                { field.get().copy(version = if (isEmpty()) 0 else toInt()) },
+                { copy(version = if (it.isEmpty()) 0 else it.toInt()) },
                 { version.toString() }
             )
         }

@@ -33,7 +33,7 @@ fun TextView.bind(field: BindableField<String>) {
  */
 fun <From> TextView.bind(
     field: BindableField<From>,
-    forward: String.() -> From,
+    forward: From.(value: String) -> From,
     backword: From.() -> String
 ) {
     field.onChange {
@@ -44,7 +44,7 @@ fun <From> TextView.bind(
     }
     addTextChangedListener(object : TextWatcher {
         override fun afterTextChanged(s: Editable?) {
-            field.set(forward(s.toString()))
+            field.set(field.get().forward(s.toString()))
         }
 
         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -60,7 +60,7 @@ fun BindableField<String>.bind(textView: TextView) {
 fun <From> BindableField<From>.bind(
     textView: TextView,
     forward: From.() -> String,
-    backward: String.() -> From
+    backward: From.(value: String) -> From
 ) {
     textView.bind(this, backward, forward)
 }
