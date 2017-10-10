@@ -76,7 +76,7 @@ internal class ItemAdapter<ItemType : Item>(
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (position == items.get().size) {
-            return   // nothing to bind
+            return   // nothing to text
         }
         @Suppress("UNCHECKED_CAST")
         val field = holder.itemView.getTag(R.id.payloadTag) as BindableField<ItemType>

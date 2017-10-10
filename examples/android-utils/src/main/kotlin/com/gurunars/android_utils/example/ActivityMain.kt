@@ -8,7 +8,7 @@ import android.view.Gravity
 import android.widget.TextView
 import com.gurunars.android_utils.ColoredShapeDrawable
 import com.gurunars.android_utils.setAutoBg
-import com.gurunars.databinding.android.bind
+import com.gurunars.databinding.android.text
 import com.gurunars.shortcuts.color
 import com.gurunars.shortcuts.fullSize
 import com.gurunars.storage.PersistentStorage
@@ -32,7 +32,7 @@ class ActivityMain : Activity() {
                 padding = dip(15)
                 gravity = Gravity.CENTER
                 backgroundColor = Color.parseColor("#FFFFAA")
-                bind(title)
+                text(title)
             }.lparams {
                 width = matchParent
                 margin = dip(10)

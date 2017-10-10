@@ -15,7 +15,7 @@ import com.gurunars.crud_item_list.IconColorBundle
 import com.gurunars.crud_item_list.ItemTypeDescriptor
 import com.gurunars.crud_item_list.oneOf
 import com.gurunars.databinding.BindableField
-import com.gurunars.databinding.android.bind
+import com.gurunars.databinding.android.text
 import com.gurunars.shortcuts.fullSize
 import com.gurunars.shortcuts.setAsOne
 import com.gurunars.storage.PersistentStorage
@@ -52,7 +52,7 @@ class Descriptor(
         editText {
             id = R.id.versionValue
             inputType = InputType.TYPE_CLASS_NUMBER
-            bind(field,
+            text(field,
                 { copy(version = if (it.isEmpty()) 0 else it.toInt()) },
                 { version.toString() }
             )
