@@ -1,7 +1,9 @@
 package com.gurunars.databinding.android
 
 import android.text.Editable
+import android.text.Spanned
 import android.text.TextWatcher
+import android.widget.EditText
 import android.widget.TextView
 import com.gurunars.databinding.BindableField
 
@@ -10,20 +12,16 @@ import com.gurunars.databinding.BindableField
  *
  * @param From - type of payload to be transformed into a string and to be generated out of a string
  */
-fun <From> TextView.text(
-    field: BindableField<From>,
-    forward: From.(value: String) -> From,
-    backword: From.() -> String
-) {
+fun EditText.text(field: BindableField<String>) {
     field.onChange {
-        val trans = backword(it)
+        val trans = it
         if (text.toString() != trans) {
-            text = trans
+            setText(trans)
         }
     }
     addTextChangedListener(object : TextWatcher {
         override fun afterTextChanged(s: Editable?) {
-            field.set(field.get().forward(s.toString()))
+            field.set(s.toString())
         }
 
         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -32,7 +30,8 @@ fun <From> TextView.text(
     })
 }
 
-/**
- * Ensure that a string field is changed whenever TextView's value changes and vice versa.
- */
-fun TextView.text(field: BindableField<String>) = text(field, { it }, { this })
+fun TextView.text(field: BindableField<String>) =
+    field.onChange { text = it }
+
+fun TextView.spannedText(field: BindableField<Spanned>) =
+    field.onChange { text = it }
