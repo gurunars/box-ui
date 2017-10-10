@@ -8,11 +8,11 @@ import android.widget.TextView
 import com.gurunars.databinding.BindableField
 
 /**
- * Same as regular text but with two way value transformation.
+ * Same as regular txt but with two way value transformation.
  *
  * @param From - type of payload to be transformed into a string and to be generated out of a string
  */
-fun EditText.text(field: BindableField<String>) {
+fun EditText.txt(field: BindableField<String>) {
     field.onChange {
         val trans = it
         if (text.toString() != trans) {
@@ -30,7 +30,7 @@ fun EditText.text(field: BindableField<String>) {
     })
 }
 
-fun TextView.text(field: BindableField<String>) =
+fun TextView.txt(field: BindableField<String>) =
     field.onChange { text = it }
 
 fun TextView.spannedText(field: BindableField<Spanned>) =

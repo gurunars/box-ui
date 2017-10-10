@@ -11,7 +11,7 @@ import android.widget.FrameLayout
 import com.gurunars.databinding.BindableField
 import com.gurunars.knob_view.KnobView
 import com.gurunars.shortcuts.setAsOne
-import com.gurunars.databinding.android.text
+import com.gurunars.databinding.android.txt
 import org.jetbrains.anko.*
 
 enum class COUNT {
@@ -27,11 +27,11 @@ internal class InnerView(ctx: Context) : FrameLayout(ctx) {
         verticalLayout {
             textView {
                 padding = dip(10)
-                text(txt)
+                txt(txt)
             }
             editText {
                 padding = dip(10)
-                text(txt)
+                txt(txt)
             }
             gravity = Gravity.CENTER
         }
