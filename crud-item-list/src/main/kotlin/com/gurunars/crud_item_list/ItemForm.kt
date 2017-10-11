@@ -2,6 +2,7 @@ package com.gurunars.crud_item_list
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.view.View
 import android.widget.RelativeLayout
 import com.gurunars.android_utils.IconView
 import com.gurunars.databinding.BindableField
@@ -56,11 +57,12 @@ internal class ItemForm<ItemType : Item>(
                 )
             }
             id = R.id.save
+            visibility=View.GONE
             field.onChange {
                 doAsync {
                     val can = canSave(it)
                     uiThread {
-                        enabled.set(can)
+                        visibility = if (can) View.VISIBLE else View.GONE
                     }
                 }
             }

@@ -28,6 +28,9 @@ class Descriptor(
     iconId: Int,
     override val type: AnimalItem.Type
 ) : ItemTypeDescriptor<AnimalItem> {
+
+    override fun canSave(item: AnimalItem) = item.version % 7 != 0 || item.version == 0
+
     override fun bind(field: BindableField<AnimalItem>) = with(context) {
         UI {
             textView {
