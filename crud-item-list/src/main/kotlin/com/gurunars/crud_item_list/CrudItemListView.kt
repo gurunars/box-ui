@@ -171,19 +171,10 @@ class CrudItemListView<ItemType : Item> constructor(
                 isOpen.set(!it.isEmpty())
             }
 
-            isOpen.onChange({
-                if (it) {
-                    knobView.selectedView.set(ViewMode.CREATION)
-                }
-            }) {
-                if (!it) {
-                    itemInEdit.set(null)
-                    itemListView.selectedItems.set(hashSetOf())
-                }
-            }
-
             listOf(isOpen, itemListView.selectedItems, itemInEdit).onChange {
                 if (!isOpen.get()) {
+                    itemInEdit.set(null)
+                    itemListView.selectedItems.set(hashSetOf())
                     return@onChange
                 }
                 val item = itemInEdit.get()
