@@ -9,6 +9,7 @@ import android.view.Gravity
 import android.view.Menu
 import android.view.MenuItem
 import com.gurunars.android_utils.IconView
+import com.gurunars.android_utils.closeKeyboard
 import com.gurunars.animal_item.AnimalItem
 import com.gurunars.crud_item_list.CrudItemListView
 import com.gurunars.crud_item_list.IconColorBundle
@@ -165,6 +166,10 @@ class ActivityMain : Activity() {
                 )
             }
             this@ActivityMain.isLeftHanded.bind(isLeftHanded)
+
+            isOpen.onChange {
+                closeKeyboard()
+            }
 
             listActionColors.set(IconColorBundle(
                 fgColor = Color.YELLOW,
