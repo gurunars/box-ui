@@ -181,7 +181,12 @@ class CrudItemListView<ItemType : Item> constructor(
                 if (item != null) {
                     if (knobView.selectedView.get() != ViewMode.FORM) {
                         hasOverlay.set(true)
-                        itemForm.bind(item, typeCache[item.type]!!)
+                        val type =
+                            if (typeCache.containsKey(item.type))
+                                item.type
+                            else
+                                typeCache.keys.first()
+                        itemForm.bind(item, typeCache[type]!!)
                         knobView.selectedView.set(ViewMode.FORM)
                     }
                 } else if (itemListView.selectedItems.get().isNotEmpty()) {
