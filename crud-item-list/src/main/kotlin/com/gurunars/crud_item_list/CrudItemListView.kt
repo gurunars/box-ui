@@ -72,6 +72,15 @@ class CrudItemListView<ItemType : Item> constructor(
         CONTEXTUAL, CREATION, FORM
     }
 
+    private fun getDescriptor(itemType: Enum<*>): ItemTypeDescriptor<ItemType> {
+        val type =
+            if (typeCache.containsKey(itemType))
+                itemType
+            else
+                typeCache.keys.first()
+        return typeCache[type]!!
+    }
+
     init {
         creationMenu = context.creationMenu(
             groupedItemTypeDescriptors,
@@ -131,7 +140,7 @@ class CrudItemListView<ItemType : Item> constructor(
             },
             {
                 item ->
-                typeCache[item.type]?.canSave(item) ?: false
+                getDescriptor(item.type).canSave(item)
             },
             confirmationActionColors
         ).apply {
@@ -181,12 +190,7 @@ class CrudItemListView<ItemType : Item> constructor(
                 if (item != null) {
                     if (knobView.selectedView.get() != ViewMode.FORM) {
                         hasOverlay.set(true)
-                        val type =
-                            if (typeCache.containsKey(item.type))
-                                item.type
-                            else
-                                typeCache.keys.first()
-                        itemForm.bind(item, typeCache[type]!!)
+                        itemForm.bind(item, getDescriptor(item.type))
                         knobView.selectedView.set(ViewMode.FORM)
                     }
                 } else if (itemListView.selectedItems.get().isNotEmpty()) {

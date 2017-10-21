@@ -57,7 +57,7 @@ internal class ItemForm<ItemType : Item>(
                 )
             }
             id = R.id.save
-            visibility=View.GONE
+            visibility = View.GONE
             field.onChange {
                 doAsync {
                     val can = canSave(it)
