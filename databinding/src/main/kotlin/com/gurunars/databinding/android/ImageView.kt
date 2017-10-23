@@ -3,7 +3,7 @@ package com.gurunars.databinding.android
 import android.widget.ImageView
 import com.gurunars.databinding.BindableField
 
-fun ImageView.imageResource(field: BindableField<Int>) =
+fun ImageView.src(field: BindableField<Int>) =
     field.onChange {
         setImageResource(it)
     }
