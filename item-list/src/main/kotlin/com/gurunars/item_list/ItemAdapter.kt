@@ -63,7 +63,8 @@ internal class ItemAdapter<ItemType : Item>(
                 })
             }) {}
         } else {
-            val initialPayload = items.get().first { it.type.ordinal == viewType }
+            // If enums are from different classes - they have same ordinals
+            val initialPayload = items.get().first { getItemTypeInt(it) == viewType }
             val field = BindableField(initialPayload)
             val binder = itemViewBinders[initialPayload.type] ?: DefaultItemViewBinder(parent.context)
             return object : RecyclerView.ViewHolder(
@@ -83,11 +84,13 @@ internal class ItemAdapter<ItemType : Item>(
         field.set(items.get()[position], true)
     }
 
+    private fun getItemTypeInt(item: ItemType) = itemViewBinders.keys.indexOf(item.type)
+
     override fun getItemViewType(position: Int) =
         if (items.get().isEmpty())
             EMPTY_TYPE
         else
-            items.get()[position].type.ordinal
+            getItemTypeInt(items.get()[position])
 
     override fun getItemCount() = Math.max(1, items.get().size)
 
