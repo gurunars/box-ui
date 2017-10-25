@@ -15,4 +15,8 @@
     <string name="noItemsAtAll">No items at all</string>
     <string name="newVersion">The version is</string>
     <string name="increment">Increment</string>
+    <string name="isSeven">Can be divided by seven without a remainder</string>
+    <string name="isZero">Is zero</string>
+    <string name="isEven">Is even</string>
+    <string name="isOk">It is ok</string>
 </resources>

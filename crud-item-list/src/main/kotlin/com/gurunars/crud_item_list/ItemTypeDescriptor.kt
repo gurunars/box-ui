@@ -1,6 +1,5 @@
 package com.gurunars.crud_item_list
 
-import android.content.Context
 import android.graphics.Color
 import android.view.View
 import com.gurunars.android_utils.IconView
@@ -26,7 +25,27 @@ interface ItemTypeDescriptor<ItemType : Item> : ItemViewBinder<ItemType> {
     val rowSelectionColor: Int
         get() = Color.RED
 
-    fun canSave(item: ItemType): Boolean = true
+    data class Status(
+        val type: Type,
+        val message: String
+    ) {
+        enum class Type(val isBlocking: Boolean) {
+            INFO(false), WARNING(false), ERROR(true)
+        }
+
+        companion object {
+            fun ok() = info("")
+            fun error(msg: String) = Status(Type.ERROR, msg)
+            fun warning(msg: String) = Status(Type.WARNING, msg)
+            fun info(msg: String) = Status(Type.INFO, msg)
+        }
+    }
+
+    /**
+     * Return status of the payload: OK, error, warning
+     */
+    fun validate(item: ItemType): Status
+
     /**
      * Return a newly created item of a specific type without saving it.
      */
@@ -38,8 +57,3 @@ interface ItemTypeDescriptor<ItemType : Item> : ItemViewBinder<ItemType> {
      */
     fun bindForm(field: BindableField<ItemType>): View
 }
-
-/**
- * A shortcut function to wrap a single descriptor into a list of lists.
- */
-fun <ItemType : Item> ItemTypeDescriptor<ItemType>.oneOf() = listOf(listOf(this))

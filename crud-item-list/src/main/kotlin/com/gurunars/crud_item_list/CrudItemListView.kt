@@ -43,7 +43,6 @@ class CrudItemListView<ItemType : Item> constructor(
     emptyViewBinder: EmptyViewBinder = DefaultEmptyViewBinder(context),
     sortable: Boolean = true
 ) : StatefulComponent(context) {
-
     private val typeCache = groupedItemTypeDescriptors
         .flatten()
         .map {
@@ -137,10 +136,6 @@ class CrudItemListView<ItemType : Item> constructor(
                         })
                     }
                 }
-            },
-            {
-                item ->
-                getDescriptor(item.type).canSave(item)
             },
             confirmationActionColors
         ).apply {
