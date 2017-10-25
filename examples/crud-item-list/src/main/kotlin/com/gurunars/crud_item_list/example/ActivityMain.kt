@@ -8,6 +8,7 @@ import android.text.InputType
 import android.view.Gravity
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.TextView
 import com.gurunars.android_utils.IconView
 import com.gurunars.android_utils.closeKeyboard
 import com.gurunars.animal_item.AnimalItem
@@ -30,15 +31,23 @@ class Descriptor(
     override val type: AnimalItem.Type
 ) : ItemTypeDescriptor<AnimalItem> {
 
-    override fun canSave(item: AnimalItem) = item.version % 7 != 0 || item.version == 0
+    override fun validate(item: AnimalItem): ItemTypeDescriptor.Status =
+        when {
+            item.version == 0 ->
+                ItemTypeDescriptor.Status.error(context.getString(R.string.isZero))
+            item.version % 7 == 0 ->
+                ItemTypeDescriptor.Status.error(context.getString(R.string.isSeven))
+            item.version % 2 == 0 ->
+                ItemTypeDescriptor.Status.warning(context.getString(R.string.isEven))
+            item.version % 3 == 0 ->
+                ItemTypeDescriptor.Status.info(context.getString(R.string.isOk))
+            else ->
+                ItemTypeDescriptor.Status.ok()
+        }
 
-    override fun bind(field: BindableField<AnimalItem>) = with(context) {
-        UI {
-            textView {
-                padding = context.dip(5)
-                field.onChange { text = it.toString() }
-            }
-        }.view
+    override fun bind(field: BindableField<AnimalItem>) = TextView(context).apply {
+        padding = context.dip(5)
+        txt(field.childField { toString() })
     }
 
     override val icon = IconView.Icon(icon = iconId)
@@ -89,15 +98,15 @@ class ActivityMain : Activity() {
     private lateinit var crudItemListView: CrudItemListView<AnimalItem>
 
     private fun getType(i: Int, sortable: Boolean): AnimalItem.Type {
-        if (sortable) {
-            return when (i % 4) {
+        return if (sortable) {
+            when (i % 4) {
                 0 -> AnimalItem.Type.LION
                 1 -> AnimalItem.Type.TIGER
                 2 -> AnimalItem.Type.MONKEY
                 else -> AnimalItem.Type.WOLF
             }
         } else {
-            return AnimalItem.Type.MONKEY
+            AnimalItem.Type.MONKEY
         }
     }
 
@@ -107,13 +116,13 @@ class ActivityMain : Activity() {
         nullify: Boolean = false
     ) {
         val curCount = (if (nullify) 0 else this.count.get())
-        items.set((if (nullify) listOf() else items.get()) + (0..count - 1).map {
+        items.set((if (nullify) listOf() else items.get()) + (0 until count).map {
             AnimalItem(curCount + it.toLong(), getType(it, sortable), 0)
         })
         this.count.set(curCount + count)
     }
 
-    fun initView(sortable: Boolean) {
+    private fun initView(sortable: Boolean) {
         setTitle(if (sortable) R.string.sortable else R.string.unsortable)
 
         val descriptors: List<List<ItemTypeDescriptor<AnimalItem>>>
@@ -177,7 +186,7 @@ class ActivityMain : Activity() {
             ))
             confirmationActionColors.set(IconColorBundle(
                 bgColor = Color.BLACK,
-                fgColor = Color.WHITE
+                fgColor = Color.GREEN
             ))
             cancelActionColors.set(IconColorBundle(
                 bgColor = Color.RED,

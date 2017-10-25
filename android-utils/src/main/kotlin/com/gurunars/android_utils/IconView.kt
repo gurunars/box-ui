@@ -70,6 +70,8 @@ class IconView(context: Context) : ImageView(context) {
             }, inset
         )
 
+        alpha = if (isEnabled) 1.0f else 0.5f
+
         // Content description
         contentDescription = "|BG:" + currentIcon.bgColor +
             "|IC:" + currentIcon.fgColor

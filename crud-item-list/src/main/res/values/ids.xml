@@ -17,4 +17,6 @@
     <item name="itemForm" type="id" />
     <item name="cancel" type="id" />
     <item name="save" type="id" />
+    <item name="confirm" type="id" />
+    <item name="hint" type="id" />
 </resources>

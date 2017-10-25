@@ -43,7 +43,6 @@ class CrudItemListView<ItemType : Item> constructor(
     emptyViewBinder: EmptyViewBinder = DefaultEmptyViewBinder(context),
     sortable: Boolean = true
 ) : StatefulComponent(context) {
-
     private val typeCache = groupedItemTypeDescriptors
         .flatten()
         .map {
@@ -138,10 +137,6 @@ class CrudItemListView<ItemType : Item> constructor(
                     }
                 }
             },
-            {
-                item ->
-                getDescriptor(item.type).canSave(item)
-            },
             confirmationActionColors
         ).apply {
             id = R.id.itemForm
@@ -196,11 +191,15 @@ class CrudItemListView<ItemType : Item> constructor(
                 } else if (itemListView.selectedItems.get().isNotEmpty()) {
                     hasOverlay.set(false)
                     knobView.selectedView.set(ViewMode.CONTEXTUAL)
-                } else if (typeCache.size == 1) {
-                    itemInEdit.set(typeCache.values.first().createNewItem())
                 } else {
                     hasOverlay.set(true)
                     knobView.selectedView.set(ViewMode.CREATION)
+                }
+            }
+
+            knobView.selectedView.onChange {
+                if (typeCache.size == 1) {
+                    itemInEdit.set(typeCache.values.first().createNewItem())
                 }
             }
 

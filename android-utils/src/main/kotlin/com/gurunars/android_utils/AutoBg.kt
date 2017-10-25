@@ -10,7 +10,10 @@ import android.graphics.drawable.shapes.RectShape
 import android.view.View
 
 
-private class AutoBgDrawable constructor(private val bg: Drawable, private val shadowWidth: Int) : InsetDrawable(bg, shadowWidth * 2) {
+private class AutoBgDrawable constructor(
+    private val bg: Drawable,
+    private val shadowWidth: Int
+) : InsetDrawable(bg, shadowWidth * 2) {
 
     // The color filter to apply when the button is pressed
     private val pressedFilter = LightingColorFilter(Color.LTGRAY, 1)
@@ -27,7 +30,12 @@ private class AutoBgDrawable constructor(private val bg: Drawable, private val s
         invalidateSelf()
 
         if (bg is ShapeDrawable && !enabled) {
-            bg.paint.setShadowLayer(shadowWidth.toFloat(), 0f, 0f, Color.parseColor("#40000000"))
+            bg.paint.setShadowLayer(
+                shadowWidth.toFloat(),
+                0f,
+                0f,
+                Color.parseColor("#40000000")
+            )
         }
 
         return super.onStateChange(states)
@@ -77,8 +85,12 @@ fun View.setAutoBg(shadowWidth: Int) {
     val bottom = paddingBottom
 
     if (shadowWidth > 0 && bg is ShapeDrawable) {
-        bg.paint.setShadowLayer(shadowWidth.toFloat(), 0f, shadowWidth.toFloat(),
-            Color.parseColor("#68000000"))
+        bg.paint.setShadowLayer(
+            shadowWidth.toFloat(),
+            0f,
+            shadowWidth.toFloat(),
+            Color.parseColor("#68000000")
+        )
         setLayerType(View.LAYER_TYPE_SOFTWARE, null)
         background = AutoBgDrawable(bg, shadowWidth)
     } else {
