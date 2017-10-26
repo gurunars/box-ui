@@ -27,7 +27,8 @@ import org.objenesis.strategy.StdInstantiatorStrategy
 class ItemListView<ItemType : Item>(
     context: Context,
     itemViewBinders: Map<Enum<*>, ItemViewBinder<ItemType>> = mapOf(),
-    emptyViewBinder: EmptyViewBinder = DefaultEmptyViewBinder(context)
+    emptyViewBinder: EmptyViewBinder = DefaultEmptyViewBinder(context),
+    stableIds: Boolean = false
 ) : Component(context) {
 
     private val kryo = Kryo().apply {
@@ -46,7 +47,9 @@ class ItemListView<ItemType : Item>(
             clipToPadding = false
             bottomPadding = dip(60)
             isSaveEnabled = false
-            adapter = ItemAdapter(items, emptyViewBinder, itemViewBinders)
+            adapter = ItemAdapter(items, emptyViewBinder, itemViewBinders).apply {
+                setHasStableIds(stableIds)
+            }
             layoutManager = LinearLayoutManager(context).apply {
                 orientation = LinearLayoutManager.VERTICAL
             }

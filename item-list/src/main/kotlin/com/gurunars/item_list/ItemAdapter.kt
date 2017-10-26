@@ -84,6 +84,14 @@ internal class ItemAdapter<ItemType : Item>(
         field.set(items.get()[position], true)
     }
 
+    override fun getItemId(position: Int): Long {
+        if (hasStableIds()) {
+            return RecyclerView.NO_ID
+        } else {
+            return items.get()[position].id
+        }
+    }
+
     private fun getItemTypeInt(item: ItemType) = itemViewBinders.keys.indexOf(item.type)
 
     override fun getItemViewType(position: Int) =
