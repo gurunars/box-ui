@@ -6,33 +6,26 @@ import android.os.Bundle
 import android.support.annotation.StringRes
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.TextView
 import android.widget.Toast
 import com.gurunars.animal_item.AnimalItem
 import com.gurunars.databinding.BindableField
+import com.gurunars.databinding.android.txt
+import com.gurunars.databinding.childField
 import com.gurunars.item_list.ColoredItemViewBinder
-import com.gurunars.item_list.ItemViewBinder
+import com.gurunars.item_list.LambdaBinder
 import com.gurunars.item_list.SelectableItemListView
 import com.gurunars.shortcuts.asRow
 import com.gurunars.shortcuts.setAsOne
 import com.gurunars.storage.PersistentStorage
-import org.jetbrains.anko.UI
 import org.jetbrains.anko.dip
 import org.jetbrains.anko.padding
-import org.jetbrains.anko.textView
 import java.util.*
 
-private class AnimalBinder(private val context: Context) : ItemViewBinder<AnimalItem> {
-    override fun bind(field: BindableField<AnimalItem>) = with(context) {
-        UI {
-            textView {
-                asRow()
-                padding = context.dip(5)
-                field.onChange {
-                    text = it.toString()
-                }
-            }
-        }.view
-    }
+private fun Context.bindAnimal(field: BindableField<AnimalItem>) = TextView(this).apply {
+    asRow()
+    padding = context.dip(5)
+    txt(field.childField { toString() })
 }
 
 class ActivityMain : Activity() {
@@ -54,7 +47,13 @@ class ActivityMain : Activity() {
         storage.load()
 
         itemListView = SelectableItemListView<AnimalItem>(this,
-            AnimalItem.Type.values().map { Pair(it, ColoredItemViewBinder(AnimalBinder(this))) }.toMap()
+            AnimalItem.Type.values().map {
+                Pair(it, ColoredItemViewBinder(
+                    LambdaBinder<AnimalItem>(
+                        { bindAnimal(it) }
+                    )
+                ))
+            }.toMap()
         ).setAsOne(this) {
             id = R.id.selectableItemList
             this@ActivityMain.items.bind(items)

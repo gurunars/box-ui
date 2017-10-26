@@ -36,3 +36,9 @@ class DefaultItemViewBinder<ItemType : Item>(
         }.view
     }
 }
+
+class LambdaBinder<ItemType: Item>(
+    private val bindF: (field: BindableField<ItemType>) -> View
+): ItemViewBinder<ItemType> {
+    override fun bind(field: BindableField<ItemType>) = this.bindF(field)
+}
