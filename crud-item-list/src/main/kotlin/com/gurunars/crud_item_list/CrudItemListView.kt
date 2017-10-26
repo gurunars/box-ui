@@ -192,7 +192,7 @@ class CrudItemListView<ItemType : Item> constructor(
             }
 
             knobView.selectedView.onChange {
-                if (typeCache.size == 1) {
+                if (typeCache.size == 1 && it == ViewMode.CREATION) {
                     itemInEdit.set(typeCache.values.first().createNewItem())
                 }
             }
