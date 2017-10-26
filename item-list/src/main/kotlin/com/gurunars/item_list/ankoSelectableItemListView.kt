@@ -11,18 +11,18 @@ import org.jetbrains.anko.custom.ankoView
 
 fun <ItemType : Item> ViewGroup.selectableItemListView(
     itemViewBinders: Map<Enum<*>, ItemViewBinder<SelectableItem<ItemType>>> = mapOf(),
-    emptyViewBinder: EmptyViewBinder = DefaultEmptyViewBinder(context),
+    emptyViewBinder: EmptyViewBinder = context::defaultBindEmpty,
     init: SelectableItemListView<ItemType>.() -> Unit
 ): SelectableItemListView<ItemType> = ankoView({ SelectableItemListView(it, itemViewBinders, emptyViewBinder) }, 0, init)
 
 fun <ItemType : Item> Activity.selectableItemListView(
     itemViewBinders: Map<Enum<*>, ItemViewBinder<SelectableItem<ItemType>>> = mapOf(),
-    emptyViewBinder: EmptyViewBinder = DefaultEmptyViewBinder(this),
+    emptyViewBinder: EmptyViewBinder = this::defaultBindEmpty,
     init: SelectableItemListView<ItemType>.() -> Unit
 ): SelectableItemListView<ItemType> = ankoView({ SelectableItemListView(it, itemViewBinders, emptyViewBinder) }, 0, init)
 
 fun <ItemType : Item> Context.selectableItemListView(
     itemViewBinders: Map<Enum<*>, ItemViewBinder<SelectableItem<ItemType>>> = mapOf(),
-    emptyViewBinder: EmptyViewBinder = DefaultEmptyViewBinder(this),
+    emptyViewBinder: EmptyViewBinder = this::defaultBindEmpty,
     init: SelectableItemListView<ItemType>.() -> Unit
 ): SelectableItemListView<ItemType> = ankoView({ SelectableItemListView(it, itemViewBinders, emptyViewBinder) }, 0, init)

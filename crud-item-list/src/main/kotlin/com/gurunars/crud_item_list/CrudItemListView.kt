@@ -40,7 +40,7 @@ import com.gurunars.shortcuts.setAsOne
 class CrudItemListView<ItemType : Item> constructor(
     context: Context,
     groupedItemTypeDescriptors: List<List<ItemTypeDescriptor<ItemType>>>,
-    emptyViewBinder: EmptyViewBinder = DefaultEmptyViewBinder(context),
+    emptyViewBinder: EmptyViewBinder = context::defaultBindEmpty,
     sortable: Boolean = true
 ) : StatefulComponent(context) {
     private val typeCache = groupedItemTypeDescriptors
@@ -89,15 +89,9 @@ class CrudItemListView<ItemType : Item> constructor(
 
         itemListView = SelectableItemListView(
             context,
-            groupedItemTypeDescriptors
-                .flatten()
-                .map {
-                    Pair(it.type, ColoredItemViewBinder(
-                        it,
-                        it.rowSelectionColor,
-                        it.rowRegularColor
-                    ))
-                }.toMap(),
+            typeCache.map { Pair(it.key,
+                { item: BindableField<SelectableItem<ItemType>> -> it.value.bindRow(item) }
+            ) }.toMap(),
             emptyViewBinder
         ).apply {
             fullSize()

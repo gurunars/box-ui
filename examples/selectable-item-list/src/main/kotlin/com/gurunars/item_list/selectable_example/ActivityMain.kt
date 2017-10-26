@@ -12,9 +12,7 @@ import com.gurunars.animal_item.AnimalItem
 import com.gurunars.databinding.BindableField
 import com.gurunars.databinding.android.txt
 import com.gurunars.databinding.branch
-import com.gurunars.item_list.ColoredItemViewBinder
-import com.gurunars.item_list.LambdaBinder
-import com.gurunars.item_list.SelectableItemListView
+import com.gurunars.item_list.*
 import com.gurunars.shortcuts.asRow
 import com.gurunars.shortcuts.setAsOne
 import com.gurunars.storage.PersistentStorage
@@ -48,11 +46,9 @@ class ActivityMain : Activity() {
 
         itemListView = SelectableItemListView<AnimalItem>(this,
             AnimalItem.Type.values().map {
-                Pair(it, ColoredItemViewBinder(
-                    LambdaBinder<AnimalItem>(
-                        { bindAnimal(it) }
-                    )
-                ))
+                Pair(it, { item: BindableField<SelectableItem<AnimalItem>> ->
+                    coloredRowSelectionDecorator<AnimalItem>(item) { bindAnimal(it) }
+                })
             }.toMap()
         ).setAsOne(this) {
             id = R.id.selectableItemList

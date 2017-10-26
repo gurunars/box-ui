@@ -19,6 +19,8 @@ import com.gurunars.crud_item_list.oneOf
 import com.gurunars.databinding.BindableField
 import com.gurunars.databinding.android.txt
 import com.gurunars.databinding.branch
+import com.gurunars.item_list.SelectableItem
+import com.gurunars.item_list.coloredRowSelectionDecorator
 import com.gurunars.shortcuts.fullSize
 import com.gurunars.shortcuts.setAsOne
 import com.gurunars.storage.PersistentStorage
@@ -45,9 +47,11 @@ class Descriptor(
                 ItemTypeDescriptor.Status.ok()
         }
 
-    override fun bind(field: BindableField<AnimalItem>) = TextView(context).apply {
-        padding = context.dip(5)
-        txt(field.branch { toString() })
+    override fun bindRow(field: BindableField<SelectableItem<AnimalItem>>) = coloredRowSelectionDecorator(field) {
+        TextView(context).apply {
+            padding = context.dip(5)
+            txt(field.branch { item.toString() })
+        }
     }
 
     override val icon = IconView.Icon(icon = iconId)

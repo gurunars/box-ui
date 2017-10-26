@@ -52,7 +52,7 @@ internal class ItemAdapter<ItemType : Item>(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         if (viewType == EMPTY_TYPE) {
-            return object : RecyclerView.ViewHolder(emptyViewBinder.bind().apply {
+            return object : RecyclerView.ViewHolder(emptyViewBinder().apply {
                 fullSize()
                 addOnAttachStateChangeListener(object : View.OnAttachStateChangeListener {
                     override fun onViewAttachedToWindow(v: View) {
@@ -69,9 +69,9 @@ internal class ItemAdapter<ItemType : Item>(
             // If enums are from different classes - they have same ordinals
             val initialPayload = items.get().first { getItemTypeInt(it) == viewType }
             val field = BindableField(initialPayload)
-            val binder = itemViewBinders[initialPayload.type] ?: DefaultItemViewBinder(parent.context)
+            val binder = itemViewBinders[initialPayload.type] ?: parent.context::defaultBindView
             return object : RecyclerView.ViewHolder(
-                binder.bind(field).apply {
+                binder(field).apply {
                     asRow()
                     setTag(R.id.payloadTag, field)
                 }) {}
