@@ -200,7 +200,8 @@ class CrudItemListView<ItemType : Item> constructor(
             this@CrudItemListView.openIcon.onChange {
                 openIcon.set(openIcon.get().copy(
                     bgColor = it.bgColor,
-                    fgColor = it.fgColor
+                    fgColor = it.fgColor,
+                    icon = R.drawable.ic_plus
                 ))
             }
 
