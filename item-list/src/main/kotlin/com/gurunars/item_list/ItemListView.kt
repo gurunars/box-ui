@@ -20,6 +20,7 @@ import org.objenesis.strategy.StdInstantiatorStrategy
  * @param itemViewBinders a mapping between item types and view binders
  * meant  to render the respective items
  * @param emptyViewBinder a function returning a view to be shown when the list is empty
+ * @param stableIds - if false, forces the whole list to be updated whenever the changes arrive
  *
  * @property items A collection of items shown in the list
  */
