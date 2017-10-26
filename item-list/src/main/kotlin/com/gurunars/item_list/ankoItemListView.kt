@@ -8,20 +8,20 @@ import org.jetbrains.anko.custom.ankoView
 fun <ItemType : Item> ViewGroup.itemListView(
     itemViewBinders: Map<Enum<*>, ItemViewBinder<ItemType>> = mapOf(),
     emptyViewBinder: EmptyViewBinder = DefaultEmptyViewBinder(context),
-    init: ItemListView<ItemType>.() -> Unit,
-    stableIds: Boolean = false
+    stableIds: Boolean = false,
+    init: ItemListView<ItemType>.() -> Unit
 ): ItemListView<ItemType> = ankoView({ ItemListView(it, itemViewBinders, emptyViewBinder, stableIds) }, 0, init)
 
 fun <ItemType : Item> Activity.itemListView(
     itemViewBinders: Map<Enum<*>, ItemViewBinder<ItemType>> = mapOf(),
     emptyViewBinder: EmptyViewBinder = DefaultEmptyViewBinder(this),
-    init: ItemListView<ItemType>.() -> Unit,
-    stableIds: Boolean = false
+    stableIds: Boolean = false,
+    init: ItemListView<ItemType>.() -> Unit
 ): ItemListView<ItemType> = ankoView({ ItemListView(it, itemViewBinders, emptyViewBinder, stableIds) }, 0, init)
 
 fun <ItemType : Item> Context.itemListView(
     itemViewBinders: Map<Enum<*>, ItemViewBinder<ItemType>> = mapOf(),
     emptyViewBinder: EmptyViewBinder = DefaultEmptyViewBinder(this),
-    init: ItemListView<ItemType>.() -> Unit,
-    stableIds: Boolean = false
+    stableIds: Boolean = false,
+    init: ItemListView<ItemType>.() -> Unit
 ): ItemListView<ItemType> = ankoView({ ItemListView(it, itemViewBinders, emptyViewBinder, stableIds) }, 0, init)

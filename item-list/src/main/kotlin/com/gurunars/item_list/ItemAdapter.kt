@@ -38,12 +38,15 @@ internal class ItemAdapter<ItemType : Item>(
         instantiatorStrategy = Kryo.DefaultInstantiatorStrategy(StdInstantiatorStrategy())
     }
 
-
     init {
         items.onChange({
             previousList = kryo.copy(ArrayList(it))
         }) {
-            DiffUtil.calculateDiff(ItemCallback(previousList, it)).dispatchUpdatesTo(this)
+            if (previousList.isEmpty() || it.isEmpty()) {
+                notifyDataSetChanged()
+            } else {
+                DiffUtil.calculateDiff(ItemCallback(previousList, it)).dispatchUpdatesTo(this)
+            }
         }
     }
 
@@ -84,13 +87,11 @@ internal class ItemAdapter<ItemType : Item>(
         field.set(items.get()[position], true)
     }
 
-    override fun getItemId(position: Int): Long {
-        if (hasStableIds()) {
-            return RecyclerView.NO_ID
-        } else {
-            return items.get()[position].id
-        }
-    }
+    override fun getItemId(position: Int) =
+        if (hasStableIds())
+            RecyclerView.NO_ID
+        else
+            items.get()[position].id
 
     private fun getItemTypeInt(item: ItemType) = itemViewBinders.keys.indexOf(item.type)
 

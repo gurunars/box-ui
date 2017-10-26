@@ -52,7 +52,7 @@ class Descriptor(
 
     override val icon = IconView.Icon(icon = iconId)
     override fun createNewItem() = AnimalItem(
-        id = (count.get() + 1).toLong(),
+        id = (count.get()).toLong(),
         version = 0,
         type = type)
 
@@ -171,7 +171,7 @@ class ActivityMain : Activity() {
                     items.get()
                         .map { it.id }
                         .fold(0L) { acc, l -> Math.max(acc, l) }
-                        .toInt()
+                        .toInt() + 1
                 )
             }
             this@ActivityMain.isLeftHanded.bind(isLeftHanded)
