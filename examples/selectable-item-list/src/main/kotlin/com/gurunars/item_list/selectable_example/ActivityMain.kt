@@ -11,7 +11,7 @@ import android.widget.Toast
 import com.gurunars.animal_item.AnimalItem
 import com.gurunars.databinding.BindableField
 import com.gurunars.databinding.android.txt
-import com.gurunars.databinding.childField
+import com.gurunars.databinding.branch
 import com.gurunars.item_list.ColoredItemViewBinder
 import com.gurunars.item_list.LambdaBinder
 import com.gurunars.item_list.SelectableItemListView
@@ -25,7 +25,7 @@ import java.util.*
 private fun Context.bindAnimal(field: BindableField<AnimalItem>) = TextView(this).apply {
     asRow()
     padding = context.dip(5)
-    txt(field.childField { toString() })
+    txt(field.branch { toString() })
 }
 
 class ActivityMain : Activity() {

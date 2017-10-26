@@ -11,7 +11,7 @@ import android.widget.Toast
 import com.gurunars.animal_item.AnimalItem
 import com.gurunars.databinding.BindableField
 import com.gurunars.databinding.android.txt
-import com.gurunars.databinding.childField
+import com.gurunars.databinding.branch
 import com.gurunars.item_list.ItemListView
 import com.gurunars.item_list.LambdaBinder
 import com.gurunars.shortcuts.asRow
@@ -23,7 +23,7 @@ import org.jetbrains.anko.padding
 private fun Context.bindAnimal(field: BindableField<AnimalItem>) = TextView(this).apply {
     asRow()
     padding = context.dip(5)
-    txt(field.childField { toString() })
+    txt(field.branch { toString() })
     field.onChange { text = it.toString() }
 }
 

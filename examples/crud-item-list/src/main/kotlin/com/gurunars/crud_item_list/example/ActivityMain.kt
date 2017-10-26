@@ -18,7 +18,7 @@ import com.gurunars.crud_item_list.ItemTypeDescriptor
 import com.gurunars.crud_item_list.oneOf
 import com.gurunars.databinding.BindableField
 import com.gurunars.databinding.android.txt
-import com.gurunars.databinding.childField
+import com.gurunars.databinding.branch
 import com.gurunars.shortcuts.fullSize
 import com.gurunars.shortcuts.setAsOne
 import com.gurunars.storage.PersistentStorage
@@ -47,7 +47,7 @@ class Descriptor(
 
     override fun bind(field: BindableField<AnimalItem>) = TextView(context).apply {
         padding = context.dip(5)
-        txt(field.childField { toString() })
+        txt(field.branch { toString() })
     }
 
     override val icon = IconView.Icon(icon = iconId)
@@ -66,7 +66,7 @@ class Descriptor(
         editText {
             id = R.id.versionValue
             inputType = InputType.TYPE_CLASS_NUMBER
-            txt(field.childField(
+            txt(field.branch(
                 { version.toString() },
                 { copy(version = if (it.isEmpty()) 0 else it.toInt()) }
             ))
