@@ -9,7 +9,6 @@ import com.gurunars.databinding.BindableField
 import com.gurunars.databinding.android.Component
 import com.gurunars.shortcuts.fullSize
 import com.gurunars.shortcuts.setAsOne
-import jp.wasabeef.recyclerview.animators.FadeInAnimator
 import org.jetbrains.anko.bottomPadding
 import org.jetbrains.anko.dip
 import org.objenesis.strategy.StdInstantiatorStrategy
@@ -54,7 +53,6 @@ class ItemListView<ItemType : Item>(
             layoutManager = LinearLayoutManager(context).apply {
                 orientation = LinearLayoutManager.VERTICAL
             }
-            itemAnimator = FadeInAnimator()
         }.setAsOne(this)
 
     }
