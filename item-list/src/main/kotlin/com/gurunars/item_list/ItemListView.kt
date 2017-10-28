@@ -29,13 +29,13 @@ class ItemListView<ItemType : Item>(
     itemViewBinders: Map<Enum<*>, ItemViewBinder<ItemType>> = mapOf(),
     emptyViewBinder: EmptyViewBinder = context::defaultBindEmpty,
     stableIds: Boolean = false
-) : Component(context) {
+) : Component(context), ItemContainer<ItemType> {
 
     private val kryo = Kryo().apply {
         instantiatorStrategy = Kryo.DefaultInstantiatorStrategy(StdInstantiatorStrategy())
     }
 
-    val items = BindableField(
+    override val items = BindableField(
         listOf<ItemType>(),
         { item -> kryo.copy(ArrayList(item)) }
     )

@@ -31,18 +31,18 @@ class SelectableItemListView<ItemType : Item> constructor(
     context: Context,
     itemViewBinders: Map<Enum<*>, ItemViewBinder<SelectableItem<ItemType>>> = mapOf(),
     emptyViewBinder: EmptyViewBinder = context::defaultBindEmpty
-) : StatefulComponent(context) {
+) : StatefulComponent(context), SelectableItemContainer<ItemType> {
 
     private val kryo = Kryo().apply {
         instantiatorStrategy = Kryo.DefaultInstantiatorStrategy(StdInstantiatorStrategy())
     }
 
-    val selectedItems = BindableField<Set<ItemType>>(
+    override val selectedItems = BindableField<Set<ItemType>>(
         hashSetOf(),
         { item -> kryo.copy(HashSet(item)) }
     )
 
-    val items = BindableField<List<ItemType>>(
+    override val items = BindableField<List<ItemType>>(
         listOf(),
         { item -> kryo.copy(ArrayList(item)) }
     )
