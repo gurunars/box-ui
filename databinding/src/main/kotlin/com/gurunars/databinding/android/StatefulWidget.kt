@@ -25,7 +25,7 @@ open class StatefulWidget(context: Context) : FrameLayout(context) {
         private fun <T> BindableField<T>.read(map: HashMap<Int, Any?>, index: Int) {
             @Suppress("UNCHECKED_CAST")
             val obtained = map[index] as T
-            this.set(obtained)+
+            this.set(obtained)
         }
 
     }
