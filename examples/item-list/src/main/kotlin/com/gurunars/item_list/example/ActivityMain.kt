@@ -47,9 +47,10 @@ class ActivityMain : Activity() {
 
         itemListView = ItemListView<AnimalItem>(
             AnimalItem.Type.values().map { Pair(it, ::bindAnimal) }.toMap()
-        ).setAsOne(this) {
-            id = R.id.itemList
+        ).apply {
             this@ActivityMain.items.bind(items)
+        }.setAsOne(this) {
+            id = R.id.itemList
         }
 
     }

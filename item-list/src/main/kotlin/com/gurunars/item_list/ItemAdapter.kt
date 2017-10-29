@@ -10,6 +10,7 @@ import com.gurunars.databinding.android.Component
 import com.gurunars.databinding.android.asRow
 import com.gurunars.databinding.android.fullSize
 import com.gurunars.databinding.android.render
+import com.gurunars.shortcuts.log
 import org.objenesis.strategy.StdInstantiatorStrategy
 
 internal class ItemAdapter<ItemType : Item>(
@@ -51,7 +52,6 @@ internal class ItemAdapter<ItemType : Item>(
             }
         }
     }
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         if (viewType == EMPTY_TYPE) {
