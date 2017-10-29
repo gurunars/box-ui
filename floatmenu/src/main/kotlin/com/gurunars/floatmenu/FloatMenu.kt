@@ -5,7 +5,7 @@ import android.content.Context
 import android.view.View
 import com.gurunars.android_utils.IconView
 import com.gurunars.databinding.BindableField
-import com.gurunars.databinding.android.StatefulComponent
+import com.gurunars.databinding.android.StatefulWidget
 import com.gurunars.shortcuts.*
 import org.jetbrains.anko.*
 
@@ -36,7 +36,7 @@ class FloatMenu constructor(
     contentView: View,
     menuView: View,
     animationDuration: Int = 400
-) : StatefulComponent(context) {
+) : StatefulWidget(context) {
     val isLeftHanded = BindableField(false)
     val isOpen = BindableField(false)
     val openIcon = BindableField(IconView.Icon(icon = R.drawable.ic_menu))

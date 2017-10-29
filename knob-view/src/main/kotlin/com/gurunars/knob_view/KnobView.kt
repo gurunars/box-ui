@@ -3,7 +3,7 @@ package com.gurunars.knob_view
 import android.content.Context
 import android.view.View
 import com.gurunars.databinding.BindableField
-import com.gurunars.databinding.android.Component
+import com.gurunars.databinding.android.Widget
 
 /**
  * Meta view that displays one of the views listed in a viewSelector.
@@ -15,7 +15,7 @@ import com.gurunars.databinding.android.Component
 class KnobView constructor(
     context: Context,
     viewSelector: Map<Enum<*>, View>
-) : Component(context) {
+) : Widget(context) {
 
     val selectedView = BindableField(viewSelector.keys.toList()[0])
 

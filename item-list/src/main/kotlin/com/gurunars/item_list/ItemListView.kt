@@ -6,7 +6,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import com.esotericsoftware.kryo.Kryo
 import com.gurunars.databinding.BindableField
-import com.gurunars.databinding.android.Component
+import com.gurunars.databinding.android.Widget
 import com.gurunars.shortcuts.fullSize
 import com.gurunars.shortcuts.setAsOne
 import org.jetbrains.anko.bottomPadding
@@ -29,7 +29,7 @@ class ItemListView<ItemType : Item>(
     itemViewBinders: Map<Enum<*>, ItemViewBinder<ItemType>> = mapOf(),
     emptyViewBinder: EmptyViewBinder = context::defaultBindEmpty,
     stableIds: Boolean = false
-) : Component(context), ItemContainer<ItemType> {
+) : Widget(context), ItemContainer<ItemType> {
 
     private val kryo = Kryo().apply {
         instantiatorStrategy = Kryo.DefaultInstantiatorStrategy(StdInstantiatorStrategy())

@@ -5,7 +5,7 @@ import android.content.Context
 import android.view.View
 import com.gurunars.android_utils.IconView
 import com.gurunars.databinding.BindableField
-import com.gurunars.databinding.android.StatefulComponent
+import com.gurunars.databinding.android.StatefulWidget
 import com.gurunars.databinding.onChange
 import com.gurunars.floatmenu.FloatMenu
 import com.gurunars.item_list.*
@@ -42,7 +42,7 @@ class CrudItemListView<ItemType : Item> constructor(
     groupedItemTypeDescriptors: List<List<ItemTypeDescriptor<ItemType>>>,
     emptyViewBinder: EmptyViewBinder = context::defaultBindEmpty,
     sortable: Boolean = true
-) : StatefulComponent(context) {
+) : StatefulWidget(context) {
     private val typeCache = groupedItemTypeDescriptors
         .flatten()
         .map {

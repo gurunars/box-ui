@@ -9,7 +9,7 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import com.gurunars.databinding.BindableField
-import com.gurunars.databinding.android.Component
+import com.gurunars.databinding.android.Widget
 import com.gurunars.shortcuts.setIsVisible
 
 @SuppressLint("ViewConstructor")
@@ -18,7 +18,7 @@ internal class MenuPane constructor(
     hasOverlay: BindableField<Boolean>,
     isVisible: BindableField<Boolean>,
     animationDuration: Int
-) : Component(context) {
+) : Widget(context) {
 
     init {
 

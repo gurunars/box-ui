@@ -4,7 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import com.esotericsoftware.kryo.Kryo
 import com.gurunars.databinding.BindableField
-import com.gurunars.databinding.android.StatefulComponent
+import com.gurunars.databinding.android.StatefulWidget
 import com.gurunars.databinding.onChange
 import com.gurunars.shortcuts.fullSize
 import com.gurunars.shortcuts.setAsOne
@@ -31,7 +31,7 @@ class SelectableItemListView<ItemType : Item> constructor(
     context: Context,
     itemViewBinders: Map<Enum<*>, ItemViewBinder<SelectableItem<ItemType>>> = mapOf(),
     emptyViewBinder: EmptyViewBinder = context::defaultBindEmpty
-) : StatefulComponent(context), SelectableItemContainer<ItemType> {
+) : StatefulWidget(context), SelectableItemContainer<ItemType> {
 
     private val kryo = Kryo().apply {
         instantiatorStrategy = Kryo.DefaultInstantiatorStrategy(StdInstantiatorStrategy())

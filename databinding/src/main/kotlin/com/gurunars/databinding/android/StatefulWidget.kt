@@ -10,7 +10,7 @@ import com.gurunars.databinding.BindableField
 /**
  * A base component meant to develop custom stateful UI widgets using bindable fields
  */
-open class StatefulComponent(context: Context) : FrameLayout(context) {
+open class StatefulWidget(context: Context) : FrameLayout(context) {
 
     private val fields: MutableList<BindableField<*>> = mutableListOf()
 
@@ -25,7 +25,7 @@ open class StatefulComponent(context: Context) : FrameLayout(context) {
         private fun <T> BindableField<T>.read(map: HashMap<Int, Any?>, index: Int) {
             @Suppress("UNCHECKED_CAST")
             val obtained = map[index] as T
-            this.set(obtained)
+            this.set(obtained)+
         }
 
     }
@@ -62,8 +62,8 @@ open class StatefulComponent(context: Context) : FrameLayout(context) {
 fun Context.statefulComponent(
     id: Int,
     vararg fields: BindableField<*>
-): StatefulComponent =
-    StatefulComponent(this).apply {
+): StatefulWidget =
+    StatefulWidget(this).apply {
         this.id = id
         retain(*fields)
     }
@@ -71,6 +71,6 @@ fun Context.statefulComponent(
 fun ViewGroup.statefulComponent(
     id: Int,
     vararg fields: BindableField<*>
-): StatefulComponent = context.statefulComponent(id, *fields).apply {
+): StatefulWidget = context.statefulComponent(id, *fields).apply {
     addView(this)
 }
