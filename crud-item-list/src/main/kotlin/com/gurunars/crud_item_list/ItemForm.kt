@@ -9,9 +9,11 @@ import com.gurunars.android_utils.onClick
 import com.gurunars.crud_item_list.ItemTypeDescriptor.Status.Type.ERROR
 import com.gurunars.crud_item_list.ItemTypeDescriptor.Status.Type.WARNING
 import com.gurunars.databinding.BindableField
-import com.gurunars.databinding.patch
+import com.gurunars.databinding.android.HorizontalAlignment
+import com.gurunars.databinding.android.VerticalAlignment
+import com.gurunars.databinding.android.alignInParent
+import com.gurunars.databinding.android.setIsVisible
 import com.gurunars.item_list.Item
-import com.gurunars.shortcuts.*
 import org.jetbrains.anko.*
 
 @SuppressLint("ViewConstructor")

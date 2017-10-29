@@ -6,7 +6,7 @@ import com.esotericsoftware.kryo.Kryo
 import com.gurunars.databinding.BindableField
 import com.gurunars.databinding.android.StatefulWidget
 import com.gurunars.databinding.onChange
-import com.gurunars.shortcuts.fullSize
+import com.gurunars.databinding.android.fullSize
 import com.gurunars.shortcuts.setAsOne
 import org.objenesis.strategy.StdInstantiatorStrategy
 import java.util.*

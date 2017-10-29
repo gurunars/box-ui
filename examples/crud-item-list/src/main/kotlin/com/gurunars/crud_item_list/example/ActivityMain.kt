@@ -21,7 +21,7 @@ import com.gurunars.databinding.android.txt
 import com.gurunars.databinding.branch
 import com.gurunars.item_list.SelectableItem
 import com.gurunars.item_list.coloredRowSelectionDecorator
-import com.gurunars.shortcuts.fullSize
+import com.gurunars.databinding.android.fullSize
 import com.gurunars.shortcuts.setAsOne
 import com.gurunars.storage.PersistentStorage
 import org.jetbrains.anko.*

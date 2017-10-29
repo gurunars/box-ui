@@ -10,7 +10,7 @@ import com.gurunars.databinding.onChange
 import com.gurunars.floatmenu.FloatMenu
 import com.gurunars.item_list.*
 import com.gurunars.knob_view.KnobView
-import com.gurunars.shortcuts.fullSize
+import com.gurunars.databinding.android.fullSize
 import com.gurunars.shortcuts.setAsOne
 
 /**

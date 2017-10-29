@@ -10,7 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.gurunars.databinding.BindableField
 import com.gurunars.databinding.android.Widget
-import com.gurunars.shortcuts.setIsVisible
+import com.gurunars.databinding.android.setIsVisible
 
 @SuppressLint("ViewConstructor")
 internal class MenuPane constructor(

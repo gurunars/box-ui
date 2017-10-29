@@ -10,7 +10,7 @@ import com.gurunars.android_utils.ColoredShapeDrawable
 import com.gurunars.android_utils.setAutoBg
 import com.gurunars.databinding.android.txt
 import com.gurunars.shortcuts.color
-import com.gurunars.shortcuts.fullSize
+import com.gurunars.databinding.android.fullSize
 import com.gurunars.storage.PersistentStorage
 import org.jetbrains.anko.*
 

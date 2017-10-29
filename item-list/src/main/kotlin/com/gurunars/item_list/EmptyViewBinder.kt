@@ -4,9 +4,7 @@ import android.content.Context
 import android.view.Gravity
 import android.view.View
 import android.widget.TextView
-import com.gurunars.shortcuts.fullSize
-import org.jetbrains.anko.UI
-import org.jetbrains.anko.textView
+import com.gurunars.databinding.android.fullSize
 
 /**
  * View binder for the case when there are no item in the list.

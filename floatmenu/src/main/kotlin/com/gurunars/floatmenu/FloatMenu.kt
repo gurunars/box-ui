@@ -5,8 +5,9 @@ import android.content.Context
 import android.view.View
 import com.gurunars.android_utils.IconView
 import com.gurunars.databinding.BindableField
+import com.gurunars.databinding.android.HorizontalAlignment
 import com.gurunars.databinding.android.StatefulWidget
-import com.gurunars.shortcuts.*
+import com.gurunars.databinding.android.fullSize
 import org.jetbrains.anko.*
 
 /**

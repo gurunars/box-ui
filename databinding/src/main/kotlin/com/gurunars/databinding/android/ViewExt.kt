@@ -1,48 +1,11 @@
-package com.gurunars.shortcuts
+package com.gurunars.databinding.android
 
 import android.app.Activity
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.RelativeLayout
-import com.gurunars.shortcuts.VerticalPosition.*
-import org.jetbrains.anko.*
-
-/**
- * width = matchParent
- * height = matchParent
- */
-fun ViewGroup.LayoutParams.fullSize() {
-    width = matchParent
-    height = matchParent
-}
-
-/**
- * width = matchParent
- * height = wrapContent
- */
-fun ViewGroup.LayoutParams.asRow() {
-    width = matchParent
-    height = wrapContent
-}
-
-/**
- * width = matchParent
- * height = matchParent
- */
-fun View.fullSize() {
-    layoutParams = layoutParams ?: ViewGroup.LayoutParams(matchParent, matchParent)
-    layoutParams.fullSize()
-}
-
-/**
- * width = matchParent
- * height = wrapContent
- */
-fun View.asRow() {
-    layoutParams = layoutParams ?: ViewGroup.LayoutParams(matchParent, wrapContent)
-    layoutParams.asRow()
-}
+import com.gurunars.databinding.android.VerticalPosition.*
 
 /**
  * Removes all the views and adds this view as the only full screen child
@@ -72,6 +35,47 @@ fun<T: View> T.add(parent: ViewGroup, init: T.() -> Unit = {}) : T {
     parent.addView(this)
     this.init()
     return this
+}
+
+
+/**
+ * width = MATCH_PARENT
+ * height = MATCH_PARENT
+ */
+fun ViewGroup.LayoutParams.fullSize() {
+    width = ViewGroup.LayoutParams.MATCH_PARENT
+    height = ViewGroup.LayoutParams.MATCH_PARENT
+}
+
+/**
+ * width = MATCH_PARENT
+ * height = MATCH_PARENT
+ */
+fun ViewGroup.LayoutParams.asRow() {
+    width = ViewGroup.LayoutParams.MATCH_PARENT
+    height = ViewGroup.LayoutParams.WRAP_CONTENT
+}
+
+/**
+ * width = MATCH_PARENT
+ * height = MATCH_PARENT
+ */
+fun View.fullSize() {
+    layoutParams = layoutParams ?: ViewGroup.LayoutParams(
+        ViewGroup.LayoutParams.MATCH_PARENT,
+        ViewGroup.LayoutParams.MATCH_PARENT)
+    layoutParams.fullSize()
+}
+
+/**
+ * width = MATCH_PARENT
+ * height = WRAP_CONTENT
+ */
+fun View.asRow() {
+    layoutParams = layoutParams ?: ViewGroup.LayoutParams(
+        ViewGroup.LayoutParams.MATCH_PARENT,
+        ViewGroup.LayoutParams.WRAP_CONTENT)
+    layoutParams.asRow()
 }
 
 /**
@@ -125,6 +129,9 @@ enum class VerticalAlignment {
     CENTER
 }
 
+private fun RelativeLayout.LayoutParams.removeRules(vararg rules: Int) =
+    rules.forEach { removeRule(it) }
+
 /**
  * Position the item within parent.
  *
@@ -136,26 +143,28 @@ fun RelativeLayout.LayoutParams.alignInParent(
     verticalAlignment: VerticalAlignment = VerticalAlignment.SAME
 ) {
     if (horizontalAlignment != HorizontalAlignment.SAME) {
-        removeRule(RelativeLayout.ALIGN_PARENT_LEFT)
-        removeRule(RelativeLayout.ALIGN_PARENT_RIGHT)
-        if (horizontalAlignment == HorizontalAlignment.LEFT) {
-            alignParentLeft()
-        } else if (horizontalAlignment == HorizontalAlignment.RIGHT) {
-            alignParentRight()
-        } else {
-            centerHorizontally()
-        }
+        removeRules(
+            RelativeLayout.ALIGN_PARENT_LEFT,
+            RelativeLayout.ALIGN_PARENT_RIGHT,
+            RelativeLayout.CENTER_VERTICAL
+        )
+        addRule(when (horizontalAlignment) {
+            HorizontalAlignment.LEFT -> RelativeLayout.ALIGN_PARENT_LEFT
+            HorizontalAlignment.RIGHT -> RelativeLayout.ALIGN_PARENT_RIGHT
+            else -> RelativeLayout.CENTER_VERTICAL
+        })
     }
     if (verticalAlignment != VerticalAlignment.SAME) {
-        removeRule(RelativeLayout.ALIGN_PARENT_TOP)
-        removeRule(RelativeLayout.ALIGN_PARENT_BOTTOM)
-        if (verticalAlignment == VerticalAlignment.TOP) {
-            alignParentTop()
-        } else if (verticalAlignment == VerticalAlignment.BOTTOM) {
-            alignParentBottom()
-        } else {
-            centerVertically()
-        }
+        removeRules(
+            RelativeLayout.ALIGN_PARENT_TOP,
+            RelativeLayout.ALIGN_PARENT_BOTTOM,
+            RelativeLayout.CENTER_HORIZONTAL
+        )
+        addRule(when (verticalAlignment) {
+            VerticalAlignment.TOP -> RelativeLayout.ALIGN_PARENT_TOP
+            VerticalAlignment.BOTTOM -> RelativeLayout.ALIGN_PARENT_BOTTOM
+            else -> RelativeLayout.CENTER_HORIZONTAL
+        })
     }
 }
 
@@ -212,21 +221,25 @@ fun RelativeLayout.LayoutParams.alignWithRespectTo(
     verticalPosition: VerticalPosition = VerticalPosition.SAME
 ) {
     if (horizontalPosition != HorizontalPosition.SAME) {
-        removeRule(RelativeLayout.LEFT_OF)
-        removeRule(RelativeLayout.RIGHT_OF)
+        removeRules(
+            RelativeLayout.LEFT_OF,
+            RelativeLayout.RIGHT_OF
+        )
         if (horizontalPosition == HorizontalPosition.LEFT_OF) {
-            leftOf(id)
+            addRule(RelativeLayout.LEFT_OF, id)
         } else {
-            rightOf(id)
+            addRule(RelativeLayout.RIGHT_OF, id)
         }
     }
     if (verticalPosition != VerticalPosition.SAME) {
-        removeRule(RelativeLayout.ABOVE)
-        removeRule(RelativeLayout.BELOW)
+        removeRules(
+            RelativeLayout.ABOVE,
+            RelativeLayout.BELOW
+        )
         if (verticalPosition == VerticalPosition.ABOVE) {
-            above(id)
+            addRule(RelativeLayout.ABOVE, id)
         } else {
-            below(id)
+            addRule(RelativeLayout.BELOW, id)
         }
     }
 }

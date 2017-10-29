@@ -7,7 +7,7 @@ import com.gurunars.android_utils.IconView
 import com.gurunars.databinding.BindableField
 import com.gurunars.item_list.Item
 import com.gurunars.shortcuts.add
-import com.gurunars.shortcuts.fullSize
+import com.gurunars.databinding.android.fullSize
 import org.jetbrains.anko.*
 
 

@@ -6,8 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import com.esotericsoftware.kryo.Kryo
 import com.gurunars.databinding.BindableField
-import com.gurunars.shortcuts.asRow
-import com.gurunars.shortcuts.fullSize
+import com.gurunars.databinding.android.asRow
+import com.gurunars.databinding.android.fullSize
 import org.objenesis.strategy.StdInstantiatorStrategy
 
 internal class ItemAdapter<ItemType : Item>(

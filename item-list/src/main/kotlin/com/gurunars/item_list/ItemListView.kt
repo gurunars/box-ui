@@ -7,7 +7,7 @@ import android.support.v7.widget.RecyclerView
 import com.esotericsoftware.kryo.Kryo
 import com.gurunars.databinding.BindableField
 import com.gurunars.databinding.android.Widget
-import com.gurunars.shortcuts.fullSize
+import com.gurunars.databinding.android.fullSize
 import com.gurunars.shortcuts.setAsOne
 import org.jetbrains.anko.bottomPadding
 import org.jetbrains.anko.dip
