@@ -4,6 +4,7 @@ import android.app.Activity
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import com.gurunars.databinding.android.VerticalPosition.*
 
@@ -31,9 +32,26 @@ fun<T: View> T.setAsOne(parent: Activity, init: T.() -> Unit = {}): T {
 /**
  * Add a view to parent
  */
-fun<T: View> T.add(parent: ViewGroup, init: T.() -> Unit = {}) : T {
+fun<T: View> T.add(parent: RelativeLayout, init: T.(params: RelativeLayout.LayoutParams) -> Unit = {}) : T {
     parent.addView(this)
-    this.init()
+    val params = RelativeLayout.LayoutParams(
+        ViewGroup.LayoutParams.WRAP_CONTENT,
+        ViewGroup.LayoutParams.WRAP_CONTENT)
+    this.layoutParams = params
+    this.init(params)
+    return this
+}
+
+/**
+ * Add a view to parent
+ */
+fun<T: View> T.add(parent: LinearLayout, init: T.(params: LinearLayout.LayoutParams) -> Unit = {}) : T {
+    parent.addView(this)
+    val params = LinearLayout.LayoutParams(
+        ViewGroup.LayoutParams.WRAP_CONTENT,
+        ViewGroup.LayoutParams.WRAP_CONTENT)
+    this.layoutParams = params
+    this.init(params)
     return this
 }
 
