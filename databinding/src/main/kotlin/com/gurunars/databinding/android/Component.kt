@@ -22,8 +22,8 @@ fun View.wrap(): Component = ViewWrapper(this)
 
 fun component(render: Context.() -> View): Component = LambdaWrapper(render)
 
-fun Component.add(parent: ViewGroup, init: View.() -> Unit = {}) = parent.context.render().add(parent, init)
+fun <T: Component>T.add(parent: ViewGroup, init: View.() -> Unit = {}): T = apply { parent.context.render().add(parent, init) }
 
-fun Component.setAsOne(parent: FrameLayout, init: View.() -> Unit = {}) = parent.context.render().setAsOne(parent, init)
+fun <T: Component>T.setAsOne(parent: FrameLayout, init: View.() -> Unit = {}): T = apply { parent.context.render().setAsOne(parent, init) }
 
-fun Component.setAsOne(parent: Activity, init: View.() -> Unit = {}) = parent.render().setAsOne(parent, init)
+fun <T: Component>T.setAsOne(parent: Activity, init: View.() -> Unit = {}): T = apply { parent.render().setAsOne(parent, init) }

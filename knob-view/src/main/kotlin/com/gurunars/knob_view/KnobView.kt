@@ -2,8 +2,9 @@ package com.gurunars.knob_view
 
 import android.content.Context
 import android.view.View
+import android.widget.FrameLayout
 import com.gurunars.databinding.BindableField
-import com.gurunars.databinding.android.Widget
+import com.gurunars.databinding.android.Component
 
 /**
  * Meta view that displays one of the views listed in a viewSelector.
@@ -13,13 +14,12 @@ import com.gurunars.databinding.android.Widget
  * @property selectedView an enum field matching the view to be shown at a given moment
  */
 class KnobView constructor(
-    context: Context,
-    viewSelector: Map<Enum<*>, View>
-) : Widget(context) {
+    private val viewSelector: Map<Enum<*>, View>
+) : Component {
 
     val selectedView = BindableField(viewSelector.keys.toList()[0])
 
-    init {
+    override fun Context.render() = FrameLayout(this).apply {
         viewSelector.forEach { type, view ->
             addView(
                 view.apply {

@@ -9,9 +9,9 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.FrameLayout
 import com.gurunars.databinding.BindableField
-import com.gurunars.knob_view.KnobView
-import com.gurunars.shortcuts.setAsOne
+import com.gurunars.databinding.android.setAsOne
 import com.gurunars.databinding.android.txt
+import com.gurunars.knob_view.KnobView
 import org.jetbrains.anko.*
 
 enum class COUNT {
@@ -47,7 +47,7 @@ class ActivityMain : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        knobView = KnobView(this, mapOf<Enum<*>, View>(
+        knobView = KnobView(mapOf<Enum<*>, View>(
             COUNT.ONE to InnerView(this).apply { id = R.id.one },
             COUNT.TWO to InnerView(this).apply { id = R.id.two },
             COUNT.THREE to InnerView(this).apply { id = R.id.three },
