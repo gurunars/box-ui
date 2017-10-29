@@ -8,10 +8,11 @@ import android.view.Menu
 import android.view.MenuItem
 import com.gurunars.android_utils.IconView
 import com.gurunars.databinding.BindableField
-import com.gurunars.floatmenu.FloatMenu
 import com.gurunars.databinding.android.asRow
+import com.gurunars.databinding.android.component
 import com.gurunars.databinding.android.fullSize
-import com.gurunars.shortcuts.setAsOne
+import com.gurunars.databinding.android.setAsOne
+import com.gurunars.floatmenu.FloatMenu
 import com.gurunars.storage.PersistentStorage
 import org.jetbrains.anko.*
 
@@ -31,7 +32,7 @@ class ActivityMain : Activity() {
 
         val isOpenT = BindableField(false)
 
-        val menuView = UI(false) {
+        val menuView = component {
             scrollView {
                 fullSize()
                 verticalLayout {
@@ -55,9 +56,9 @@ class ActivityMain : Activity() {
                     }
                 }.asRow()
             }
-        }.view
+        }
 
-        val contentView = UI(false) {
+        val contentView = component {
             relativeLayout {
                 fullSize()
 
@@ -102,14 +103,12 @@ class ActivityMain : Activity() {
                     centerVertically()
                 }
             }
-        }.view
+        }
 
-        floatingMenu = FloatMenu(this, contentView, menuView).setAsOne(this) {
-            fullSize()
-            id = R.id.floatingMenu
-
-            isOpen.bind(isOpenT)
-
+        FloatMenu(
+            contentView,
+            menuView
+        ).apply {
             closeIcon.set(IconView.Icon(
                 bgColor = Color.WHITE,
                 fgColor = Color.BLACK,
@@ -126,8 +125,9 @@ class ActivityMain : Activity() {
 
             this@ActivityMain.hasOverlay.bind(hasOverlay)
             this@ActivityMain.isLeftHanded.bind(isLeftHanded)
-        }
-
+        }.setAsOne(
+            this@ActivityMain
+        )
         storage.load()
     }
 

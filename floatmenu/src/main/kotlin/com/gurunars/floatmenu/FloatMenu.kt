@@ -2,7 +2,6 @@ package com.gurunars.floatmenu
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.view.View
 import com.gurunars.android_utils.IconView
 import com.gurunars.databinding.BindableField
 import com.gurunars.databinding.android.*
@@ -42,6 +41,7 @@ class FloatMenu constructor(
     val hasOverlay = BindableField(true)
 
     override fun Context.render() = statefulWidget(R.id.floatMenu, isOpen) {
+        fullSize()
         relativeLayout {
             fullSize()
             frameLayout {
@@ -68,5 +68,6 @@ class FloatMenu constructor(
             }
         }
     }
+
 }
 
