@@ -6,8 +6,8 @@ import com.gurunars.android_utils.IconView
 import com.gurunars.databinding.BindableField
 import com.gurunars.databinding.android.*
 import com.gurunars.databinding.onChange
+import com.gurunars.databinding.sendTo
 import com.gurunars.floatmenu.FloatMenu
-import com.gurunars.floatmenu.MenuComponent
 import com.gurunars.item_list.Item
 import com.gurunars.item_list.SelectableItemContainer
 import org.jetbrains.anko.above
@@ -17,19 +17,28 @@ import org.jetbrains.anko.relativeLayout
 
 class DefaultSelectionManager<ItemType : Item>(
     private val selectableItemContainer: SelectableItemContainer<ItemType>
-) : MenuComponent, SelectableItemContainer<ItemType> by selectableItemContainer {
+) : Openable, SelectableItemContainer<ItemType> by selectableItemContainer {
 
     val actionIcon = BindableField(IconColorBundle())
+    val closeIcon = BindableField(IconColorBundle())
     val sortable = BindableField(false)
 
-    private val floatMenu = FloatMenu(selectableItemContainer, menu()).apply {
+    private val contextModeActivated = BindableField(false)
+
+    private val floatMenu = FloatMenu(selectableItemContainer, menu(), stateChangeListener={
+
+    }).apply {
         hasOverlay.set(false)
+        this@DefaultSelectionManager.closeIcon.sendTo(closeIcon, { IconView.Icon(
+            bgColor = it.bgColor,
+            fgColor = it.fgColor,
+            icon = R.drawable.ic_check)
+        })
     }
 
     override val isOpen = floatMenu.isOpen
-    override val isLeftHanded = floatMenu.isLeftHanded
+    val isLeftHanded = floatMenu.isLeftHanded
     override val openIcon = floatMenu.openIcon
-    override val closeIcon = floatMenu.closeIcon
 
     override fun Context.render() = floatMenu.render(this)
 
@@ -54,6 +63,8 @@ class DefaultSelectionManager<ItemType : Item>(
         }
 
         relativeLayout {
+            isVisible(contextModeActivated)
+
             fullSize()
             R.id.menuContainer
 

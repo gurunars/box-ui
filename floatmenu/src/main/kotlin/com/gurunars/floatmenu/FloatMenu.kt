@@ -33,11 +33,11 @@ class FloatMenu constructor(
     private val contentView: Component,
     private val menuView: Component,
     private val animationDuration: Int = 400
-) : MenuComponent {
-    override val isLeftHanded = BindableField(false)
-    override val isOpen = BindableField(false)
-    override val openIcon = BindableField(IconView.Icon(icon = R.drawable.ic_menu))
-    override val closeIcon = BindableField(IconView.Icon(icon = R.drawable.ic_menu_close))
+) : Component {
+    val isLeftHanded = BindableField(false)
+    val isOpen = BindableField(false)
+    val openIcon = BindableField(IconView.Icon(icon = R.drawable.ic_menu))
+    val closeIcon = BindableField(IconView.Icon(icon = R.drawable.ic_menu_close))
     val hasOverlay = BindableField(true)
 
     override fun Context.render() = statefulWidget(R.id.floatMenu, isOpen) {

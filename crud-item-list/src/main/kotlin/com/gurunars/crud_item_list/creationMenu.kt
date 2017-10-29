@@ -3,12 +3,50 @@ package com.gurunars.crud_item_list
 import android.annotation.SuppressLint
 import android.content.Context
 import android.view.Gravity
+import android.view.View
 import com.gurunars.android_utils.IconView
 import com.gurunars.databinding.BindableField
+import com.gurunars.databinding.android.*
 import com.gurunars.item_list.Item
 import com.gurunars.shortcuts.add
-import com.gurunars.databinding.android.fullSize
+import com.gurunars.databinding.sendTo
+import com.gurunars.floatmenu.FloatMenu
+import com.gurunars.floatmenu.MenuComponent
+import com.gurunars.item_list.ItemContainer
 import org.jetbrains.anko.*
+
+class CreationMenuComponent<ItemType: Item, T>(
+    private val selectionManager: T
+): ItemContainer<ItemType> by selectionManager, Openable
+where T: Openable, T: ItemContainer<ItemType> {
+
+    val closeIcon = BindableField(IconColorBundle())
+
+    private val floatMenu = FloatMenu(selectionManager, menu()).apply {
+        hasOverlay.set(true)
+        this@CreationMenuComponent.closeIcon.sendTo(closeIcon, { IconView.Icon(
+            bgColor = it.bgColor,
+            fgColor = it.fgColor,
+            icon = R.drawable.ic_check)
+        })
+    }
+
+    init {
+        openIcon.sendTo(selectionManager.openIcon)
+    }
+
+    override val isOpen: BindableField<Boolean>
+        get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
+    override val openIcon: BindableField<IconView.Icon>
+        get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
+
+    override fun Context.render() = floatMenu.render(this)
+
+    fun menu(): Component = component {
+
+    }
+
+}
 
 
 internal fun <ItemType : Item> Context.creationMenu(
