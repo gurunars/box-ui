@@ -19,3 +19,4 @@ abstract class Widget(context: Context): FrameLayout(context) {
      */
     final override fun onRestoreInstanceState(state: Parcelable) = super.onRestoreInstanceState(state)
 }
+

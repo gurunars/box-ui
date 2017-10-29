@@ -5,9 +5,7 @@ import android.content.Context
 import android.view.View
 import com.gurunars.android_utils.IconView
 import com.gurunars.databinding.BindableField
-import com.gurunars.databinding.android.HorizontalAlignment
-import com.gurunars.databinding.android.StatefulWidget
-import com.gurunars.databinding.android.fullSize
+import com.gurunars.databinding.android.*
 import org.jetbrains.anko.*
 
 /**
@@ -33,24 +31,22 @@ import org.jetbrains.anko.*
  */
 @SuppressLint("ViewConstructor")
 class FloatMenu constructor(
-    context: Context,
-    contentView: View,
-    menuView: View,
-    animationDuration: Int = 400
-) : StatefulWidget(context) {
+    private val contentView: Component,
+    private val menuView: Component,
+    private val animationDuration: Int = 400
+) : Component {
     val isLeftHanded = BindableField(false)
     val isOpen = BindableField(false)
     val openIcon = BindableField(IconView.Icon(icon = R.drawable.ic_menu))
     val closeIcon = BindableField(IconView.Icon(icon = R.drawable.ic_menu_close))
     val hasOverlay = BindableField(true)
 
-    init {
-        retain(isOpen)
+    override fun Context.render() = statefulWidget(R.id.floatMenu, isOpen) {
         relativeLayout {
             fullSize()
             frameLayout {
                 id = R.id.contentPane
-                contentView.setAsOne(this)
+                contentView.setAsOne(this@statefulWidget)
             }.fullSize()
             MenuPane(context, hasOverlay, isOpen, animationDuration).add(this) {
                 id = R.id.menuPane
@@ -72,6 +68,5 @@ class FloatMenu constructor(
             }
         }
     }
-
 }
 

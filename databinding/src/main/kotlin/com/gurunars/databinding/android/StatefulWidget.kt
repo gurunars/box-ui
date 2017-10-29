@@ -10,7 +10,7 @@ import com.gurunars.databinding.BindableField
 /**
  * A base component meant to develop custom stateful UI widgets using bindable fields
  */
-open class StatefulWidget(context: Context) : FrameLayout(context) {
+class StatefulWidget internal constructor(context: Context) : FrameLayout(context) {
 
     private val fields: MutableList<BindableField<*>> = mutableListOf()
 
@@ -33,7 +33,7 @@ open class StatefulWidget(context: Context) : FrameLayout(context) {
     /**
      * @suppress
      */
-    final override fun onSaveInstanceState() = Bundle().apply {
+    override fun onSaveInstanceState() = Bundle().apply {
         putParcelable("superState", super.onSaveInstanceState())
         val payload = hashMapOf<Int, Any?>()
         fields.forEachIndexed { index, bindableField ->
@@ -45,7 +45,7 @@ open class StatefulWidget(context: Context) : FrameLayout(context) {
     /**
      * @suppress
      */
-    final override fun onRestoreInstanceState(state: Parcelable) {
+    override fun onRestoreInstanceState(state: Parcelable) {
         (state as Bundle).apply {
             super.onRestoreInstanceState(getParcelable<Parcelable>("superState"))
             val payload = getSerializable("payload") ?: return
@@ -59,18 +59,21 @@ open class StatefulWidget(context: Context) : FrameLayout(context) {
 
 }
 
-fun Context.statefulComponent(
+fun Context.statefulWidget(
     id: Int,
-    vararg fields: BindableField<*>
+    vararg fields: BindableField<*>,
+    init: StatefulWidget.() -> Unit
 ): StatefulWidget =
     StatefulWidget(this).apply {
         this.id = id
         retain(*fields)
+        init()
     }
 
-fun ViewGroup.statefulComponent(
+fun ViewGroup.statefulWidget(
     id: Int,
-    vararg fields: BindableField<*>
-): StatefulWidget = context.statefulComponent(id, *fields).apply {
+    vararg fields: BindableField<*>,
+    init: StatefulWidget.() -> Unit
+): StatefulWidget = context.statefulWidget(id, *fields, init=init).apply {
     addView(this)
 }
