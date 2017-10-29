@@ -1,7 +1,6 @@
 package com.gurunars.item_list.example
 
 import android.app.Activity
-import android.content.Context
 import android.os.Bundle
 import android.support.annotation.StringRes
 import android.view.Menu
@@ -10,20 +9,23 @@ import android.widget.TextView
 import android.widget.Toast
 import com.gurunars.animal_item.AnimalItem
 import com.gurunars.databinding.BindableField
+import com.gurunars.databinding.android.asRow
+import com.gurunars.databinding.android.component
+import com.gurunars.databinding.android.setAsOne
 import com.gurunars.databinding.android.txt
 import com.gurunars.databinding.branch
 import com.gurunars.item_list.ItemListView
-import com.gurunars.databinding.android.asRow
-import com.gurunars.shortcuts.setAsOne
 import com.gurunars.storage.PersistentStorage
 import org.jetbrains.anko.dip
 import org.jetbrains.anko.padding
 
-private fun Context.bindAnimal(field: BindableField<AnimalItem>) = TextView(this).apply {
-    asRow()
-    padding = context.dip(5)
-    txt(field.branch { toString() })
-    field.onChange { text = it.toString() }
+private fun bindAnimal(field: BindableField<AnimalItem>) = component {
+    TextView(this).apply {
+        asRow()
+        padding = context.dip(5)
+        txt(field.branch { toString() })
+        field.onChange { text = it.toString() }
+    }
 }
 
 class ActivityMain : Activity() {
@@ -43,8 +45,8 @@ class ActivityMain : Activity() {
         super.onCreate(savedInstanceState)
         storage.load()
 
-        itemListView = ItemListView<AnimalItem>(this,
-            AnimalItem.Type.values().map { Pair(it, this::bindAnimal) }.toMap()
+        itemListView = ItemListView<AnimalItem>(
+            AnimalItem.Type.values().map { Pair(it, ::bindAnimal) }.toMap()
         ).setAsOne(this) {
             id = R.id.itemList
             this@ActivityMain.items.bind(items)

@@ -10,6 +10,8 @@ interface Component {
     fun Context.render(): View
 }
 
+fun Component.render(context: Context) = with(context) { render() }
+
 private class ViewWrapper internal constructor(private val view: View): Component {
     override fun Context.render() = view
 }

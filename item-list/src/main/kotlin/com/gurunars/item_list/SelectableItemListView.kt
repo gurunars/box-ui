@@ -1,13 +1,13 @@
 package com.gurunars.item_list
 
-import android.annotation.SuppressLint
 import android.content.Context
 import com.esotericsoftware.kryo.Kryo
 import com.gurunars.databinding.BindableField
-import com.gurunars.databinding.android.StatefulWidget
-import com.gurunars.databinding.onChange
+import com.gurunars.databinding.android.Component
 import com.gurunars.databinding.android.fullSize
-import com.gurunars.shortcuts.setAsOne
+import com.gurunars.databinding.android.setAsOne
+import com.gurunars.databinding.android.statefulWidget
+import com.gurunars.databinding.onChange
 import org.objenesis.strategy.StdInstantiatorStrategy
 import java.util.*
 import kotlin.collections.HashSet
@@ -19,19 +19,16 @@ import kotlin.collections.HashSet
  * clicking them.
  *
  * @param ItemType type of the item to be shown in the list
- * @param context Android context
  * @param itemViewBinders a type based mapping between item type and item renderer
  * @param emptyViewBinder a function returning a view to be shown when the list is empty
  *
  * @property items A collection of items shown in the list
  * @property selectedItems A collection of items selected at the moment
  */
-@SuppressLint("ViewConstructor")
 class SelectableItemListView<ItemType : Item> constructor(
-    context: Context,
-    itemViewBinders: Map<Enum<*>, ItemViewBinder<SelectableItem<ItemType>>> = mapOf(),
-    emptyViewBinder: EmptyViewBinder = context::defaultBindEmpty
-) : StatefulWidget(context), SelectableItemContainer<ItemType> {
+    private val itemViewBinders: Map<Enum<*>, ItemViewBinder<SelectableItem<ItemType>>> = mapOf(),
+    private val emptyViewBinder: Component = DefaultEmptyViewBinder()
+) : Component, SelectableItemContainer<ItemType> {
 
     private val kryo = Kryo().apply {
         instantiatorStrategy = Kryo.DefaultInstantiatorStrategy(StdInstantiatorStrategy())
@@ -47,13 +44,14 @@ class SelectableItemListView<ItemType : Item> constructor(
         { item -> kryo.copy(ArrayList(item)) }
     )
 
-    init {
+    override fun Context.render() = statefulWidget(R.id.selectableItemListView) {
         retain(selectedItems)
         ItemListView(
-            context,
-            itemViewBinders = itemViewBinders.entries.map { it.key to ({
-                item: BindableField<SelectableItem<ItemType>> -> clickableBind(selectedItems, it.value, item)
-            }) }.toMap(),
+            itemViewBinders = itemViewBinders.entries.map {
+                it.key to ({ item: BindableField<SelectableItem<ItemType>> ->
+                    clickableBind(selectedItems, it.value, item)
+                })
+            }.toMap(),
             emptyViewBinder = emptyViewBinder
         ).apply {
             id = R.id.itemList

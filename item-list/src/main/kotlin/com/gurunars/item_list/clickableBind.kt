@@ -1,24 +1,25 @@
 package com.gurunars.item_list
 
 import com.gurunars.databinding.BindableField
+import com.gurunars.databinding.android.component
+import com.gurunars.databinding.android.render
 
 internal fun <ItemType : Item> clickableBind(
     selectedItems: BindableField<Set<ItemType>>,
     itemViewBinder: ItemViewBinder<SelectableItem<ItemType>>,
     field: BindableField<SelectableItem<ItemType>>
-) =
-    itemViewBinder(field).apply {
+) = component {
+    itemViewBinder(field).render(this).apply {
         isClickable = true
         setOnClickListener {
             val item = field.get()
             val sel = selectedItems.get()
             selectedItems.set(
-                if (sel.isEmpty())
-                    setOf()
-                else if (selectedItems.get().has(item))
-                    sel.exclude(item.item)
-                else
-                    sel.include(item.item)
+                when {
+                    sel.isEmpty() -> setOf()
+                    selectedItems.get().has(item) -> sel.exclude(item.item)
+                    else -> sel.include(item.item)
+                }
             )
 
         }
@@ -29,4 +30,5 @@ internal fun <ItemType : Item> clickableBind(
             true
         }
     }
+}
 

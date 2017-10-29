@@ -6,13 +6,15 @@ import android.view.View
 import android.view.ViewGroup
 import com.esotericsoftware.kryo.Kryo
 import com.gurunars.databinding.BindableField
+import com.gurunars.databinding.android.Component
 import com.gurunars.databinding.android.asRow
 import com.gurunars.databinding.android.fullSize
+import com.gurunars.databinding.android.render
 import org.objenesis.strategy.StdInstantiatorStrategy
 
 internal class ItemAdapter<ItemType : Item>(
     private val items: BindableField<List<ItemType>>,
-    private val emptyViewBinder: EmptyViewBinder,
+    private val emptyViewBinder: Component,
     private val itemViewBinders: Map<Enum<*>, ItemViewBinder<ItemType>>
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -50,9 +52,10 @@ internal class ItemAdapter<ItemType : Item>(
         }
     }
 
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         if (viewType == EMPTY_TYPE) {
-            return object : RecyclerView.ViewHolder(emptyViewBinder().apply {
+            return object : RecyclerView.ViewHolder(emptyViewBinder.render(parent.context).apply {
                 fullSize()
                 addOnAttachStateChangeListener(object : View.OnAttachStateChangeListener {
                     override fun onViewAttachedToWindow(v: View) {
@@ -69,9 +72,9 @@ internal class ItemAdapter<ItemType : Item>(
             // If enums are from different classes - they have same ordinals
             val initialPayload = items.get().first { getItemTypeInt(it) == viewType }
             val field = BindableField(initialPayload)
-            val binder = itemViewBinders[initialPayload.type] ?: parent.context::defaultBindView
+            val binder = itemViewBinders[initialPayload.type] ?: { DefaultBindView(field) }
             return object : RecyclerView.ViewHolder(
-                binder(field).apply {
+                binder.invoke(field).render(parent.context).apply {
                     asRow()
                     setTag(R.id.payloadTag, field)
                 }) {}
