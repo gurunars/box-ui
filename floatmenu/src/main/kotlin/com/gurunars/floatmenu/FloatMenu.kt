@@ -5,6 +5,7 @@ import android.content.Context
 import com.gurunars.android_utils.IconView
 import com.gurunars.databinding.BindableField
 import com.gurunars.databinding.android.*
+import com.gurunars.databinding.sendTo
 import org.jetbrains.anko.*
 
 /**
@@ -32,7 +33,8 @@ import org.jetbrains.anko.*
 class FloatMenu constructor(
     private val contentView: Component,
     private val menuView: Component,
-    private val animationDuration: Int = 400
+    private val animationDuration: Int = 400,
+    private val openButtonEnabled: Boolean = true
 ) : Component {
     val isLeftHanded = BindableField(false)
     val isOpen = BindableField(false)
@@ -40,7 +42,18 @@ class FloatMenu constructor(
     val closeIcon = BindableField(IconView.Icon(icon = R.drawable.ic_menu_close))
     val hasOverlay = BindableField(true)
 
+    init {
+        if (!openButtonEnabled) {
+            closeIcon.sendTo(openIcon)
+            openIcon.onChange {
+                openIcon.set(closeIcon.get())
+            }
+        }
+    }
+
     override fun Context.render() = statefulWidget(R.id.floatMenu, isOpen) {
+        val animatedValue = BindableField(1f)
+
         fullSize()
         relativeLayout {
             fullSize()
@@ -53,13 +66,28 @@ class FloatMenu constructor(
                 isClickable = true
                 menuView.setAsOne(this)
             }.fullSize()
-            context.fab(animationDuration, openIcon, closeIcon, isOpen).add(this) {
+            context.fab(animatedValue, animationDuration, openIcon, closeIcon, isOpen).add(this) {
                 id = R.id.openFab
                 isLeftHanded.onChange { contentDescription = "LH:" + it }
             }.lparams {
-                margin = dip(16)
-                width = dip(60)
-                height = dip(60)
+                val initMargin = dip(16)
+                val size = dip(60)
+                if (openButtonEnabled) {
+                    width = size
+                    height = size
+                    margin = initMargin
+                } else {
+                    animatedValue.onChange {
+                        val dims: Int = if (isOpen.get()) {
+                            (size * it).toInt()
+                        } else {
+                            (size * (1f - it)).toInt()
+                        }
+                        margin = initMargin + ((size - dims) / 2)
+                        width = dims
+                        height = dims
+                    }
+                }
                 alignParentBottom()
                 isLeftHanded.onChange {
                     alignInParent(if (it) HorizontalAlignment.LEFT else HorizontalAlignment.RIGHT)

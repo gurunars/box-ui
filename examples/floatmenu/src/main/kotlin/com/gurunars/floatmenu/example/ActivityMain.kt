@@ -105,9 +105,10 @@ class ActivityMain : Activity() {
             }
         }
 
-        FloatMenu(
+        floatingMenu = FloatMenu(
             contentView,
-            menuView
+            menuView,
+            openButtonEnabled=false
         ).apply {
             closeIcon.set(IconView.Icon(
                 bgColor = Color.WHITE,

@@ -11,6 +11,7 @@ import com.gurunars.databinding.android.fullSize
 import org.jetbrains.anko.frameLayout
 
 internal fun Context.fab(
+    animatedValue: BindableField<Float>,
     rotationDuration: Int,
     openIcon: BindableField<Icon>,
     closeIcon: BindableField<Icon>,
@@ -18,7 +19,6 @@ internal fun Context.fab(
 ) = frameLayout {
     val argbEvaluator = ArgbEvaluator()
     val floatEvaluator = FloatEvaluator()
-    val animatedValue = BindableField(1f)
 
     val actualImageView = IconView(context).apply {
         id = R.id.iconView
