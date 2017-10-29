@@ -10,15 +10,16 @@ import android.widget.TextView
 import android.widget.Toast
 import com.gurunars.animal_item.AnimalItem
 import com.gurunars.databinding.BindableField
+import com.gurunars.databinding.android.asRow
+import com.gurunars.databinding.android.setAsOne
 import com.gurunars.databinding.android.txt
 import com.gurunars.databinding.branch
-import com.gurunars.item_list.*
-import com.gurunars.databinding.android.asRow
-import com.gurunars.shortcuts.setAsOne
+import com.gurunars.item_list.SelectableItem
+import com.gurunars.item_list.SelectableItemListView
+import com.gurunars.item_list.coloredRowSelectionDecorator
 import com.gurunars.storage.PersistentStorage
 import org.jetbrains.anko.dip
 import org.jetbrains.anko.padding
-import java.util.*
 
 private fun Context.bindAnimal(field: BindableField<AnimalItem>) = TextView(this).apply {
     asRow()
@@ -44,15 +45,16 @@ class ActivityMain : Activity() {
         super.onCreate(savedInstanceState)
         storage.load()
 
-        itemListView = SelectableItemListView<AnimalItem>(this,
+        itemListView = SelectableItemListView<AnimalItem>(
             AnimalItem.Type.values().map {
                 Pair(it, { item: BindableField<SelectableItem<AnimalItem>> ->
-                    coloredRowSelectionDecorator<AnimalItem>(item) { bindAnimal(it) }
+                    coloredRowSelectionDecorator(item) { bindAnimal(it) }
                 })
             }.toMap()
-        ).setAsOne(this) {
-            id = R.id.selectableItemList
+        ).apply {
             this@ActivityMain.items.bind(items)
+        }.setAsOne(this) {
+            id = R.id.selectableItemList
         }
 
     }
@@ -98,7 +100,7 @@ class ActivityMain : Activity() {
     }
 
     @StringRes private fun clearSelection(): Int {
-        itemListView.selectedItems.set(HashSet<AnimalItem>())
+        itemListView.selectedItems.set(hashSetOf())
         return R.string.did_clear_selection
     }
 
