@@ -17,7 +17,7 @@ class ItemForm<ItemType : Item>(
     private val bindForm: (field: BindableField<ItemType>) -> Component,
     private val validate: (item: ItemType) -> ItemTypeDescriptor.Status,
     private val confirmationHandler: () -> Unit,
-    private val confirmIconColors: BindableField<IconColorBundle>
+    private val confirmIconColors: IconColorBundle
 ) : Component {
 
     private val field = BindableField(initialItem)
@@ -36,15 +36,13 @@ class ItemForm<ItemType : Item>(
 
         IconView(this@render).add(this) {
             id = R.id.confirm
-            confirmIconColors.onChange {
-                icon.set(
-                    IconView.Icon(
-                        bgColor = it.bgColor,
-                        fgColor = it.fgColor,
-                        icon = R.drawable.ic_check
-                    )
+            icon.set(
+                IconView.Icon(
+                    bgColor = confirmIconColors.bgColor,
+                    fgColor = confirmIconColors.fgColor,
+                    icon = R.drawable.ic_check
                 )
-            }
+            )
             id = R.id.save
             field.onChange {
                 doAsync {
