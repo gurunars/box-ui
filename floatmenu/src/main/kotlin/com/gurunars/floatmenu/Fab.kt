@@ -11,10 +11,10 @@ import com.gurunars.databinding.android.fullSize
 import org.jetbrains.anko.frameLayout
 
 internal fun Context.fab(
-    animatedValue: BindableField<Float>,
     rotationDuration: Int,
-    openIcon: BindableField<Icon>,
-    closeIcon: BindableField<Icon>,
+    openIcon: Icon,
+    closeIcon: Icon,
+    animatedValue: BindableField<Float>,
     isActivated: BindableField<Boolean>
 ) = frameLayout {
     val argbEvaluator = ArgbEvaluator()
@@ -33,8 +33,8 @@ internal fun Context.fab(
         isClickable = animatedValue.get() == 1f
 
         // Configs
-        val sourceIcon: Icon = if (isActivated.get()) openIcon.get() else closeIcon.get()
-        val targetIcon: Icon = if (isActivated.get()) closeIcon.get() else openIcon.get()
+        val sourceIcon: Icon = if (isActivated.get()) openIcon else closeIcon
+        val targetIcon: Icon = if (isActivated.get()) closeIcon else openIcon
 
         actualImageView.icon.set(Icon(
             bgColor = argbEvaluator.evaluate(
@@ -53,8 +53,6 @@ internal fun Context.fab(
         )
     }
 
-    openIcon.onChange { updateIcon() }
-    closeIcon.onChange { updateIcon() }
     animatedValue.onChange { updateIcon() }
     isActivated.onChange {
         if (isAttachedToWindow) {

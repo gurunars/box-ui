@@ -24,8 +24,6 @@ class DefaultSelectionManager<ItemType : Item>(
     val closeIcon = BindableField(IconColorBundle())
     val sortable = BindableField(false)
 
-    private val contextModeActivated = BindableField(false)
-
     private val floatMenu = FloatMenu(selectableItemContainer, menu(), openButtonEnabled = false).apply {
         hasOverlay.set(false)
         this@DefaultSelectionManager.closeIcon.sendTo(closeIcon, {
@@ -63,8 +61,6 @@ class DefaultSelectionManager<ItemType : Item>(
         }
 
         relativeLayout {
-            isVisible(contextModeActivated)
-
             fullSize()
             R.id.menuContainer
 

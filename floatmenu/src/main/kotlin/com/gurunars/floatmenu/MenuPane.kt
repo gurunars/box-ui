@@ -15,7 +15,7 @@ import com.gurunars.databinding.android.setIsVisible
 @SuppressLint("ViewConstructor")
 internal class MenuPane constructor(
     context: Context,
-    hasOverlay: BindableField<Boolean>,
+    hasOverlay: Boolean,
     isVisible: BindableField<Boolean>,
     animationDuration: Int
 ) : Widget(context) {
@@ -25,10 +25,9 @@ internal class MenuPane constructor(
         val floatEvaluator = FloatEvaluator()
         val animatedValue = BindableField(1f)
 
-        hasOverlay.onChange {
-            setBackgroundColor(if (it) Color.parseColor("#99000000") else Color.TRANSPARENT)
-            isClickable = it
-        }
+        setBackgroundColor(if (hasOverlay) Color.parseColor("#99000000") else Color.TRANSPARENT)
+        isClickable = hasOverlay
+
         isVisible.onChange {
             if (isAttachedToWindow) {
                 ValueAnimator.ofFloat(0f, 1f).apply {

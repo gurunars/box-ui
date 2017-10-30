@@ -105,29 +105,31 @@ class ActivityMain : Activity() {
             }
         }
 
-        floatingMenu = FloatMenu(
-            contentView,
-            menuView
-        ).apply {
-            closeIcon.set(IconView.Icon(
-                bgColor = Color.WHITE,
-                fgColor = Color.BLACK,
-                icon = R.drawable.ic_menu_close
-            ))
-
-            buttonColorFlag.onChange {
-                openIcon.set(IconView.Icon(
-                    bgColor = if (it) Color.RED else Color.YELLOW,
-                    fgColor = if (it) Color.WHITE else Color.BLACK,
-                    icon = R.drawable.ic_menu
+        hasOverlay.onChange {
+            floatingMenu = FloatMenu(
+                contentView,
+                menuView,
+                hasOverlay = it
+            ).apply {
+                closeIcon.set(IconView.Icon(
+                    bgColor = Color.WHITE,
+                    fgColor = Color.BLACK,
+                    icon = R.drawable.ic_menu_close
                 ))
-            }
 
-            this@ActivityMain.hasOverlay.bind(hasOverlay)
-            this@ActivityMain.isLeftHanded.bind(isLeftHanded)
-        }.setAsOne(
-            this@ActivityMain
-        )
+                buttonColorFlag.onChange {
+                    openIcon.set(IconView.Icon(
+                        bgColor = if (it) Color.RED else Color.YELLOW,
+                        fgColor = if (it) Color.WHITE else Color.BLACK,
+                        icon = R.drawable.ic_menu
+                    ))
+                }
+
+                this@ActivityMain.isLeftHanded.bind(isLeftHanded)
+            }.setAsOne(
+                this@ActivityMain
+            )
+        }
         storage.load()
     }
 

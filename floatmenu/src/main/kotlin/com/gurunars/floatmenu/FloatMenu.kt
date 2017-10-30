@@ -4,7 +4,6 @@ import android.content.Context
 import com.gurunars.android_utils.IconView
 import com.gurunars.databinding.BindableField
 import com.gurunars.databinding.android.*
-import com.gurunars.databinding.sendTo
 import org.jetbrains.anko.*
 
 /**
@@ -16,36 +15,34 @@ import org.jetbrains.anko.*
  * @param menuView View shown in the foreground layer of the widget when the menu is open.
  * Is supposed to contain menu's controls.
  * @param animationDuration Time it takes to perform all the animated UI transitions.
- *
- * @property isLeftHanded If **true** - is on the left side of the screen. On the right side
+ * @param isLeftHanded If **true** - is on the left side of the screen. On the right side
  * otherwise.
- * @property isOpen If **true** contents are visible. Menu contents are hidden otherwise.
- * @property openIcon Icon associated with the open state of the menu. Shown when the menu is
+ * @param openIcon Icon associated with the open state of the menu. Shown when the menu is
  * closed.
- * @property closeIcon Icon associated with the closed state of the menu. Show when the menu is
+ * @param closeIcon Icon associated with the closed state of the menu. Show when the menu is
  * open.
- * @property hasOverlay If **true** the menu has a shaded background that intercepts clicks.
+ * @param hasOverlay If **true** the menu has a shaded background that intercepts clicks.
  * If **false** - the menu does not intercept clicks and passes them to the content area.
  * The flag does not affect clickable elements that are located inside the menu though.
- */
+ *
+ * @property isOpen If **true** contents are visible. Menu contents are hidden otherwise.
+ * */
 class FloatMenu constructor(
     private val contentView: Component,
     private val menuView: Component,
     private val animationDuration: Int = 400,
-    private val openButtonEnabled: Boolean = true
+    private val openButtonEnabled: Boolean = true,
+    private val hasOverlay: Boolean = true,
+    private val isLeftHanded: Boolean = false,
+    private var openIcon: IconView.Icon = IconView.Icon(icon = R.drawable.ic_menu),
+    private val closeIcon: IconView.Icon = IconView.Icon(icon = R.drawable.ic_menu_close)
 ) : Component {
-    val isLeftHanded = BindableField(false)
+
     val isOpen = BindableField(false)
-    val openIcon = BindableField(IconView.Icon(icon = R.drawable.ic_menu))
-    val closeIcon = BindableField(IconView.Icon(icon = R.drawable.ic_menu_close))
-    val hasOverlay = BindableField(true)
 
     init {
         if (!openButtonEnabled) {
-            closeIcon.sendTo(openIcon)
-            openIcon.onChange {
-                openIcon.set(closeIcon.get())
-            }
+            openIcon = closeIcon
         }
     }
 
@@ -64,9 +61,8 @@ class FloatMenu constructor(
                 isClickable = true
                 menuView.setAsOne(this)
             }.fullSize()
-            context.fab(animatedValue, animationDuration, openIcon, closeIcon, isOpen).add(this) {
+            fab(animationDuration, openIcon, closeIcon, animatedValue, isOpen).add(this) {
                 id = R.id.openFab
-                isLeftHanded.onChange { contentDescription = "LH:" + it }
             }.lparams {
                 val initMargin = dip(16)
                 val size = dip(60)
@@ -87,10 +83,12 @@ class FloatMenu constructor(
                     }
                 }
                 alignParentBottom()
-                isLeftHanded.onChange {
-                    alignInParent(if (it) HorizontalAlignment.LEFT else HorizontalAlignment.RIGHT)
-                    requestLayout()
-                }
+                alignInParent(
+                    if (isLeftHanded)
+                        HorizontalAlignment.LEFT
+                    else
+                        HorizontalAlignment.RIGHT
+                )
             }
         }
     }
