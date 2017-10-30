@@ -17,7 +17,7 @@ import org.jetbrains.anko.relativeLayout
 
 class DefaultSelectionManager<ItemType : Item>(
     private val selectableItemContainer: SelectableItemContainer<ItemType>
-) : Openable, SelectableItemContainer<ItemType> by selectableItemContainer {
+) : SelectableItemContainer<ItemType> by selectableItemContainer {
 
     val actionIcon = BindableField(IconColorBundle())
     val closeIcon = BindableField(IconColorBundle())
@@ -25,20 +25,19 @@ class DefaultSelectionManager<ItemType : Item>(
 
     private val contextModeActivated = BindableField(false)
 
-    private val floatMenu = FloatMenu(selectableItemContainer, menu(), stateChangeListener={
-
-    }).apply {
+    private val floatMenu = FloatMenu(selectableItemContainer, menu(), openButtonEnabled = false).apply {
         hasOverlay.set(false)
-        this@DefaultSelectionManager.closeIcon.sendTo(closeIcon, { IconView.Icon(
-            bgColor = it.bgColor,
-            fgColor = it.fgColor,
-            icon = R.drawable.ic_check)
+        this@DefaultSelectionManager.closeIcon.sendTo(closeIcon, {
+            IconView.Icon(
+                bgColor = it.bgColor,
+                fgColor = it.fgColor,
+                icon = R.drawable.ic_check)
         })
     }
 
-    override val isOpen = floatMenu.isOpen
+    val isOpen = floatMenu.isOpen
     val isLeftHanded = floatMenu.isLeftHanded
-    override val openIcon = floatMenu.openIcon
+    val openIcon = floatMenu.openIcon
 
     override fun Context.render() = floatMenu.render(this)
 

@@ -13,12 +13,12 @@ import com.gurunars.databinding.sendTo
 import com.gurunars.floatmenu.FloatMenu
 import com.gurunars.floatmenu.MenuComponent
 import com.gurunars.item_list.ItemContainer
+import com.gurunars.item_list.SelectableItemContainer
 import org.jetbrains.anko.*
 
 class CreationMenuComponent<ItemType: Item, T>(
-    private val selectionManager: T
-): ItemContainer<ItemType> by selectionManager, Openable
-where T: Openable, T: ItemContainer<ItemType> {
+    private val selectionManager: SelectableItemContainer<ItemType>
+): SelectableItemContainer<ItemType> by selectionManager {
 
     val closeIcon = BindableField(IconColorBundle())
 
@@ -29,10 +29,6 @@ where T: Openable, T: ItemContainer<ItemType> {
             fgColor = it.fgColor,
             icon = R.drawable.ic_check)
         })
-    }
-
-    init {
-        openIcon.sendTo(selectionManager.openIcon)
     }
 
     override val isOpen: BindableField<Boolean>
