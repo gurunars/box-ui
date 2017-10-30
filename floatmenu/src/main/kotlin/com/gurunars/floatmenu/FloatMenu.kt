@@ -1,6 +1,5 @@
 package com.gurunars.floatmenu
 
-import android.annotation.SuppressLint
 import android.content.Context
 import com.gurunars.android_utils.IconView
 import com.gurunars.databinding.BindableField
@@ -29,7 +28,6 @@ import org.jetbrains.anko.*
  * If **false** - the menu does not intercept clicks and passes them to the content area.
  * The flag does not affect clickable elements that are located inside the menu though.
  */
-@SuppressLint("ViewConstructor")
 class FloatMenu constructor(
     private val contentView: Component,
     private val menuView: Component,
