@@ -1,42 +1,32 @@
 package com.gurunars.crud_item_list
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
-import android.widget.RelativeLayout
 import com.gurunars.android_utils.IconView
 import com.gurunars.android_utils.onClick
 import com.gurunars.crud_item_list.ItemTypeDescriptor.Status.Type.ERROR
 import com.gurunars.crud_item_list.ItemTypeDescriptor.Status.Type.WARNING
 import com.gurunars.databinding.BindableField
-import com.gurunars.databinding.android.HorizontalAlignment
-import com.gurunars.databinding.android.VerticalAlignment
-import com.gurunars.databinding.android.alignInParent
-import com.gurunars.databinding.android.setIsVisible
+import com.gurunars.databinding.android.*
+import com.gurunars.databinding.patch
 import com.gurunars.item_list.Item
 import org.jetbrains.anko.*
 
-@SuppressLint("ViewConstructor")
-internal class ItemForm<ItemType : Item>(
-    context: Context,
-    private val itemInEdit: BindableField<ItemType?>,
+class ItemForm<ItemType : Item>(
+    initialItem: ItemType,
+    private val bindForm: (field: BindableField<ItemType>) -> Component,
+    private val validate: (item: ItemType) -> ItemTypeDescriptor.Status,
     private val confirmationHandler: () -> Unit,
     private val confirmIconColors: BindableField<IconColorBundle>
-) : RelativeLayout(context) {
+) : Component {
 
-    fun bind(
-        item: ItemType,
-        formBinder: ItemTypeDescriptor<ItemType>
-    ) {
-        val field = BindableField(item)
-        field.onChange { itemInEdit.set(it) }
-        removeAllViews()
+    private val field = BindableField(initialItem)
 
-        formBinder.bindForm(field).add(this) {
-            layoutParams = RelativeLayout.LayoutParams(
-                LayoutParams.MATCH_PARENT,
-                LayoutParams.MATCH_PARENT
-            ).apply {
+    override fun Context.render() = relativeLayout {
+
+        bindForm(field).add(this) {
+            layoutParams = relativeLayoutParams {
+                fullSize()
                 leftMargin = dip(12)
                 rightMargin = dip(12)
                 topMargin = dip(12)
@@ -44,7 +34,7 @@ internal class ItemForm<ItemType : Item>(
             }
         }
 
-        IconView(context).add(this) {
+        IconView(this@render).add(this) {
             id = R.id.confirm
             confirmIconColors.onChange {
                 icon.set(
@@ -58,23 +48,22 @@ internal class ItemForm<ItemType : Item>(
             id = R.id.save
             field.onChange {
                 doAsync {
-                    val can = !formBinder.validate(it).type.isBlocking
+                    val can = !validate(it).type.isBlocking
                     uiThread {
                         enabled.set(can)
                     }
                 }
             }
             setOnClickListener { confirmationHandler() }
-            layoutParams = RelativeLayout.LayoutParams(
-                context.dip(60),
-                context.dip(60)
-            ).apply {
+            layoutParams = relativeLayoutParams {
+                width = dip(60)
+                width = dip(60)
                 margin = dip(16)
                 alignInParent(HorizontalAlignment.LEFT, VerticalAlignment.BOTTOM)
             }
         }
 
-        IconView(context).add(this) {
+        IconView(this@render).add(this) {
             id = R.id.hint
             icon.set(IconView.Icon(
                 bgColor = Color.LTGRAY,
@@ -84,9 +73,9 @@ internal class ItemForm<ItemType : Item>(
 
             field.onChange {
                 doAsync {
-                    val status = formBinder.validate(it)
+                    val status = validate(it)
 
-                    onClick { context.longToast(status.message) }
+                    onClick { longToast(status.message) }
 
                     uiThread {
                         when (status.type) {
@@ -98,10 +87,9 @@ internal class ItemForm<ItemType : Item>(
                     }
                 }
             }
-            layoutParams = RelativeLayout.LayoutParams(
-                context.dip(35),
-                context.dip(35)
-            ).apply {
+            layoutParams = relativeLayoutParams {
+                width = dip(35)
+                width = dip(35)
                 leftMargin = dip(100)
                 bottomMargin = dip(30)
                 alignInParent(HorizontalAlignment.LEFT, VerticalAlignment.BOTTOM)

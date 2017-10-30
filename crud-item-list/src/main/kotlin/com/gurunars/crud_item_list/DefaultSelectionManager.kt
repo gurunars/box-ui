@@ -9,6 +9,7 @@ import com.gurunars.databinding.onChange
 import com.gurunars.databinding.sendTo
 import com.gurunars.floatmenu.FloatMenu
 import com.gurunars.item_list.Item
+import com.gurunars.item_list.ItemContainer
 import com.gurunars.item_list.SelectableItemContainer
 import org.jetbrains.anko.above
 import org.jetbrains.anko.applyRecursively
@@ -17,7 +18,7 @@ import org.jetbrains.anko.relativeLayout
 
 class DefaultSelectionManager<ItemType : Item>(
     private val selectableItemContainer: SelectableItemContainer<ItemType>
-) : SelectableItemContainer<ItemType> by selectableItemContainer {
+) : ItemContainer<ItemType> by selectableItemContainer {
 
     val actionIcon = BindableField(IconColorBundle())
     val closeIcon = BindableField(IconColorBundle())
@@ -133,14 +134,19 @@ class DefaultSelectionManager<ItemType : Item>(
                     @Suppress("UNCHECKED_CAST")
                     val action = it.getTag(R.id.action) as Action<ItemType>
 
-                    listOf(items, selectedItems).onChange {
-                        it.isEnabled = action.canPerform(items.get(), selectedItems.get())
+                    listOf(items, selectableItemContainer.selectedItems).onChange {
+                        it.isEnabled = action.canPerform(
+                            items.get(),
+                            selectableItemContainer.selectedItems.get())
                     }
 
                     it.setOnClickListener {
-                        action.perform(items.get(), selectedItems.get()).apply {
+                        action.perform(
+                            items.get(),
+                            selectableItemContainer.selectedItems.get()
+                        ).apply {
                             items.set(first)
-                            selectedItems.set(second)
+                            selectableItemContainer.selectedItems.set(second)
                         }
                     }
 

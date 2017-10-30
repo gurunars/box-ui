@@ -55,6 +55,15 @@ fun<T: View> T.add(parent: LinearLayout, init: T.(params: LinearLayout.LayoutPar
     return this
 }
 
+fun relativeLayoutParams(init: RelativeLayout.LayoutParams.() -> Unit) = RelativeLayout.LayoutParams(
+    ViewGroup.LayoutParams.WRAP_CONTENT,
+    ViewGroup.LayoutParams.WRAP_CONTENT
+).apply { init() }
+
+fun linearLayoutParams(init: LinearLayout.LayoutParams.() -> Unit) = LinearLayout.LayoutParams(
+    ViewGroup.LayoutParams.WRAP_CONTENT,
+    ViewGroup.LayoutParams.WRAP_CONTENT
+).apply { init() }
 
 /**
  * width = MATCH_PARENT
