@@ -36,9 +36,9 @@ class FloatMenu constructor(
     private val isLeftHanded: Boolean = false,
     private var openIcon: IconView.Icon = IconView.Icon(icon = R.drawable.ic_menu),
     private val closeIcon: IconView.Icon = IconView.Icon(icon = R.drawable.ic_menu_close)
-) : Component {
+) : Openable {
 
-    val isOpen = BindableField(false)
+    override val isOpen = BindableField(false)
 
     init {
         if (!openButtonEnabled) {

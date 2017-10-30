@@ -12,6 +12,7 @@ import com.gurunars.databinding.android.asRow
 import com.gurunars.databinding.android.component
 import com.gurunars.databinding.android.fullSize
 import com.gurunars.databinding.android.setAsOne
+import com.gurunars.databinding.onChange
 import com.gurunars.floatmenu.FloatMenu
 import com.gurunars.storage.PersistentStorage
 import org.jetbrains.anko.*
@@ -105,28 +106,23 @@ class ActivityMain : Activity() {
             }
         }
 
-        hasOverlay.onChange {
+        listOf(buttonColorFlag, hasOverlay, isLeftHanded).onChange {
             floatingMenu = FloatMenu(
                 contentView,
                 menuView,
-                hasOverlay = it
-            ).apply {
-                closeIcon.set(IconView.Icon(
+                closeIcon = IconView.Icon(
                     bgColor = Color.WHITE,
                     fgColor = Color.BLACK,
                     icon = R.drawable.ic_menu_close
-                ))
-
-                buttonColorFlag.onChange {
-                    openIcon.set(IconView.Icon(
-                        bgColor = if (it) Color.RED else Color.YELLOW,
-                        fgColor = if (it) Color.WHITE else Color.BLACK,
-                        icon = R.drawable.ic_menu
-                    ))
-                }
-
-                this@ActivityMain.isLeftHanded.bind(isLeftHanded)
-            }.setAsOne(
+                ),
+                openIcon = IconView.Icon(
+                    bgColor = if (buttonColorFlag.get()) Color.RED else Color.YELLOW,
+                    fgColor = if (buttonColorFlag.get()) Color.WHITE else Color.BLACK,
+                    icon = R.drawable.ic_menu
+                ),
+                isLeftHanded = isLeftHanded.get(),
+                hasOverlay = hasOverlay.get()
+            ).setAsOne(
                 this@ActivityMain
             )
         }

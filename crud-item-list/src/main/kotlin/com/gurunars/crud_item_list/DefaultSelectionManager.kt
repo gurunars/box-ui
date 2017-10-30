@@ -6,8 +6,8 @@ import com.gurunars.android_utils.IconView
 import com.gurunars.databinding.BindableField
 import com.gurunars.databinding.android.*
 import com.gurunars.databinding.onChange
-import com.gurunars.databinding.sendTo
 import com.gurunars.floatmenu.FloatMenu
+import com.gurunars.floatmenu.Openable
 import com.gurunars.item_list.Item
 import com.gurunars.item_list.ItemContainer
 import com.gurunars.item_list.SelectableItemContainer
@@ -17,30 +17,35 @@ import org.jetbrains.anko.dip
 import org.jetbrains.anko.relativeLayout
 
 class DefaultSelectionManager<ItemType : Item>(
-    private val selectableItemContainer: SelectableItemContainer<ItemType>
-) : ItemContainer<ItemType> by selectableItemContainer {
+    private val selectableItemContainer: SelectableItemContainer<ItemType>,
+    private val isLeftHanded: Boolean = false,
+    closeIcon: IconColorBundle = IconColorBundle(),
+    private val actionIcon: IconColorBundle = IconColorBundle()
+) : ItemContainer<ItemType> by selectableItemContainer, Openable {
 
-    val actionIcon = BindableField(IconColorBundle())
-    val closeIcon = BindableField(IconColorBundle())
     val sortable = BindableField(false)
 
-    private val floatMenu = FloatMenu(selectableItemContainer, menu(), openButtonEnabled = false).apply {
-        hasOverlay.set(false)
-        this@DefaultSelectionManager.closeIcon.sendTo(closeIcon, {
-            IconView.Icon(
-                bgColor = it.bgColor,
-                fgColor = it.fgColor,
-                icon = R.drawable.ic_check)
-        })
-    }
+    val icon = IconView.Icon(
+        icon = R.drawable.ic_menu_close,
+        bgColor = closeIcon.bgColor,
+        fgColor = closeIcon.fgColor
+    )
 
-    val isOpen = floatMenu.isOpen
-    val isLeftHanded = floatMenu.isLeftHanded
-    val openIcon = floatMenu.openIcon
+    private val floatMenu = FloatMenu(
+        selectableItemContainer,
+        menu(),
+        openButtonEnabled = false,
+        hasOverlay = false,
+        isLeftHanded = isLeftHanded,
+        openIcon = icon,
+        closeIcon = icon
+    )
+
+    override val isOpen = floatMenu.isOpen
 
     override fun Context.render() = floatMenu.render(this)
 
-    fun menu(): Component = component {
+    private fun menu(): Component = component {
 
         fun RelativeLayout.LayoutParams.isLeftHanded(flag: Boolean) {
             alignInParent(
@@ -64,18 +69,13 @@ class DefaultSelectionManager<ItemType : Item>(
             fullSize()
             R.id.menuContainer
 
-            isLeftHanded.onChange {
-                requestLayout()
-                contentDescription = if (it) "LEFT HANDED" else "RIGHT HANDED"
-            }
-
             IconView(context).add(this) {
                 id = R.id.moveUp
                 icon.set(IconView.Icon(icon = R.drawable.ic_move_up))
                 setTag(R.id.action, ActionMoveUp<ItemType>())
                 isVisible(sortable)
             }.lparams {
-                isLeftHanded.onChange(listener = this::isLeftHanded)
+                isLeftHanded(isLeftHanded)
                 above(R.id.moveDown)
                 bottomMargin = dip(5)
                 leftMargin = dip(23)
@@ -89,7 +89,7 @@ class DefaultSelectionManager<ItemType : Item>(
                 isVisible(sortable)
             }.lparams {
                 alignInParent(verticalAlignment = VerticalAlignment.BOTTOM)
-                isLeftHanded.onChange(listener = this::isLeftHanded)
+                isLeftHanded(isLeftHanded)
                 bottomMargin = dip(85)
                 leftMargin = dip(23)
                 rightMargin = dip(23)
@@ -101,7 +101,7 @@ class DefaultSelectionManager<ItemType : Item>(
                 setTag(R.id.action, ActionDelete<ItemType>())
             }.lparams {
                 alignInParent(verticalAlignment = VerticalAlignment.BOTTOM)
-                isLeftHanded.onChange { alignHorizontallyAroundElement(R.id.selectAll, it) }
+                alignHorizontallyAroundElement(R.id.selectAll, isLeftHanded)
                 bottomMargin = dip(23)
                 leftMargin = dip(5)
                 rightMargin = dip(5)
@@ -113,7 +113,7 @@ class DefaultSelectionManager<ItemType : Item>(
                 setTag(R.id.action, ActionSelectAll<ItemType>())
             }.lparams {
                 alignInParent(verticalAlignment = VerticalAlignment.BOTTOM)
-                isLeftHanded.onChange { alignHorizontallyAroundElement(R.id.edit, it) }
+                alignHorizontallyAroundElement(R.id.edit, isLeftHanded)
                 bottomMargin = dip(23)
                 leftMargin = dip(5)
                 rightMargin = dip(5)
@@ -146,12 +146,10 @@ class DefaultSelectionManager<ItemType : Item>(
                         }
                     }
 
-                    actionIcon.onChange { icon ->
-                        it.icon.set(it.icon.get().copy(
-                            bgColor = icon.bgColor,
-                            fgColor = icon.fgColor
-                        ))
-                    }
+                    it.icon.set(it.icon.get().copy(
+                        bgColor = actionIcon.bgColor,
+                        fgColor = actionIcon.fgColor
+                    ))
                 }
             }
         }
