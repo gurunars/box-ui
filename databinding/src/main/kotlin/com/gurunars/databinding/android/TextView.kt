@@ -12,7 +12,7 @@ import com.gurunars.databinding.BindableField
  *
  * @param From - type of payload to be transformed into a string and to be generated out of a string
  */
-fun EditText.txt(field: BindableField<String>) {
+fun TextView.txt(field: BindableField<String>) {
     field.onChange {
         val trans = it
         if (text.toString() != trans) {
@@ -29,9 +29,3 @@ fun EditText.txt(field: BindableField<String>) {
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
     })
 }
-
-fun TextView.txt(field: BindableField<String>) =
-    field.onChange { text = it }
-
-fun TextView.spannedText(field: BindableField<Spanned>) =
-    field.onChange { text = it }
