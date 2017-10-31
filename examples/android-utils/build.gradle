@@ -5,3 +5,7 @@ dependencies {
     compile project(':android-utils')
 }
 
+
+android {
+    buildToolsVersion '26.0.2'
+}
