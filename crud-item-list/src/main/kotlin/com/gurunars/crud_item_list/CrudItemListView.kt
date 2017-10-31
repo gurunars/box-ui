@@ -12,6 +12,8 @@ import com.gurunars.item_list.*
 import com.gurunars.knob_view.KnobView
 import com.gurunars.shortcuts.fullSize
 import com.gurunars.shortcuts.setAsOne
+import org.jetbrains.anko.doAsync
+import org.jetbrains.anko.uiThread
 
 /**
  * Widget to be used for manipulating a collection of items with a dedicated set of UI controls.
@@ -115,20 +117,8 @@ class CrudItemListView<ItemType : Item> constructor(
             itemInEdit,
             {
                 run {
-                    val item = itemInEdit.get()
                     isOpen.set(false)
-                    if (item == null) {
-                        return@run
-                    }
-                    val itemsOld = items.get()
-                    val foundIndex = items.get().indexOfFirst { it.id == item.id }
-                    if (foundIndex == -1) {
-                        items.set(itemsOld + item)
-                    } else {
-                        items.set(itemsOld.toMutableList().apply {
-                            set(foundIndex, item)
-                        })
-                    }
+                    items.set(processItemInEdit(itemInEdit.get(), items.get()))
                 }
             },
             confirmationActionColors
@@ -193,7 +183,13 @@ class CrudItemListView<ItemType : Item> constructor(
 
             knobView.selectedView.onChange {
                 if (typeCache.size == 1 && it == ViewMode.CREATION) {
-                    itemInEdit.set(typeCache.values.first().createNewItem())
+                    doAsync {
+                        // TODO: Add some sort of progress bar to prevent some accidental UI actions
+                        val candidate = typeCache.values.first().createNewItem()
+                        uiThread {
+                            itemInEdit.set(candidate)
+                        }
+                    }
                 }
             }
 
@@ -214,7 +210,6 @@ class CrudItemListView<ItemType : Item> constructor(
             }
 
             retain(itemInEdit, itemListView.selectedItems, isOpen)
-            retain(itemListView.selectedItems, isOpen, itemInEdit)
         }
 
         isOpen = floatingMenu.isOpen

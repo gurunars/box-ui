@@ -39,7 +39,13 @@ internal fun <ItemType : Item> Context.creationMenu(
                     tag = action.type.name
                     icon.set(action.icon)
                     setOnClickListener {
-                        onEdit(action.createNewItem())
+                        // TODO: Add some sort of progress bar to prevent some accidental UI actions
+                        doAsync {
+                            val item = action.createNewItem()
+                            uiThread {
+                                onEdit(item)
+                            }
+                        }
                     }
                 }.lparams {
                     width = dip(45)
