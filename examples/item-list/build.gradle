@@ -4,8 +4,3 @@ dependencies {
     compile project(':item-list')
     compile project(':example-animal-item')
 }
-
-
-android {
-    buildToolsVersion '26.0.2'
-}
