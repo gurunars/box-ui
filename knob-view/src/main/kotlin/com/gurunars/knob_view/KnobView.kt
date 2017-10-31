@@ -1,5 +1,6 @@
 package com.gurunars.knob_view
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.view.View
 import com.gurunars.databinding.BindableField
@@ -12,6 +13,7 @@ import com.gurunars.databinding.android.Component
  *
  * @property selectedView an enum field matching the view to be shown at a given moment
  */
+@SuppressLint("ViewConstructor")
 class KnobView constructor(
     context: Context,
     viewSelector: Map<Enum<*>, View>
@@ -31,10 +33,10 @@ class KnobView constructor(
 
         selectedView.onChange(
             beforeChange = {
-                findViewWithTag(it)?.visibility = View.GONE
+                findViewWithTag<View>(it)?.visibility = View.GONE
             }
         ) {
-            findViewWithTag(it)?.visibility = View.VISIBLE
+            findViewWithTag<View>(it)?.visibility = View.VISIBLE
         }
     }
 

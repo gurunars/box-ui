@@ -117,8 +117,8 @@ class CrudItemListView<ItemType : Item> constructor(
             itemInEdit,
             {
                 run {
-                    isOpen.set(false)
                     items.set(processItemInEdit(itemInEdit.get(), items.get()))
+                    isOpen.set(false)
                 }
             },
             confirmationActionColors
