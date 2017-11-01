@@ -108,10 +108,6 @@ internal class ItemForm<ItemType : Item>(
         val field = BindableField(item)
         field.onChange { itemInEdit.set(it) }
         removeAllViews()
-        // TODO: add some sort of waiting indicator
-        asyncChain(
-            { formBinder.bindForm(field) },
-            { bindField(field, it, formBinder) }
-        )
+        bindField(field, formBinder.bindForm(field), formBinder)
     }
 }
