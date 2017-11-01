@@ -2,7 +2,10 @@ package com.gurunars.crud_item_list
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.view.Gravity
 import android.view.View
+import android.widget.FrameLayout
+import android.widget.ProgressBar
 import com.gurunars.android_utils.IconView
 import com.gurunars.databinding.BindableField
 import com.gurunars.databinding.android.StatefulComponent
@@ -10,9 +13,11 @@ import com.gurunars.databinding.onChange
 import com.gurunars.floatmenu.FloatMenu
 import com.gurunars.item_list.*
 import com.gurunars.knob_view.KnobView
+import com.gurunars.shortcuts.add
 import com.gurunars.shortcuts.asyncChain
 import com.gurunars.shortcuts.fullSize
 import com.gurunars.shortcuts.setAsOne
+import org.jetbrains.anko.dip
 
 /**
  * Widget to be used for manipulating a collection of items with a dedicated set of UI controls.
@@ -69,7 +74,7 @@ class CrudItemListView<ItemType : Item> constructor(
     private val knobView: KnobView
 
     private enum class ViewMode {
-        CONTEXTUAL, CREATION, FORM
+        CONTEXTUAL, CREATION, FORM, LOADING
     }
 
     private fun getDescriptor(itemType: Enum<*>): ItemTypeDescriptor<ItemType> {
@@ -127,10 +132,19 @@ class CrudItemListView<ItemType : Item> constructor(
             id = R.id.itemForm
         }
 
+        val loading = FrameLayout(context).apply {
+            ProgressBar(context).add(this) {
+                layoutParams = FrameLayout.LayoutParams(dip(80), dip(80)).apply {
+                    gravity = Gravity.CENTER
+                }
+            }
+        }
+
         knobView = KnobView(context, mapOf(
             ViewMode.CONTEXTUAL to contextualMenu,
             ViewMode.CREATION to creationMenu,
-            ViewMode.FORM to itemForm
+            ViewMode.FORM to itemForm,
+            ViewMode.LOADING to loading
         )).apply {
             fullSize()
             id = R.id.knobMenu
@@ -185,6 +199,7 @@ class CrudItemListView<ItemType : Item> constructor(
             knobView.selectedView.onChange {
                 if (typeCache.size == 1 && it == ViewMode.CREATION) {
                     // TODO: Add some sort of progress bar to prevent some accidental UI actions
+                    knobView.selectedView.set(ViewMode.LOADING)
                     asyncChain(
                         typeCache.values.first()::createNewItem,
                         { itemInEdit.set(it) }
