@@ -3,6 +3,7 @@ package com.gurunars.crud_item_list
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
+import android.view.View
 import android.widget.RelativeLayout
 import com.gurunars.android_utils.IconView
 import com.gurunars.android_utils.onClick
@@ -22,15 +23,12 @@ internal class ItemForm<ItemType : Item>(
     private val confirmIconColors: BindableField<IconColorBundle>
 ) : RelativeLayout(context) {
 
-    fun bind(
-        item: ItemType,
+    private fun bindField(
+        field: BindableField<ItemType>,
+        bound: View,
         formBinder: ItemTypeDescriptor<ItemType>
     ) {
-        val field = BindableField(item)
-        field.onChange { itemInEdit.set(it) }
-        removeAllViews()
-
-        formBinder.bindForm(field).add(this) {
+        bound.add(this) {
             layoutParams = RelativeLayout.LayoutParams(
                 LayoutParams.MATCH_PARENT,
                 LayoutParams.MATCH_PARENT
@@ -106,7 +104,18 @@ internal class ItemForm<ItemType : Item>(
                 rightOf(R.id.confirm)
             }
         }
-
     }
 
+    fun bind(
+        item: ItemType,
+        formBinder: ItemTypeDescriptor<ItemType>
+    ) {
+        val field = BindableField(item)
+        field.onChange { itemInEdit.set(it) }
+        removeAllViews()
+        doAsync {
+            val bound = formBinder.bindForm(field)
+            uiThread { bindField(field, bound, formBinder) }
+        }
+    }
 }
