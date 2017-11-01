@@ -3,7 +3,6 @@ package com.gurunars.databinding.android
 import android.content.Context
 import android.os.Bundle
 import android.os.Parcelable
-import android.view.ViewGroup
 import android.widget.FrameLayout
 import com.gurunars.databinding.BindableField
 
@@ -61,16 +60,10 @@ open class StatefulComponent(context: Context) : FrameLayout(context) {
 
 fun Context.statefulComponent(
     id: Int,
-    vararg fields: BindableField<*>
+    vararg fields: BindableField<*>,
+    init: StatefulComponent.() -> Unit = {}
 ): StatefulComponent =
     StatefulComponent(this).apply {
         this.id = id
         retain(*fields)
-    }
-
-fun ViewGroup.statefulComponent(
-    id: Int,
-    vararg fields: BindableField<*>
-): StatefulComponent = context.statefulComponent(id, *fields).apply {
-    addView(this)
-}
+    }.apply { init() }
