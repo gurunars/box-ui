@@ -29,10 +29,8 @@ internal class ItemForm<ItemType : Item>(
         formBinder: ItemTypeDescriptor<ItemType>
     ) {
         bound.add(this) {
-            layoutParams = RelativeLayout.LayoutParams(
-                LayoutParams.MATCH_PARENT,
-                LayoutParams.MATCH_PARENT
-            ).apply {
+            layoutParams = relativeLayoutParams {
+                fullSize()
                 leftMargin = dip(12)
                 rightMargin = dip(12)
                 topMargin = dip(12)
@@ -61,10 +59,9 @@ internal class ItemForm<ItemType : Item>(
                 }
             }
             setOnClickListener { confirmationHandler() }
-            layoutParams = RelativeLayout.LayoutParams(
-                context.dip(60),
-                context.dip(60)
-            ).apply {
+            layoutParams = relativeLayoutParams {
+                width=dip(60)
+                height=dip(60)
                 margin = dip(16)
                 alignInParent(HorizontalAlignment.LEFT, VerticalAlignment.BOTTOM)
             }
@@ -94,10 +91,9 @@ internal class ItemForm<ItemType : Item>(
                     }
                 }
             }
-            layoutParams = RelativeLayout.LayoutParams(
-                context.dip(35),
-                context.dip(35)
-            ).apply {
+            layoutParams = relativeLayoutParams {
+                width=dip(35)
+                height=dip(35)
                 leftMargin = dip(100)
                 bottomMargin = dip(30)
                 alignInParent(HorizontalAlignment.LEFT, VerticalAlignment.BOTTOM)
@@ -114,6 +110,7 @@ internal class ItemForm<ItemType : Item>(
         field.onChange { itemInEdit.set(it) }
         removeAllViews()
         doAsync {
+            // TODO: add some sort of waiting indicator
             val bound = formBinder.bindForm(field)
             uiThread { bindField(field, bound, formBinder) }
         }

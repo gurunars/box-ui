@@ -4,9 +4,20 @@ import android.app.Activity
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import com.gurunars.shortcuts.VerticalPosition.*
 import org.jetbrains.anko.*
+
+fun relativeLayoutParams(init: RelativeLayout.LayoutParams.() -> Unit = {}) = RelativeLayout.LayoutParams(
+    RelativeLayout.LayoutParams.WRAP_CONTENT,
+    RelativeLayout.LayoutParams.WRAP_CONTENT
+).apply { init() }
+
+fun linearLayoutParams(init: LinearLayout.LayoutParams.() -> Unit = {}) = LinearLayout.LayoutParams(
+    RelativeLayout.LayoutParams.WRAP_CONTENT,
+    RelativeLayout.LayoutParams.WRAP_CONTENT
+).apply { init() }
 
 /**
  * width = matchParent
