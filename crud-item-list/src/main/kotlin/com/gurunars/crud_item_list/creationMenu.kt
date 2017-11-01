@@ -7,6 +7,7 @@ import com.gurunars.android_utils.IconView
 import com.gurunars.databinding.BindableField
 import com.gurunars.item_list.Item
 import com.gurunars.shortcuts.add
+import com.gurunars.shortcuts.asyncChain
 import com.gurunars.shortcuts.fullSize
 import org.jetbrains.anko.*
 
@@ -40,12 +41,10 @@ internal fun <ItemType : Item> Context.creationMenu(
                     icon.set(action.icon)
                     setOnClickListener {
                         // TODO: Add some sort of progress bar to prevent some accidental UI actions
-                        doAsync {
-                            val item = action.createNewItem()
-                            uiThread {
-                                onEdit(item)
-                            }
-                        }
+                        asyncChain(
+                            action::createNewItem,
+                            onEdit
+                        )
                     }
                 }.lparams {
                     width = dip(45)

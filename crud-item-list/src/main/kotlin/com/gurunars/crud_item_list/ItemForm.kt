@@ -51,12 +51,10 @@ internal class ItemForm<ItemType : Item>(
             }
             id = R.id.save
             field.onChange {
-                doAsync {
-                    val can = !formBinder.validate(it).type.isBlocking
-                    uiThread {
-                        enabled.set(can)
-                    }
-                }
+                asyncChain(
+                    { formBinder.validate(it).type.isBlocking },
+                    { enabled.set(!it) }
+                )
             }
             setOnClickListener { confirmationHandler() }
             layoutParams = relativeLayoutParams {
@@ -76,20 +74,21 @@ internal class ItemForm<ItemType : Item>(
             ))
 
             field.onChange {
-                doAsync {
-                    val status = formBinder.validate(it)
-
-                    onClick { context.longToast(status.message) }
-
-                    uiThread {
-                        when (status.type) {
+                asyncChain(
+                    {
+                        val status = formBinder.validate(it)
+                        onClick { context.longToast(status.message) }
+                        status
+                    },
+                    {
+                        when (it.type) {
                             ERROR -> icon.patch { copy(bgColor = Color.RED) }
                             WARNING -> icon.patch { copy(bgColor = Color.YELLOW) }
                             else -> icon.patch { copy(bgColor = Color.LTGRAY) }
                         }
-                        setIsVisible(status.type.isBlocking || status.message.isNotEmpty())
+                        setIsVisible(it.type.isBlocking || it.message.isNotEmpty())
                     }
-                }
+                )
             }
             layoutParams = relativeLayoutParams {
                 width=dip(35)
@@ -109,10 +108,10 @@ internal class ItemForm<ItemType : Item>(
         val field = BindableField(item)
         field.onChange { itemInEdit.set(it) }
         removeAllViews()
-        doAsync {
-            // TODO: add some sort of waiting indicator
-            val bound = formBinder.bindForm(field)
-            uiThread { bindField(field, bound, formBinder) }
-        }
+        // TODO: add some sort of waiting indicator
+        asyncChain(
+            { formBinder.bindForm(field) },
+            { bindField(field, it, formBinder) }
+        )
     }
 }

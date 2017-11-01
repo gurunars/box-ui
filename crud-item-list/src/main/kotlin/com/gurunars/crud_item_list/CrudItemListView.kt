@@ -10,10 +10,9 @@ import com.gurunars.databinding.onChange
 import com.gurunars.floatmenu.FloatMenu
 import com.gurunars.item_list.*
 import com.gurunars.knob_view.KnobView
+import com.gurunars.shortcuts.asyncChain
 import com.gurunars.shortcuts.fullSize
 import com.gurunars.shortcuts.setAsOne
-import org.jetbrains.anko.doAsync
-import org.jetbrains.anko.uiThread
 
 /**
  * Widget to be used for manipulating a collection of items with a dedicated set of UI controls.
@@ -91,9 +90,11 @@ class CrudItemListView<ItemType : Item> constructor(
 
         itemListView = SelectableItemListView(
             context,
-            typeCache.map { Pair(it.key,
-                { item: BindableField<SelectableItem<ItemType>> -> it.value.bindRow(item) }
-            ) }.toMap(),
+            typeCache.map {
+                Pair(it.key,
+                    { item: BindableField<SelectableItem<ItemType>> -> it.value.bindRow(item) }
+                )
+            }.toMap(),
             emptyViewBinder
         ).apply {
             fullSize()
@@ -183,13 +184,11 @@ class CrudItemListView<ItemType : Item> constructor(
 
             knobView.selectedView.onChange {
                 if (typeCache.size == 1 && it == ViewMode.CREATION) {
-                    doAsync {
-                        // TODO: Add some sort of progress bar to prevent some accidental UI actions
-                        val candidate = typeCache.values.first().createNewItem()
-                        uiThread {
-                            itemInEdit.set(candidate)
-                        }
-                    }
+                    // TODO: Add some sort of progress bar to prevent some accidental UI actions
+                    asyncChain(
+                        typeCache.values.first()::createNewItem,
+                        { itemInEdit.set(it) }
+                    )
                 }
             }
 
