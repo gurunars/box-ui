@@ -8,10 +8,12 @@ import android.view.Menu
 import android.view.MenuItem
 import com.gurunars.android_utils.Icon
 import com.gurunars.databinding.BindableField
-import com.gurunars.floatmenu.FloatMenu
 import com.gurunars.databinding.android.asRow
 import com.gurunars.databinding.android.fullSize
 import com.gurunars.databinding.android.setAsOne
+import com.gurunars.databinding.field
+import com.gurunars.databinding.patch
+import com.gurunars.floatmenu.floatMenu
 import com.gurunars.storage.PersistentStorage
 import org.jetbrains.anko.*
 
@@ -22,14 +24,11 @@ class ActivityMain : Activity() {
     private val hasOverlay = storage.storageField("hasOverlay", true)
     private val isLeftHanded = storage.storageField("isLeftHanded", false)
 
+    private val isOpen = BindableField(false)
     private val notification = BindableField("")
-
-    private lateinit var floatingMenu: FloatMenu
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        val isOpenT = BindableField(false)
 
         val menuView = UI(false) {
             scrollView {
@@ -94,7 +93,7 @@ class ActivityMain : Activity() {
                 }
 
                 textView {
-                    isOpenT.onChange { setText(if (it) R.string.menuOpen else R.string.menuClosed) }
+                    isOpen.onChange { setText(if (it) R.string.menuOpen else R.string.menuClosed) }
                     isClickable = true
                 }.lparams {
                     below(R.id.textView)
@@ -104,29 +103,29 @@ class ActivityMain : Activity() {
             }
         }.view
 
-        floatingMenu = FloatMenu(this, contentView, menuView).setAsOne(this) {
-            fullSize()
-            id = R.id.floatingMenu
+        val openIcon = Icon(icon = R.drawable.ic_menu).field
 
-            isOpen.bind(isOpenT)
+        buttonColorFlag.onChange {
+            openIcon.set(Icon(
+                bgColor = if (it) Color.RED else Color.YELLOW,
+                fgColor = if (it) Color.WHITE else Color.BLACK,
+                icon = R.drawable.ic_menu
+            ))
+        }
 
-            closeIcon.set(Icon(
+        floatMenu(
+            contentView.field,
+            menuView.field,
+            isOpen = isOpen,
+            closeIcon = Icon(
                 bgColor = Color.WHITE,
                 fgColor = Color.BLACK,
                 icon = R.drawable.ic_menu_close
-            ))
-
-            buttonColorFlag.onChange {
-                openIcon.set(Icon(
-                    bgColor = if (it) Color.RED else Color.YELLOW,
-                    fgColor = if (it) Color.WHITE else Color.BLACK,
-                    icon = R.drawable.ic_menu
-                ))
-            }
-
-            this@ActivityMain.hasOverlay.bind(hasOverlay)
-            this@ActivityMain.isLeftHanded.bind(isLeftHanded)
-        }
+            ).field,
+            hasOverlay = hasOverlay,
+            isLeftHanded = isLeftHanded,
+            openIcon = openIcon
+        ).setAsOne(this)
 
         storage.load()
     }
@@ -146,7 +145,7 @@ class ActivityMain : Activity() {
         when (item.itemId) {
             R.id.reset -> {
                 isLeftHanded.set(false)
-                floatingMenu.isOpen.set(false)
+                isOpen.set(false)
                 buttonColorFlag.set(false)
                 isLeftHanded.set(false)
                 hasOverlay.set(true)
@@ -161,7 +160,7 @@ class ActivityMain : Activity() {
                 return true
             }
             R.id.toggleMenu -> {
-                floatingMenu.isOpen.set(!floatingMenu.isOpen.get())
+                isOpen.patch { !this }
                 return true
             }
             R.id.toggleHand -> {
