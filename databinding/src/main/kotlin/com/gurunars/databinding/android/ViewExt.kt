@@ -159,11 +159,15 @@ fun RelativeLayout.LayoutParams.alignInParent(
     verticalAlignment: VerticalAlignment = VerticalAlignment.SAME
 ) {
     if (horizontalAlignment != HorizontalAlignment.SAME) {
-        HorizontalAlignment.values().forEach { removeRule(it.alignment) }
+        HorizontalAlignment.values()
+            .filterNot { it.alignment == -42 }
+            .forEach { removeRule(it.alignment) }
         addRule(horizontalAlignment.alignment)
     }
     if (verticalAlignment != VerticalAlignment.SAME) {
-        VerticalAlignment.values().forEach { removeRule(it.alignment) }
+        VerticalAlignment.values()
+            .filterNot { it.alignment == -42 }
+            .forEach { removeRule(it.alignment) }
         addRule(verticalAlignment.alignment)
     }
 }

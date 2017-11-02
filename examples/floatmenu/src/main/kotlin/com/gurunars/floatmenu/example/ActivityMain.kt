@@ -6,7 +6,7 @@ import android.os.Bundle
 import android.view.Gravity
 import android.view.Menu
 import android.view.MenuItem
-import com.gurunars.android_utils.IconView
+import com.gurunars.android_utils.Icon
 import com.gurunars.databinding.BindableField
 import com.gurunars.floatmenu.FloatMenu
 import com.gurunars.databinding.android.asRow
@@ -110,14 +110,14 @@ class ActivityMain : Activity() {
 
             isOpen.bind(isOpenT)
 
-            closeIcon.set(IconView.Icon(
+            closeIcon.set(Icon(
                 bgColor = Color.WHITE,
                 fgColor = Color.BLACK,
                 icon = R.drawable.ic_menu_close
             ))
 
             buttonColorFlag.onChange {
-                openIcon.set(IconView.Icon(
+                openIcon.set(Icon(
                     bgColor = if (it) Color.RED else Color.YELLOW,
                     fgColor = if (it) Color.WHITE else Color.BLACK,
                     icon = R.drawable.ic_menu

@@ -3,7 +3,7 @@ package com.gurunars.floatmenu
 import android.annotation.SuppressLint
 import android.content.Context
 import android.view.View
-import com.gurunars.android_utils.IconView
+import com.gurunars.android_utils.Icon
 import com.gurunars.databinding.BindableField
 import com.gurunars.databinding.android.*
 import org.jetbrains.anko.*
@@ -38,8 +38,8 @@ class FloatMenu constructor(
 ) : StatefulComponent(context) {
     val isLeftHanded = BindableField(false)
     val isOpen = BindableField(false)
-    val openIcon = BindableField(IconView.Icon(icon = R.drawable.ic_menu))
-    val closeIcon = BindableField(IconView.Icon(icon = R.drawable.ic_menu_close))
+    val openIcon = BindableField(Icon(icon = R.drawable.ic_menu))
+    val closeIcon = BindableField(Icon(icon = R.drawable.ic_menu_close))
     val hasOverlay = BindableField(true)
 
     init {
