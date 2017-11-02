@@ -1,21 +1,18 @@
 package com.gurunars.crud_item_list
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.view.Gravity
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.ProgressBar
-import com.gurunars.android_utils.IconView
 import com.gurunars.databinding.BindableField
-import com.gurunars.databinding.android.StatefulComponent
-import com.gurunars.databinding.onChange
-import com.gurunars.floatmenu.FloatMenu
-import com.gurunars.item_list.*
-import com.gurunars.knob_view.KnobView
 import com.gurunars.databinding.android.add
 import com.gurunars.databinding.android.fullSize
-import com.gurunars.databinding.android.setAsOne
+import com.gurunars.databinding.android.statefulComponent
+import com.gurunars.databinding.field
+import com.gurunars.databinding.onChange
+import com.gurunars.floatmenu.floatMenu
+import com.gurunars.item_list.*
 import org.jetbrains.anko.dip
 
 /**
@@ -41,42 +38,30 @@ import org.jetbrains.anko.dip
  * @property isOpen A flag specifying if the menu is open or closed. Be it a creation or contextual
  * one.
  */
-@SuppressLint("ViewConstructor")
-class CrudItemListView<ItemType : Item> constructor(
-    context: Context,
+fun <ItemType : Item> Context.crudItemListView(
+    items: BindableField<List<ItemType>>,
     groupedItemTypeDescriptors: List<List<ItemTypeDescriptor<ItemType>>>,
-    emptyViewBinder: EmptyViewBinder = context::defaultBindEmpty,
-    sortable: Boolean = true
-) : StatefulComponent(context) {
-    private val typeCache = groupedItemTypeDescriptors
+    emptyViewBinder: BindableField<EmptyViewBinder> = this::defaultBindEmpty.field,
+    sortable: BindableField<Boolean> = true.field,
+    listActionColors: BindableField<IconColorBundle> = IconColorBundle().field,
+    confirmationActionColors: BindableField<IconColorBundle> = IconColorBundle().field,
+    cancelActionColors: BindableField<IconColorBundle> = IconColorBundle().field,
+    openIcon: BindableField<IconColorBundle> = IconColorBundle().field,
+    isOpen: BindableField<Boolean> = false.field,
+    isLeftHanded: BindableField<Boolean> = false.field
+): View = statefulComponent(R.id.crudItemListView) {
+    val typeCache = groupedItemTypeDescriptors
         .flatten()
         .map {
             Pair(it.type, it)
         }.toMap()
 
-    val listActionColors = BindableField(IconColorBundle())
-    val confirmationActionColors = BindableField(IconColorBundle())
-    val cancelActionColors = BindableField(IconColorBundle())
-    val openIcon = BindableField(IconColorBundle())
-    val isLeftHanded = BindableField(false)
+    val selectedItems = BindableField<Set<ItemType>>(setOf())
+    val itemInEdit: BindableField<ItemType?> = null.field
 
-    val items: BindableField<List<ItemType>>
-    val isOpen: BindableField<Boolean>
-    private val itemInEdit = BindableField<ItemType?>(null)
+    val itemForm: ItemForm<ItemType>
 
-    private val creationMenu: View
-    private val contextualMenu: View
-    private val itemForm: ItemForm<ItemType>
-
-    private val floatingMenu: FloatMenu
-    private val itemListView: SelectableItemListView<ItemType>
-    private val knobView: KnobView
-
-    private enum class ViewMode {
-        CONTEXTUAL, CREATION, FORM, LOADING
-    }
-
-    private fun getDescriptor(itemType: Enum<*>): ItemTypeDescriptor<ItemType> {
+    fun getDescriptor(itemType: Enum<*>): ItemTypeDescriptor<ItemType> {
         val type =
             if (typeCache.containsKey(itemType))
                 itemType
@@ -85,149 +70,137 @@ class CrudItemListView<ItemType : Item> constructor(
         return typeCache[type]!!
     }
 
-    init {
-        creationMenu = context.creationMenu(
-            groupedItemTypeDescriptors,
-            { itemInEdit.set(it) },
-            isLeftHanded
-        )
+    val creationMenu = context.creationMenu(
+        groupedItemTypeDescriptors,
+        { itemInEdit.set(it) },
+        isLeftHanded
+    )
 
-        itemListView = SelectableItemListView(
-            context,
-            typeCache.map {
-                Pair(it.key,
-                    { item: BindableField<SelectableItem<ItemType>> -> it.value.bindRow(item) }
-                )
-            }.toMap(),
-            emptyViewBinder
-        ).apply {
-            fullSize()
-            id = R.id.rawItemList
-        }
+    val itemListView = selectableItemListView(
+        items=items,
+        selectedItems = selectedItems,
+        itemViewBinders=typeCache.map {
+            Pair(it.key,
+                { item: BindableField<SelectableItem<ItemType>> -> it.value.bindRow(item) }
+            )
+        }.toMap().field,
+        emptyViewBinder=emptyViewBinder
+    ).apply {
+        fullSize()
+        id = R.id.rawItemList
+    }
 
-        contextualMenu = context.contextualMenu(
-            sortable,
-            listActionColors,
-            isLeftHanded,
-            itemListView.items,
-            itemListView.selectedItems,
-            { itemInEdit.set(it) }
-        ).apply {
-            fullSize()
-            id = R.id.contextualMenu
-        }
+    val contextualMenu = context.contextualMenu(
+        sortable,
+        listActionColors,
+        isLeftHanded,
+        items,
+        selectedItems,
+        { itemInEdit.set(it) }
+    ).apply {
+        fullSize()
+        id = R.id.contextualMenu
+    }
 
-        itemForm = ItemForm(
-            context,
-            itemInEdit,
-            {
-                run {
-                    items.set(processItemInEdit(itemInEdit.get(), items.get()))
-                    isOpen.set(false)
-                }
-            },
-            confirmationActionColors
-        ).apply {
-            id = R.id.itemForm
-        }
+    itemForm = ItemForm(
+        context,
+        itemInEdit,
+        {
+            run {
+                items.set(processItemInEdit(itemInEdit.get(), items.get()))
+                isOpen.set(false)
+            }
+        },
+        confirmationActionColors
+    ).apply {
+        id = R.id.itemForm
+    }
 
-        val loading = FrameLayout(context).apply {
-            ProgressBar(context).add(this) {
-                layoutParams = FrameLayout.LayoutParams(dip(80), dip(80)).apply {
-                    gravity = Gravity.CENTER
-                }
+    val loading = FrameLayout(context).apply {
+        ProgressBar(context).add(this) {
+            layoutParams = FrameLayout.LayoutParams(dip(80), dip(80)).apply {
+                gravity = Gravity.CENTER
             }
         }
+    }
 
-        knobView = KnobView(context, mapOf(
-            ViewMode.CONTEXTUAL to contextualMenu,
-            ViewMode.CREATION to creationMenu,
-            ViewMode.FORM to itemForm,
-            ViewMode.LOADING to loading
-        )).apply {
-            fullSize()
-            id = R.id.knobMenu
+    val knobView = FrameLayout(context)
+
+    val floatingMenu = floatMenu(itemListView.field, knobView.field).setAsOne(this) {
+        id = R.id.floatingMenu
+        this@CrudItemListView.isLeftHanded.bind(isLeftHanded)
+
+        fun confCrossIcon() {
+            closeIcon.set(IconView.Icon(
+                icon = R.drawable.ic_menu_close,
+                bgColor = cancelActionColors.get().bgColor,
+                fgColor = cancelActionColors.get().fgColor
+            ))
         }
 
-        floatingMenu = FloatMenu(context, itemListView, knobView).setAsOne(this) {
-            id = R.id.floatingMenu
-            this@CrudItemListView.isLeftHanded.bind(isLeftHanded)
+        fun confCheckIcon() {
+            closeIcon.set(IconView.Icon(
+                icon = R.drawable.ic_check,
+                bgColor = confirmationActionColors.get().bgColor,
+                fgColor = confirmationActionColors.get().fgColor
+            ))
+        }
 
-            fun confCrossIcon() {
-                closeIcon.set(IconView.Icon(
-                    icon = R.drawable.ic_menu_close,
-                    bgColor = cancelActionColors.get().bgColor,
-                    fgColor = cancelActionColors.get().fgColor
-                ))
+        itemListView.selectedItems.onChange {
+            isOpen.set(!it.isEmpty())
+        }
+
+        listOf(isOpen, itemListView.selectedItems, itemInEdit).onChange {
+            if (!isOpen.get()) {
+                itemInEdit.set(null)
+                itemListView.selectedItems.set(hashSetOf())
+                return@onChange
             }
-
-            fun confCheckIcon() {
-                closeIcon.set(IconView.Icon(
-                    icon = R.drawable.ic_check,
-                    bgColor = confirmationActionColors.get().bgColor,
-                    fgColor = confirmationActionColors.get().fgColor
-                ))
-            }
-
-            itemListView.selectedItems.onChange {
-                isOpen.set(!it.isEmpty())
-            }
-
-            listOf(isOpen, itemListView.selectedItems, itemInEdit).onChange {
-                if (!isOpen.get()) {
-                    itemInEdit.set(null)
-                    itemListView.selectedItems.set(hashSetOf())
-                    return@onChange
-                }
-                val item = itemInEdit.get()
-                if (item != null) {
-                    if (knobView.selectedView.get() != ViewMode.FORM) {
-                        hasOverlay.set(true)
-                        itemForm.bind(item, getDescriptor(item.type))
-                        knobView.selectedView.set(ViewMode.FORM)
-                    }
-                } else if (itemListView.selectedItems.get().isNotEmpty()) {
-                    hasOverlay.set(false)
-                    knobView.selectedView.set(ViewMode.CONTEXTUAL)
-                } else {
+            val item = itemInEdit.get()
+            if (item != null) {
+                if (knobView.selectedView.get() != ViewMode.FORM) {
                     hasOverlay.set(true)
-                    knobView.selectedView.set(ViewMode.CREATION)
+                    itemForm.bind(item, getDescriptor(item.type))
+                    knobView.selectedView.set(ViewMode.FORM)
                 }
+            } else if (itemListView.selectedItems.get().isNotEmpty()) {
+                hasOverlay.set(false)
+                knobView.selectedView.set(ViewMode.CONTEXTUAL)
+            } else {
+                hasOverlay.set(true)
+                knobView.selectedView.set(ViewMode.CREATION)
             }
-
-            knobView.selectedView.onChange {
-                if (typeCache.size == 1 && it == ViewMode.CREATION) {
-                    // TODO: Add some sort of progress bar to prevent some accidental UI actions
-                    knobView.selectedView.set(ViewMode.LOADING)
-                    asyncChain(
-                        typeCache.values.first()::createNewItem,
-                        { itemInEdit.set(it) }
-                    )
-                }
-            }
-
-            this@CrudItemListView.openIcon.onChange {
-                openIcon.set(openIcon.get().copy(
-                    bgColor = it.bgColor,
-                    fgColor = it.fgColor,
-                    icon = R.drawable.ic_plus
-                ))
-            }
-
-            listOf(confirmationActionColors, cancelActionColors, knobView.selectedView).onChange {
-                when (knobView.selectedView.get()) {
-                    ViewMode.FORM -> confCrossIcon()
-                    ViewMode.CREATION -> confCrossIcon()
-                    else -> confCheckIcon()
-                }
-            }
-
-            retain(itemInEdit, itemListView.selectedItems, isOpen)
         }
 
-        isOpen = floatingMenu.isOpen
-        items = itemListView.items
+        knobView.selectedView.onChange {
+            if (typeCache.size == 1 && it == ViewMode.CREATION) {
+                // TODO: Add some sort of progress bar to prevent some accidental UI actions
+                knobView.selectedView.set(ViewMode.LOADING)
+                asyncChain(
+                    typeCache.values.first()::createNewItem,
+                    { itemInEdit.set(it) }
+                )
+            }
+        }
 
+        this@CrudItemListView.openIcon.onChange {
+            openIcon.set(openIcon.get().copy(
+                bgColor = it.bgColor,
+                fgColor = it.fgColor,
+                icon = R.drawable.ic_plus
+            ))
+        }
+
+        listOf(confirmationActionColors, cancelActionColors, knobView.selectedView).onChange {
+            when (knobView.selectedView.get()) {
+                ViewMode.FORM -> confCrossIcon()
+                ViewMode.CREATION -> confCrossIcon()
+                else -> confCheckIcon()
+            }
+        }
+
+        retain(itemInEdit, itemListView.selectedItems, isOpen)
     }
 
 }
+
