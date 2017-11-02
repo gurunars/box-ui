@@ -46,10 +46,6 @@ class ActivityMain : Activity() {
         super.onCreate(savedInstanceState)
         storage.load()
 
-        selectedItems.onChange {
-            Log.e("FF", "DD")
-        }
-
         selectableItemListView(
             items = items,
             selectedItems = selectedItems,

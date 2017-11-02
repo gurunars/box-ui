@@ -32,11 +32,11 @@ fun <ItemType : Item> Context.selectableItemListView(
 
     val kryo = getKryo()
 
-    val copyOfSelectedItems: BindableField<Set<ItemType>> = BindableField(
-        setOf(),
-        { kryo.copy(HashSet(it)) }
-    )
-    copyOfSelectedItems.bind(selectedItems)
+    val copyOfSelectedItems: BindableField<Set<ItemType>> =
+        selectedItems.branch(
+            { kryo.copy(HashSet(this)) as Set<ItemType> },
+            { kryo.copy(HashSet(it)) }
+        )
 
     val copyOfItems: BindableField<List<ItemType>> =
         items.branch { kryo.copy(ArrayList(this)) }
