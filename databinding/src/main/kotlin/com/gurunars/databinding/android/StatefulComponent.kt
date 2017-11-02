@@ -9,7 +9,7 @@ import com.gurunars.databinding.BindableField
 /**
  * A base component meant to develop custom stateful UI widgets using bindable fields
  */
-open class StatefulComponent(context: Context) : FrameLayout(context) {
+class StatefulComponent(context: Context) : FrameLayout(context) {
 
     private val fields: MutableList<BindableField<*>> = mutableListOf()
 
@@ -32,7 +32,7 @@ open class StatefulComponent(context: Context) : FrameLayout(context) {
     /**
      * @suppress
      */
-    final override fun onSaveInstanceState() = Bundle().apply {
+    override fun onSaveInstanceState() = Bundle().apply {
         putParcelable("superState", super.onSaveInstanceState())
         val payload = hashMapOf<Int, Any?>()
         fields.forEachIndexed { index, bindableField ->
@@ -44,7 +44,7 @@ open class StatefulComponent(context: Context) : FrameLayout(context) {
     /**
      * @suppress
      */
-    final override fun onRestoreInstanceState(state: Parcelable) {
+    override fun onRestoreInstanceState(state: Parcelable) {
         (state as Bundle).apply {
             super.onRestoreInstanceState(getParcelable<Parcelable>("superState"))
             val payload = getSerializable("payload") ?: return

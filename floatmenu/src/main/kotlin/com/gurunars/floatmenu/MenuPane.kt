@@ -8,8 +8,8 @@ import android.graphics.Color
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import com.gurunars.databinding.BindableField
-import com.gurunars.databinding.android.Component
 import com.gurunars.databinding.android.setIsVisible
 
 @SuppressLint("ViewConstructor")
@@ -17,8 +17,8 @@ internal class MenuPane constructor(
     context: Context,
     hasOverlay: BindableField<Boolean>,
     isVisible: BindableField<Boolean>,
-    animationDuration: Int
-) : Component(context) {
+    animationDuration: BindableField<Int>
+) : FrameLayout(context) {
 
     init {
 
@@ -33,7 +33,7 @@ internal class MenuPane constructor(
             if (isAttachedToWindow) {
                 ValueAnimator.ofFloat(0f, 1f).apply {
                     startDelay = 0
-                    duration = animationDuration.toLong()
+                    duration = animationDuration.get().toLong()
                     addUpdateListener { animatedValue.set(it.animatedValue as Float) }
                     start()
                 }
