@@ -6,13 +6,12 @@ import android.graphics.Color
 import android.view.View
 import android.widget.RelativeLayout
 import com.gurunars.android_utils.IconView
-import com.gurunars.android_utils.onClick
 import com.gurunars.crud_item_list.ItemTypeDescriptor.Status.Type.ERROR
 import com.gurunars.crud_item_list.ItemTypeDescriptor.Status.Type.WARNING
 import com.gurunars.databinding.BindableField
+import com.gurunars.databinding.android.*
 import com.gurunars.databinding.patch
 import com.gurunars.item_list.Item
-import com.gurunars.shortcuts.*
 import org.jetbrains.anko.*
 
 @SuppressLint("ViewConstructor")
@@ -58,8 +57,8 @@ internal class ItemForm<ItemType : Item>(
             }
             setOnClickListener { confirmationHandler() }
             layoutParams = relativeLayoutParams {
-                width=dip(60)
-                height=dip(60)
+                width = dip(60)
+                height = dip(60)
                 margin = dip(16)
                 alignInParent(HorizontalAlignment.LEFT, VerticalAlignment.BOTTOM)
             }
@@ -91,8 +90,8 @@ internal class ItemForm<ItemType : Item>(
                 )
             }
             layoutParams = relativeLayoutParams {
-                width=dip(35)
-                height=dip(35)
+                width = dip(35)
+                height = dip(35)
                 leftMargin = dip(100)
                 bottomMargin = dip(30)
                 alignInParent(HorizontalAlignment.LEFT, VerticalAlignment.BOTTOM)

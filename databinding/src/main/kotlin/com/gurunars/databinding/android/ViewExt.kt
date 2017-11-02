@@ -1,4 +1,4 @@
-package com.gurunars.shortcuts
+package com.gurunars.databinding.android
 
 import android.app.Activity
 import android.view.View
@@ -6,52 +6,53 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
-import com.gurunars.shortcuts.VerticalPosition.*
-import org.jetbrains.anko.*
+
+const val MATCH_PARENT = ViewGroup.LayoutParams.MATCH_PARENT
+const val WRAP_CONTENT = ViewGroup.LayoutParams.WRAP_CONTENT
 
 fun relativeLayoutParams(init: RelativeLayout.LayoutParams.() -> Unit = {}) = RelativeLayout.LayoutParams(
-    RelativeLayout.LayoutParams.WRAP_CONTENT,
-    RelativeLayout.LayoutParams.WRAP_CONTENT
+    WRAP_CONTENT,
+    WRAP_CONTENT
 ).apply { init() }
 
 fun linearLayoutParams(init: LinearLayout.LayoutParams.() -> Unit = {}) = LinearLayout.LayoutParams(
-    RelativeLayout.LayoutParams.WRAP_CONTENT,
-    RelativeLayout.LayoutParams.WRAP_CONTENT
+    WRAP_CONTENT,
+    WRAP_CONTENT
 ).apply { init() }
 
 /**
- * width = matchParent
- * height = matchParent
+ * width = MATCH_PARENT
+ * height = MATCH_PARENT
  */
 fun ViewGroup.LayoutParams.fullSize() {
-    width = matchParent
-    height = matchParent
+    width = MATCH_PARENT
+    height = MATCH_PARENT
 }
 
 /**
- * width = matchParent
- * height = wrapContent
+ * width = MATCH_PARENT
+ * height = WRAP_CONTENT
  */
 fun ViewGroup.LayoutParams.asRow() {
-    width = matchParent
-    height = wrapContent
+    width = MATCH_PARENT
+    height = WRAP_CONTENT
 }
 
 /**
- * width = matchParent
- * height = matchParent
+ * width = MATCH_PARENT
+ * height = MATCH_PARENT
  */
 fun View.fullSize() {
-    layoutParams = layoutParams ?: ViewGroup.LayoutParams(matchParent, matchParent)
+    layoutParams = layoutParams ?: ViewGroup.LayoutParams(MATCH_PARENT, MATCH_PARENT)
     layoutParams.fullSize()
 }
 
 /**
- * width = matchParent
- * height = wrapContent
+ * width = MATCH_PARENT
+ * height = WRAP_CONTENT
  */
 fun View.asRow() {
-    layoutParams = layoutParams ?: ViewGroup.LayoutParams(matchParent, wrapContent)
+    layoutParams = layoutParams ?: ViewGroup.LayoutParams(MATCH_PARENT, WRAP_CONTENT)
     layoutParams.asRow()
 }
 
@@ -149,23 +150,19 @@ fun RelativeLayout.LayoutParams.alignInParent(
     if (horizontalAlignment != HorizontalAlignment.SAME) {
         removeRule(RelativeLayout.ALIGN_PARENT_LEFT)
         removeRule(RelativeLayout.ALIGN_PARENT_RIGHT)
-        if (horizontalAlignment == HorizontalAlignment.LEFT) {
-            alignParentLeft()
-        } else if (horizontalAlignment == HorizontalAlignment.RIGHT) {
-            alignParentRight()
-        } else {
-            centerHorizontally()
+        when (horizontalAlignment) {
+            HorizontalAlignment.LEFT -> addRule(RelativeLayout.ALIGN_PARENT_LEFT)
+            HorizontalAlignment.RIGHT -> addRule(RelativeLayout.ALIGN_PARENT_RIGHT)
+            else -> addRule(RelativeLayout.CENTER_HORIZONTAL)
         }
     }
     if (verticalAlignment != VerticalAlignment.SAME) {
         removeRule(RelativeLayout.ALIGN_PARENT_TOP)
         removeRule(RelativeLayout.ALIGN_PARENT_BOTTOM)
-        if (verticalAlignment == VerticalAlignment.TOP) {
-            alignParentTop()
-        } else if (verticalAlignment == VerticalAlignment.BOTTOM) {
-            alignParentBottom()
-        } else {
-            centerVertically()
+        when (verticalAlignment) {
+            VerticalAlignment.TOP -> addRule(RelativeLayout.ALIGN_PARENT_TOP)
+            VerticalAlignment.BOTTOM -> addRule(RelativeLayout.ALIGN_PARENT_BOTTOM)
+            else -> addRule(RelativeLayout.CENTER_VERTICAL)
         }
     }
 }
@@ -226,18 +223,18 @@ fun RelativeLayout.LayoutParams.alignWithRespectTo(
         removeRule(RelativeLayout.LEFT_OF)
         removeRule(RelativeLayout.RIGHT_OF)
         if (horizontalPosition == HorizontalPosition.LEFT_OF) {
-            leftOf(id)
+            addRule(id, RelativeLayout.LEFT_OF)
         } else {
-            rightOf(id)
+            addRule(id, RelativeLayout.RIGHT_OF)
         }
     }
     if (verticalPosition != VerticalPosition.SAME) {
         removeRule(RelativeLayout.ABOVE)
         removeRule(RelativeLayout.BELOW)
         if (verticalPosition == VerticalPosition.ABOVE) {
-            above(id)
+            addRule(id, RelativeLayout.ABOVE)
         } else {
-            below(id)
+            addRule(id, RelativeLayout.BELOW)
         }
     }
 }

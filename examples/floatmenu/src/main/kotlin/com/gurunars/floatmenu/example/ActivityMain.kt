@@ -9,9 +9,9 @@ import android.view.MenuItem
 import com.gurunars.android_utils.IconView
 import com.gurunars.databinding.BindableField
 import com.gurunars.floatmenu.FloatMenu
-import com.gurunars.shortcuts.asRow
-import com.gurunars.shortcuts.fullSize
-import com.gurunars.shortcuts.setAsOne
+import com.gurunars.databinding.android.asRow
+import com.gurunars.databinding.android.fullSize
+import com.gurunars.databinding.android.setAsOne
 import com.gurunars.storage.PersistentStorage
 import org.jetbrains.anko.*
 

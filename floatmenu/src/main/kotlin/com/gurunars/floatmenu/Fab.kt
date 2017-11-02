@@ -7,7 +7,7 @@ import android.content.Context
 import com.gurunars.android_utils.IconView
 import com.gurunars.android_utils.IconView.Icon
 import com.gurunars.databinding.BindableField
-import com.gurunars.shortcuts.fullSize
+import com.gurunars.databinding.android.fullSize
 import org.jetbrains.anko.frameLayout
 
 internal fun Context.fab(

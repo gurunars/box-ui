@@ -1,4 +1,4 @@
-package com.gurunars.android_utils
+package com.gurunars.databinding.android
 
 import android.view.View
 

@@ -10,7 +10,7 @@ import android.view.View
 import android.widget.FrameLayout
 import com.gurunars.databinding.BindableField
 import com.gurunars.knob_view.KnobView
-import com.gurunars.shortcuts.setAsOne
+import com.gurunars.databinding.android.setAsOne
 import com.gurunars.databinding.android.txt
 import org.jetbrains.anko.*
 

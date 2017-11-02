@@ -10,7 +10,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.TextView
 import com.gurunars.android_utils.IconView
-import com.gurunars.android_utils.closeKeyboard
+import com.gurunars.databinding.android.closeKeyboard
 import com.gurunars.animal_item.AnimalItem
 import com.gurunars.crud_item_list.CrudItemListView
 import com.gurunars.crud_item_list.IconColorBundle
@@ -21,8 +21,8 @@ import com.gurunars.databinding.android.txt
 import com.gurunars.databinding.branch
 import com.gurunars.item_list.SelectableItem
 import com.gurunars.item_list.coloredRowSelectionDecorator
-import com.gurunars.shortcuts.fullSize
-import com.gurunars.shortcuts.setAsOne
+import com.gurunars.databinding.android.fullSize
+import com.gurunars.databinding.android.setAsOne
 import com.gurunars.storage.PersistentStorage
 import org.jetbrains.anko.*
 

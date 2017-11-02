@@ -13,8 +13,8 @@ import com.gurunars.databinding.BindableField
 import com.gurunars.databinding.android.txt
 import com.gurunars.databinding.branch
 import com.gurunars.item_list.ItemListView
-import com.gurunars.shortcuts.asRow
-import com.gurunars.shortcuts.setAsOne
+import com.gurunars.databinding.android.asRow
+import com.gurunars.databinding.android.setAsOne
 import com.gurunars.storage.PersistentStorage
 import org.jetbrains.anko.dip
 import org.jetbrains.anko.padding

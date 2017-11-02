@@ -5,7 +5,7 @@ import android.graphics.Color
 import android.view.View
 import android.widget.TextView
 import com.gurunars.databinding.BindableField
-import com.gurunars.shortcuts.asRow
+import com.gurunars.databinding.android.asRow
 import org.jetbrains.anko.backgroundColor
 import org.jetbrains.anko.textColor
 

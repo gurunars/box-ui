@@ -9,8 +9,7 @@ import android.widget.TextView
 import com.gurunars.android_utils.ColoredShapeDrawable
 import com.gurunars.android_utils.setAutoBg
 import com.gurunars.databinding.android.txt
-import com.gurunars.shortcuts.color
-import com.gurunars.shortcuts.fullSize
+import com.gurunars.databinding.android.fullSize
 import com.gurunars.storage.PersistentStorage
 import org.jetbrains.anko.*
 
@@ -44,7 +43,7 @@ class ActivityMain : Activity() {
                 textView {
                     id = R.id.disabled
                     isEnabled = false
-                    backgroundColor = color(android.R.color.holo_blue_light)
+                    backgroundColor = getColor(android.R.color.holo_blue_light)
                     text = getString(R.string.disabled)
                 }.lparams()
 
@@ -57,7 +56,7 @@ class ActivityMain : Activity() {
 
                 textView {
                     id = R.id.clear
-                    backgroundColor = color(android.R.color.holo_green_light)
+                    backgroundColor = getColor(android.R.color.holo_green_light)
                     text = getString(R.string.clear)
                     setOnClickListener { title.set("Empty") }
                 }.lparams()

@@ -4,7 +4,7 @@ import android.graphics.Color
 import android.support.annotation.ColorInt
 import android.view.View
 import com.gurunars.databinding.BindableField
-import com.gurunars.shortcuts.asRow
+import com.gurunars.databinding.android.asRow
 
 typealias ItemRenderer<ItemType> = (field: BindableField<ItemType>) -> View
 

@@ -5,8 +5,7 @@ import android.content.Context
 import android.view.View
 import com.gurunars.android_utils.IconView
 import com.gurunars.databinding.BindableField
-import com.gurunars.databinding.android.StatefulComponent
-import com.gurunars.shortcuts.*
+import com.gurunars.databinding.android.*
 import org.jetbrains.anko.*
 
 /**

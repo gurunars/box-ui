@@ -6,8 +6,8 @@ import com.esotericsoftware.kryo.Kryo
 import com.gurunars.databinding.BindableField
 import com.gurunars.databinding.android.StatefulComponent
 import com.gurunars.databinding.onChange
-import com.gurunars.shortcuts.fullSize
-import com.gurunars.shortcuts.setAsOne
+import com.gurunars.databinding.android.fullSize
+import com.gurunars.databinding.android.setAsOne
 import org.objenesis.strategy.StdInstantiatorStrategy
 import java.util.*
 import kotlin.collections.HashSet
