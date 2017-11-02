@@ -14,7 +14,6 @@ dependencies {
     compile project(':item-list')
     compile project(':floatmenu')
     compile project(':databinding')
-    compile project(':knob-view')
 }
 
 dokka {
