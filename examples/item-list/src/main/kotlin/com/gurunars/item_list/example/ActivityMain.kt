@@ -43,10 +43,10 @@ class ActivityMain : Activity() {
         super.onCreate(savedInstanceState)
         storage.load()
 
-        itemListView<AnimalItem>(
+        itemListView(
             items = items,
             itemViewBinders = AnimalItem.Type.values().map {
-                Pair(it as Enum<*>, this::bindAnimal)
+                Pair(it as Enum<*>, { value: BindableField<AnimalItem> -> this.bindAnimal(value) })
             }.toMap().field
         ).setAsOne(this) {
             id = R.id.itemList

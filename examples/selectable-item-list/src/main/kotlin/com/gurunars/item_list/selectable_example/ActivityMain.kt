@@ -10,15 +10,17 @@ import android.widget.TextView
 import android.widget.Toast
 import com.gurunars.animal_item.AnimalItem
 import com.gurunars.databinding.BindableField
-import com.gurunars.databinding.android.txt
-import com.gurunars.databinding.branch
-import com.gurunars.item_list.*
 import com.gurunars.databinding.android.asRow
 import com.gurunars.databinding.android.setAsOne
+import com.gurunars.databinding.android.txt
+import com.gurunars.databinding.branch
+import com.gurunars.databinding.field
+import com.gurunars.item_list.SelectableItem
+import com.gurunars.item_list.coloredRowSelectionDecorator
+import com.gurunars.item_list.selectableItemListView
 import com.gurunars.storage.PersistentStorage
 import org.jetbrains.anko.dip
 import org.jetbrains.anko.padding
-import java.util.*
 
 private fun Context.bindAnimal(field: BindableField<AnimalItem>) = TextView(this).apply {
     asRow()
@@ -30,10 +32,9 @@ class ActivityMain : Activity() {
 
     private val storage = PersistentStorage(this, "main")
 
+    private val selectedItems = BindableField<Set<AnimalItem>>(setOf())
     private val items = storage.storageField("items", listOf<AnimalItem>())
     private val count = storage.storageField("count", 0)
-
-    private lateinit var itemListView: SelectableItemListView<AnimalItem>
 
     private fun add(type: AnimalItem.Type) {
         items.set(items.get() + AnimalItem(count.get().toLong(), type, 0))
@@ -44,12 +45,14 @@ class ActivityMain : Activity() {
         super.onCreate(savedInstanceState)
         storage.load()
 
-        itemListView = SelectableItemListView<AnimalItem>(this,
-            AnimalItem.Type.values().map {
-                Pair(it, { item: BindableField<SelectableItem<AnimalItem>> ->
-                    coloredRowSelectionDecorator<AnimalItem>(item) { bindAnimal(it) }
+        selectableItemListView(
+            items = items,
+            selectedItems = selectedItems,
+            itemViewBinders = AnimalItem.Type.values().map {
+                Pair(it as Enum<*>, { item: BindableField<SelectableItem<AnimalItem>> ->
+                    coloredRowSelectionDecorator(item) { bindAnimal(it) }
                 })
-            }.toMap()
+            }.toMap().field
         ).setAsOne(this) {
             id = R.id.selectableItemList
             this@ActivityMain.items.bind(items)
@@ -75,7 +78,7 @@ class ActivityMain : Activity() {
     }
 
     private fun updateSelected(): Int {
-        val selected = itemListView.selectedItems.get()
+        val selected = selectedItems.get()
         items.set(items.get().map {
             if (selected.any { (id) -> it.id == id })
                 it.copy(version = it.version + 1)
@@ -86,8 +89,8 @@ class ActivityMain : Activity() {
     }
 
     private fun deleteSelected(): Int {
-        itemListView.items.set(items.get().filterNot {
-            itemListView.selectedItems.get().any { (id) -> it.id == id }
+        items.set(items.get().filterNot {
+            selectedItems.get().any { (id) -> it.id == id }
         })
         return R.string.did_delete_selected
     }
@@ -98,7 +101,7 @@ class ActivityMain : Activity() {
     }
 
     @StringRes private fun clearSelection(): Int {
-        itemListView.selectedItems.set(HashSet<AnimalItem>())
+        selectedItems.set(setOf())
         return R.string.did_clear_selection
     }
 

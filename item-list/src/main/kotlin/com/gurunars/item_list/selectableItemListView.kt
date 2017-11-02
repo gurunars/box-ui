@@ -23,7 +23,7 @@ import kotlin.collections.HashSet
  */
 fun <ItemType : Item> Context.selectableItemListView(
     items: BindableField<List<ItemType>>,
-    selectedItems: BindableField<Set<ItemType>>,
+    selectedItems: BindableField<Set<ItemType>> = BindableField(setOf()),
     itemViewBinders: BindableField<Map<Enum<*>, ItemViewBinder<SelectableItem<ItemType>>>> =
         mapOf<Enum<*>, ItemViewBinder<SelectableItem<ItemType>>>().field,
     emptyViewBinder: BindableField<EmptyViewBinder> = this::defaultBindEmpty.field
