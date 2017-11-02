@@ -126,6 +126,8 @@ fun <ItemType : Item> Context.crudItemListView(
 
     val knobView = FrameLayout(context)
 
+    // TODO: ressurect knob view
+
     val floatingMenu = floatMenu(itemListView.field, knobView.field).setAsOne(this) {
         id = R.id.floatingMenu
         this@CrudItemListView.isLeftHanded.bind(isLeftHanded)
