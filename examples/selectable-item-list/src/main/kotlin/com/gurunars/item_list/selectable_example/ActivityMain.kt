@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.os.Bundle
 import android.support.annotation.StringRes
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.TextView
@@ -44,6 +45,10 @@ class ActivityMain : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         storage.load()
+
+        selectedItems.onChange {
+            Log.e("FF", "DD")
+        }
 
         selectableItemListView(
             items = items,

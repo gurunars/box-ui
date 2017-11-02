@@ -1,6 +1,7 @@
 package com.gurunars.item_list
 
 import android.content.Context
+import android.util.Log
 import android.view.View
 import com.gurunars.databinding.*
 import com.gurunars.databinding.android.fullSize
@@ -31,8 +32,11 @@ fun <ItemType : Item> Context.selectableItemListView(
 
     val kryo = getKryo()
 
-    val copyOfSelectedItems: BindableField<Set<ItemType>> =
-        selectedItems.branch { kryo.copy(HashSet(this)) }
+    val copyOfSelectedItems: BindableField<Set<ItemType>> = BindableField(
+        setOf(),
+        { kryo.copy(HashSet(it)) }
+    )
+    copyOfSelectedItems.bind(selectedItems)
 
     val copyOfItems: BindableField<List<ItemType>> =
         items.branch { kryo.copy(ArrayList(this)) }
