@@ -10,24 +10,24 @@ import java.util.*
 class CheckerMoveDownTest {
 
     private val moveDownChecker = ActionMoveDown<StringItem>()
-    private val all = Arrays.asList("one", "two", "three", "four")
+    private val all = listOf("one", "two", "three", "four")
 
     @Test
     @Throws(Exception::class)
     fun selectingLastItem_leadsToFalse() {
-        assertFalse(moveDownChecker.canPerform(all, Sets.newSet("four")))
+        assertFalse(moveDownChecker.canPerform(all, setOf("four")))
     }
 
     @Test
     @Throws(Exception::class)
     fun selectingInterruptedChunk_leadsToFalse() {
-        assertFalse(moveDownChecker.canPerform(all, Sets.newSet("one", "three")))
+        assertFalse(moveDownChecker.canPerform(all, setOf("one", "three")))
     }
 
     @Test
     @Throws(Exception::class)
     fun selectingSolidChunkBeforeLast_leadsToTrue() {
-        assertTrue(moveDownChecker.canPerform(all, Sets.newSet("one", "two", "three")))
+        assertTrue(moveDownChecker.canPerform(all, setOf("one", "two", "three")))
     }
 
 }

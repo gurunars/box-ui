@@ -6,13 +6,8 @@ package com.gurunars.databinding
  *
  * @param Type type of the value the field is meant to hold
  * @param value initial value of the field
- * @param preset function to call on the value before storing it - a good place e.g. to perform
- *               a deep copy of the value
  */
-class BindableField<Type>(
-    private var value: Type,
-    private val preset: (one: Type) -> Type = { item -> item }
-) {
+class BindableField<Type>(private var value: Type) {
 
     /**
      * Representation of a bond between a field and a listener. The listener could be either
@@ -57,7 +52,7 @@ class BindableField<Type>(
     fun set(value: Type, force: Boolean = false) {
         if (force || !equal(this.value, value)) {
             beforeChangeListeners.forEach { it.invoke(this.value) }
-            this.value = preset(value)
+            this.value = value
             listeners.forEach { it.invoke(this.value) }
         }
     }

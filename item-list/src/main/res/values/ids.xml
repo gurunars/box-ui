@@ -6,4 +6,5 @@
     <item name="isSelected" type="id" />
     <item name="noItemsLabel" type="id" />
     <item name="count" type="id" />
+    <item name="selectableItemListView" type="id" />
 </resources>

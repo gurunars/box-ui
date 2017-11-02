@@ -2,7 +2,7 @@ package com.gurunars.crud_item_list
 
 import com.gurunars.item_list.Item
 
-fun<ItemType: Item> processItemInEdit(
+internal fun<ItemType: Item> processItemInEdit(
     item: ItemType?,
     oldItems: List<ItemType>
 ): List<ItemType> {
@@ -10,10 +10,10 @@ fun<ItemType: Item> processItemInEdit(
         return oldItems
     }
     val foundIndex = oldItems.indexOfFirst { it.id == item.id }
-    if (foundIndex == -1) {
-        return oldItems + item
+    return if (foundIndex == -1) {
+        oldItems + item
     } else {
-        return oldItems.toMutableList().apply {
+        oldItems.toMutableList().apply {
             set(foundIndex, item)
         }
     }

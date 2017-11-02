@@ -1,22 +1,14 @@
 package com.gurunars.databinding.android
 
 import android.text.Editable
-import android.text.Spanned
 import android.text.TextWatcher
-import android.widget.EditText
 import android.widget.TextView
 import com.gurunars.databinding.BindableField
 
-/**
- * Same as regular txt but with two way value transformation.
- *
- * @param From - type of payload to be transformed into a string and to be generated out of a string
- */
 fun TextView.txt(field: BindableField<String>) {
     field.onChange {
-        val trans = it
-        if (text.toString() != trans) {
-            setText(trans)
+        if (text.toString() != it) {
+            text = it
         }
     }
     addTextChangedListener(object : TextWatcher {

@@ -6,33 +6,34 @@ import android.os.Bundle
 import android.support.annotation.StringRes
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import com.gurunars.animal_item.AnimalItem
 import com.gurunars.databinding.BindableField
+import com.gurunars.databinding.android.asRow
+import com.gurunars.databinding.android.setAsOne
 import com.gurunars.databinding.android.txt
 import com.gurunars.databinding.branch
-import com.gurunars.item_list.ItemListView
-import com.gurunars.shortcuts.asRow
-import com.gurunars.shortcuts.setAsOne
+import com.gurunars.databinding.field
+import com.gurunars.item_list.itemListView
 import com.gurunars.storage.PersistentStorage
 import org.jetbrains.anko.dip
 import org.jetbrains.anko.padding
 
-private fun Context.bindAnimal(field: BindableField<AnimalItem>) = TextView(this).apply {
+private fun Context.bindAnimal(field: BindableField<AnimalItem>): View = TextView(this).apply {
     asRow()
     padding = context.dip(5)
     txt(field.branch { toString() })
-    field.onChange { text = it.toString() }
 }
 
 class ActivityMain : Activity() {
     private val storage = PersistentStorage(this, "main")
 
-    private val items = storage.storageField("items", listOf<AnimalItem>())
+    private val items: BindableField<List<AnimalItem>> =
+        storage.storageField("items", listOf<AnimalItem>())
     private val count = storage.storageField("count", 0)
 
-    private lateinit var itemListView: ItemListView<AnimalItem>
 
     private fun add(type: AnimalItem.Type) {
         items.set(items.get() + AnimalItem(count.get().toLong(), type, 0))
@@ -43,12 +44,12 @@ class ActivityMain : Activity() {
         super.onCreate(savedInstanceState)
         storage.load()
 
-        itemListView = ItemListView<AnimalItem>(this,
-            AnimalItem.Type.values().map { Pair(it, this::bindAnimal) }.toMap()
-        ).setAsOne(this) {
-            id = R.id.itemList
-            this@ActivityMain.items.bind(items)
-        }
+        itemListView(
+            items = items,
+            itemViewBinders = AnimalItem.Type.values().map {
+                Pair(it as Enum<*>, { value: BindableField<AnimalItem> -> this.bindAnimal(value) })
+            }.toMap().field
+        ).setAsOne(this)
 
     }
 
@@ -97,7 +98,7 @@ class ActivityMain : Activity() {
     }
 
     @StringRes private fun update(): Int {
-        itemListView.items.set(items.get().mapIndexed { index, animalItem ->
+        items.set(items.get().mapIndexed { index, animalItem ->
             if (index % 2 != 0)
                 animalItem.copy(version = animalItem.version + 1)
             else
@@ -110,7 +111,7 @@ class ActivityMain : Activity() {
         if (items.get().isEmpty()) {
             return R.string.no_action
         }
-        itemListView.items.set(items.get().toMutableList().apply {
+        items.set(items.get().toMutableList().apply {
             val item = get(size - 1)
             removeAt(size - 1)
             add(0, item)
@@ -122,7 +123,7 @@ class ActivityMain : Activity() {
         if (items.get().isEmpty()) {
             return R.string.no_action
         }
-        itemListView.items.set(items.get().toMutableList().apply {
+        items.set(items.get().toMutableList().apply {
             val item = get(0)
             removeAt(0)
             add(item)

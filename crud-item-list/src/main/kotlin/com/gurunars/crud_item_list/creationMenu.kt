@@ -3,17 +3,16 @@ package com.gurunars.crud_item_list
 import android.annotation.SuppressLint
 import android.content.Context
 import android.view.Gravity
-import com.gurunars.android_utils.IconView
+import com.gurunars.android_utils.iconView
 import com.gurunars.databinding.BindableField
+import com.gurunars.databinding.android.add
+import com.gurunars.databinding.android.fullSize
+import com.gurunars.databinding.field
 import com.gurunars.item_list.Item
-import com.gurunars.shortcuts.add
-import com.gurunars.shortcuts.asyncChain
-import com.gurunars.shortcuts.fullSize
 import org.jetbrains.anko.*
 
-
 internal fun <ItemType : Item> Context.creationMenu(
-    groupedItemTypeDescriptors: List<List<ItemTypeDescriptor<ItemType>>>,
+    groupedItemTypeDescriptors: BindableField<List<List<ItemTypeDescriptor<ItemType>>>>,
     onEdit: (item: ItemType) -> Unit,
     isLeftHanded: BindableField<Boolean>
 ) = verticalLayout {
@@ -29,26 +28,28 @@ internal fun <ItemType : Item> Context.creationMenu(
             rightPadding = dip(23)
         }
     }
-    groupedItemTypeDescriptors.forEach { group ->
-        linearLayout {
-            isLeftHanded.onChange {
-                @SuppressLint("RtlHardcoded")
-                gravity = (if (it) Gravity.LEFT else Gravity.RIGHT)
-            }
-            group.forEach { action ->
-                IconView(context).add(this) {
-                    tag = action.type.name
-                    icon.set(action.icon)
-                    setOnClickListener {
-                        // TODO: Add some sort of progress bar to prevent some accidental UI actions
-                        asyncChain(
-                            action::createNewItem,
-                            onEdit
-                        )
+    groupedItemTypeDescriptors.onChange {
+        removeAllViews()
+        it.forEach { group ->
+            linearLayout {
+                isLeftHanded.onChange {
+                    @SuppressLint("RtlHardcoded")
+                    gravity = (if (it) Gravity.LEFT else Gravity.RIGHT)
+                }
+                group.forEach { action ->
+                    iconView(icon = action.icon.field).add(this) {
+                        tag = action.type.name
+                        setOnClickListener {
+                            // TODO: Add some sort of progress bar to prevent some accidental UI actions
+                            asyncChain(
+                                action::createNewItem,
+                                onEdit
+                            )
+                        }
+                    }.lparams {
+                        width = dip(45)
+                        height = dip(45)
                     }
-                }.lparams {
-                    width = dip(45)
-                    height = dip(45)
                 }
             }
         }

@@ -4,14 +4,15 @@ import android.graphics.Color
 import android.support.annotation.ColorInt
 import android.view.View
 import com.gurunars.databinding.BindableField
-import com.gurunars.shortcuts.asRow
+import com.gurunars.databinding.android.asRow
 
 typealias ItemRenderer<ItemType> = (field: BindableField<ItemType>) -> View
 
 /**
  * A decorator to add row coloring behavior to the list view items.
  *
- * @param itemViewBinder original view binder unaware of selection flag
+ * @param field selectable field to be bound with renderer
+ * @param render original view binder unaware of selection flag
  * @param selectionColor color integer applied when the row is selected
  * @param regularColor color integer applied when the row is not selected
  */

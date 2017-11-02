@@ -8,7 +8,7 @@ internal class ActionEdit<ItemType : Item>(
     override val isSynchronous = false
 
     override fun perform(all: List<ItemType>, selectedItems: Set<ItemType>): Pair<List<ItemType>, Set<ItemType>> {
-        all.filter { item -> selectedItems.indexOfFirst { it.id == item.id } != -1 }.first().apply {
+        all.first { item -> selectedItems.indexOfFirst { it.id == item.id } != -1 }.apply {
             itemConsumer(this)
         }
         return Pair(all, selectedItems)

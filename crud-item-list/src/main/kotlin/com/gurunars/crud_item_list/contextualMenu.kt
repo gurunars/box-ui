@@ -1,22 +1,26 @@
 package com.gurunars.crud_item_list
 
 import android.content.Context
+import android.view.View
 import android.widget.RelativeLayout
-import com.gurunars.android_utils.IconView
+import com.gurunars.android_utils.iconView
 import com.gurunars.databinding.BindableField
+import com.gurunars.databinding.android.*
+import com.gurunars.databinding.branch
 import com.gurunars.databinding.onChange
 import com.gurunars.item_list.Item
-import com.gurunars.shortcuts.*
 import org.jetbrains.anko.*
 
 internal fun <ItemType : Item> Context.contextualMenu(
-    sortable: Boolean,
+    sortable: BindableField<Boolean>,
     actionIcon: BindableField<IconColorBundle>,
     isLeftHanded: BindableField<Boolean>,
     items: BindableField<List<ItemType>>,
     selectedItems: BindableField<Set<ItemType>>,
     onEdit: (item: ItemType) -> Unit
-) = frameLayout {
+) = relativeLayout {
+    fullSize()
+    id = R.id.contextualMenu
 
     isLeftHanded.onChange {
         contentDescription = if (it) "LEFT HANDED" else "RIGHT HANDED"
@@ -40,114 +44,97 @@ internal fun <ItemType : Item> Context.contextualMenu(
         )
     }
 
-    relativeLayout {
-        fullSize()
-        R.id.menuContainer
+    fun View.configure() {
+        (layoutParams as RelativeLayout.LayoutParams).apply {
+            topMargin = dip(5)
+            width = dip(45)
+            height = dip(45)
+        }
+        @Suppress("UNCHECKED_CAST")
+        val action = getTag(R.id.action) as Action<ItemType>
 
-        isLeftHanded.onChange {
-            requestLayout()
+        listOf(items, selectedItems).onChange {
+            isEnabled = action.canPerform(items.get(), selectedItems.get())
         }
 
-        IconView(context).add(this) {
-            id = R.id.moveUp
-            icon.set(IconView.Icon(icon = R.drawable.ic_move_up))
-            setTag(R.id.action, ActionMoveUp<ItemType>())
-            setIsVisible(sortable)
-        }.lparams {
-            isLeftHanded.onChange(listener = this::isLeftHanded)
-            above(R.id.moveDown)
-            bottomMargin = dip(5)
-            leftMargin = dip(23)
-            rightMargin = dip(23)
-        }
-
-        IconView(context).add(this) {
-            id = R.id.moveDown
-            icon.set(IconView.Icon(icon = R.drawable.ic_move_down))
-            setTag(R.id.action, ActionMoveDown<ItemType>())
-            setIsVisible(sortable)
-        }.lparams {
-            alignInParent(verticalAlignment = VerticalAlignment.BOTTOM)
-            isLeftHanded.onChange(listener = this::isLeftHanded)
-            bottomMargin = dip(85)
-            leftMargin = dip(23)
-            rightMargin = dip(23)
-        }
-
-        IconView(context).add(this) {
-            id = R.id.delete
-            icon.set(IconView.Icon(icon = R.drawable.ic_delete))
-            setTag(R.id.action, ActionDelete<ItemType>())
-        }.lparams {
-            alignInParent(verticalAlignment = VerticalAlignment.BOTTOM)
-            isLeftHanded.onChange { alignHorizontallyAroundElement(R.id.selectAll, it) }
-            bottomMargin = dip(23)
-            leftMargin = dip(5)
-            rightMargin = dip(5)
-        }
-
-        IconView(context).add(this) {
-            id = R.id.selectAll
-            icon.set(IconView.Icon(icon = R.drawable.ic_select_all))
-            setTag(R.id.action, ActionSelectAll<ItemType>())
-        }.lparams {
-            alignInParent(verticalAlignment = VerticalAlignment.BOTTOM)
-            isLeftHanded.onChange { alignHorizontallyAroundElement(R.id.edit, it) }
-            bottomMargin = dip(23)
-            leftMargin = dip(5)
-            rightMargin = dip(5)
-        }
-
-        IconView(context).add(this) {
-            id = R.id.edit
-            icon.set(IconView.Icon(icon = R.drawable.ic_edit))
-            setTag(R.id.action, ActionEdit({ payload: ItemType -> onEdit(payload) }))
-        }.lparams {
-            alignInParent(verticalAlignment = VerticalAlignment.BOTTOM)
-            isLeftHanded.onChange {
-                this.isLeftHanded(it)
-                if (it) {
-                    leftMargin = dip(85)
-                    rightMargin = dip(5)
-                } else {
-                    leftMargin = dip(5)
-                    rightMargin = dip(85)
-                }
-            }
-            bottomMargin = dip(23)
-        }
-
-    }.applyRecursively {
-        when (it) {
-            is IconView -> {
-                (it.layoutParams as RelativeLayout.LayoutParams).apply {
-                    topMargin = dip(5)
-                    width = dip(45)
-                    height = dip(45)
-                }
-                @Suppress("UNCHECKED_CAST")
-                val action = it.getTag(R.id.action) as Action<ItemType>
-
-                listOf(items, selectedItems).onChange {
-                    it.isEnabled = action.canPerform(items.get(), selectedItems.get())
-                }
-
-                it.setOnClickListener {
-                    action.perform(items.get(), selectedItems.get()).apply {
-                        if (action.isSynchronous) {
-                            items.set(first)
-                            selectedItems.set(second)
-                        }
-                    }
-                }
-
-                actionIcon.onChange { icon ->
-                    it.icon.set(it.icon.get().copy(
-                        bgColor = icon.bgColor,
-                        fgColor = icon.fgColor
-                    ))
+        onClick {
+            action.perform(items.get(), selectedItems.get()).apply {
+                if (action.isSynchronous) {
+                    items.set(first)
+                    selectedItems.set(second)
                 }
             }
         }
     }
+
+    fun getIcon(icon: Int) = actionIcon.branch { icon(icon) }
+
+    isLeftHanded.onChange {
+        requestLayout()
+    }
+
+    iconView(getIcon(R.drawable.ic_move_up)).add(this) {
+        id = R.id.moveUp
+        setTag(R.id.action, ActionMoveUp<ItemType>())
+        sortable.onChange { setIsVisible(it) }
+    }.lparams {
+        isLeftHanded.onChange(listener = this::isLeftHanded)
+        above(R.id.moveDown)
+        bottomMargin = dip(5)
+        leftMargin = dip(23)
+        rightMargin = dip(23)
+    }.configure()
+
+    iconView(getIcon(R.drawable.ic_move_down)).add(this) {
+        id = R.id.moveDown
+        setTag(R.id.action, ActionMoveDown<ItemType>())
+        sortable.onChange { setIsVisible(it) }
+    }.lparams {
+        alignInParent(verticalAlignment = VerticalAlignment.BOTTOM)
+        isLeftHanded.onChange(listener = this::isLeftHanded)
+        bottomMargin = dip(85)
+        leftMargin = dip(23)
+        rightMargin = dip(23)
+    }.configure()
+
+    iconView(getIcon(R.drawable.ic_delete)).add(this) {
+        id = R.id.delete
+        setTag(R.id.action, ActionDelete<ItemType>())
+    }.lparams {
+        alignInParent(verticalAlignment = VerticalAlignment.BOTTOM)
+        isLeftHanded.onChange { alignHorizontallyAroundElement(R.id.selectAll, it) }
+        bottomMargin = dip(23)
+        leftMargin = dip(5)
+        rightMargin = dip(5)
+    }.configure()
+
+    iconView(getIcon(R.drawable.ic_select_all)).add(this) {
+        id = R.id.selectAll
+        setTag(R.id.action, ActionSelectAll<ItemType>())
+    }.lparams {
+        alignInParent(verticalAlignment = VerticalAlignment.BOTTOM)
+        isLeftHanded.onChange { alignHorizontallyAroundElement(R.id.edit, it) }
+        bottomMargin = dip(23)
+        leftMargin = dip(5)
+        rightMargin = dip(5)
+    }.configure()
+
+    iconView(getIcon(R.drawable.ic_edit)).add(this) {
+        id = R.id.edit
+        setTag(R.id.action, ActionEdit({ payload: ItemType -> onEdit(payload) }))
+    }.lparams {
+        alignInParent(verticalAlignment = VerticalAlignment.BOTTOM)
+        isLeftHanded.onChange {
+            this.isLeftHanded(it)
+            if (it) {
+                leftMargin = dip(85)
+                rightMargin = dip(5)
+            } else {
+                leftMargin = dip(5)
+                rightMargin = dip(85)
+            }
+        }
+        bottomMargin = dip(23)
+    }.configure()
+
 }

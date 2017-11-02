@@ -1,4 +1,4 @@
-package com.gurunars.android_utils
+package com.gurunars.databinding.android
 
 import android.app.Activity
 import android.content.Context

@@ -9,7 +9,7 @@ import com.gurunars.databinding.BindableField
 /**
  * A base component meant to develop custom stateful UI widgets using bindable fields
  */
-open class StatefulComponent(context: Context) : FrameLayout(context) {
+class StatefulComponent(context: Context) : FrameLayout(context) {
 
     private val fields: MutableList<BindableField<*>> = mutableListOf()
 
@@ -32,7 +32,7 @@ open class StatefulComponent(context: Context) : FrameLayout(context) {
     /**
      * @suppress
      */
-    final override fun onSaveInstanceState() = Bundle().apply {
+    override fun onSaveInstanceState() = Bundle().apply {
         putParcelable("superState", super.onSaveInstanceState())
         val payload = hashMapOf<Int, Any?>()
         fields.forEachIndexed { index, bindableField ->
@@ -44,15 +44,19 @@ open class StatefulComponent(context: Context) : FrameLayout(context) {
     /**
      * @suppress
      */
-    final override fun onRestoreInstanceState(state: Parcelable) {
-        (state as Bundle).apply {
-            super.onRestoreInstanceState(getParcelable<Parcelable>("superState"))
-            val payload = getSerializable("payload") ?: return
-            @Suppress("UNCHECKED_CAST")
-            payload as HashMap<Int, Any?>
-            fields.forEachIndexed { index, bindableField ->
-                bindableField.read(payload, index)
+    override fun onRestoreInstanceState(state: Parcelable) {
+        if (state is Bundle) {
+            state.apply {
+                super.onRestoreInstanceState(getParcelable<Parcelable>("superState"))
+                val payload = getSerializable("payload") ?: return
+                @Suppress("UNCHECKED_CAST")
+                payload as HashMap<Int, Any?>
+                fields.forEachIndexed { index, bindableField ->
+                    bindableField.read(payload, index)
+                }
             }
+        } else {
+            super.onRestoreInstanceState(state)
         }
     }
 
@@ -60,10 +64,12 @@ open class StatefulComponent(context: Context) : FrameLayout(context) {
 
 fun Context.statefulComponent(
     id: Int,
+    tag: String = "DEFAULT",
     vararg fields: BindableField<*>,
     init: StatefulComponent.() -> Unit = {}
 ): StatefulComponent =
     StatefulComponent(this).apply {
         this.id = id
+        this.tag = tag
         retain(*fields)
     }.apply { init() }

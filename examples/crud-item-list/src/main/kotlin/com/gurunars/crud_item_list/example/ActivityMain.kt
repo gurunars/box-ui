@@ -9,20 +9,21 @@ import android.view.Gravity
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.TextView
-import com.gurunars.android_utils.IconView
-import com.gurunars.android_utils.closeKeyboard
+import com.gurunars.android_utils.Icon
 import com.gurunars.animal_item.AnimalItem
-import com.gurunars.crud_item_list.CrudItemListView
 import com.gurunars.crud_item_list.IconColorBundle
 import com.gurunars.crud_item_list.ItemTypeDescriptor
+import com.gurunars.crud_item_list.crudItemListView
 import com.gurunars.crud_item_list.oneOf
 import com.gurunars.databinding.BindableField
+import com.gurunars.databinding.android.closeKeyboard
+import com.gurunars.databinding.android.fullSize
+import com.gurunars.databinding.android.setAsOne
 import com.gurunars.databinding.android.txt
 import com.gurunars.databinding.branch
+import com.gurunars.databinding.field
 import com.gurunars.item_list.SelectableItem
 import com.gurunars.item_list.coloredRowSelectionDecorator
-import com.gurunars.shortcuts.fullSize
-import com.gurunars.shortcuts.setAsOne
 import com.gurunars.storage.PersistentStorage
 import org.jetbrains.anko.*
 
@@ -54,7 +55,7 @@ class Descriptor(
         }
     }
 
-    override val icon = IconView.Icon(icon = iconId)
+    override val icon = Icon(icon = iconId)
     override fun createNewItem() = AnimalItem(
         id = (count.get()).toLong(),
         version = 0,
@@ -96,10 +97,9 @@ class ActivityMain : Activity() {
 
     private val isLeftHanded = storage.storageField("isLeftHanded", false)
     private val isSortable = storage.storageField("isSortable", true)
-    private val items = storage.storageField("items", listOf<AnimalItem>())
+    private val items: BindableField<List<AnimalItem>> =
+        storage.storageField("items", listOf<AnimalItem>())
     private val count = storage.storageField("count", 0)
-
-    private lateinit var crudItemListView: CrudItemListView<AnimalItem>
 
     private fun getType(i: Int, sortable: Boolean): AnimalItem.Type {
         return if (sortable) {
@@ -163,44 +163,43 @@ class ActivityMain : Activity() {
                 AnimalItem.Type.MONKEY).oneOf()
         }
 
-        crudItemListView = CrudItemListView(
-            this,
-            sortable = sortable,
-            groupedItemTypeDescriptors = descriptors
-        ).setAsOne(this) {
-            id = R.id.customView
-            this@ActivityMain.items.bind(items)
-            items.onChange {
-                count.set(
-                    items.get()
-                        .map { it.id }
-                        .fold(0L) { acc, l -> Math.max(acc, l) }
-                        .toInt() + 1
-                )
-            }
-            this@ActivityMain.isLeftHanded.bind(isLeftHanded)
+        items.onChange {
+            count.set(
+                items.get()
+                    .map { it.id }
+                    .fold(0L) { acc, l -> Math.max(acc, l) }
+                    .toInt() + 1
+            )
+        }
 
-            isOpen.onChange {
-                closeKeyboard()
-            }
+        val isOpen = false.field
+        isOpen.onChange {
+            closeKeyboard()
+        }
 
-            listActionColors.set(IconColorBundle(
+        crudItemListView(
+            listActionColors = IconColorBundle(
                 fgColor = Color.YELLOW,
                 bgColor = Color.BLUE
-            ))
-            confirmationActionColors.set(IconColorBundle(
+            ).field,
+            confirmationActionColors = IconColorBundle(
                 bgColor = Color.BLACK,
                 fgColor = Color.GREEN
-            ))
-            cancelActionColors.set(IconColorBundle(
+            ).field,
+            cancelActionColors = IconColorBundle(
                 bgColor = Color.RED,
                 fgColor = Color.WHITE
-            ))
-            openIcon.set(IconColorBundle(
+            ).field,
+            openIconColors = IconColorBundle(
                 bgColor = Color.GREEN,
                 fgColor = Color.YELLOW
-            ))
-        }
+            ).field,
+            isOpen=isOpen,
+            items=items,
+            isLeftHanded = isLeftHanded,
+            sortable = sortable.field,
+            groupedItemTypeDescriptors = descriptors.field
+        ).setAsOne(this)
 
     }
 

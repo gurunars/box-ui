@@ -28,7 +28,7 @@ internal object StringSerializer {
     /** Write the object to a Base64 string.  */
     fun toString(obj: Any?): String? {
         if (obj == null) return null
-        try {
+        return try {
             val baos = ByteArrayOutputStream()
             val oos = ObjectOutputStream(
                 Base64OutputStream(
@@ -36,10 +36,10 @@ internal object StringSerializer {
                     Base64.NO_PADDING or Base64.NO_WRAP))
             oos.writeObject(obj)
             oos.close()
-            return baos.toString("UTF-8")
+            baos.toString("UTF-8")
         } catch (e: IOException) {
             e.printStackTrace()
-            return null
+            null
         }
     }
 

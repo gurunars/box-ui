@@ -5,12 +5,12 @@ import android.graphics.Color
 import android.graphics.drawable.shapes.OvalShape
 import android.os.Bundle
 import android.view.Gravity
-import android.widget.TextView
-import com.gurunars.android_utils.ColoredShapeDrawable
-import com.gurunars.android_utils.setAutoBg
+import com.gurunars.android_utils.autoButton
+import com.gurunars.databinding.android.add
+import com.gurunars.databinding.android.fullSize
+import com.gurunars.databinding.android.onClick
 import com.gurunars.databinding.android.txt
-import com.gurunars.shortcuts.color
-import com.gurunars.shortcuts.fullSize
+import com.gurunars.databinding.field
 import com.gurunars.storage.PersistentStorage
 import org.jetbrains.anko.*
 
@@ -41,41 +41,34 @@ class ActivityMain : Activity() {
             linearLayout {
                 gravity = Gravity.CENTER
 
-                textView {
+                autoButton(
+                    text = getString(R.string.disabled).field,
+                    bgColor = getColor(android.R.color.holo_blue_light).field
+                ).add(this) {
                     id = R.id.disabled
                     isEnabled = false
-                    backgroundColor = color(android.R.color.holo_blue_light)
-                    text = getString(R.string.disabled)
-                }.lparams()
+                }
 
-                textView {
+                autoButton(
+                    text = getString(R.string.set).field,
+                    bgColor = Color.YELLOW.field,
+                    shape = OvalShape().field
+                ).add(this) {
                     id = R.id.set
-                    background = ColoredShapeDrawable(OvalShape(), Color.YELLOW)
-                    text = getString(R.string.set)
-                    setOnClickListener { title.set("Configured") }
-                }.lparams()
+                    onClick { title.set("Configured") }
+                }
 
-                textView {
+                autoButton(
+                    text = getString(R.string.clear).field,
+                    bgColor = getColor(android.R.color.holo_green_light).field
+                ).add(this) {
                     id = R.id.clear
-                    backgroundColor = color(android.R.color.holo_green_light)
-                    text = getString(R.string.clear)
-                    setOnClickListener { title.set("Empty") }
-                }.lparams()
+                    onClick { title.set("Empty") }
+                }
 
             }.lparams {
                 width = matchParent
                 below(R.id.payloadView)
-            }.applyRecursively { view ->
-                when (view) {
-                    is TextView -> {
-                        view.apply {
-                            isClickable = true
-                            isFocusable = true
-                            padding = dip(20)
-                            setAutoBg(6)
-                        }
-                    }
-                }
             }
         }
 

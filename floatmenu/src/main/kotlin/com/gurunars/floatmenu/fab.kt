@@ -4,30 +4,35 @@ import android.animation.ArgbEvaluator
 import android.animation.FloatEvaluator
 import android.animation.ValueAnimator
 import android.content.Context
-import com.gurunars.android_utils.IconView
-import com.gurunars.android_utils.IconView.Icon
+import android.view.View
+import com.gurunars.android_utils.Icon
+import com.gurunars.android_utils.iconView
 import com.gurunars.databinding.BindableField
-import com.gurunars.shortcuts.fullSize
+import com.gurunars.databinding.android.add
+import com.gurunars.databinding.android.fullSize
+import com.gurunars.databinding.android.onClick
+import com.gurunars.databinding.branch
+import com.gurunars.databinding.onChange
 import org.jetbrains.anko.frameLayout
 
 internal fun Context.fab(
-    rotationDuration: Int,
+    rotationDuration: BindableField<Int>,
     openIcon: BindableField<Icon>,
     closeIcon: BindableField<Icon>,
     isActivated: BindableField<Boolean>
-) = frameLayout {
+): View = frameLayout {
     val argbEvaluator = ArgbEvaluator()
     val floatEvaluator = FloatEvaluator()
     val animatedValue = BindableField(1f)
 
-    val actualImageView = IconView(context).apply {
+    val icon = openIcon.branch { copy() }
+
+    val actualImageView = iconView(icon = icon).add(this) {
         id = R.id.iconView
         fullSize()
     }
 
-    addView(actualImageView)
-
-    setOnClickListener { isActivated.set(!isActivated.get()) }
+    onClick { isActivated.set(!isActivated.get()) }
 
     fun updateIcon() {
         isClickable = animatedValue.get() == 1f
@@ -36,7 +41,7 @@ internal fun Context.fab(
         val sourceIcon: Icon = if (isActivated.get()) openIcon.get() else closeIcon.get()
         val targetIcon: Icon = if (isActivated.get()) closeIcon.get() else openIcon.get()
 
-        actualImageView.icon.set(Icon(
+        icon.set(Icon(
             bgColor = argbEvaluator.evaluate(
                 animatedValue.get(),
                 sourceIcon.bgColor,
@@ -53,14 +58,15 @@ internal fun Context.fab(
         )
     }
 
-    openIcon.onChange { updateIcon() }
-    closeIcon.onChange { updateIcon() }
-    animatedValue.onChange { updateIcon() }
+    listOf(openIcon, closeIcon, animatedValue).onChange {
+        updateIcon()
+    }
+
     isActivated.onChange {
         if (isAttachedToWindow) {
             ValueAnimator.ofFloat(0f, 1f).apply {
                 startDelay = 0
-                duration = rotationDuration.toLong()
+                duration = rotationDuration.get().toLong()
                 addUpdateListener { animatedValue.set(it.animatedValue as Float) }
                 start()
             }

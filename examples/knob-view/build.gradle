@@ -1,6 +1,0 @@
-apply from: '../all-examples.gradle'
-
-
-dependencies {
-    compile project(':knob-view')
-}

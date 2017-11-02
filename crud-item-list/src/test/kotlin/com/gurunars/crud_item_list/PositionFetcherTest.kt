@@ -11,25 +11,25 @@ fun getRawPositions(items: List<String>, selectedItems: Set<String>): List<Int> 
 
 class PositionFetcherTest {
 
-    private val all = Arrays.asList("one", "two", "three", "four")
-    private val selected = Sets.newSet("two", "three")
+    private val all = listOf("one", "two", "three", "four")
+    private val selected = setOf("two", "three")
 
     @Test
     @Throws(Exception::class)
     fun emptyAll_leadToNoPositions() {
-        assertEquals(getRawPositions(ArrayList<String>(), selected), ArrayList<Any>())
+        assertEquals(getRawPositions(listOf(), selected), listOf<Any>())
     }
 
     @Test
     @Throws(Exception::class)
     fun emptySelections_leadToNoPositions() {
-        assertEquals(getRawPositions(all, HashSet<String>()), ArrayList<Any>())
+        assertEquals(getRawPositions(all, hashSetOf()), listOf<Any>())
     }
 
     @Test
     @Throws(Exception::class)
     fun properSelections_leadProperPositions() {
-        assertEquals(Arrays.asList(1, 2), getRawPositions(all, selected))
+        assertEquals(listOf(1, 2), getRawPositions(all, selected))
     }
 
 }

@@ -10,31 +10,27 @@ import android.graphics.drawable.LayerDrawable
 import android.graphics.drawable.shapes.OvalShape
 import android.graphics.drawable.shapes.Shape
 import android.support.v4.content.res.ResourcesCompat
+import android.view.View
 import android.widget.ImageView
 import com.gurunars.databinding.BindableField
+import com.gurunars.databinding.onChange
 
 /**
- * Button with customizable icon, background and foreground color.
+ * Data class holding the values to be used for icon drawable creation
  *
- * @property icon Button icon descriptor
- * @property enabled Flag specifying if the icon should be clickable or not
+ * @property bgColor background color integer
+ * @property fgColor icon color integer
+ * @property icon drawable resource ID
+ * @property shape shape of the drawable
  */
-class IconView(context: Context) : ImageView(context) {
+data class Icon(
+    val bgColor: Int = Color.RED,
+    val fgColor: Int = Color.WHITE,
+    val icon: Int,
+    val shape: Shape = OvalShape()
+)
 
-    /**
-     * Data class holding the values to be used for icon drawable creation
-     *
-     * @property bgColor background color integer
-     * @property fgColor icon color integer
-     * @property icon drawable resource ID
-     * @property shape shape of the drawable
-     */
-    data class Icon(
-        val bgColor: Int = Color.RED,
-        val fgColor: Int = Color.WHITE,
-        val icon: Int,
-        val shape: Shape = OvalShape()
-    )
+private class IconView(context: Context) : ImageView(context) {
 
     val icon = BindableField(Icon(
         bgColor = Color.WHITE,
@@ -47,11 +43,8 @@ class IconView(context: Context) : ImageView(context) {
     private lateinit var iconDrawable: Drawable
 
     init {
-        icon.onChange {
-            reset(it, enabled.get())
-        }
-        enabled.onChange {
-            reset(icon.get(), it)
+        listOf(icon, enabled).onChange {
+            reset(icon.get(), enabled.get())
         }
     }
 
@@ -70,10 +63,10 @@ class IconView(context: Context) : ImageView(context) {
             }, inset
         )
 
-        alpha = if (isEnabled) 1.0f else 0.5f
+        alpha = if (enabled) 1.0f else 0.5f
 
-        // Content description
-        contentDescription = "|BG:" + currentIcon.bgColor +
+        contentDescription =
+            "|BG:" + currentIcon.bgColor +
             "|IC:" + currentIcon.fgColor
 
         setImageDrawable(iconDrawable)
@@ -100,4 +93,22 @@ class IconView(context: Context) : ImageView(context) {
         setImageDrawable(getRotateDrawable(iconDrawable, rotation))
     }
 
+}
+
+/**
+ * Button with customizable icon, background and foreground color.
+ *
+ * @param icon Button icon descriptor
+ * @param enabled Flag specifying if the icon should be clickable or not
+ */
+fun Context.iconView(
+    icon: BindableField<Icon> = BindableField(Icon(
+        bgColor = Color.WHITE,
+        fgColor = Color.BLACK,
+        icon = R.drawable.ic_plus
+    )),
+    enabled: BindableField<Boolean> = BindableField(true)
+): View = IconView(this).apply {
+    icon.bind(this.icon)
+    enabled.bind(this.enabled)
 }

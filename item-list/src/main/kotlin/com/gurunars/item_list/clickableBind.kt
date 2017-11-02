@@ -1,6 +1,8 @@
 package com.gurunars.item_list
 
 import com.gurunars.databinding.BindableField
+import com.gurunars.databinding.android.onClick
+import com.gurunars.databinding.android.onLongClick
 
 internal fun <ItemType : Item> clickableBind(
     selectedItems: BindableField<Set<ItemType>>,
@@ -9,24 +11,22 @@ internal fun <ItemType : Item> clickableBind(
 ) =
     itemViewBinder(field).apply {
         isClickable = true
-        setOnClickListener {
+        onClick {
             val item = field.get()
             val sel = selectedItems.get()
             selectedItems.set(
-                if (sel.isEmpty())
-                    setOf()
-                else if (selectedItems.get().has(item))
-                    sel.exclude(item.item)
-                else
-                    sel.include(item.item)
+                when {
+                    sel.isEmpty() -> setOf()
+                    selectedItems.get().has(item) -> sel.exclude(item.item)
+                    else -> sel.include(item.item)
+                }
             )
 
         }
-        setOnLongClickListener {
+        onLongClick {
             val item = field.get()
             val sel = selectedItems.get()
             if (sel.isEmpty()) selectedItems.set(sel.include(item.item))
-            true
         }
     }
 

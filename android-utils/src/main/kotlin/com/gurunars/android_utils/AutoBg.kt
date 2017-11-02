@@ -84,7 +84,7 @@ fun View.setAutoBg(shadowWidth: Int) {
     val right = paddingRight
     val bottom = paddingBottom
 
-    if (shadowWidth > 0 && bg is ShapeDrawable) {
+    background = if (shadowWidth > 0 && bg is ShapeDrawable) {
         bg.paint.setShadowLayer(
             shadowWidth.toFloat(),
             0f,
@@ -92,9 +92,9 @@ fun View.setAutoBg(shadowWidth: Int) {
             Color.parseColor("#68000000")
         )
         setLayerType(View.LAYER_TYPE_SOFTWARE, null)
-        background = AutoBgDrawable(bg, shadowWidth)
+        AutoBgDrawable(bg, shadowWidth)
     } else {
-        background = AutoBgDrawable(bg, 0)
+        AutoBgDrawable(bg, 0)
     }
 
     setPadding(left, top, right, bottom)

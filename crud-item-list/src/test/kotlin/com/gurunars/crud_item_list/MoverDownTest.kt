@@ -8,7 +8,7 @@ import java.util.*
 class MoverDownTest {
 
     private val moverDown = ActionMoveDown<StringItem>()
-    private val all = Arrays.asList(
+    private val all = listOf(
         "one",
         "two",
         "three",
@@ -20,14 +20,14 @@ class MoverDownTest {
         "nine",
         "ten"
     )
-    private val selected = Sets.newSet(
+    private val selected = setOf(
         "four",
         "five",
         "six",
         "seven"
     )
 
-    private val expectedOutcome = Arrays.asList(
+    private val expectedOutcome = listOf(
         "one",
         "two",
         "three",

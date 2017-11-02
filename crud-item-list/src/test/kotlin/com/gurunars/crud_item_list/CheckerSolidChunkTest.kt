@@ -10,19 +10,19 @@ class CheckerSolidChunkTest {
     @Test
     @Throws(Exception::class)
     fun emptySolidChunk_leadsToFalse() {
-        assertFalse(isSolidChunk(ArrayList<Int>()))
+        assertFalse(isSolidChunk(listOf()))
     }
 
     @Test
     @Throws(Exception::class)
     fun largePositionDistance_leadsToFalse() {
-        assertFalse(isSolidChunk(Arrays.asList(1, 2, 4)))
+        assertFalse(isSolidChunk(listOf(1, 2, 4)))
     }
 
     @Test
     @Throws(Exception::class)
     fun smallPositionDistance_leadsToTrue() {
-        assertTrue(isSolidChunk(Arrays.asList(1, 2, 3)))
+        assertTrue(isSolidChunk(listOf(1, 2, 3)))
     }
 
 }

@@ -8,7 +8,7 @@ import java.util.*
 class CheckerSelectAllTest {
 
     private val checkerSelectAll = ActionSelectAll<StringItem>()
-    private val all = Arrays.asList("one", "two")
+    private val all = listOf("one", "two")
 
     @Test
     @Throws(Exception::class)

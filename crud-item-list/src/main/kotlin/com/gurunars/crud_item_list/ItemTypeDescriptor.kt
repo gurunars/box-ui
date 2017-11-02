@@ -1,7 +1,7 @@
 package com.gurunars.crud_item_list
 
 import android.view.View
-import com.gurunars.android_utils.IconView
+import com.gurunars.android_utils.Icon
 import com.gurunars.databinding.BindableField
 import com.gurunars.item_list.Item
 import com.gurunars.item_list.SelectableItem
@@ -14,7 +14,7 @@ import com.gurunars.item_list.SelectableItem
  * @property type Type of the item the descriptor to be associated to.
  */
 interface ItemTypeDescriptor<ItemType : Item> {
-    val icon: IconView.Icon
+    val icon: Icon
     val type: Enum<*>
         get() = Item.Default.ONLY
 

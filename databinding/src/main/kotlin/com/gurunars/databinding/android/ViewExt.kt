@@ -1,4 +1,4 @@
-package com.gurunars.shortcuts
+package com.gurunars.databinding.android
 
 import android.app.Activity
 import android.view.View
@@ -6,52 +6,64 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
-import com.gurunars.shortcuts.VerticalPosition.*
-import org.jetbrains.anko.*
 
+private const val MATCH_PARENT = ViewGroup.LayoutParams.MATCH_PARENT
+private const val WRAP_CONTENT = ViewGroup.LayoutParams.WRAP_CONTENT
+
+/* Replaces view marked by a specific id with a given new view */
+fun<T: View> T.set(id: Int, parent: ViewGroup, init: T.() -> Unit = {}) : T {
+    val view = parent.findViewById<View>(id)
+    if (view != null) parent.removeView(view)
+    return add(parent, init).apply {
+        this.id = id
+    }
+}
+
+/* Returns layout params with WRAP_CONTENT for both width and height */
 fun relativeLayoutParams(init: RelativeLayout.LayoutParams.() -> Unit = {}) = RelativeLayout.LayoutParams(
-    RelativeLayout.LayoutParams.WRAP_CONTENT,
-    RelativeLayout.LayoutParams.WRAP_CONTENT
+    WRAP_CONTENT,
+    WRAP_CONTENT
 ).apply { init() }
 
+/* Returns layout params with WRAP_CONTENT for both width and height */
 fun linearLayoutParams(init: LinearLayout.LayoutParams.() -> Unit = {}) = LinearLayout.LayoutParams(
-    RelativeLayout.LayoutParams.WRAP_CONTENT,
-    RelativeLayout.LayoutParams.WRAP_CONTENT
+    WRAP_CONTENT,
+    WRAP_CONTENT
 ).apply { init() }
 
 /**
- * width = matchParent
- * height = matchParent
+ * width = MATCH_PARENT
+ * height = MATCH_PARENT
  */
 fun ViewGroup.LayoutParams.fullSize() {
-    width = matchParent
-    height = matchParent
+    width = MATCH_PARENT
+    height = MATCH_PARENT
 }
 
 /**
- * width = matchParent
- * height = wrapContent
+ * width = MATCH_PARENT
+ * height = WRAP_CONTENT
  */
 fun ViewGroup.LayoutParams.asRow() {
-    width = matchParent
-    height = wrapContent
+    width = MATCH_PARENT
+    height = WRAP_CONTENT
 }
 
 /**
- * width = matchParent
- * height = matchParent
+ * width = MATCH_PARENT
+ * height = MATCH_PARENT
  */
 fun View.fullSize() {
-    layoutParams = layoutParams ?: ViewGroup.LayoutParams(matchParent, matchParent)
+    layoutParams = layoutParams ?: ViewGroup.LayoutParams(MATCH_PARENT, MATCH_PARENT)
     layoutParams.fullSize()
 }
 
 /**
- * width = matchParent
- * height = wrapContent
+ * width = MATCH_PARENT
+ * height = WRAP_CONTENT
  */
 fun View.asRow() {
-    layoutParams = layoutParams ?: ViewGroup.LayoutParams(matchParent, wrapContent)
+    layoutParams = layoutParams ?: ViewGroup.LayoutParams(MATCH_PARENT, WRAP_CONTENT)
     layoutParams.asRow()
 }
 
@@ -95,45 +107,45 @@ fun View.setIsVisible(isVisible: Boolean) {
 /**
  * Position along X axis.
  */
-enum class HorizontalAlignment {
+enum class HorizontalAlignment(internal val alignment: Int) {
     /**
      * on the left side
      */
-    LEFT,
+    LEFT(RelativeLayout.ALIGN_PARENT_LEFT),
     /**
      * on the right side
      */
-    RIGHT,
+    RIGHT(RelativeLayout.ALIGN_PARENT_RIGHT),
     /**
      * current value remains unchanged
      */
-    SAME,
+    SAME(-42),
     /**
      * in the middle
      */
-    CENTER
+    CENTER(RelativeLayout.CENTER_HORIZONTAL)
 }
 
 /**
  * Position along Y axis.
  */
-enum class VerticalAlignment {
+enum class VerticalAlignment(internal val alignment: Int) {
     /**
      * in the top
      */
-    TOP,
+    TOP(RelativeLayout.ALIGN_PARENT_TOP),
     /**
      * in the bottom
      */
-    BOTTOM,
+    BOTTOM(RelativeLayout.ALIGN_PARENT_BOTTOM),
     /**
      * current value remains unchanged
      */
-    SAME,
+    SAME(-42),
     /**
      * in the middle
      */
-    CENTER
+    CENTER(RelativeLayout.CENTER_VERTICAL)
 }
 
 /**
@@ -147,45 +159,35 @@ fun RelativeLayout.LayoutParams.alignInParent(
     verticalAlignment: VerticalAlignment = VerticalAlignment.SAME
 ) {
     if (horizontalAlignment != HorizontalAlignment.SAME) {
-        removeRule(RelativeLayout.ALIGN_PARENT_LEFT)
-        removeRule(RelativeLayout.ALIGN_PARENT_RIGHT)
-        if (horizontalAlignment == HorizontalAlignment.LEFT) {
-            alignParentLeft()
-        } else if (horizontalAlignment == HorizontalAlignment.RIGHT) {
-            alignParentRight()
-        } else {
-            centerHorizontally()
-        }
+        HorizontalAlignment.values()
+            .filterNot { it.alignment == -42 }
+            .forEach { removeRule(it.alignment) }
+        addRule(horizontalAlignment.alignment)
     }
     if (verticalAlignment != VerticalAlignment.SAME) {
-        removeRule(RelativeLayout.ALIGN_PARENT_TOP)
-        removeRule(RelativeLayout.ALIGN_PARENT_BOTTOM)
-        if (verticalAlignment == VerticalAlignment.TOP) {
-            alignParentTop()
-        } else if (verticalAlignment == VerticalAlignment.BOTTOM) {
-            alignParentBottom()
-        } else {
-            centerVertically()
-        }
+        VerticalAlignment.values()
+            .filterNot { it.alignment == -42 }
+            .forEach { removeRule(it.alignment) }
+        addRule(verticalAlignment.alignment)
     }
 }
 
 /**
  * Position along X axis.
  */
-enum class HorizontalPosition {
+enum class HorizontalPosition(internal val alignment: Int) {
     /**
      * left of another item
      */
-    LEFT_OF,
+    LEFT_OF(RelativeLayout.LEFT_OF),
     /**
      * right of another item
      */
-    RIGHT_OF,
+    RIGHT_OF(RelativeLayout.RIGHT_OF),
     /**
      * current value remains unchanged
      */
-    SAME
+    SAME(-42)
 }
 
 /**
@@ -195,19 +197,19 @@ enum class HorizontalPosition {
  * @property BELOW below another item
  * @property SAME current value remains unchanged
  */
-enum class VerticalPosition {
+enum class VerticalPosition(internal val alignment: Int) {
     /**
      * current value remains unchanged
      */
-    ABOVE,
+    ABOVE(RelativeLayout.ABOVE),
     /**
      * current value remains unchanged
      */
-    BELOW,
+    BELOW(RelativeLayout.BELOW),
     /**
      * current value remains unchanged
      */
-    SAME
+    SAME(-42)
 }
 
 /**
@@ -223,21 +225,11 @@ fun RelativeLayout.LayoutParams.alignWithRespectTo(
     verticalPosition: VerticalPosition = VerticalPosition.SAME
 ) {
     if (horizontalPosition != HorizontalPosition.SAME) {
-        removeRule(RelativeLayout.LEFT_OF)
-        removeRule(RelativeLayout.RIGHT_OF)
-        if (horizontalPosition == HorizontalPosition.LEFT_OF) {
-            leftOf(id)
-        } else {
-            rightOf(id)
-        }
+        HorizontalPosition.values().filter { it.alignment != -42 }.forEach { removeRule(it.alignment) }
+        addRule(horizontalPosition.alignment, id)
     }
     if (verticalPosition != VerticalPosition.SAME) {
-        removeRule(RelativeLayout.ABOVE)
-        removeRule(RelativeLayout.BELOW)
-        if (verticalPosition == VerticalPosition.ABOVE) {
-            above(id)
-        } else {
-            below(id)
-        }
+        VerticalPosition.values().filter { it.alignment != -42 }.forEach { removeRule(it.alignment) }
+        addRule(verticalPosition.alignment, id)
     }
 }
