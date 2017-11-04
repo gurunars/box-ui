@@ -3,10 +3,16 @@ package com.gurunars.crud_item_list
 import com.gurunars.databinding.BindableField
 import com.gurunars.item_list.Item
 
-internal enum class ViewMode(val hasOverlay: Boolean = true) {
-    EMPTY,
+internal enum class Overlay {
+    SAME,
+    YES,
+    NO
+}
+
+internal enum class ViewMode(val overlay: Overlay = Overlay.YES) {
+    EMPTY(Overlay.SAME),
     FORM,
-    CONTEXTUAL(false),
+    CONTEXTUAL(Overlay.NO),
     CREATION,
     LOADING
 }

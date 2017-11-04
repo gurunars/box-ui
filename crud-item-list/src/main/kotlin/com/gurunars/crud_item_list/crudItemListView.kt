@@ -3,14 +3,19 @@ package com.gurunars.crud_item_list
 import android.content.Context
 import android.view.Gravity
 import android.view.View
-import android.widget.FrameLayout
-import android.widget.ProgressBar
-import com.gurunars.databinding.*
-import com.gurunars.databinding.android.*
+import com.gurunars.databinding.BindableField
+import com.gurunars.databinding.android.fullSize
+import com.gurunars.databinding.android.set
+import com.gurunars.databinding.android.statefulComponent
+import com.gurunars.databinding.android.viewSelector
+import com.gurunars.databinding.branch
+import com.gurunars.databinding.field
+import com.gurunars.databinding.onChange
 import com.gurunars.floatmenu.floatMenu
 import com.gurunars.item_list.*
 import org.jetbrains.anko.dip
-
+import org.jetbrains.anko.frameLayout
+import org.jetbrains.anko.progressBar
 
 
 /**
@@ -49,6 +54,11 @@ fun <ItemType : Item> Context.crudItemListView(
     val selectedItems = BindableField<Set<ItemType>>(setOf())
     val itemInEdit: BindableField<ItemType?> = null.field
     val selectedView = ViewMode.CREATION.field
+    val creationCloseIcon = cancelActionColors.branch { icon(R.drawable.ic_menu_close) }
+    val contextualCloseIcon = confirmationActionColors.branch { icon(R.drawable.ic_check) }
+    val openIcon = openIconColors.branch { icon(R.drawable.ic_plus) }
+    val closeIcon = creationCloseIcon.get().field
+    val hasOverlay = true.field
 
     val typeCache = groupedItemTypeDescriptors.branch {
         flatten().map {
@@ -56,7 +66,7 @@ fun <ItemType : Item> Context.crudItemListView(
         }.toMap()
     }
 
-    val itemForm = FrameLayout(context).apply {
+    val itemForm = context.frameLayout {
         fullSize()
         id = R.id.itemForm
     }
@@ -73,12 +83,14 @@ fun <ItemType : Item> Context.crudItemListView(
         selectedView,
         itemTypes = typeCache.branch { keys },
         loadItem = { typeCache.get()[it]!!.createNewItem() },
-        bindForm = { itemForm(
-            it,
-            ::onSave,
-            confirmationActionColors,
-            typeCache.get()[it.type]!!
-        ).set(R.id.formContent, itemForm) }
+        bindForm = {
+            itemForm(
+                it,
+                ::onSave,
+                confirmationActionColors,
+                typeCache.get()[it.type]!!
+            ).set(R.id.formContent, itemForm)
+        }
     )
 
     val contextualMenu = contextualMenu(
@@ -90,11 +102,11 @@ fun <ItemType : Item> Context.crudItemListView(
         { itemInEdit.set(it) }
     )
 
-    val loading = FrameLayout(context).apply {
-        ProgressBar(context).add(this) {
-            layoutParams = FrameLayout.LayoutParams(dip(80), dip(80)).apply {
-                gravity = Gravity.CENTER
-            }
+    val loading = context.frameLayout {
+        progressBar().lparams {
+            width = dip(80)
+            height = dip(80)
+            gravity = Gravity.CENTER
         }
     }
 
@@ -108,35 +120,32 @@ fun <ItemType : Item> Context.crudItemListView(
         items = items,
         selectedItems = selectedItems,
         itemViewBinders = groupedItemTypeDescriptors.branch {
-            flatten().map { Pair(it.type,
-                { item: BindableField<SelectableItem<ItemType>> -> it.bindRow(item) }
-            ) }.toMap()
+            flatten().map {
+                Pair(it.type,
+                    { item: BindableField<SelectableItem<ItemType>> -> it.bindRow(item) }
+                )
+            }.toMap()
         },
         emptyViewBinder = emptyViewBinder
     )
-
-    val creationCloseIcon = cancelActionColors.branch { icon(R.drawable.ic_menu_close) }
-    val contextualCloseIcon = confirmationActionColors.branch { icon(R.drawable.ic_check) }
-
-    val openIcon = openIconColors.branch { icon(R.drawable.ic_plus) }
-    val closeIcon = creationCloseIcon.get().field
-
-    val hasOverlay = true.field
 
     listOf(creationCloseIcon, contextualCloseIcon, selectedView).onChange {
         when (selectedView.get()) {
             ViewMode.CONTEXTUAL -> closeIcon.set(contextualCloseIcon.get())
             ViewMode.LOADING, ViewMode.CREATION, ViewMode.FORM -> closeIcon.set(creationCloseIcon.get())
-            else -> { }
+            else -> {
+            }
         }
     }
 
     selectedView.onChange {
-        hasOverlay.set(it.hasOverlay)
+        if (it.overlay != Overlay.SAME) {
+            hasOverlay.set(it.overlay == Overlay.YES)
+        }
     }
 
     val knobView = viewSelector(
-        ViewMode.EMPTY to View(context),
+        ViewMode.EMPTY to null,
         ViewMode.FORM to itemForm,
         ViewMode.LOADING to loading,
         ViewMode.CONTEXTUAL to contextualMenu,
