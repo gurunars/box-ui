@@ -10,17 +10,17 @@ can optionally handle item selection.
 """
 
 dependencies {
-    implementation "org.jetbrains.anko:anko:$anko_version"
-    implementation 'com.esotericsoftware:kryo:4.0.1'
-    implementation "com.android.support:recyclerview-v7:$supportlib_version"
-    implementation project(':android-utils')
-    implementation project(':databinding')
-    testImplementation 'junit:junit:4.12'
-    testImplementation "org.mockito:mockito-core:$mockito_version"
-    testImplementation "org.powermock:powermock-module-junit4:1.6.6"
-    testImplementation "org.powermock:powermock-module-junit4-rule:1.6.6"
-    testImplementation "org.powermock:powermock-api-mockito:1.6.6"
-    testImplementation "org.powermock:powermock-classloading-xstream:1.6.6"
+    compile "org.jetbrains.anko:anko:$anko_version"
+    compile 'com.esotericsoftware:kryo:4.0.1'
+    compile "com.android.support:recyclerview-v7:$supportlib_version"
+    compile project(':android-utils')
+    compile project(':databinding')
+    testCompile 'junit:junit:4.12'
+    testCompile "org.mockito:mockito-core:$mockito_version"
+    testCompile "org.powermock:powermock-module-junit4:1.6.6"
+    testCompile "org.powermock:powermock-module-junit4-rule:1.6.6"
+    testCompile "org.powermock:powermock-api-mockito:1.6.6"
+    testCompile "org.powermock:powermock-classloading-xstream:1.6.6"
 }
 
 dokka {

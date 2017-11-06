@@ -2,5 +2,5 @@ apply from: '../all-examples.gradle'
 
 
 dependencies {
-    implementation project(':android-utils')
+    compile project(':android-utils')
 }

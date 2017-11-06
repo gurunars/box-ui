@@ -2,5 +2,5 @@ apply from: '../all-examples.gradle'
 
 
 dependencies {
-    implementation project(':floatmenu')
+    compile project(':floatmenu')
 }

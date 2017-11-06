@@ -2,6 +2,6 @@ apply from: '../../all-libs.gradle'
 
 
 dependencies {
-    implementation project(':item-list')
+    compile project(':item-list')
 }
 
