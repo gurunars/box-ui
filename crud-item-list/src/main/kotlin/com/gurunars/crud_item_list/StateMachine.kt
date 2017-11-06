@@ -18,10 +18,10 @@ internal enum class ViewMode(val overlay: Overlay = Overlay.YES) {
 }
 
 internal class StateMachine<ItemType : Item>(
-    val selectedItems: BindableField<Set<ItemType>>,
-    val isOpen: BindableField<Boolean>,
-    val itemInEdit: BindableField<ItemType?>,
-    val viewMode: BindableField<ViewMode>,
+    private val selectedItems: BindableField<Set<ItemType>>,
+    private val isOpen: BindableField<Boolean>,
+    private val itemInEdit: BindableField<ItemType?>,
+    private val viewMode: BindableField<ViewMode>,
     //
     private val itemTypes: BindableField<Collection<Enum<*>>>,
     private val loadItem: (itemType: Enum<*>) -> ItemType,
@@ -67,7 +67,7 @@ internal class StateMachine<ItemType : Item>(
     private fun startCreation() {
         if (viewMode.get() != ViewMode.EMPTY) return
         isOpen.set(true)
-        val types =  itemTypes.get()
+        val types = itemTypes.get()
         if (types.size == 1) {
             viewMode.set(ViewMode.LOADING)
             asyncWrapper(

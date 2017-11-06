@@ -131,10 +131,12 @@ fun <ItemType : Item> Context.crudItemListView(
 
     listOf(creationCloseIcon, contextualCloseIcon, selectedView).onChange {
         when (selectedView.get()) {
-            ViewMode.CONTEXTUAL -> closeIcon.set(contextualCloseIcon.get())
-            ViewMode.LOADING, ViewMode.CREATION, ViewMode.FORM -> closeIcon.set(creationCloseIcon.get())
-            else -> {
-            }
+            ViewMode.CONTEXTUAL
+                -> closeIcon.set(contextualCloseIcon.get())
+            ViewMode.LOADING, ViewMode.CREATION, ViewMode.FORM
+                -> closeIcon.set(creationCloseIcon.get())
+            else
+                -> { }
         }
     }
 
