@@ -1,7 +1,9 @@
 package com.gurunars.crud_item_list
 
 import android.content.Context
+import android.view.GestureDetector
 import android.view.Gravity
+import android.view.MotionEvent
 import android.view.View
 import com.gurunars.databinding.BindableField
 import com.gurunars.databinding.android.fullSize
@@ -90,15 +92,11 @@ fun <ItemType : Item> Context.crudItemListView(
         }
     )
 
-    // TODO: move it to be external?
-    // OR: add an extra section for the insides
     val contextualMenu = contextualMenu(
         sortable,
         listActionColors,
         items,
-        selectedItems,
-        // TODO: use double click?
-        { itemInEdit.set(it) }
+        selectedItems
     )
 
     val loading = context.frameLayout {
@@ -120,7 +118,18 @@ fun <ItemType : Item> Context.crudItemListView(
         itemViewBinders = groupedItemTypeDescriptors.branch {
             flatten().map {
                 Pair(it.type,
-                    { item: BindableField<SelectableItem<ItemType>> -> it.bindRow(item) }
+                    { item: BindableField<SelectableItem<ItemType>> -> it.bindRow(item).apply {
+                        val doubleTapDetector = GestureDetector(
+                            this@crudItemListView,
+                            object: GestureDetector.SimpleOnGestureListener() {
+                                override fun onDoubleTap(e: MotionEvent?): Boolean {
+                                    itemInEdit.set(item.get().item)
+                                    return true
+                                }
+                            }
+                        )
+                        setOnTouchListener( { v, event -> doubleTapDetector.onTouchEvent(event) })
+                    } }
                 )
             }.toMap()
         },

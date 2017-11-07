@@ -18,8 +18,7 @@ internal fun <ItemType : Item> Context.contextualMenu(
     sortable: BindableField<Boolean>,
     actionIcon: BindableField<IconColorBundle>,
     items: BindableField<List<ItemType>>,
-    selectedItems: BindableField<Set<ItemType>>,
-    onEdit: (item: ItemType) -> Unit
+    selectedItems: BindableField<Set<ItemType>>
 ) = relativeLayout {
     fullSize()
     id = R.id.contextualMenu
@@ -44,10 +43,8 @@ internal fun <ItemType : Item> Context.contextualMenu(
 
             onClick {
                 action.perform(items.get(), selectedItems.get()).apply {
-                    if (action.isSynchronous) {
-                        items.set(first)
-                        selectedItems.set(second)
-                    }
+                    items.set(first)
+                    selectedItems.set(second)
                 }
             }
         }
@@ -97,19 +94,10 @@ internal fun <ItemType : Item> Context.contextualMenu(
         id = R.id.selectAll
         setTag(R.id.action, ActionSelectAll<ItemType>())
         lparams {
-            alignInParent(verticalAlignment = VerticalAlignment.BOTTOM)
-            alignWithRespectTo(R.id.edit, HorizontalPosition.LEFT_OF)
-            bottomMargin = dip(23)
-            leftMargin = dip(5)
-            rightMargin = dip(5)
-        }
-    }
-
-    configureIcon(R.drawable.ic_edit) {
-        id = R.id.edit
-        setTag(R.id.action, ActionEdit({ payload: ItemType -> onEdit(payload) }))
-        lparams {
-            alignInParent(verticalAlignment = VerticalAlignment.BOTTOM)
+            alignInParent(
+                horizontalAlignment = HorizontalAlignment.RIGHT,
+                verticalAlignment = VerticalAlignment.BOTTOM
+            )
             leftMargin = dip(5)
             rightMargin = dip(85)
             bottomMargin = dip(23)
