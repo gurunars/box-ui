@@ -32,9 +32,9 @@ fun Context.autoButton(
     rightPadding = dip(20)
     topPadding = dip(15)
     bottomPadding = dip(15)
-    textStyle.onChange { setTypeface(null, it.value) }
-    textSize.onChange { setTextSize(it) }
-    text.onChange { setText(it) }
+    textStyle.onChange { value -> setTypeface(null, value.value) }
+    textSize.onChange { value -> setTextSize(value) }
+    text.onChange { value -> setText(value) }
     listOf(shadowWidth, shape, bgColor).onChange {
         background = ColoredShapeDrawable(shape.get(), bgColor.get())
         setAutoBg(shadowWidth.get())

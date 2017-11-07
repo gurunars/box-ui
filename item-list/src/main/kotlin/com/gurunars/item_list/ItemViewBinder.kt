@@ -18,8 +18,8 @@ typealias ItemViewBinder<ItemType> = (field: BindableField<ItemType>) -> View
 fun <ItemType : Item> Context.defaultBindView(field: BindableField<ItemType>) = TextView(this).apply {
     backgroundColor = Color.YELLOW
     textColor = Color.RED
-    field.onChange {
-        text = with(field.get().toString()) {
+    field.onChange { value ->
+        text = with(value.toString()) {
             substring(0, minOf(42, length))
         }
         asRow()

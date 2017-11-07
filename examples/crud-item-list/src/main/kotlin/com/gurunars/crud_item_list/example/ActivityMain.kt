@@ -11,25 +11,35 @@ import android.view.MenuItem
 import android.widget.TextView
 import com.gurunars.android_utils.Icon
 import com.gurunars.animal_item.AnimalItem
-import com.gurunars.crud_item_list.IconColorBundle
-import com.gurunars.crud_item_list.ItemTypeDescriptor
-import com.gurunars.crud_item_list.crudItemListView
-import com.gurunars.crud_item_list.oneOf
+import com.gurunars.crud_item_list.*
 import com.gurunars.databinding.BindableField
-import com.gurunars.databinding.android.closeKeyboard
 import com.gurunars.databinding.android.fullSize
 import com.gurunars.databinding.android.setAsOne
 import com.gurunars.databinding.android.txt
 import com.gurunars.databinding.branch
-import com.gurunars.databinding.field
+import com.gurunars.databinding.patch
 import com.gurunars.item_list.SelectableItem
 import com.gurunars.item_list.coloredRowSelectionDecorator
 import com.gurunars.storage.PersistentStorage
 import org.jetbrains.anko.*
 
+class AnimalItemSerializer : ClipboardSerializer<AnimalItem> {
+
+    override fun fromString(count: Int, source: String): AnimalItem {
+        val parts = source.split("@")
+        return AnimalItem(
+            id = -count.toLong(),
+            type = AnimalItem.Type.valueOf(parts[0]),
+            version = parts[1].toInt()
+        )
+    }
+
+    override fun toString(source: AnimalItem) = "${source.type}@${source.version}"
+
+}
+
 class Descriptor(
     private val context: Context,
-    private val count: BindableField<Int>,
     iconId: Int,
     override val type: AnimalItem.Type
 ) : ItemTypeDescriptor<AnimalItem> {
@@ -57,7 +67,7 @@ class Descriptor(
 
     override val icon = Icon(icon = iconId)
     override fun createNewItem() = AnimalItem(
-        id = (count.get()).toLong(),
+        id = 0L,
         version = 0,
         type = type)
 
@@ -113,15 +123,27 @@ class ActivityMain : Activity() {
         }
     }
 
+    private fun reset(
+        count: Int,
+        sortable: Boolean
+    ) {
+        items.set((0 until count).map {
+            AnimalItem(it.toLong() + 1, getType(it, sortable), 0)
+        })
+        this.count.set(count)
+    }
+
     private fun addItems(
         count: Int,
-        sortable: Boolean,
-        nullify: Boolean = false
+        sortable: Boolean
     ) {
-        val curCount = (if (nullify) 0 else this.count.get())
-        items.set((if (nullify) listOf() else items.get()) + (0 until count).map {
-            AnimalItem(curCount + it.toLong(), getType(it, sortable), 0)
-        })
+        val curCount = this.count.get()
+        items.patch {
+            this + (0 until count).map {
+                AnimalItem(curCount + it.toLong(), getType(it, sortable), 0)
+            }
+        }
+
         this.count.set(curCount + count)
     }
 
@@ -134,69 +156,65 @@ class ActivityMain : Activity() {
             descriptors = listOf(listOf(
                 Descriptor(
                     this,
-                    count,
                     R.drawable.ic_menu_monkey,
                     AnimalItem.Type.MONKEY),
                 Descriptor(
                     this,
-                    count,
                     R.drawable.ic_menu_lion,
                     AnimalItem.Type.LION)
             ), listOf(
                 Descriptor(
                     this,
-                    count,
                     R.drawable.ic_menu_tiger,
                     AnimalItem.Type.TIGER),
                 Descriptor(
                     this,
-                    count,
                     R.drawable.ic_menu_wolf,
                     AnimalItem.Type.WOLF)
             ))
         } else {
             descriptors = Descriptor(
                 this,
-                count,
                 R.drawable.ic_menu_monkey,
                 AnimalItem.Type.MONKEY).oneOf()
         }
 
-        items.onChange {
-            count.set(
-                items.get()
-                    .map { it.id }
-                    .fold(0L) { acc, l -> Math.max(acc, l) }
-                    .toInt() + 1
-            )
-        }
-
-        val isOpen = false.field
-        isOpen.onChange {
-            closeKeyboard()
+        items.onChange { it ->
+            var newCount = count.get()
+            val newItems = mutableListOf<AnimalItem>()
+            it.forEach {
+                if (it.id > 0) {
+                    newItems.add(it)
+                } else {
+                    newCount++
+                    newItems.add(it.copy(id = newCount.toLong()))
+                }
+            }
+            count.set(newCount)
+            items.set(newItems)
         }
 
         crudItemListView(
-            listActionColors = IconColorBundle(
-                fgColor = Color.YELLOW,
-                bgColor = Color.BLUE
-            ).field,
             confirmationActionColors = IconColorBundle(
                 bgColor = Color.BLACK,
                 fgColor = Color.GREEN
-            ).field,
+            ),
             cancelActionColors = IconColorBundle(
                 bgColor = Color.RED,
                 fgColor = Color.WHITE
-            ).field,
+            ),
             openIconColors = IconColorBundle(
                 bgColor = Color.GREEN,
                 fgColor = Color.YELLOW
-            ).field,
-            isOpen=isOpen,
-            items=items,
-            sortable = sortable.field,
-            groupedItemTypeDescriptors = descriptors.field
+            ),
+            items = items,
+            groupedItemTypeDescriptors = descriptors,
+            sortable = sortable,
+            actionIconColors = IconColorBundle(
+                fgColor = Color.YELLOW,
+                bgColor = Color.BLUE
+            ),
+            clipboardSerializer = AnimalItemSerializer()
         ).setAsOne(this)
 
     }
@@ -217,12 +235,12 @@ class ActivityMain : Activity() {
         val i = item.itemId
 
         fun setSortable(flag: Boolean) {
-            addItems(4, flag, true)
+            reset(4, flag)
             isSortable.set(flag, true)
         }
 
         when (i) {
-            R.id.reset -> addItems(4, isSortable.get(), true)
+            R.id.reset -> reset(4, isSortable.get())
             R.id.lock -> setSortable(false)
             R.id.unlock -> setSortable(true)
             R.id.addMany -> addItems(4 * 20, isSortable.get())

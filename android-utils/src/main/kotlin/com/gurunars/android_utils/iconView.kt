@@ -13,6 +13,7 @@ import android.support.v4.content.res.ResourcesCompat
 import android.view.View
 import android.widget.ImageView
 import com.gurunars.databinding.BindableField
+import com.gurunars.databinding.bind
 import com.gurunars.databinding.onChange
 
 /**

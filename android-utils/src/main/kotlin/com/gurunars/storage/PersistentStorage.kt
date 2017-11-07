@@ -50,7 +50,7 @@ class PersistentStorage(
      */
     fun <Type> storageField(name: String, defaultValue: Type): BindableField<Type> {
         val field = BindableField(defaultValue)
-        field.onChange {
+        field.onChange { it ->
             timer.cancel()
             timer = Timer()
             timer.schedule(timerTask { save() }, 100)

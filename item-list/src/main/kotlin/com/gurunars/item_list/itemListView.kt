@@ -6,9 +6,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import com.gurunars.databinding.BindableField
 import com.gurunars.databinding.android.fullSize
-import com.gurunars.databinding.field
-import com.gurunars.databinding.fork
-import com.gurunars.databinding.onChange
+import com.gurunars.databinding.branch
 import org.jetbrains.anko.bottomPadding
 import org.jetbrains.anko.dip
 
@@ -22,10 +20,9 @@ import org.jetbrains.anko.dip
  */
 fun <ItemType : Item> Context.itemListView(
     items: BindableField<List<ItemType>>,
-    itemViewBinders: BindableField<Map<Enum<*>, ItemViewBinder<ItemType>>> =
-        mapOf<Enum<*>, ItemViewBinder<ItemType>>().field,
-    emptyViewBinder: BindableField<EmptyViewBinder> = this::defaultBindEmpty.field,
-    stableIds: BindableField<Boolean> = false.field
+    itemViewBinders: Map<Enum<*>, ItemViewBinder<ItemType>> = mapOf(),
+    emptyViewBinder: EmptyViewBinder = this::defaultBindEmpty,
+    stableIds: Boolean = true
 ): View = RecyclerView(this).apply {
     val kryo = getKryo()
     id = R.id.recyclerView
@@ -33,14 +30,14 @@ fun <ItemType : Item> Context.itemListView(
     clipToPadding = false
     bottomPadding = dip(60)
     isSaveEnabled = false
-    listOf(emptyViewBinder, itemViewBinders, stableIds).onChange {
-        adapter = ItemAdapter(
-            items.fork { kryo.copy(ArrayList(this)) },
-            emptyViewBinder.get(),
-            itemViewBinders.get()
-        ).apply {
-            setHasStableIds(stableIds.get())
-        }
+    adapter = ItemAdapter(
+        items.branch {
+            kryo.copy(if (stableIds) distinctBy { it.id } else this)
+        },
+        emptyViewBinder,
+        itemViewBinders
+    ).apply {
+        setHasStableIds(stableIds)
     }
     layoutManager = LinearLayoutManager(context).apply {
         orientation = LinearLayoutManager.VERTICAL

@@ -14,7 +14,6 @@ import com.gurunars.databinding.android.asRow
 import com.gurunars.databinding.android.setAsOne
 import com.gurunars.databinding.android.txt
 import com.gurunars.databinding.branch
-import com.gurunars.databinding.field
 import com.gurunars.item_list.SelectableItem
 import com.gurunars.item_list.coloredRowSelectionDecorator
 import com.gurunars.item_list.selectableItemListView
@@ -53,7 +52,7 @@ class ActivityMain : Activity() {
                 Pair(it as Enum<*>, { item: BindableField<SelectableItem<AnimalItem>> ->
                     coloredRowSelectionDecorator(item) { bindAnimal(it) }
                 })
-            }.toMap().field
+            }.toMap()
         ).setAsOne(this)
 
     }

@@ -15,7 +15,6 @@ import com.gurunars.databinding.android.asRow
 import com.gurunars.databinding.android.setAsOne
 import com.gurunars.databinding.android.txt
 import com.gurunars.databinding.branch
-import com.gurunars.databinding.field
 import com.gurunars.item_list.itemListView
 import com.gurunars.storage.PersistentStorage
 import org.jetbrains.anko.dip
@@ -48,7 +47,7 @@ class ActivityMain : Activity() {
             items = items,
             itemViewBinders = AnimalItem.Type.values().map {
                 Pair(it as Enum<*>, { value: BindableField<AnimalItem> -> this.bindAnimal(value) })
-            }.toMap().field
+            }.toMap()
         ).setAsOne(this)
 
     }

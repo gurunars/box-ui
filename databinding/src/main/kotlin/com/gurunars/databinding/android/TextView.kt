@@ -6,9 +6,9 @@ import android.widget.TextView
 import com.gurunars.databinding.BindableField
 
 fun TextView.txt(field: BindableField<String>) {
-    field.onChange {
-        if (text.toString() != it) {
-            text = it
+    field.onChange { txt ->
+        if (text.toString() != txt) {
+            text = txt
         }
     }
     addTextChangedListener(object : TextWatcher {

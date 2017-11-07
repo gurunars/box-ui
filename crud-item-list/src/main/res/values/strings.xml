@@ -2,4 +2,7 @@
 <resources>
     <string name="cancel">Cancel</string>
     <string name="save">Save</string>
+    <string name="pastedFromClipboard">Pasted from clipboard</string>
+    <string name="copiedToClipboard">Copied to clipboard</string>
+    <string name="failedToPaste">Failed to paste</string>
 </resources>

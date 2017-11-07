@@ -2,10 +2,12 @@ package com.gurunars.item_list
 
 import android.content.Context
 import android.view.View
-import com.gurunars.databinding.*
-import com.gurunars.databinding.android.fullSize
+import com.gurunars.databinding.BindableField
 import com.gurunars.databinding.android.setAsOne
-import com.gurunars.databinding.android.statefulComponent
+import com.gurunars.databinding.android.statefulView
+import com.gurunars.databinding.fork
+import com.gurunars.databinding.onChange
+import com.gurunars.databinding.patch
 import java.util.*
 import kotlin.collections.HashSet
 
@@ -24,10 +26,9 @@ import kotlin.collections.HashSet
 fun <ItemType : Item> Context.selectableItemListView(
     items: BindableField<List<ItemType>>,
     selectedItems: BindableField<Set<ItemType>> = BindableField(setOf()),
-    itemViewBinders: BindableField<Map<Enum<*>, ItemViewBinder<SelectableItem<ItemType>>>> =
-    mapOf<Enum<*>, ItemViewBinder<SelectableItem<ItemType>>>().field,
-    emptyViewBinder: BindableField<EmptyViewBinder> = this::defaultBindEmpty.field
-): View = statefulComponent(R.id.selectableItemListView, "SELECTABLE ITEM LIST") {
+    itemViewBinders: Map<Enum<*>, ItemViewBinder<SelectableItem<ItemType>>> = mapOf(),
+    emptyViewBinder: EmptyViewBinder = this::defaultBindEmpty
+): View = statefulView(R.id.selectableItemListView, "SELECTABLE ITEM LIST") {
 
     val kryo = getKryo()
 
@@ -49,13 +50,12 @@ fun <ItemType : Item> Context.selectableItemListView(
 
     itemListView(
         items = selectables,
-        itemViewBinders = itemViewBinders.branch {
+        itemViewBinders = itemViewBinders.
             map {
                 it.key to ({ item: BindableField<SelectableItem<ItemType>> ->
                     clickableBind(copyOfSelectedItems, it.value, item)
                 })
-            }.toMap()
-        },
+            }.toMap(),
         emptyViewBinder = emptyViewBinder
     ).setAsOne(this)
 }

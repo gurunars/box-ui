@@ -11,7 +11,7 @@ class BindableFieldTest {
         var value = 0
         val field = BindableField(1)
 
-        field.onChange { value = it }
+        field.onChange { it -> value = it }
         assertEquals(1, value)
 
         field.set(2)
@@ -47,7 +47,7 @@ class BindableFieldTest {
         val slaveField = BindableField("2")
 
         masterField.bind(
-            slaveField, { it.toString() }, { Integer.valueOf(it) }
+            slaveField.branch( { Integer.valueOf(this) }, { it.toString() })
         )
         assertEquals(1, masterField.get())
         assertEquals("1", slaveField.get())

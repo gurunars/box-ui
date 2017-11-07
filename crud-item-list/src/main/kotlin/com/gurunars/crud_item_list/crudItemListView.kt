@@ -5,19 +5,20 @@ import android.view.GestureDetector
 import android.view.Gravity
 import android.view.MotionEvent
 import android.view.View
+import com.gurunars.android_utils.Icon
 import com.gurunars.databinding.BindableField
 import com.gurunars.databinding.android.fullSize
+import com.gurunars.databinding.android.onLongClick
 import com.gurunars.databinding.android.set
-import com.gurunars.databinding.android.statefulComponent
-import com.gurunars.databinding.android.viewSelector
-import com.gurunars.databinding.branch
+import com.gurunars.databinding.android.statefulView
 import com.gurunars.databinding.field
-import com.gurunars.databinding.onChange
-import com.gurunars.floatmenu.floatMenu
+import com.gurunars.floatmenu.*
+import com.gurunars.floatmenu.State
 import com.gurunars.item_list.*
 import org.jetbrains.anko.dip
 import org.jetbrains.anko.frameLayout
 import org.jetbrains.anko.progressBar
+import com.gurunars.floatmenu.R as floatR
 
 
 /**
@@ -25,10 +26,7 @@ import org.jetbrains.anko.progressBar
  *
  * @param ItemType type of the item to be shown in the list
  * @param emptyViewBinder a function returning a view to be shown when the list is empty
- * @param sortable If false move up and move down buttons are hidden.
  * @param groupedItemTypeDescriptors a collection of item type descriptors
- * @param listActionColors Color of the icons meant to manipulate the collection of items in the
- * contextual menu.
  * @param confirmationActionColors Check mark icon color settings. The icon is shown when contextual
  * menu is opened. Clicking the icon closes contextual menu.
  * @param cancelActionColors Cross icon color settings. The icon is shown when creation menu is
@@ -36,33 +34,29 @@ import org.jetbrains.anko.progressBar
  * @param openIconColors Plus icon color settings. The icon is shown when the menu is closed.
  * Clicking the icon opens the creation menu
  * @param items A collection of items shown and manipulated by the view.
- * @param isOpen A flag specifying if the menu is open or closed. Be it a creation or contextual
- * one.
  */
 fun <ItemType : Item> Context.crudItemListView(
-    groupedItemTypeDescriptors: BindableField<List<List<ItemTypeDescriptor<ItemType>>>>,
+    groupedItemTypeDescriptors: List<List<ItemTypeDescriptor<ItemType>>>,
     items: BindableField<List<ItemType>>,
-    emptyViewBinder: BindableField<EmptyViewBinder> = this::defaultBindEmpty.field,
-    sortable: BindableField<Boolean> = true.field,
-    listActionColors: BindableField<IconColorBundle> = IconColorBundle().field,
-    confirmationActionColors: BindableField<IconColorBundle> = IconColorBundle().field,
-    cancelActionColors: BindableField<IconColorBundle> = IconColorBundle().field,
-    openIconColors: BindableField<IconColorBundle> = IconColorBundle().field,
-    isOpen: BindableField<Boolean> = false.field
-): View = statefulComponent(R.id.crudItemListView, "CRUD ITEM LIST") {
-    val selectedItems = BindableField<Set<ItemType>>(setOf())
-    val itemInEdit: BindableField<ItemType?> = null.field
-    val selectedView = ViewMode.CREATION.field
-    val creationCloseIcon = cancelActionColors.branch { icon(R.drawable.ic_menu_close) }
-    val contextualCloseIcon = confirmationActionColors.branch { icon(R.drawable.ic_check) }
-    val openIcon = openIconColors.branch { icon(R.drawable.ic_plus) }
-    val closeIcon = creationCloseIcon.get().field
-    val hasOverlay = true.field
+    clipboardSerializer: ClipboardSerializer<ItemType>? = null,
+    sortable: Boolean = true,
+    actionIconColors: IconColorBundle = IconColorBundle(),
+    emptyViewBinder: EmptyViewBinder = this::defaultBindEmpty,
+    confirmationActionColors: IconColorBundle = IconColorBundle(),
+    cancelActionColors: IconColorBundle = IconColorBundle(),
+    openIconColors: IconColorBundle = IconColorBundle()
+): View = statefulView(R.id.crudItemListView, "CRUD ITEM LIST") {
 
-    val typeCache = groupedItemTypeDescriptors.branch {
+    val typeCache = groupedItemTypeDescriptors.
         flatten().map {
-            Pair(it.type, it)
-        }.toMap()
+        Pair(it.type, it)
+    }.toMap()
+
+    val stateMachine = StateMachine(
+        itemTypes = typeCache.keys,
+        loadItem = { typeCache[it]!!.createNewItem() }
+    ).apply {
+        retain(state)
     }
 
     val itemForm = context.frameLayout {
@@ -70,33 +64,26 @@ fun <ItemType : Item> Context.crudItemListView(
         id = R.id.itemForm
     }
 
-    fun onSave(item: ItemType) {
-        items.set(processItemInEdit(item, items.get()))
-        isOpen.set(false)
-    }
-
-    val stateMachine = StateMachine<ItemType>(
-        selectedItems,
-        isOpen,
-        itemInEdit,
-        selectedView,
-        itemTypes = typeCache.branch { keys },
-        loadItem = { typeCache.get()[it]!!.createNewItem() },
-        bindForm = {
+    stateMachine.itemInEdit.onChange { it ->
+        if (it != null) {
             itemForm(
                 it,
-                ::onSave,
+                { item ->
+                    items.set(processItemInEdit(item, items.get()))
+                    stateMachine.close()
+                },
                 confirmationActionColors,
-                typeCache.get()[it.type]!!
-            ).set(R.id.formContent, itemForm)
+                typeCache[it.type]!!
+            ).set(itemForm, R.id.formContent)
         }
-    )
+    }
 
     val contextualMenu = contextualMenu(
         sortable,
-        listActionColors,
+        actionIconColors,
         items,
-        selectedItems
+        stateMachine.selectedItems,
+        clipboardSerializer
     )
 
     val loading = context.frameLayout {
@@ -109,70 +96,79 @@ fun <ItemType : Item> Context.crudItemListView(
 
     val creationMenu = creationMenu(
         groupedItemTypeDescriptors,
-        { itemInEdit.set(it) }
+        { stateMachine.itemInEdit.set(it) }
     )
 
     val itemListView = selectableItemListView(
         items = items,
-        selectedItems = selectedItems,
-        itemViewBinders = groupedItemTypeDescriptors.branch {
+        selectedItems = stateMachine.selectedItems,
+        itemViewBinders = groupedItemTypeDescriptors.
             flatten().map {
-                Pair(it.type,
-                    { item: BindableField<SelectableItem<ItemType>> -> it.bindRow(item).apply {
+            Pair(it.type,
+                { item: BindableField<SelectableItem<ItemType>> ->
+                    it.bindRow(item).apply {
                         val doubleTapDetector = GestureDetector(
                             this@crudItemListView,
-                            object: GestureDetector.SimpleOnGestureListener() {
+                            object : GestureDetector.SimpleOnGestureListener() {
                                 override fun onDoubleTap(e: MotionEvent?): Boolean {
-                                    itemInEdit.set(item.get().item)
+                                    stateMachine.itemInEdit.set(item.get().item)
                                     return true
                                 }
                             }
                         )
-                        setOnTouchListener( { v, event -> doubleTapDetector.onTouchEvent(event) })
-                    } }
-                )
-            }.toMap()
-        },
+                        setOnTouchListener({ _, event -> doubleTapDetector.onTouchEvent(event) })
+                    }
+                }
+            )
+        }.toMap(),
         emptyViewBinder = emptyViewBinder
     )
 
-    listOf(creationCloseIcon, contextualCloseIcon, selectedView).onChange {
-        when (selectedView.get()) {
-            ViewMode.CONTEXTUAL
-                -> closeIcon.set(contextualCloseIcon.get())
-            ViewMode.LOADING, ViewMode.CREATION, ViewMode.FORM
-                -> closeIcon.set(creationCloseIcon.get())
-            else
-                -> { }
-        }
+    val contentArea = object : ContentPane {
+        override fun Context.render() = itemListView
+        override val icon = openIconColors.icon(R.drawable.ic_plus)
     }
 
-    selectedView.onChange {
-        if (it.overlay != Overlay.SAME) {
-            hasOverlay.set(it.overlay == Overlay.YES)
-        }
+    class MenuArea(private val viewMode: ViewMode) : MenuPane {
+        override fun Context.render() =
+            when (viewMode) {
+                ViewMode.CONTEXTUAL -> contextualMenu
+                ViewMode.LOADING -> loading
+                ViewMode.CREATION -> creationMenu
+                ViewMode.FORM -> itemForm
+                ViewMode.EMPTY -> View(this)
+            }
+
+        override val icon: Icon =
+            if (viewMode == ViewMode.CONTEXTUAL) confirmationActionColors.icon(R.drawable.ic_check)
+            else cancelActionColors.icon(R.drawable.ic_menu_close)
+        override val hasOverlay = viewMode.hasOverlay
     }
 
-    val knobView = viewSelector(
-        ViewMode.EMPTY to null,
-        ViewMode.FORM to itemForm,
-        ViewMode.LOADING to loading,
-        ViewMode.CONTEXTUAL to contextualMenu,
-        ViewMode.CREATION to creationMenu,
-        selectedView = selectedView
-    )
+    val menuPane: BindableField<MenuPane> = MenuArea(ViewMode.EMPTY).field
 
-    retain(selectedView, itemInEdit, selectedItems, isOpen)
-
-    groupedItemTypeDescriptors.onChange {
-        stateMachine.clear()
-        floatMenu(
-            itemListView.field,
-            knobView.field,
-            closeIcon = closeIcon,
-            openIcon = openIcon,
-            hasOverlay = hasOverlay,
-            isOpen = isOpen
-        ).set(R.id.contentPane, this)
+    FloatMenu(
+        contentArea.field,
+        menuPane
+    ).apply {
+        state.onChange { it ->
+            if (it == State.CLOSING) {
+                stateMachine.close()
+            } else if (it == State.OPENING) {
+                stateMachine.openCreationMenu()
+            }
+        }
+        stateMachine.state.onChange { it ->
+            if (it.isOpen) {
+                menuPane.set(MenuArea(it.viewMode))
+                open()
+            } else {
+                close()
+            }
+        }
+    }.set(this, R.id.contentPane) {
+        findViewById<View>(floatR.id.openFab).onLongClick {
+            stateMachine.openExplicitContextualMenu()
+        }
     }
 }

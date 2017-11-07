@@ -2,8 +2,8 @@ buildscript {
     ext.siteUrl = 'https://gurunars.github.io/android-crud-ui'
     ext.gitUrl = 'git@github.com:gurunars/android-crud-ui.git'
     ext.license = "Apache-2.0"
-    ext.package_version_code = 120
-    ext.package_version = "0.120.0"
+    ext.package_version_code = 121
+    ext.package_version = "0.121.0"
 
     ext.kotlin_version = '1.1.51'
     ext.anko_version = '0.10.1'

@@ -68,7 +68,6 @@ class ActivitySortableTest {
         validateExists(R.id.menuPane)
         validateEnabled(R.id.moveUp)
         validateEnabled(R.id.moveDown)
-        validateEnabled(R.id.edit)
         validateEnabled(R.id.delete)
         validateEnabled(R.id.selectAll)
     }
@@ -103,7 +102,6 @@ class ActivitySortableTest {
         rotate()
         validateDisabled(R.id.moveUp)
         validateEnabled(R.id.moveDown)
-        validateEnabled(R.id.edit)
         validateEnabled(R.id.delete)
         validateEnabled(R.id.selectAll)
     }
@@ -114,33 +112,30 @@ class ActivitySortableTest {
         rotate()
         validateEnabled(R.id.moveUp)
         validateDisabled(R.id.moveDown)
-        validateEnabled(R.id.edit)
         validateEnabled(R.id.delete)
         validateEnabled(R.id.selectAll)
     }
 
     @Test
-    fun selectingUnsolidChunk_shouldDisableMoveAndEdit() {
+    fun selectingUnsolidChunk_shouldDisableMove() {
         atIndex(0).perform(longClick())
         rotate()
         atIndex(3).perform(click())
         rotate()
         validateDisabled(R.id.moveUp)
         validateDisabled(R.id.moveDown)
-        validateDisabled(R.id.edit)
         validateEnabled(R.id.delete)
         validateEnabled(R.id.selectAll)
     }
 
     @Test
-    fun selectingSolidChunk_shouldEnableMoveButDisableEdit() {
+    fun selectingSolidChunk_shouldEnableMove() {
         atIndex(1).perform(longClick())
         rotate()
         atIndex(2).perform(click())
         rotate()
         validateEnabled(R.id.moveUp)
         validateEnabled(R.id.moveDown)
-        validateDisabled(R.id.edit)
         validateEnabled(R.id.delete)
         validateEnabled(R.id.selectAll)
     }
@@ -153,7 +148,6 @@ class ActivitySortableTest {
         rotate()
         validateDisabled(R.id.moveUp)
         validateEnabled(R.id.moveDown)
-        validateEnabled(R.id.edit)
         validateEnabled(R.id.delete)
         validateEnabled(R.id.selectAll)
     }
@@ -166,7 +160,6 @@ class ActivitySortableTest {
         rotate()
         validateEnabled(R.id.moveUp)
         validateDisabled(R.id.moveDown)
-        validateEnabled(R.id.edit)
         validateEnabled(R.id.delete)
         validateEnabled(R.id.selectAll)
     }
@@ -200,9 +193,7 @@ class ActivitySortableTest {
 
     @Test
     fun editingItem_shouldIncrementVersion() {
-        atIndex(3).perform(longClick())
-        rotate()
-        onView(withId(R.id.edit)).perform(click())
+        atIndex(3).perform(doubleClick())
         onView(withId(R.id.increment)).perform(click())
         rotate()
         onView(withId(R.id.save)).perform(click())
@@ -228,8 +219,6 @@ class ActivitySortableTest {
     fun before() {
         onView(withId(R.id.reset)).perform(click())
         onView(withId(R.id.unlock)).perform(click())
-        openActionBarOverflowOrOptionsMenu(getInstrumentation().targetContext)
-        onView(withText("Right handed")).perform(click())
     }
 
     @After

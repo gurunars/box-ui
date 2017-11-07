@@ -10,8 +10,8 @@ fun<Key: Enum<Key>> Context.viewSelector(
     selectedView: BindableField<Key>
 ): View = FrameLayout(this).apply {
     val mapping = viewSelector.toMap()
-    selectedView.onChange{
-        mapping[it]?.setAsOne(this) {
+    selectedView.onChange{ type ->
+        mapping[type]?.setAsOne(this) {
             fullSize()
         }
     }

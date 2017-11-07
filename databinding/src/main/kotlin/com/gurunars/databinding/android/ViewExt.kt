@@ -11,7 +11,7 @@ private const val MATCH_PARENT = ViewGroup.LayoutParams.MATCH_PARENT
 private const val WRAP_CONTENT = ViewGroup.LayoutParams.WRAP_CONTENT
 
 /* Replaces view marked by a specific id with a given new view */
-fun<T: View> T.set(id: Int, parent: ViewGroup, init: T.() -> Unit = {}) : T {
+fun<T: View> T.set(parent: ViewGroup, id: Int, init: T.() -> Unit = {}) : T {
     val view = parent.findViewById<View>(id)
     if (view != null) parent.removeView(view)
     return add(parent, init).apply {

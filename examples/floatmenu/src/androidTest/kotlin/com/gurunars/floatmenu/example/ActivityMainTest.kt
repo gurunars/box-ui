@@ -77,14 +77,6 @@ class ActivityMainTest {
         checkNotification("Menu Button Clicked")
     }
 
-    @Test
-    fun togglingMenuDecoration_shouldChangeBackgroundAndForeground() {
-        openActionBarOverflowOrOptionsMenu(getInstrumentation().targetContext)
-        onView(withText("Toggle button color")).perform(click())
-        rotate()
-        checkFab("|BG:${Color.RED}|IC:${Color.WHITE}")
-    }
-
     private fun toggleBg() {
         openActionBarOverflowOrOptionsMenu(getInstrumentation().targetContext)
         onView(withText("Toggle background")).perform(click())

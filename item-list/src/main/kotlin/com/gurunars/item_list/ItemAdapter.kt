@@ -39,13 +39,12 @@ internal class ItemAdapter<ItemType : Item>(
     }
 
     init {
-        items.onChange({
-            previousList = kryo.copy(ArrayList(it))
-        }) {
-            if (previousList.isEmpty() || it.isEmpty()) {
+        items.onChange { prevList, list ->
+            previousList = kryo.copy(ArrayList(prevList))
+            if (previousList.isEmpty() || list.isEmpty()) {
                 notifyDataSetChanged()
             } else {
-                DiffUtil.calculateDiff(ItemCallback(previousList, it)).dispatchUpdatesTo(this)
+                DiffUtil.calculateDiff(ItemCallback(previousList, list)).dispatchUpdatesTo(this)
             }
         }
     }
@@ -64,7 +63,9 @@ internal class ItemAdapter<ItemType : Item>(
                         clearFocus()
                     }
                 })
-            }) {}
+            }) {
+
+            }
         } else {
             // If enums are from different classes - they have same ordinals
             val initialPayload = items.get().first { getItemTypeInt(it) == viewType }
@@ -88,10 +89,16 @@ internal class ItemAdapter<ItemType : Item>(
     }
 
     override fun getItemId(position: Int) =
-        if (hasStableIds())
+        if (!hasStableIds()) {
             RecyclerView.NO_ID
-        else
-            items.get()[position].id
+        } else {
+            val itemList = items.get()
+            if (itemList.isNotEmpty()) {
+                items.get()[position].id
+            } else {
+                RecyclerView.NO_ID
+            }
+        }
 
     private fun getItemTypeInt(item: ItemType) = itemViewBinders.keys.indexOf(item.type)
 

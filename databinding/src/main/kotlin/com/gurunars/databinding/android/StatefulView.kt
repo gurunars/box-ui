@@ -9,7 +9,7 @@ import com.gurunars.databinding.BindableField
 /**
  * A base component meant to develop custom stateful UI widgets using bindable fields
  */
-class StatefulComponent(context: Context) : FrameLayout(context) {
+class StatefulView(context: Context) : FrameLayout(context) {
 
     private val fields: MutableList<BindableField<*>> = mutableListOf()
 
@@ -62,13 +62,13 @@ class StatefulComponent(context: Context) : FrameLayout(context) {
 
 }
 
-fun Context.statefulComponent(
+fun Context.statefulView(
     id: Int,
     tag: String = "DEFAULT",
     vararg fields: BindableField<*>,
-    init: StatefulComponent.() -> Unit = {}
-): StatefulComponent =
-    StatefulComponent(this).apply {
+    init: StatefulView.() -> Unit = {}
+): StatefulView =
+    StatefulView(this).apply {
         this.id = id
         this.tag = tag
         retain(*fields)

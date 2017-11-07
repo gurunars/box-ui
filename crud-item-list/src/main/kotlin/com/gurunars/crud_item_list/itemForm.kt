@@ -6,9 +6,7 @@ import com.gurunars.android_utils.Icon
 import com.gurunars.android_utils.iconView
 import com.gurunars.crud_item_list.ItemTypeDescriptor.Status.Type.ERROR
 import com.gurunars.crud_item_list.ItemTypeDescriptor.Status.Type.WARNING
-import com.gurunars.databinding.BindableField
 import com.gurunars.databinding.android.*
-import com.gurunars.databinding.branch
 import com.gurunars.databinding.field
 import com.gurunars.databinding.patch
 import com.gurunars.item_list.Item
@@ -17,7 +15,7 @@ import org.jetbrains.anko.*
 fun <ItemType : Item> Context.itemForm(
     item: ItemType,
     confirmationHandler: (item: ItemType) -> Unit,
-    confirmIconColors: BindableField<IconColorBundle>,
+    confirmIconColors: IconColorBundle,
     formBinder: ItemTypeDescriptor<ItemType>
 ) = relativeLayout {
     val field = item.field
@@ -37,12 +35,12 @@ fun <ItemType : Item> Context.itemForm(
     val canSave = false.field
 
     context.iconView(
-        icon = confirmIconColors.branch { icon(R.drawable.ic_check) },
+        icon = confirmIconColors.icon(R.drawable.ic_check).field,
         enabled = canSave
     ).add(this) {
         id = R.id.confirm
         id = R.id.save
-        field.onChange {
+        field.onChange { it ->
             asyncChain(
                 { formBinder.validate(it).type.isBlocking },
                 { canSave.set(!it) }
@@ -67,7 +65,7 @@ fun <ItemType : Item> Context.itemForm(
         icon = statusIcon
     ).add(this) {
         id = R.id.hint
-        field.onChange {
+        field.onChange { it ->
             asyncChain(
                 {
                     val status = formBinder.validate(it)

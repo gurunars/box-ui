@@ -50,11 +50,10 @@ class ActivityUnsortableTest {
     }
 
     @Test
-    fun whenUnselectable_contextualMenuShould() {
+    fun whenUnselectable_contextualMenuShouldNotHaveUpAndDownButtons() {
         atIndex(3).perform(longClick())
         validateInvisible(R.id.moveUp)
         validateInvisible(R.id.moveDown)
-        validateEnabled(R.id.edit)
         validateEnabled(R.id.delete)
         validateEnabled(R.id.selectAll)
     }

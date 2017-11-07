@@ -1,6 +1,7 @@
 package com.gurunars.floatmenu.example
 
 import android.app.Activity
+import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
 import android.view.Gravity
@@ -11,17 +12,16 @@ import com.gurunars.databinding.BindableField
 import com.gurunars.databinding.android.asRow
 import com.gurunars.databinding.android.fullSize
 import com.gurunars.databinding.android.setAsOne
+import com.gurunars.databinding.branch
 import com.gurunars.databinding.field
 import com.gurunars.databinding.patch
-import com.gurunars.floatmenu.floatMenu
+import com.gurunars.floatmenu.*
 import com.gurunars.storage.PersistentStorage
 import org.jetbrains.anko.*
 
 class ActivityMain : Activity() {
     private val storage = PersistentStorage(this, "main")
 
-    private val buttonColorFlag: BindableField<Boolean> =
-        storage.storageField("buttonColorFlag", false)
     private val hasOverlay = storage.storageField("hasOverlay", true)
 
     private val isOpen = BindableField(false)
@@ -66,9 +66,7 @@ class ActivityMain : Activity() {
                     gravity = Gravity.CENTER
                     backgroundColor = Color.parseColor("#FFFFAA")
 
-                    notification.onChange {
-                        text = it
-                    }
+                    notification.onChange { it -> text = it }
 
                     setOnLongClickListener {
                         text = ""
@@ -93,7 +91,7 @@ class ActivityMain : Activity() {
                 }
 
                 textView {
-                    isOpen.onChange { setText(if (it) R.string.menuOpen else R.string.menuClosed) }
+                    isOpen.onChange { it -> setText(if (it) R.string.menuOpen else R.string.menuClosed) }
                     isClickable = true
                 }.lparams {
                     below(R.id.textView)
@@ -103,28 +101,30 @@ class ActivityMain : Activity() {
             }
         }.view
 
-        val openIcon = Icon(icon = R.drawable.ic_menu).field
-
-        buttonColorFlag.onChange {
-            openIcon.set(Icon(
-                bgColor = if (it) Color.RED else Color.YELLOW,
-                fgColor = if (it) Color.WHITE else Color.BLACK,
+        val contentArea: BindableField<ContentPane> = object : ContentPane {
+            override fun Context.render() = contentView
+            override val icon = Icon(
+                bgColor = Color.YELLOW,
+                fgColor = Color.BLACK,
                 icon = R.drawable.ic_menu
-            ))
-        }
+            )
+        }.field
 
-        floatMenu(
-            contentView.field,
-            menuView.field,
-            isOpen = isOpen,
-            closeIcon = Icon(
+        class MenuArea(override val hasOverlay: Boolean) : MenuPane {
+            override fun Context.render() = menuView
+            override val icon = Icon(
                 bgColor = Color.WHITE,
                 fgColor = Color.BLACK,
                 icon = R.drawable.ic_menu_close
-            ).field,
-            hasOverlay = hasOverlay,
-            openIcon = openIcon
-        ).setAsOne(this)
+            )
+        }
+
+        FloatMenu(
+            contentArea,
+            hasOverlay.branch { MenuArea(this) }
+        ).apply {
+            bind(isOpen)
+        }.setAsOne(this)
 
         storage.load()
     }
@@ -144,16 +144,11 @@ class ActivityMain : Activity() {
         when (item.itemId) {
             R.id.reset -> {
                 isOpen.set(false)
-                buttonColorFlag.set(false)
                 hasOverlay.set(true)
                 return true
             }
             R.id.toggleBackground -> {
                 hasOverlay.set(!hasOverlay.get())
-                return true
-            }
-            R.id.toggleButtonColor -> {
-                buttonColorFlag.set(!buttonColorFlag.get())
                 return true
             }
             R.id.toggleMenu -> {

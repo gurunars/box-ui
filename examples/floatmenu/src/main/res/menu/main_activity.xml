@@ -12,11 +12,6 @@
         android:title="@string/toggleBackground" />
 
     <item
-        android:id="@+id/toggleButtonColor"
-        android:showAsAction="never"
-        android:title="@string/toggleButtonColor" />
-
-    <item
         android:id="@+id/toggleMenu"
         android:showAsAction="never"
         android:title="@string/toggleMenu" />

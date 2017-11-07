@@ -5,6 +5,6 @@ import com.gurunars.databinding.BindableField
 
 fun CompoundButton.isChecked(field: BindableField<Boolean>) {
     setOnCheckedChangeListener { _, isChecked -> field.set(isChecked) }
-    field.onChange { isChecked = it }
+    field.onChange(this::setChecked)
 }
 

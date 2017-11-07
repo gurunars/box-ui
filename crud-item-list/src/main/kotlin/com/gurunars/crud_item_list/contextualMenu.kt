@@ -1,12 +1,12 @@
 package com.gurunars.crud_item_list
 
+import android.content.ClipboardManager
 import android.content.Context
 import android.view.View
 import android.widget.RelativeLayout
 import com.gurunars.android_utils.iconView
 import com.gurunars.databinding.BindableField
 import com.gurunars.databinding.android.*
-import com.gurunars.databinding.branch
 import com.gurunars.databinding.field
 import com.gurunars.databinding.onChange
 import com.gurunars.item_list.Item
@@ -15,22 +15,22 @@ import org.jetbrains.anko.dip
 import org.jetbrains.anko.relativeLayout
 
 internal fun <ItemType : Item> Context.contextualMenu(
-    sortable: BindableField<Boolean>,
-    actionIcon: BindableField<IconColorBundle>,
+    sortable: Boolean,
+    actionIcon: IconColorBundle,
     items: BindableField<List<ItemType>>,
-    selectedItems: BindableField<Set<ItemType>>
+    selectedItems: BindableField<Set<ItemType>>,
+    serializer: ClipboardSerializer<ItemType>?
 ) = relativeLayout {
     fullSize()
     id = R.id.contextualMenu
 
-    fun configureIcon(icon: Int, init: View.() -> Unit) {
+    fun configureIcon(icon: Int, init: View.() -> Unit): BindableField<Boolean> {
         val enabled = true.field
-        val iconView = iconView(actionIcon.branch { icon(icon) }, enabled)
+        val iconView = iconView(actionIcon.icon(icon).field, enabled)
         iconView.add(this@relativeLayout)
         iconView.init()
         iconView.apply {
             (layoutParams as RelativeLayout.LayoutParams).apply {
-                topMargin = dip(5)
                 width = dip(45)
                 height = dip(45)
             }
@@ -48,12 +48,13 @@ internal fun <ItemType : Item> Context.contextualMenu(
                 }
             }
         }
+        return enabled
     }
 
     configureIcon(R.drawable.ic_move_up) {
         id = R.id.moveUp
         setTag(R.id.action, ActionMoveUp<ItemType>())
-        sortable.onChange { setIsVisible(it) }
+        setIsVisible(sortable)
         lparams {
             alignInParent(HorizontalAlignment.RIGHT)
             above(R.id.moveDown)
@@ -66,12 +67,13 @@ internal fun <ItemType : Item> Context.contextualMenu(
     configureIcon(R.drawable.ic_move_down) {
         id = R.id.moveDown
         setTag(R.id.action, ActionMoveDown<ItemType>())
-        sortable.onChange { setIsVisible(it) }
+        setIsVisible(sortable)
         lparams {
             alignInParent(
                 horizontalAlignment = HorizontalAlignment.RIGHT,
                 verticalAlignment = VerticalAlignment.BOTTOM
             )
+            topMargin = dip(5)
             bottomMargin = dip(85)
             leftMargin = dip(23)
             rightMargin = dip(23)
@@ -103,5 +105,49 @@ internal fun <ItemType : Item> Context.contextualMenu(
             bottomMargin = dip(23)
         }
     }
+
+    if (serializer == null) {
+        return@relativeLayout
+    }
+
+    configureIcon(R.drawable.ic_copy) {
+        id = R.id.copy
+        setTag(R.id.action, ActionCopyToClipboard(context, serializer))
+        lparams {
+            alignInParent(
+                horizontalAlignment = HorizontalAlignment.RIGHT,
+                verticalAlignment = VerticalAlignment.BOTTOM
+            )
+            rightMargin = dip(75)
+            bottomMargin = dip(75)
+        }
+    }
+
+    val pasteAction = ActionPasteFromClipboard(context, serializer)
+    val canPaste = configureIcon(R.drawable.ic_paste) {
+        id = R.id.paste
+        setTag(R.id.action, pasteAction)
+
+        lparams {
+            rightMargin = dip(-7)
+            bottomMargin = dip(-7)
+            alignWithRespectTo(R.id.copy, HorizontalPosition.LEFT_OF, VerticalPosition.ABOVE)
+        }
+    }
+
+    val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+
+    val onClipChange =  {
+        canPaste.set(pasteAction.canPerform(items.get(), selectedItems.get()))
+    }
+
+    addOnAttachStateChangeListener(object: View.OnAttachStateChangeListener {
+        override fun onViewDetachedFromWindow(v: View?) {
+            clipboard.removePrimaryClipChangedListener(onClipChange)
+        }
+        override fun onViewAttachedToWindow(v: View?) {
+            clipboard.addPrimaryClipChangedListener(onClipChange)
+        }
+    })
 
 }

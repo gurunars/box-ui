@@ -21,4 +21,6 @@
     <item name="hint" type="id" />
     <item name="crudItemListView" type="id" />
     <item name="formContent" type="id" />
+    <item name="copy" type="id" />
+    <item name="paste" type="id" />
 </resources>

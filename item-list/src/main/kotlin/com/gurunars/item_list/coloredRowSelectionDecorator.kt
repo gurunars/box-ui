@@ -25,10 +25,10 @@ fun <ItemType : Item> coloredRowSelectionDecorator(
     val newField = BindableField(field.get().item)
     return render(newField).apply {
         asRow()
-        field.onChange {
-            setTag(R.id.isSelected, it.isSelected)
-            setBackgroundColor(if (it.isSelected) selectionColor else regularColor)
-            newField.set(it.item, true)
+        field.onChange { item ->
+            setTag(R.id.isSelected, item.isSelected)
+            setBackgroundColor(if (item.isSelected) selectionColor else regularColor)
+            newField.set(item.item, true)
         }
     }
 }

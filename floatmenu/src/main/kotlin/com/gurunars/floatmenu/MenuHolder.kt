@@ -13,11 +13,11 @@ import com.gurunars.databinding.BindableField
 import com.gurunars.databinding.android.setIsVisible
 
 @SuppressLint("ViewConstructor")
-internal class MenuPane constructor(
+internal class MenuHolder constructor(
     context: Context,
     hasOverlay: BindableField<Boolean>,
     isVisible: BindableField<Boolean>,
-    animationDuration: BindableField<Int>
+    animationDuration: Int
 ) : FrameLayout(context) {
 
     init {
@@ -25,15 +25,15 @@ internal class MenuPane constructor(
         val floatEvaluator = FloatEvaluator()
         val animatedValue = BindableField(1f)
 
-        hasOverlay.onChange {
-            setBackgroundColor(if (it) Color.parseColor("#99000000") else Color.TRANSPARENT)
-            isClickable = it
+        hasOverlay.onChange { value ->
+            setBackgroundColor(if (value) Color.parseColor("#99000000") else Color.TRANSPARENT)
+            isClickable = value
         }
-        isVisible.onChange {
+        isVisible.onChange { _ ->
             if (isAttachedToWindow) {
                 ValueAnimator.ofFloat(0f, 1f).apply {
                     startDelay = 0
-                    duration = animationDuration.get().toLong()
+                    duration = animationDuration.toLong()
                     addUpdateListener { animatedValue.set(it.animatedValue as Float) }
                     start()
                 }
@@ -41,13 +41,13 @@ internal class MenuPane constructor(
                 animatedValue.set(1f, true)
             }
         }
-        animatedValue.onChange {
+        animatedValue.onChange { value ->
             val visible = isVisible.get()
-            alpha = floatEvaluator.evaluate(animatedValue.get(),
+            alpha = floatEvaluator.evaluate(value,
                 if (visible) 0f else 1f,
                 if (visible) 1f else 0f
             )
-            setIsVisible(visible || animatedValue.get() != 1f)
+            setIsVisible(visible || value != 1f)
         }
     }
 
