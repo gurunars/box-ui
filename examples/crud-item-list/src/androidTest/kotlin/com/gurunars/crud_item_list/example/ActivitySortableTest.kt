@@ -181,21 +181,6 @@ class ActivitySortableTest {
     }
 
     @Test
-    fun leftAndRightHandSwitch() {
-        atIndex(3).perform(longClick())
-        rotate()
-        onView(withId(R.id.contextualMenu)).check(matches(withContentDescription("RIGHT HANDED")))
-        openActionBarOverflowOrOptionsMenu(getInstrumentation().targetContext)
-        onView(withText("Left handed")).perform(click())
-        rotate()
-        onView(withId(R.id.contextualMenu)).check(matches(withContentDescription("LEFT HANDED")))
-        openActionBarOverflowOrOptionsMenu(getInstrumentation().targetContext)
-        onView(withText("Right handed")).perform(click())
-        rotate()
-        onView(withId(R.id.contextualMenu)).check(matches(withContentDescription("RIGHT HANDED")))
-    }
-
-    @Test
     fun testSelectMoveUpAndReset() {
         atIndex(1).perform(longClick())
         onView(withId(R.id.moveUp)).perform(click())

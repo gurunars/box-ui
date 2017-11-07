@@ -33,8 +33,6 @@ import org.jetbrains.anko.progressBar
  * opened. Clicking the icon closes the menu.
  * @param openIconColors Plus icon color settings. The icon is shown when the menu is closed.
  * Clicking the icon opens the creation menu
- * @param isLeftHanded If true all action buttons are show on the left side of the screen. They
- * are shown on the right side of the screen otherwise.
  * @param items A collection of items shown and manipulated by the view.
  * @param isOpen A flag specifying if the menu is open or closed. Be it a creation or contextual
  * one.
@@ -48,8 +46,7 @@ fun <ItemType : Item> Context.crudItemListView(
     confirmationActionColors: BindableField<IconColorBundle> = IconColorBundle().field,
     cancelActionColors: BindableField<IconColorBundle> = IconColorBundle().field,
     openIconColors: BindableField<IconColorBundle> = IconColorBundle().field,
-    isOpen: BindableField<Boolean> = false.field,
-    isLeftHanded: BindableField<Boolean> = false.field
+    isOpen: BindableField<Boolean> = false.field
 ): View = statefulComponent(R.id.crudItemListView, "CRUD ITEM LIST") {
     val selectedItems = BindableField<Set<ItemType>>(setOf())
     val itemInEdit: BindableField<ItemType?> = null.field
@@ -98,7 +95,6 @@ fun <ItemType : Item> Context.crudItemListView(
     val contextualMenu = contextualMenu(
         sortable,
         listActionColors,
-        isLeftHanded,
         items,
         selectedItems,
         // TODO: use double click?
@@ -115,8 +111,7 @@ fun <ItemType : Item> Context.crudItemListView(
 
     val creationMenu = creationMenu(
         groupedItemTypeDescriptors,
-        { itemInEdit.set(it) },
-        isLeftHanded
+        { itemInEdit.set(it) }
     )
 
     val itemListView = selectableItemListView(
@@ -165,7 +160,6 @@ fun <ItemType : Item> Context.crudItemListView(
         floatMenu(
             itemListView.field,
             knobView.field,
-            isLeftHanded = isLeftHanded,
             closeIcon = closeIcon,
             openIcon = openIcon,
             hasOverlay = hasOverlay,

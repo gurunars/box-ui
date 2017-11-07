@@ -23,7 +23,6 @@ class ActivityMain : Activity() {
     private val buttonColorFlag: BindableField<Boolean> =
         storage.storageField("buttonColorFlag", false)
     private val hasOverlay = storage.storageField("hasOverlay", true)
-    private val isLeftHanded = storage.storageField("isLeftHanded", false)
 
     private val isOpen = BindableField(false)
     private val notification = BindableField("")
@@ -124,7 +123,6 @@ class ActivityMain : Activity() {
                 icon = R.drawable.ic_menu_close
             ).field,
             hasOverlay = hasOverlay,
-            isLeftHanded = isLeftHanded,
             openIcon = openIcon
         ).setAsOne(this)
 
@@ -145,10 +143,8 @@ class ActivityMain : Activity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.reset -> {
-                isLeftHanded.set(false)
                 isOpen.set(false)
                 buttonColorFlag.set(false)
-                isLeftHanded.set(false)
                 hasOverlay.set(true)
                 return true
             }
@@ -162,10 +158,6 @@ class ActivityMain : Activity() {
             }
             R.id.toggleMenu -> {
                 isOpen.patch { !this }
-                return true
-            }
-            R.id.toggleHand -> {
-                isLeftHanded.set(!isLeftHanded.get())
                 return true
             }
             else -> return super.onOptionsItemSelected(item)

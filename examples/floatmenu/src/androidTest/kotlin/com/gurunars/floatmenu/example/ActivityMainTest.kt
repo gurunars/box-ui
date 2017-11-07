@@ -40,10 +40,8 @@ class ActivityMainTest {
         onView(withId(R.id.notificationView)).perform(longClick())
     }
 
-    private fun checkFab(iconDescription: String, menuContentDescription: String) {
-        fab().check(matches(withContentDescription(menuContentDescription)))
-        onView(withId(R.id.iconView)).check(matches(
-            withContentDescription(iconDescription)))
+    private fun checkFab(iconDescription: String) {
+        onView(withId(R.id.iconView)).check(matches(withContentDescription(iconDescription)))
     }
 
     @Before
@@ -55,13 +53,13 @@ class ActivityMainTest {
     @Test
     fun clickingFab_shouldOpenAndCloseMenu() {
         rotate()
-        checkFab("|BG:${Color.YELLOW}|IC:${Color.BLACK}", "LH:false")
+        checkFab("|BG:${Color.YELLOW}|IC:${Color.BLACK}")
         fab().perform(click())
         rotate()
-        checkFab("|BG:${Color.WHITE}|IC:${Color.BLACK}", "LH:false")
+        checkFab("|BG:${Color.WHITE}|IC:${Color.BLACK}")
         fab().perform(click())
         rotate()
-        checkFab("|BG:${Color.YELLOW}|IC:${Color.BLACK}", "LH:false")
+        checkFab("|BG:${Color.YELLOW}|IC:${Color.BLACK}")
     }
 
     @Test
@@ -84,7 +82,7 @@ class ActivityMainTest {
         openActionBarOverflowOrOptionsMenu(getInstrumentation().targetContext)
         onView(withText("Toggle button color")).perform(click())
         rotate()
-        checkFab("|BG:${Color.RED}|IC:${Color.WHITE}", "LH:false")
+        checkFab("|BG:${Color.RED}|IC:${Color.WHITE}")
     }
 
     private fun toggleBg() {
@@ -115,14 +113,6 @@ class ActivityMainTest {
         rotate()
         onView(withId(R.id.buttonFrame)).perform(click())
         checkNotification("Menu Button Frame Clicked")
-    }
-
-    @Test
-    fun togglingLeftHand_shouldChangeTheProperties() {
-        openActionBarOverflowOrOptionsMenu(getInstrumentation().targetContext)
-        onView(withText("Toggle left/right hand")).perform(click())
-        rotate()
-        checkFab("|BG:${Color.YELLOW}|IC:${Color.BLACK}", "LH:true")
     }
 
 }

@@ -1,6 +1,5 @@
 package com.gurunars.crud_item_list
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.view.Gravity
 import com.gurunars.android_utils.iconView
@@ -13,29 +12,17 @@ import org.jetbrains.anko.*
 
 internal fun <ItemType : Item> Context.creationMenu(
     groupedItemTypeDescriptors: BindableField<List<List<ItemTypeDescriptor<ItemType>>>>,
-    onEdit: (item: ItemType) -> Unit,
-    isLeftHanded: BindableField<Boolean>
+    onEdit: (item: ItemType) -> Unit
 ) = verticalLayout {
     fullSize()
     bottomPadding = dip(85)
     gravity = Gravity.BOTTOM
-    isLeftHanded.onChange {
-        leftPadding = dip(0)
-        rightPadding = dip(0)
-        if (it) {
-            leftPadding = dip(23)
-        } else {
-            rightPadding = dip(23)
-        }
-    }
+    rightPadding = dip(23)
     groupedItemTypeDescriptors.onChange {
         removeAllViews()
         it.forEach { group ->
             linearLayout {
-                isLeftHanded.onChange {
-                    @SuppressLint("RtlHardcoded")
-                    gravity = (if (it) Gravity.LEFT else Gravity.RIGHT)
-                }
+                gravity = Gravity.END
                 group.forEach { action ->
                     iconView(icon = action.icon.field).add(this) {
                         tag = action.type.name

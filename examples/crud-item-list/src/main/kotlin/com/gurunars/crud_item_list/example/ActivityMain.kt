@@ -95,10 +95,9 @@ class ActivityMain : Activity() {
 
     private val storage = PersistentStorage(this, "main")
 
-    private val isLeftHanded = storage.storageField("isLeftHanded", false)
     private val isSortable = storage.storageField("isSortable", true)
     private val items: BindableField<List<AnimalItem>> =
-        storage.storageField("items", listOf<AnimalItem>())
+        storage.storageField("items", listOf())
     private val count = storage.storageField("count", 0)
 
     private fun getType(i: Int, sortable: Boolean): AnimalItem.Type {
@@ -196,7 +195,6 @@ class ActivityMain : Activity() {
             ).field,
             isOpen=isOpen,
             items=items,
-            isLeftHanded = isLeftHanded,
             sortable = sortable.field,
             groupedItemTypeDescriptors = descriptors.field
         ).setAsOne(this)
@@ -224,8 +222,6 @@ class ActivityMain : Activity() {
         }
 
         when (i) {
-            R.id.leftHanded -> isLeftHanded.set(true)
-            R.id.rightHanded -> isLeftHanded.set(false)
             R.id.reset -> addItems(4, isSortable.get(), true)
             R.id.lock -> setSortable(false)
             R.id.unlock -> setSortable(true)

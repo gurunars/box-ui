@@ -17,8 +17,6 @@ import org.jetbrains.anko.*
  * @param menuView View shown in the foreground layer of the widget when the menu is open.
  * Is supposed to contain menu's controls.
  * @param animationDuration Time it takes to perform all the animated UI transitions.
- * @param isLeftHanded If **true** - is on the left side of the screen. On the right side
- * otherwise.
  * @param isOpen If **true** contents are visible. Menu contents are hidden otherwise.
  * @param openIcon Icon associated with the open state of the menu. Shown when the menu is
  * closed.
@@ -32,7 +30,6 @@ fun Context.floatMenu(
     contentView: BindableField<View>,
     menuView: BindableField<View>,
     animationDuration: BindableField<Int> = 400.field,
-    isLeftHanded: BindableField<Boolean> = false.field,
     isOpen: BindableField<Boolean> = false.field,
     openIcon: BindableField<Icon> = Icon(icon = R.drawable.ic_menu).field,
     closeIcon: BindableField<Icon> = Icon(icon = R.drawable.ic_menu_close).field,
@@ -52,16 +49,12 @@ fun Context.floatMenu(
         }.fullSize()
         context.fab(animationDuration, openIcon, closeIcon, isOpen).add(this) {
             id = R.id.openFab
-            isLeftHanded.onChange { contentDescription = "LH:" + it }
         }.lparams {
             margin = dip(16)
             width = dip(60)
             height = dip(60)
             alignParentBottom()
-            isLeftHanded.onChange {
-                alignInParent(if (it) HorizontalAlignment.LEFT else HorizontalAlignment.RIGHT)
-                requestLayout()
-            }
+            alignInParent(HorizontalAlignment.RIGHT)
         }
     }
 }
