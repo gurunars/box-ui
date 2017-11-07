@@ -93,12 +93,15 @@ fun <ItemType : Item> Context.crudItemListView(
         }
     )
 
+    // TODO: move it to be external?
+    // OR: add an extra section for the insides
     val contextualMenu = contextualMenu(
         sortable,
         listActionColors,
         isLeftHanded,
         items,
         selectedItems,
+        // TODO: use double click?
         { itemInEdit.set(it) }
     )
 
