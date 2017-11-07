@@ -16,7 +16,7 @@ import com.gurunars.databinding.onChange
 import org.jetbrains.anko.frameLayout
 
 internal fun Context.fab(
-    rotationDuration: BindableField<Int>,
+    rotationDuration: Int,
     openIcon: BindableField<Icon>,
     closeIcon: BindableField<Icon>,
     isActivated: BindableField<Boolean>
@@ -66,7 +66,7 @@ internal fun Context.fab(
         if (isAttachedToWindow) {
             ValueAnimator.ofFloat(0f, 1f).apply {
                 startDelay = 0
-                duration = rotationDuration.get().toLong()
+                duration = rotationDuration.toLong()
                 addUpdateListener { animatedValue.set(it.animatedValue as Float) }
                 start()
             }

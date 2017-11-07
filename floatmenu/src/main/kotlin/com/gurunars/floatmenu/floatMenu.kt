@@ -9,6 +9,26 @@ import com.gurunars.databinding.field
 import org.jetbrains.anko.*
 
 /**
+ * An aggregation of view an an icon that controls its visibility in the menu.
+ *
+ * @property view View to be shown in float menu
+ * @property icon FAB icon to be shown when the view is visible
+ */
+interface ContentView {
+    val view: View
+    val icon: Icon
+}
+
+/**
+ * Content view to be show when the menu is open.
+ *
+ * @property hasOverlay if false - a view below will be clickable
+ */
+interface MenuView: ContentView {
+    val hasOverlay: Boolean
+}
+
+/**
  * Floating menu available via a
  * [FAB](https://material.google.com/components/buttons-floating-action-button.html)
  *
@@ -18,34 +38,42 @@ import org.jetbrains.anko.*
  * Is supposed to contain menu's controls.
  * @param animationDuration Time it takes to perform all the animated UI transitions.
  * @param isOpen If **true** contents are visible. Menu contents are hidden otherwise.
- * @param openIcon Icon associated with the open state of the menu. Shown when the menu is
- * closed.
- * @param closeIcon Icon associated with the closed state of the menu. Show when the menu is
- * open.
  * @param hasOverlay If **true** the menu has a shaded background that intercepts clicks.
  * If **false** - the menu does not intercept clicks and passes them to the content area.
  * The flag does not affect clickable elements that are located inside the menu though.
  */
 fun Context.floatMenu(
-    contentView: BindableField<View>,
-    menuView: BindableField<View>,
-    animationDuration: BindableField<Int> = 400.field,
-    isOpen: BindableField<Boolean> = false.field,
-    openIcon: BindableField<Icon> = Icon(icon = R.drawable.ic_menu).field,
-    closeIcon: BindableField<Icon> = Icon(icon = R.drawable.ic_menu_close).field,
-    hasOverlay: BindableField<Boolean> = true.field
+    contentView: ContentView,
+    menuView: MenuView,
+    animationDuration: Int = 400,
+    isOpen: BindableField<Boolean> = false.field
 ): View = statefulComponent(R.id.floatMenu, "FLOAT MENU") {
     retain(isOpen)
+
+    val openIcon = contentView.icon.field
+    val closeIcon = menuView.icon.field
+    val hasOverlay = menuView.hasOverlay.field
+
+    isOpen.onChange {
+        if (it) {
+            hasOverlay.set(menuView.hasOverlay)
+            closeIcon.set(menuView.icon)
+        } else {
+            openIcon.set(contentView.icon)
+        }
+    }
+
     relativeLayout {
         fullSize()
         frameLayout {
             id = R.id.contentPane
-            contentView.onChange { it.setAsOne(this) }
+            contentView.view.setAsOne(this)
         }.fullSize()
+
         MenuPane(context, hasOverlay, isOpen, animationDuration).add(this) {
             id = R.id.menuPane
             isClickable = true
-            menuView.onChange { it.setAsOne(this) }
+            menuView.view.setAsOne(this)
         }.fullSize()
         context.fab(animationDuration, openIcon, closeIcon, isOpen).add(this) {
             id = R.id.openFab

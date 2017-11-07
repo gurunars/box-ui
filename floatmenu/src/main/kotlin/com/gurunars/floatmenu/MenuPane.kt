@@ -17,7 +17,7 @@ internal class MenuPane constructor(
     context: Context,
     hasOverlay: BindableField<Boolean>,
     isVisible: BindableField<Boolean>,
-    animationDuration: BindableField<Int>
+    animationDuration: Int
 ) : FrameLayout(context) {
 
     init {
@@ -33,7 +33,7 @@ internal class MenuPane constructor(
             if (isAttachedToWindow) {
                 ValueAnimator.ofFloat(0f, 1f).apply {
                     startDelay = 0
-                    duration = animationDuration.get().toLong()
+                    duration = animationDuration.toLong()
                     addUpdateListener { animatedValue.set(it.animatedValue as Float) }
                     start()
                 }

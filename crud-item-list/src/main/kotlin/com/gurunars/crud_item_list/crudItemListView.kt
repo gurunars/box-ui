@@ -25,10 +25,7 @@ import org.jetbrains.anko.progressBar
  *
  * @param ItemType type of the item to be shown in the list
  * @param emptyViewBinder a function returning a view to be shown when the list is empty
- * @param sortable If false move up and move down buttons are hidden.
  * @param groupedItemTypeDescriptors a collection of item type descriptors
- * @param listActionColors Color of the icons meant to manipulate the collection of items in the
- * contextual menu.
  * @param confirmationActionColors Check mark icon color settings. The icon is shown when contextual
  * menu is opened. Clicking the icon closes contextual menu.
  * @param cancelActionColors Cross icon color settings. The icon is shown when creation menu is
@@ -38,32 +35,35 @@ import org.jetbrains.anko.progressBar
  * @param items A collection of items shown and manipulated by the view.
  * @param isOpen A flag specifying if the menu is open or closed. Be it a creation or contextual
  * one.
+ * @param renderContextualMenu A function that returns a contextual menu to manipulate a set of
+ * selected items.
  */
 fun <ItemType : Item> Context.crudItemListView(
-    groupedItemTypeDescriptors: BindableField<List<List<ItemTypeDescriptor<ItemType>>>>,
+    renderContextualMenu: (
+        items: BindableField<List<ItemType>>,
+        selectedItems: BindableField<Set<ItemType>>
+    ) -> View,
+    groupedItemTypeDescriptors: List<List<ItemTypeDescriptor<ItemType>>>,
+    emptyViewBinder: EmptyViewBinder = this::defaultBindEmpty,
+    confirmationActionColors: IconColorBundle = IconColorBundle(),
+    cancelActionColors: IconColorBundle = IconColorBundle(),
+    openIconColors: IconColorBundle = IconColorBundle(),
     items: BindableField<List<ItemType>>,
-    emptyViewBinder: BindableField<EmptyViewBinder> = this::defaultBindEmpty.field,
-    sortable: BindableField<Boolean> = true.field,
-    listActionColors: BindableField<IconColorBundle> = IconColorBundle().field,
-    confirmationActionColors: BindableField<IconColorBundle> = IconColorBundle().field,
-    cancelActionColors: BindableField<IconColorBundle> = IconColorBundle().field,
-    openIconColors: BindableField<IconColorBundle> = IconColorBundle().field,
     isOpen: BindableField<Boolean> = false.field
 ): View = statefulComponent(R.id.crudItemListView, "CRUD ITEM LIST") {
     val selectedItems = BindableField<Set<ItemType>>(setOf())
     val itemInEdit: BindableField<ItemType?> = null.field
     val selectedView = ViewMode.CREATION.field
-    val creationCloseIcon = cancelActionColors.branch { icon(R.drawable.ic_menu_close) }
-    val contextualCloseIcon = confirmationActionColors.branch { icon(R.drawable.ic_check) }
-    val openIcon = openIconColors.branch { icon(R.drawable.ic_plus) }
-    val closeIcon = creationCloseIcon.get().field
+    val creationCloseIcon = cancelActionColors.icon(R.drawable.ic_menu_close)
+    val contextualCloseIcon = confirmationActionColors.icon(R.drawable.ic_check)
+    val openIcon = openIconColors.icon(R.drawable.ic_plus)
+    val closeIcon = creationCloseIcon.field
     val hasOverlay = true.field
 
-    val typeCache = groupedItemTypeDescriptors.branch {
+    val typeCache = groupedItemTypeDescriptors.
         flatten().map {
             Pair(it.type, it)
         }.toMap()
-    }
 
     val itemForm = context.frameLayout {
         fullSize()
@@ -80,21 +80,19 @@ fun <ItemType : Item> Context.crudItemListView(
         isOpen,
         itemInEdit,
         selectedView,
-        itemTypes = typeCache.branch { keys },
-        loadItem = { typeCache.get()[it]!!.createNewItem() },
+        itemTypes = typeCache,
+        loadItem = { typeCache[it]!!.createNewItem() },
         bindForm = {
             itemForm(
                 it,
                 ::onSave,
                 confirmationActionColors,
-                typeCache.get()[it.type]!!
+                typeCache[it.type]!!
             ).set(R.id.formContent, itemForm)
         }
     )
 
-    val contextualMenu = contextualMenu(
-        sortable,
-        listActionColors,
+    val contextualMenu = renderContextualMenu(
         items,
         selectedItems
     )
@@ -115,7 +113,7 @@ fun <ItemType : Item> Context.crudItemListView(
     val itemListView = selectableItemListView(
         items = items,
         selectedItems = selectedItems,
-        itemViewBinders = groupedItemTypeDescriptors.branch {
+        itemViewBinders = groupedItemTypeDescriptors.
             flatten().map {
                 Pair(it.type,
                     { item: BindableField<SelectableItem<ItemType>> -> it.bindRow(item).apply {
@@ -131,8 +129,7 @@ fun <ItemType : Item> Context.crudItemListView(
                         setOnTouchListener( { v, event -> doubleTapDetector.onTouchEvent(event) })
                     } }
                 )
-            }.toMap()
-        },
+            }.toMap(),
         emptyViewBinder = emptyViewBinder
     )
 
@@ -169,9 +166,6 @@ fun <ItemType : Item> Context.crudItemListView(
         floatMenu(
             itemListView.field,
             knobView.field,
-            closeIcon = closeIcon,
-            openIcon = openIcon,
-            hasOverlay = hasOverlay,
             isOpen = isOpen
         ).set(R.id.contentPane, this)
     }
