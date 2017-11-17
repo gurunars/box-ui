@@ -13,7 +13,6 @@ import com.gurunars.databinding.android.set
 import com.gurunars.databinding.android.statefulView
 import com.gurunars.databinding.field
 import com.gurunars.floatmenu.*
-import com.gurunars.floatmenu.State
 import com.gurunars.item_list.*
 import org.jetbrains.anko.dip
 import org.jetbrains.anko.frameLayout
@@ -148,13 +147,13 @@ fun <ItemType : Item> Context.crudItemListView(
     val menuPane: BindableField<MenuPane> = MenuArea(ViewMode.EMPTY).field
 
     FloatMenu(contentArea.field, menuPane).apply {
-        state.onChange { it ->
+        isOpen.onChange { it ->
             // Transition the state machine when the UI animation starts, not when it ends
             // to avoid state sync issues if the animation takes too much time
-            if (it == State.CLOSING) {
-                stateMachine.close()
-            } else if (it == State.OPENING) {
+            if (it) {
                 stateMachine.openCreationMenu()
+            } else {
+                stateMachine.close()
             }
         }
         stateMachine.state.onChange { it ->
@@ -162,9 +161,9 @@ fun <ItemType : Item> Context.crudItemListView(
             // ugly screen changes
             if (it.isOpen) {
                 menuPane.set(MenuArea(it.viewMode))
-                open()
+                isOpen.set(true)
             } else {
-                close()
+                isOpen.set(false)
             }
         }
     }.set(this, R.id.contentPane) {

@@ -8,13 +8,10 @@ import android.view.Gravity
 import android.view.Menu
 import android.view.MenuItem
 import com.gurunars.android_utils.Icon
-import com.gurunars.databinding.BindableField
+import com.gurunars.databinding.*
 import com.gurunars.databinding.android.asRow
 import com.gurunars.databinding.android.fullSize
 import com.gurunars.databinding.android.setAsOne
-import com.gurunars.databinding.branch
-import com.gurunars.databinding.field
-import com.gurunars.databinding.patch
 import com.gurunars.floatmenu.*
 import com.gurunars.storage.PersistentStorage
 import org.jetbrains.anko.*
@@ -123,7 +120,7 @@ class ActivityMain : Activity() {
             contentArea,
             hasOverlay.branch { MenuArea(this) }
         ).apply {
-            bind(isOpen)
+            isOpen.bind(isOpen)
         }.setAsOne(this)
 
         storage.load()

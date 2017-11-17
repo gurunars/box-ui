@@ -27,10 +27,6 @@ interface MenuPane: ContentPane {
     val hasOverlay: Boolean
 }
 
-enum class State {
-    OPEN, OPENING, CLOSING, CLOSED
-}
-
 /**
  * Floating menu available via a
  * [FAB](https://material.google.com/components/buttons-floating-action-button.html)
@@ -46,28 +42,7 @@ class FloatMenu(
     private val menuPane: BindableField<MenuPane>,
     private val animationDuration: Int = 400
 ): Component {
-    private val _state = BindableField(State.CLOSED)
-    private val isOpen = BindableField(false)
-
-    val state: Observable<State> = _state
-
-    fun open() = isOpen.set(true)
-
-    fun close() = isOpen.set(false)
-
-    private fun transit(interm: State, target: State) {
-        _state.set(interm)
-        Handler().postDelayed({ _state.set(target) }, animationDuration.toLong())
-    }
-
-    init {
-        isOpen.onChange { value ->
-            when {
-                value -> transit(State.OPENING, State.OPEN)
-                else -> transit(State.CLOSING, State.CLOSED)
-            }
-        }
-    }
+    val isOpen = BindableField(false)
 
     override fun Context.render() = statefulView(R.id.floatMenu, "FLOAT MENU") {
         retain(isOpen)
@@ -106,23 +81,6 @@ class FloatMenu(
                 alignParentBottom()
                 alignInParent(HorizontalAlignment.RIGHT)
             }
-        }
-    }
-}
-
-fun FloatMenu.bind(isOpen: BindableField<Boolean>) {
-    isOpen.onChange { it ->
-        if (it) {
-            open()
-        } else {
-            close()
-        }
-    }
-    state.onChange { it ->
-        if (it == State.OPEN) {
-            isOpen.set(true)
-        } else if (it == State.CLOSED) {
-            isOpen.set(false)
         }
     }
 }
