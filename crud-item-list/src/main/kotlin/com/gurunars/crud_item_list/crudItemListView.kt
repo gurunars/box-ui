@@ -147,11 +147,10 @@ fun <ItemType : Item> Context.crudItemListView(
 
     val menuPane: BindableField<MenuPane> = MenuArea(ViewMode.EMPTY).field
 
-    FloatMenu(
-        contentArea.field,
-        menuPane
-    ).apply {
+    FloatMenu(contentArea.field, menuPane).apply {
         state.onChange { it ->
+            // Transition the state machine when the UI animation starts, not when it ends
+            // to avoid state sync issues if the animation takes too much time
             if (it == State.CLOSING) {
                 stateMachine.close()
             } else if (it == State.OPENING) {
@@ -159,6 +158,8 @@ fun <ItemType : Item> Context.crudItemListView(
             }
         }
         stateMachine.state.onChange { it ->
+            // View mode changes are allowed only when the menu is open to prevent
+            // ugly screen changes
             if (it.isOpen) {
                 menuPane.set(MenuArea(it.viewMode))
                 open()
