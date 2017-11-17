@@ -179,6 +179,7 @@ class ActivityMain : Activity() {
                 AnimalItem.Type.MONKEY).oneOf()
         }
 
+        // TODO: the glitch is due to infinite loop here (onChange -> set)
         items.onChange { it ->
             var newCount = count.get()
             val newItems = mutableListOf<AnimalItem>()

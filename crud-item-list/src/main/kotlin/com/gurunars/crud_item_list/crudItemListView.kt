@@ -6,14 +6,11 @@ import android.view.Gravity
 import android.view.MotionEvent
 import android.view.View
 import com.gurunars.android_utils.Icon
-import com.gurunars.databinding.BindableField
+import com.gurunars.databinding.*
 import com.gurunars.databinding.android.fullSize
 import com.gurunars.databinding.android.onLongClick
 import com.gurunars.databinding.android.set
 import com.gurunars.databinding.android.statefulView
-import com.gurunars.databinding.bind
-import com.gurunars.databinding.branch
-import com.gurunars.databinding.field
 import com.gurunars.floatmenu.*
 import com.gurunars.item_list.*
 import org.jetbrains.anko.dip
@@ -53,30 +50,31 @@ fun <ItemType : Item> Context.crudItemListView(
         Pair(it.type, it)
     }.toMap()
 
-    val stateMachine = StateMachine(
-        itemTypes = typeCache.keys,
-        loadItem = { typeCache[it]!!.createNewItem() }
-    ).apply {
-        retain(state)
-    }
-
     val itemForm = context.frameLayout {
         fullSize()
         id = R.id.itemForm
     }
 
-    stateMachine.itemInEdit.onChange { it ->
-        if (it != null) {
-            itemForm(
-                it,
-                { item ->
-                    items.set(processItemInEdit(item, items.get()))
-                    stateMachine.isOpen.set(false)
-                },
-                confirmationActionColors,
-                typeCache[it.type]!!
-            ).set(itemForm, R.id.formContent)
-        }
+    val isOpen = false.field
+
+    fun openForm(item: ItemType) {
+        itemForm(
+            item,
+            { it ->
+                isOpen.set(false)
+                items.patch { processItemInEdit(it, this) }
+            },
+            confirmationActionColors,
+            typeCache[item.type]!!
+        ).set(itemForm, R.id.formContent)
+    }
+
+    val stateMachine = StateMachine(
+        openForm = ::openForm,
+        itemTypes = typeCache
+    ).apply {
+        this.isOpen.bind(isOpen)
+        retain(state)
     }
 
     val contextualMenu = contextualMenu(
@@ -97,7 +95,7 @@ fun <ItemType : Item> Context.crudItemListView(
 
     val creationMenu = creationMenu(
         groupedItemTypeDescriptors,
-        { stateMachine.itemInEdit.set(it) }
+        { stateMachine.loadType(it) }
     )
 
     val itemListView = selectableItemListView(
@@ -112,7 +110,7 @@ fun <ItemType : Item> Context.crudItemListView(
                             this@crudItemListView,
                             object : GestureDetector.SimpleOnGestureListener() {
                                 override fun onDoubleTap(e: MotionEvent?): Boolean {
-                                    stateMachine.itemInEdit.set(item.get().item)
+                                    stateMachine.loadItem(item.get().item)
                                     return true
                                 }
                             }
@@ -146,17 +144,10 @@ fun <ItemType : Item> Context.crudItemListView(
         override val hasOverlay = viewMode.hasOverlay
     }
 
-    val menuPane: BindableField<MenuPane> = MenuArea(ViewMode.EMPTY).field
-
-    FloatMenu(contentArea.field, menuPane).apply {
-        isOpen.bind(stateMachine.isOpen)
-        stateMachine.state.onChange { it ->
-            // View mode changes are allowed only when the menu is open to prevent
-            // ugly screen changes
-            if (it.isOpen) {
-                menuPane.set(MenuArea(it.viewMode))
-            }
-        }
+    FloatMenu(contentArea.field, stateMachine.viewMode.branch {
+        MenuArea(this)
+    }).apply {
+        this.isOpen.bind(stateMachine.isOpen)
     }.set(this, R.id.contentPane) {
         findViewById<View>(floatR.id.openFab).onLongClick {
             stateMachine.openExplicitContextualMenu()

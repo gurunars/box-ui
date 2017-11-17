@@ -10,6 +10,7 @@ package com.gurunars.databinding
 class BindableField<Type>(private var value: Type): Observable<Type> {
 
     private val listeners: MutableList<Listener<Type>> = mutableListOf()
+    private var prevValue: Type = value
 
     /**
      * Subscribe to changes.
@@ -32,6 +33,11 @@ class BindableField<Type>(private var value: Type): Observable<Type> {
         listener(this.value, this.value)
     }
 
+    private fun notifyListeners()
+        = listeners.forEach {
+            it.invoke(this.prevValue, this.value)
+        }
+
     /**
      * Change fields content to a new value. The change is made only if current and new values
      * actually differ content-wise.
@@ -41,9 +47,9 @@ class BindableField<Type>(private var value: Type): Observable<Type> {
      */
     fun set(value: Type, force: Boolean = false) {
         if (force || !equal(this.value, value)) {
-            val prevValue = this.value
+            this.prevValue = this.value
             this.value = value
-            listeners.forEach { it.invoke(prevValue, value) }
+            notifyListeners()
         }
     }
 

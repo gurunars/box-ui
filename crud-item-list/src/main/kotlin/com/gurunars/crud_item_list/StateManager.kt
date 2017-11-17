@@ -1,5 +1,6 @@
 package com.gurunars.crud_item_list
 
+import android.util.Log
 import com.gurunars.databinding.BindableField
 import com.gurunars.databinding.branch
 import com.gurunars.databinding.field
@@ -14,7 +15,7 @@ internal enum class ViewMode(val hasOverlay: Boolean = true) {
     LOADING
 }
 
-data class State<ItemType : Item>(
+data class State<out ItemType : Item>(
     val isCreationMode: Boolean = false,
     val explicitContextual: Boolean = false,
     val itemTypeInLoad: Enum<*>? = null,
@@ -27,24 +28,24 @@ data class State<ItemType : Item>(
 
     internal val viewMode: ViewMode
         get() {
-            if (itemInEdit != null) {
-                return ViewMode.FORM
+            return if (itemInEdit != null) {
+                ViewMode.FORM
             } else if (itemTypeInLoad != null) {
-                return ViewMode.LOADING
+                ViewMode.LOADING
             } else if (explicitContextual || selectedItems.isNotEmpty()) {
-                return ViewMode.CONTEXTUAL
+                ViewMode.CONTEXTUAL
             } else if (isCreationMode) {
-                return ViewMode.CREATION
+                ViewMode.CREATION
             } else {
-                return ViewMode.EMPTY
+                ViewMode.EMPTY
             }
         }
 
 }
 
 internal class StateMachine<ItemType : Item>(
-    private val itemTypes: Collection<Enum<*>>,
-    private val loadItem: (itemType: Enum<*>) -> ItemType,
+    private val openForm: (item: ItemType) -> Unit,
+    private val itemTypes: Map<Enum<*>, ItemTypeDescriptor<ItemType>>,
     private val asyncWrapper: (
         supplier: () -> ItemType,
         consumer: (item: ItemType) -> Unit
@@ -57,8 +58,8 @@ internal class StateMachine<ItemType : Item>(
 
     val isOpen = false.field
 
-    val itemInEdit: BindableField<ItemType?> =
-        state.branch({ itemInEdit }, { copy(itemInEdit = it) })
+    val viewMode = ViewMode.EMPTY.field
+
     val selectedItems: BindableField<Set<ItemType>> =
         state.branch({ selectedItems }, { copy(selectedItems = it) })
 
@@ -78,7 +79,15 @@ internal class StateMachine<ItemType : Item>(
                 loadType(value.itemTypeInLoad)
             }
             if (value.viewMode == ViewMode.CREATION && itemTypes.size == 1) {
-                loadType(itemTypes.first())
+                loadType(itemTypes.keys.first())
+            }
+            if (value.itemInEdit != null) {
+                openForm(value.itemInEdit)
+            }
+            // View mode changes are allowed only when the menu is open to prevent
+            // ugly screen changes
+            if (value.isOpen) {
+                viewMode.set(value.viewMode)
             }
         }
         isOpen.onChange { it ->
@@ -90,17 +99,15 @@ internal class StateMachine<ItemType : Item>(
         }
     }
 
-    private fun loadType(itemType: Enum<*>) {
-        asyncWrapper({
-            loadItem(itemType)
-        }, {
-            state.patch {
-                copy(
-                    itemInEdit = it,
-                    itemTypeInLoad = null
-                )
-            }
-        })
-    }
+    fun loadItem(item: ItemType)
+        = state.patch {
+            copy(
+                itemInEdit = item,
+                itemTypeInLoad = null
+            )
+        }
+
+    fun loadType(itemType: Enum<*>)
+        = asyncWrapper({ itemTypes[itemType]!!.createNewItem() }, this::loadItem)
 
 }

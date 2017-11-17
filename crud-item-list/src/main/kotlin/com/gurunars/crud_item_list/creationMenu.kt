@@ -11,7 +11,7 @@ import org.jetbrains.anko.*
 
 internal fun <ItemType : Item> Context.creationMenu(
     groupedItemTypeDescriptors: List<List<ItemTypeDescriptor<ItemType>>>,
-    onEdit: (item: ItemType) -> Unit
+    onEditItemType: (itemType: Enum<*>) -> Unit
 ) = verticalLayout {
     fullSize()
     bottomPadding = dip(85)
@@ -24,11 +24,7 @@ internal fun <ItemType : Item> Context.creationMenu(
                 iconView(icon = action.icon.field).add(this) {
                     tag = action.type.name
                     setOnClickListener {
-                        // TODO: Add some sort of progress bar to prevent some accidental UI actions
-                        asyncChain(
-                            action::createNewItem,
-                            onEdit
-                        )
+                        onEditItemType(action.type)
                     }
                 }.lparams {
                     width = dip(45)
