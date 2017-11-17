@@ -55,6 +55,8 @@ internal class StateMachine<ItemType : Item>(
 
     val state = State<ItemType>().field
 
+    val isOpen = false.field
+
     val itemInEdit: BindableField<ItemType?> =
         state.branch({ itemInEdit }, { copy(itemInEdit = it) })
     val selectedItems: BindableField<Set<ItemType>> =
@@ -68,18 +70,22 @@ internal class StateMachine<ItemType : Item>(
 
     fun openExplicitContextualMenu()
         = openWithState(State(explicitContextual = true))
-    fun openCreationMenu()
-        = openWithState(State(isCreationMode = true))
-
-    fun close() = state.set(State())
 
     init {
         state.onChange { value ->
+            isOpen.set(value.isOpen)
             if (value.itemTypeInLoad != null) {
                 loadType(value.itemTypeInLoad)
             }
             if (value.viewMode == ViewMode.CREATION && itemTypes.size == 1) {
                 loadType(itemTypes.first())
+            }
+        }
+        isOpen.onChange { it ->
+            if (it) {
+                openWithState(State(isCreationMode = true))
+            } else {
+                state.set(State())
             }
         }
     }

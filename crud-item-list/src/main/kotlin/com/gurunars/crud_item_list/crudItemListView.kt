@@ -11,6 +11,8 @@ import com.gurunars.databinding.android.fullSize
 import com.gurunars.databinding.android.onLongClick
 import com.gurunars.databinding.android.set
 import com.gurunars.databinding.android.statefulView
+import com.gurunars.databinding.bind
+import com.gurunars.databinding.branch
 import com.gurunars.databinding.field
 import com.gurunars.floatmenu.*
 import com.gurunars.item_list.*
@@ -69,7 +71,7 @@ fun <ItemType : Item> Context.crudItemListView(
                 it,
                 { item ->
                     items.set(processItemInEdit(item, items.get()))
-                    stateMachine.close()
+                    stateMachine.isOpen.set(false)
                 },
                 confirmationActionColors,
                 typeCache[it.type]!!
@@ -147,23 +149,12 @@ fun <ItemType : Item> Context.crudItemListView(
     val menuPane: BindableField<MenuPane> = MenuArea(ViewMode.EMPTY).field
 
     FloatMenu(contentArea.field, menuPane).apply {
-        isOpen.onChange { it ->
-            // Transition the state machine when the UI animation starts, not when it ends
-            // to avoid state sync issues if the animation takes too much time
-            if (it) {
-                stateMachine.openCreationMenu()
-            } else {
-                stateMachine.close()
-            }
-        }
+        isOpen.bind(stateMachine.isOpen)
         stateMachine.state.onChange { it ->
             // View mode changes are allowed only when the menu is open to prevent
             // ugly screen changes
             if (it.isOpen) {
                 menuPane.set(MenuArea(it.viewMode))
-                isOpen.set(true)
-            } else {
-                isOpen.set(false)
             }
         }
     }.set(this, R.id.contentPane) {
