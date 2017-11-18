@@ -1,9 +1,7 @@
 package com.gurunars.crud_item_list
 
 import android.content.Context
-import android.view.GestureDetector
 import android.view.Gravity
-import android.view.MotionEvent
 import android.view.View
 import com.gurunars.android_utils.Icon
 import com.gurunars.databinding.*
@@ -78,6 +76,7 @@ fun <ItemType : Item> Context.crudItemListView(
     }
 
     val contextualMenu = contextualMenu(
+        stateMachine::loadItem,
         sortable,
         actionIconColors,
         items,
@@ -101,23 +100,10 @@ fun <ItemType : Item> Context.crudItemListView(
     val itemListView = selectableItemListView(
         items = items,
         selectedItems = stateMachine.selectedItems,
-        itemViewBinders = groupedItemTypeDescriptors.
-            flatten().map {
-            Pair(it.type,
-                { item: BindableField<SelectableItem<ItemType>> ->
-                    it.bindRow(item).apply {
-                        val doubleTapDetector = GestureDetector(
-                            this@crudItemListView,
-                            object : GestureDetector.SimpleOnGestureListener() {
-                                override fun onDoubleTap(e: MotionEvent?): Boolean {
-                                    stateMachine.loadItem(item.get().item)
-                                    return true
-                                }
-                            }
-                        )
-                        setOnTouchListener({ _, event -> doubleTapDetector.onTouchEvent(event) })
-                    }
-                }
+        itemViewBinders = groupedItemTypeDescriptors.flatten().map {
+            Pair(
+                it.type,
+                { item: BindableField<SelectableItem<ItemType>> -> it.bindRow(item) }
             )
         }.toMap(),
         emptyViewBinder = emptyViewBinder

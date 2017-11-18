@@ -15,6 +15,7 @@ import org.jetbrains.anko.dip
 import org.jetbrains.anko.relativeLayout
 
 internal fun <ItemType : Item> Context.contextualMenu(
+    openForm: (item: ItemType) -> Unit,
     sortable: Boolean,
     actionIcon: IconColorBundle,
     items: BindableField<List<ItemType>>,
@@ -77,6 +78,18 @@ internal fun <ItemType : Item> Context.contextualMenu(
             bottomMargin = dip(85)
             leftMargin = dip(23)
             rightMargin = dip(23)
+        }
+    }
+
+    configureIcon(R.drawable.ic_edit) {
+        id = R.id.edit
+        setTag(R.id.action, ActionEdit<ItemType>(openForm))
+        lparams {
+            alignInParent(verticalAlignment = VerticalAlignment.BOTTOM)
+            alignWithRespectTo(R.id.delete, HorizontalPosition.LEFT_OF)
+            bottomMargin = dip(23)
+            leftMargin = dip(5)
+            rightMargin = dip(5)
         }
     }
 

@@ -66,6 +66,7 @@ class ActivitySortableTest {
         atIndex(1).perform(longClick())
         rotate()
         validateExists(R.id.menuPane)
+        validateEnabled(R.id.edit)
         validateEnabled(R.id.moveUp)
         validateEnabled(R.id.moveDown)
         validateEnabled(R.id.delete)
@@ -101,6 +102,7 @@ class ActivitySortableTest {
         atIndex(0).perform(longClick())
         rotate()
         validateDisabled(R.id.moveUp)
+        validateEnabled(R.id.edit)
         validateEnabled(R.id.moveDown)
         validateEnabled(R.id.delete)
         validateEnabled(R.id.selectAll)
@@ -111,6 +113,7 @@ class ActivitySortableTest {
         atIndex(3).perform(longClick())
         rotate()
         validateEnabled(R.id.moveUp)
+        validateEnabled(R.id.edit)
         validateDisabled(R.id.moveDown)
         validateEnabled(R.id.delete)
         validateEnabled(R.id.selectAll)
@@ -124,6 +127,7 @@ class ActivitySortableTest {
         rotate()
         validateDisabled(R.id.moveUp)
         validateDisabled(R.id.moveDown)
+        validateDisabled(R.id.edit)
         validateEnabled(R.id.delete)
         validateEnabled(R.id.selectAll)
     }
@@ -134,6 +138,7 @@ class ActivitySortableTest {
         rotate()
         atIndex(2).perform(click())
         rotate()
+        validateDisabled(R.id.edit)
         validateEnabled(R.id.moveUp)
         validateEnabled(R.id.moveDown)
         validateEnabled(R.id.delete)
@@ -147,6 +152,7 @@ class ActivitySortableTest {
         onView(withId(R.id.moveUp)).perform(click())
         rotate()
         validateDisabled(R.id.moveUp)
+        validateEnabled(R.id.edit)
         validateEnabled(R.id.moveDown)
         validateEnabled(R.id.delete)
         validateEnabled(R.id.selectAll)
@@ -160,6 +166,7 @@ class ActivitySortableTest {
         rotate()
         validateEnabled(R.id.moveUp)
         validateDisabled(R.id.moveDown)
+        validateEnabled(R.id.edit)
         validateEnabled(R.id.delete)
         validateEnabled(R.id.selectAll)
     }
@@ -193,7 +200,8 @@ class ActivitySortableTest {
 
     @Test
     fun editingItem_shouldIncrementVersion() {
-        atIndex(3).perform(doubleClick())
+        atIndex(3).perform(longClick())
+        onView(withId(R.id.edit)).perform(click())
         onView(withId(R.id.increment)).perform(click())
         rotate()
         onView(withId(R.id.save)).perform(click())
