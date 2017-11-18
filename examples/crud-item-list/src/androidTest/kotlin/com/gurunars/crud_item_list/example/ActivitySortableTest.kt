@@ -1,9 +1,7 @@
 package com.gurunars.crud_item_list.example
 
 import android.content.pm.ActivityInfo
-import android.support.test.InstrumentationRegistry.getInstrumentation
 import android.support.test.espresso.Espresso.onView
-import android.support.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu
 import android.support.test.espresso.ViewInteraction
 import android.support.test.espresso.action.ViewActions.*
 import android.support.test.espresso.assertion.ViewAssertions.matches
