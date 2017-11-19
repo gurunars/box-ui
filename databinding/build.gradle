@@ -6,5 +6,5 @@ manipulated and monitored for changes.
 """
 
 dependencies {
-    testCompile 'junit:junit:4.12'
+    testImplementation "junit:junit:$junit_version"
 }

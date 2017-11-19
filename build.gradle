@@ -5,10 +5,11 @@ buildscript {
     ext.package_version_code = 121
     ext.package_version = "0.121.0"
 
+    ext.junit_version = '4.12'
     ext.kotlin_version = '1.1.51'
     ext.anko_version = '0.10.1'
     ext.dokka_version = '0.9.15'
-    ext.supportlib_version = '27.0.0'
+    ext.supportlib_version = '27.0.1'
     ext.mockito_version = 'latest.release'
     ext.build_tools_version = '26.0.2'
     ext.compile_sdk_version = 26

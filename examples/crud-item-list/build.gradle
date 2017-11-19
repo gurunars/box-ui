@@ -2,6 +2,6 @@ apply from: '../all-examples.gradle'
 
 
 dependencies {
-    compile project(':crud-item-list')
-    compile project(':example-animal-item')
+    implementation project(':crud-item-list')
+    implementation project(':example-animal-item')
 }

@@ -8,9 +8,9 @@ screen.
 """
 
 dependencies {
-    compile "org.jetbrains.anko:anko:$anko_version"
-    compile project(':android-utils')
-    compile project(':databinding')
+    api "org.jetbrains.anko:anko:$anko_version"
+    api project(':android-utils')
+    api project(':databinding')
 }
 
 dokka {

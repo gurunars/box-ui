@@ -7,13 +7,13 @@ edit, remove and create the items out of the box.
 """
 
 dependencies {
-    compile "org.jetbrains.anko:anko:$anko_version"
-    testCompile 'junit:junit:4.12'
-    testCompile "org.mockito:mockito-core:$mockito_version"
-    compile project(':android-utils')
-    compile project(':item-list')
-    compile project(':floatmenu')
-    compile project(':databinding')
+    api "org.jetbrains.anko:anko:$anko_version"
+    testImplementation "junit:junit:$junit_version"
+    testImplementation "org.mockito:mockito-core:$mockito_version"
+    api project(':android-utils')
+    api project(':item-list')
+    api project(':floatmenu')
+    api project(':databinding')
 }
 
 dokka {
