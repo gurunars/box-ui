@@ -4,7 +4,6 @@ import com.gurunars.android_utils.Icon
 import com.gurunars.databinding.BindableField
 import com.gurunars.item_list.SelectableItem
 import org.junit.Assert.assertEquals
-import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 
@@ -48,9 +47,9 @@ class StateManagerTest {
 
     private fun checkState(expectedState: State<StringItem>)
         = assertEquals(
-            expectedState,
-            manager.state.get()
-        )
+        expectedState,
+        manager.state.get()
+    )
 
     @Test
     fun plainOpenForOneItemType_leadsToFormState() {
@@ -60,7 +59,11 @@ class StateManagerTest {
             { supplier, consumer -> consumer(supplier()) }
         )
         manager.isOpen.set(true)
-        checkState(State(itemInEdit = StringItem("NEW")))
+        checkState(State(
+            isCreationMode=true,
+            itemTypeInLoad = TestDescriptor.Type.ONE,
+            itemInEdit = StringItem("NEW")
+        ))
     }
 
     @Test
@@ -92,7 +95,7 @@ class StateManagerTest {
     @Test
     fun loadingItemByType_leadsToAsyncCreationOfTheItem() {
         manager.loadType(TestDescriptor.Type.ONE)
-        checkState(State(itemInEdit = StringItem("NEW")))
+        checkState(State(itemTypeInLoad = TestDescriptor.Type.ONE, itemInEdit = StringItem("NEW")))
     }
 
     @Test

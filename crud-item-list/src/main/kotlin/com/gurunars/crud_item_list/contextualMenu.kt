@@ -83,7 +83,7 @@ internal fun <ItemType : Item> Context.contextualMenu(
 
     configureIcon(R.drawable.ic_edit) {
         id = R.id.edit
-        setTag(R.id.action, ActionEdit<ItemType>(openForm))
+        setTag(R.id.action, ActionEdit(openForm))
         lparams {
             alignInParent(verticalAlignment = VerticalAlignment.BOTTOM)
             alignWithRespectTo(R.id.delete, HorizontalPosition.LEFT_OF)

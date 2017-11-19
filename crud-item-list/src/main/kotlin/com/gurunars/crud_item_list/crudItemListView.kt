@@ -55,20 +55,18 @@ fun <ItemType : Item> Context.crudItemListView(
 
     val isOpen = false.field
 
-    fun openForm(item: ItemType) {
-        itemForm(
-            item,
-            { it ->
-                isOpen.set(false)
-                items.patch { processItemInEdit(it, this) }
-            },
-            confirmationActionColors,
-            typeCache[item.type]!!
-        ).set(itemForm, R.id.formContent)
-    }
-
     val stateMachine = StateMachine(
-        openForm = ::openForm,
+        openForm = { item ->
+            itemForm(
+                item,
+                { it ->
+                    isOpen.set(false)
+                    items.patch { processItemInEdit(it, this) }
+                },
+                confirmationActionColors,
+                typeCache[item.type]!!
+            ).set(itemForm, R.id.formContent)
+        },
         itemTypes = typeCache
     ).apply {
         this.isOpen.bind(isOpen)

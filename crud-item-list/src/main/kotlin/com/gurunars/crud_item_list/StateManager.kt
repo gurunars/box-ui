@@ -60,7 +60,7 @@ internal class StateMachine<ItemType : Item>(
     val viewMode = ViewMode.EMPTY.field
 
     val selectedItems: BindableField<Set<ItemType>> =
-        state.branch({ selectedItems }, { State(selectedItems = it) })
+        state.branch({ selectedItems }, { copy(selectedItems = it) })
 
     private fun openWithState(value: State<ItemType>) {
         if (state.get().viewMode == ViewMode.EMPTY) {
@@ -70,7 +70,6 @@ internal class StateMachine<ItemType : Item>(
 
     init {
         state.onChange { value ->
-            isOpen.set(value.isOpen)
             if (value.itemTypeInLoad != null) {
                 asyncWrapper(
                     { itemTypes[value.itemTypeInLoad]!!.createNewItem() },
@@ -88,6 +87,7 @@ internal class StateMachine<ItemType : Item>(
             if (value.isOpen) {
                 viewMode.set(value.viewMode)
             }
+            isOpen.set(value.isOpen)
         }
         isOpen.onChange { it ->
             if (it) {
@@ -98,11 +98,12 @@ internal class StateMachine<ItemType : Item>(
         }
     }
 
-    fun loadItem(item: ItemType)
-        = state.patch { State(itemInEdit = item) }
+    fun loadItem(item: ItemType) {
+        state.patch { copy(itemInEdit = item) }
+    }
 
     fun loadType(itemType: Enum<*>)
-        = state.patch { State(itemTypeInLoad=itemType) }
+        = state.patch { copy(itemTypeInLoad = itemType) }
 
     fun openExplicitContextualMenu()
         = openWithState(State(explicitContextual = true))

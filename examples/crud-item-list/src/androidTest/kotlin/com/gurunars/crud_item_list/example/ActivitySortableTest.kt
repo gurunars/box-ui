@@ -183,8 +183,26 @@ class ActivitySortableTest {
         atIndex(1).perform(longClick())
         onView(withId(R.id.moveUp)).perform(click())
         onView(withId(R.id.reset)).perform(click())
-        validateSelection(0, "#0{LION @ 0}", false)
-        validateSelection(1, "#1{TIGER @ 0}", true)
+        validateSelection(0, "#1{LION @ 0}", false)
+        validateSelection(1, "#2{TIGER @ 0}", true)
+    }
+
+    @Test
+    fun testCopyAndPaste() {
+        atIndex(1).perform(longClick())
+        atIndex(2).perform(click())
+        rotate()
+        onView(withId(R.id.copy)).perform(click())
+        onView(withId(R.id.paste)).perform(click())
+        rotate()
+        atIndex(4).perform(click())
+        atIndex(5).perform(click())
+
+        validateSelection(1, "#2{TIGER @ 0}", true)
+        validateSelection(2, "#3{MONKEY @ 0}", true)
+        validateSelection(3, "#4{WOLF @ 0}", false)
+        validateSelection(4, "#5{TIGER @ 0}", true)
+        validateSelection(5, "#6{MONKEY @ 0}", true)
     }
 
     @Test
@@ -192,8 +210,8 @@ class ActivitySortableTest {
         atIndex(2).perform(longClick())
         onView(withId(R.id.moveDown)).perform(click())
         onView(withId(R.id.reset)).perform(click())
-        validateSelection(2, "#2{MONKEY @ 0}", true)
-        validateSelection(3, "#3{WOLF @ 0}", false)
+        validateSelection(2, "#3{MONKEY @ 0}", true)
+        validateSelection(3, "#4{WOLF @ 0}", false)
     }
 
     @Test
@@ -206,7 +224,7 @@ class ActivitySortableTest {
         // Save operation updates the value asynchronously - we need to wait
         Thread.sleep(500)
         rotate()
-        validateSelection(3, "#3{WOLF @ 1}", false)
+        validateSelection(3, "#4{WOLF @ 1}", false)
     }
 
     @Test
@@ -218,7 +236,7 @@ class ActivitySortableTest {
         onView(withId(R.id.increment)).perform(click())
         rotate()
         onView(withId(R.id.save)).perform(click())
-        validateSelection(4, "#4{LION @ 5}", false)
+        validateSelection(4, "#5{LION @ 5}", false)
     }
 
     @Before
