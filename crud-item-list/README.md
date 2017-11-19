@@ -10,12 +10,12 @@ Remove the items:
 
 Move the items up and down:
 
-[256x456](static/moves.gif)
+[256x456](static/move.gif)
 
 Edit individual items (one at a time):
 
-[256x456](static/editing.gif)
+[256x456](static/edit.gif)
 
-Left and right handed menu support:
+Copy and paste the items:
 
-[256x456](static/left_handed.gif)
+[256x456](static/copy_paste.gif)

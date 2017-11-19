@@ -14,7 +14,7 @@ internal enum class ViewMode(val hasOverlay: Boolean = true) {
     LOADING
 }
 
-data class State<out ItemType : Item>(
+internal data class State<out ItemType : Item>(
     val isCreationMode: Boolean = false,
     val explicitContextual: Boolean = false,
     val itemTypeInLoad: Enum<*>? = null,

@@ -2,10 +2,14 @@ package com.gurunars.crud_item_list
 
 import com.gurunars.item_list.Item
 
+/**
+ * A mean to serialize an item as a string to transfer it via clipboard.
+ */
 interface ClipboardSerializer<ItemType: Item> {
-    fun fromString(count: Int, source: String): ItemType
+    fun fromString(source: String): ItemType
     fun toString(source: ItemType): String
 }
 
-val ClipboardSerializer<*>.serializationLabel
+// TODO: it should be possible to paste via a pure textual serializer
+internal val ClipboardSerializer<*>.serializationLabel
     get() = "com.gurunars.crud_item_list:${this::class.java.canonicalName}"

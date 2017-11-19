@@ -12,7 +12,7 @@ import com.gurunars.databinding.patch
 import com.gurunars.item_list.Item
 import org.jetbrains.anko.*
 
-fun <ItemType : Item> Context.itemForm(
+internal fun <ItemType : Item> Context.itemForm(
     item: ItemType,
     confirmationHandler: (item: ItemType) -> Unit,
     confirmIconColors: IconColorBundle,

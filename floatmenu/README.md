@@ -8,10 +8,6 @@ The menu can be toggled externally:
 
 [256x456](static/toggle_menu.gif)
 
-There is a support for both left and right handed people:
-
-[256x456](static/left_and_right.gif)
-
 The menu has two modes: with and without a background layover. With it the all
 the clicks in semi-transparent gray area are blocked. Without it any clicks are
 passed to the layer below the menu.

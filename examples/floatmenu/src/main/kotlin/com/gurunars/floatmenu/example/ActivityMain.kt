@@ -116,12 +116,11 @@ class ActivityMain : Activity() {
             )
         }
 
-        FloatMenu(
+        floatMenu(
             contentArea,
-            hasOverlay.branch { MenuArea(this) }
-        ).apply {
-            isOpen.bind(isOpen)
-        }.setAsOne(this)
+            hasOverlay.branch { MenuArea(this) },
+            isOpen=isOpen
+        ).setAsOne(this)
 
         storage.load()
     }

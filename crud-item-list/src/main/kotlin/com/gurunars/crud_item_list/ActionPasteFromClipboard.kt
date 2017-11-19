@@ -16,7 +16,7 @@ internal class ActionPasteFromClipboard<ItemType : Item>(
     override fun perform(all: List<ItemType>, selectedItems: Set<ItemType>): Pair<List<ItemType>, Set<ItemType>> {
         val payload = clipboard.primaryClip.getItemAt(0).text
         return try {
-            val full = payload.split("\n").mapIndexed(serializer::fromString)
+            val full = payload.split("\n").map(serializer::fromString)
             context.longToast(R.string.pastedFromClipboard)
             Pair(
                 all + full,

@@ -128,11 +128,11 @@ fun <ItemType : Item> Context.crudItemListView(
         override val hasOverlay = viewMode.hasOverlay
     }
 
-    FloatMenu(contentArea.field, stateMachine.viewMode.branch {
-        MenuArea(this)
-    }).apply {
-        this.isOpen.bind(stateMachine.isOpen)
-    }.set(this, R.id.contentPane) {
+    floatMenu(
+        contentArea.field,
+        stateMachine.viewMode.branch { MenuArea(this) },
+        isOpen = stateMachine.isOpen
+    ).set(this, R.id.contentPane) {
         findViewById<View>(floatR.id.openFab).onLongClick {
             stateMachine.openExplicitContextualMenu()
         }

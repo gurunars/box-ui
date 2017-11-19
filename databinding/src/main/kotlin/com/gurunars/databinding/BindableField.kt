@@ -12,20 +12,10 @@ class BindableField<Type>(private var value: Type): Observable<Type> {
     private val listeners: MutableList<Listener<Type>> = mutableListOf()
     private var prevValue: Type = value
 
-    /**
-     * Subscribe to changes.
-     *
-     * @param listener a function called with a new value after the change takes place
-     */
     override fun onChange(
         listener: SimpleListener<Type>
-    ) = onChange({ prevValue, value -> listener(value) })
+    ) = onChange({ _, value -> listener(value) })
 
-    /**
-     * Subscribe to changes.
-     *
-     * @param listener a function called with a new value after the change takes place
-     */
     override fun onChange(
         listener: Listener<Type>
     ) {
@@ -53,9 +43,6 @@ class BindableField<Type>(private var value: Type): Observable<Type> {
         }
     }
 
-    /**
-     * @return current value
-     */
     override fun get(): Type = this.value
 
 }
