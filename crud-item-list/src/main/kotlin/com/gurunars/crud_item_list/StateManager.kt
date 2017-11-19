@@ -1,6 +1,5 @@
 package com.gurunars.crud_item_list
 
-import android.util.Log
 import com.gurunars.databinding.BindableField
 import com.gurunars.databinding.branch
 import com.gurunars.databinding.field
@@ -61,7 +60,7 @@ internal class StateMachine<ItemType : Item>(
     val viewMode = ViewMode.EMPTY.field
 
     val selectedItems: BindableField<Set<ItemType>> =
-        state.branch({ selectedItems }, { copy(selectedItems = it) })
+        state.branch({ selectedItems }, { State(selectedItems = it) })
 
     private fun openWithState(value: State<ItemType>) {
         if (state.get().viewMode == ViewMode.EMPTY) {
@@ -69,14 +68,14 @@ internal class StateMachine<ItemType : Item>(
         }
     }
 
-    fun openExplicitContextualMenu()
-        = openWithState(State(explicitContextual = true))
-
     init {
         state.onChange { value ->
             isOpen.set(value.isOpen)
             if (value.itemTypeInLoad != null) {
-                loadType(value.itemTypeInLoad)
+                asyncWrapper(
+                    { itemTypes[value.itemTypeInLoad]!!.createNewItem() },
+                    this::loadItem
+                )
             }
             if (value.viewMode == ViewMode.CREATION && itemTypes.size == 1) {
                 loadType(itemTypes.keys.first())
@@ -100,14 +99,12 @@ internal class StateMachine<ItemType : Item>(
     }
 
     fun loadItem(item: ItemType)
-        = state.patch {
-            copy(
-                itemInEdit = item,
-                itemTypeInLoad = null
-            )
-        }
+        = state.patch { State(itemInEdit = item) }
 
     fun loadType(itemType: Enum<*>)
-        = asyncWrapper({ itemTypes[itemType]!!.createNewItem() }, this::loadItem)
+        = state.patch { State(itemTypeInLoad=itemType) }
+
+    fun openExplicitContextualMenu()
+        = openWithState(State(explicitContextual = true))
 
 }

@@ -9,16 +9,17 @@ buildscript {
     ext.anko_version = '0.10.1'
     ext.dokka_version = '0.9.15'
     ext.supportlib_version = '27.0.0'
-    ext.mockito_version = '2.8.9'
+    ext.mockito_version = 'latest.release'
     ext.build_tools_version = '26.0.2'
     ext.compile_sdk_version = 26
     ext.min_sdk_version = 24
 
     repositories {
+        mavenCentral()
         mavenLocal()
         jcenter()
         maven { url 'https://jitpack.io' }
-        maven { url 'https://maven.google.com/' }
+        google()
     }
 
     dependencies {
