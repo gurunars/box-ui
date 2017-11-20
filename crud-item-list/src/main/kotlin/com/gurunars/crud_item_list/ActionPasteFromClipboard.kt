@@ -2,7 +2,6 @@ package com.gurunars.crud_item_list
 
 import android.content.ClipboardManager
 import android.content.Context
-import android.util.Log
 import com.gurunars.item_list.Item
 import org.jetbrains.anko.longToast
 
@@ -13,35 +12,31 @@ internal class ActionPasteFromClipboard<ItemType : Item>(
 
     private val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
 
-    override fun perform(all: List<ItemType>, selectedItems: Set<ItemType>): Pair<List<ItemType>, Set<ItemType>> {
-        val payload = clipboard.primaryClip.getItemAt(0).text
+    private fun getPasteCandidates(): List<ItemType> {
+        if (!clipboard.hasPrimaryClip()) { return listOf() }
+        val clip = clipboard.primaryClip
+        if(clip.itemCount <= 0) { return listOf() }
         return try {
-            val full = payload.split("\n").map(serializer::fromString)
-            context.longToast(R.string.pastedFromClipboard)
-            Pair(
-                all + full,
-                selectedItems
-            )
+            clip.getItemAt(0).text.split("\n").map(serializer::fromString)
         } catch (exe: Exception) {
-            Log.e("CRUD-PASTE", exe.message, exe)
-            context.longToast(R.string.failedToPaste)
-            Pair(
-                all,
-                selectedItems
-            )
+            listOf()
         }
     }
 
-    override fun canPerform(all: List<ItemType>, selectedItems: Set<ItemType>): Boolean {
-        if (!clipboard.hasPrimaryClip()) {
-            return false
+    override fun perform(all: List<ItemType>, selectedItems: Set<ItemType>): Pair<List<ItemType>, Set<ItemType>> {
+        val full = getPasteCandidates()
+        if (full.isNotEmpty()) {
+            context.longToast(R.string.pastedFromClipboard)
         } else {
-            val clip = clipboard.primaryClip
-            if (clip.description.label != serializer.serializationLabel) {
-                return false
-            }
-            return clip.itemCount > 0
+            context.longToast(R.string.failedToPaste)
         }
+        return Pair(
+            all + full,
+            selectedItems
+        )
     }
+
+    override fun canPerform(all: List<ItemType>, selectedItems: Set<ItemType>)
+        = getPasteCandidates().isNotEmpty()
 
 }

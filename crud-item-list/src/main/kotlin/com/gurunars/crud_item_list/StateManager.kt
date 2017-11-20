@@ -5,6 +5,7 @@ import com.gurunars.databinding.branch
 import com.gurunars.databinding.field
 import com.gurunars.databinding.patch
 import com.gurunars.item_list.Item
+import java.io.Serializable
 
 internal enum class ViewMode(val hasOverlay: Boolean = true) {
     EMPTY,
@@ -20,7 +21,7 @@ internal data class State<out ItemType : Item>(
     val itemTypeInLoad: Enum<*>? = null,
     val selectedItems: Set<ItemType> = setOf(),
     val itemInEdit: ItemType? = null
-) {
+): Serializable {
 
     val isOpen
         get() = viewMode != ViewMode.EMPTY
