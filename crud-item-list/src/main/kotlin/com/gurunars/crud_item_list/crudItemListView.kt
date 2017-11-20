@@ -5,10 +5,7 @@ import android.view.Gravity
 import android.view.View
 import com.gurunars.android_utils.Icon
 import com.gurunars.databinding.*
-import com.gurunars.databinding.android.fullSize
-import com.gurunars.databinding.android.onLongClick
-import com.gurunars.databinding.android.set
-import com.gurunars.databinding.android.statefulView
+import com.gurunars.databinding.android.*
 import com.gurunars.floatmenu.*
 import com.gurunars.item_list.*
 import org.jetbrains.anko.dip
@@ -72,6 +69,8 @@ fun <ItemType : Item> Context.crudItemListView(
         this.isOpen.bind(isOpen)
         retain(state)
     }
+
+    isOpen.onChange { it -> if(!it) closeKeyboard() }
 
     val contextualMenu = contextualMenu(
         stateMachine::loadItem,
