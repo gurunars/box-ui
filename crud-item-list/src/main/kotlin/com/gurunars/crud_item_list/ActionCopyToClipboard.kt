@@ -21,10 +21,10 @@ internal class ActionCopyToClipboard<ItemType : Item>(
     override fun perform(all: List<ItemType>, selectedItems: Set<ItemType>): Pair<List<ItemType>, Set<ItemType>> {
         writeToClipboard(
             serializer.serializationLabel,
-            all.filter
+            serializer.toString(
+                all.filter
                 { item -> selectedItems.find { item.id == it.id } != null }
-                .map({ serializer.toString(it) })
-                .joinToString("\n")
+            )
         )
         return Pair(
             all,

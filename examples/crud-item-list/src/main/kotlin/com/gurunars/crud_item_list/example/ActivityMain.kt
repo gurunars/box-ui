@@ -25,16 +25,19 @@ import org.jetbrains.anko.*
 
 class AnimalItemSerializer : ClipboardSerializer<AnimalItem> {
 
-    override fun fromString(source: String): AnimalItem {
-        val parts = source.split("@")
-        return AnimalItem(
-            id = 0L,
-            type = AnimalItem.Type.valueOf(parts[0]),
-            version = parts[1].toInt()
-        )
-    }
+    override fun fromString(source: String): List<AnimalItem> =
+        source.split("\n").map {
+            val parts = it.split("@")
+            AnimalItem(
+                id = 0L,
+                type = AnimalItem.Type.valueOf(parts[0]),
+                version = parts[1].toInt()
+            )
+        }
 
-    override fun toString(source: AnimalItem) = "${source.type}@${source.version}"
+
+    override fun toString(source: List<AnimalItem>): String =
+        source.map { "${it.type}@${it.version}" }.joinToString("\n")
 
 }
 

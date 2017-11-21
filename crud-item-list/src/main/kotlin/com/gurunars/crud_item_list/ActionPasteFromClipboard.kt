@@ -17,7 +17,7 @@ internal class ActionPasteFromClipboard<ItemType : Item>(
         val clip = clipboard.primaryClip
         if(clip.itemCount <= 0) { return listOf() }
         return try {
-            clip.getItemAt(0).text.split("\n").map(serializer::fromString)
+            serializer.fromString(clip.getItemAt(0).text.toString())
         } catch (exe: Exception) {
             listOf()
         }

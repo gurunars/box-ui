@@ -150,7 +150,7 @@ internal fun <ItemType : Item> Context.contextualMenu(
 
     val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
 
-    val onClipChange =  {
+    val onClipChange = {
         canPaste.set(pasteAction.canPerform(items.get(), selectedItems.get()))
     }
 
