@@ -60,8 +60,6 @@ class StateManagerTest {
         )
         manager.isOpen.set(true)
         checkState(State(
-            isCreationMode=true,
-            itemTypeInLoad = TestDescriptor.Type.ONE,
             itemInEdit = StringItem("NEW")
         ))
     }
@@ -95,7 +93,20 @@ class StateManagerTest {
     @Test
     fun loadingItemByType_leadsToAsyncCreationOfTheItem() {
         manager.loadType(TestDescriptor.Type.ONE)
-        checkState(State(itemTypeInLoad = TestDescriptor.Type.ONE, itemInEdit = StringItem("NEW")))
+        checkState(State(itemInEdit = StringItem("NEW")))
+    }
+
+    @Test
+    fun openingMenuWithTooSlowFormLoader_doesNotCauseRecursion() {
+        manager = StateMachine<StringItem>(
+            {},
+            mapOf(TestDescriptor.Type.ONE to TestDescriptor()),
+            { supplier, consumer -> }
+        )
+        manager.isOpen.set(true)
+        checkState(State(
+            itemTypeInLoad = TestDescriptor.Type.ONE
+        ))
     }
 
     @Test

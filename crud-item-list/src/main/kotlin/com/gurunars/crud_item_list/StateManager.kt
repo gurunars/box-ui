@@ -21,7 +21,7 @@ internal data class State<out ItemType : Item>(
     val itemTypeInLoad: Enum<*>? = null,
     val selectedItems: Set<ItemType> = setOf(),
     val itemInEdit: ItemType? = null
-): Serializable {
+) : Serializable {
 
     val isOpen
         get() = viewMode != ViewMode.EMPTY
@@ -77,9 +77,6 @@ internal class StateMachine<ItemType : Item>(
                     this::loadItem
                 )
             }
-            if (value.viewMode == ViewMode.CREATION && itemTypes.size == 1) {
-                loadType(itemTypes.keys.first())
-            }
             if (value.itemInEdit != null) {
                 openForm(value.itemInEdit)
             }
@@ -92,19 +89,22 @@ internal class StateMachine<ItemType : Item>(
         }
         isOpen.onChange { it ->
             if (it) {
-                openWithState(State(isCreationMode = true))
+                if (itemTypes.size == 1) {
+                    openWithState(State(itemTypeInLoad = itemTypes.keys.first()))
+                } else {
+                    openWithState(State(isCreationMode = true))
+                }
             } else {
                 state.set(State())
             }
         }
     }
 
-    fun loadItem(item: ItemType) {
-        state.patch { copy(itemInEdit = item) }
-    }
+    fun loadItem(item: ItemType)
+        = state.patch { State(itemInEdit = item) }
 
     fun loadType(itemType: Enum<*>)
-        = state.patch { copy(itemTypeInLoad = itemType) }
+        = state.patch { State(itemTypeInLoad = itemType) }
 
     fun openExplicitContextualMenu()
         = openWithState(State(explicitContextual = true))
