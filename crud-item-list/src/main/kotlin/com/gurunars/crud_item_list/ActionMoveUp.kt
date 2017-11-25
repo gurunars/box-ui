@@ -4,20 +4,28 @@ import com.gurunars.item_list.Item
 
 internal class ActionMoveUp<ItemType : Item> : Action<ItemType> {
 
-    override fun perform(all: List<ItemType>, selectedItems: Set<ItemType>): Pair<List<ItemType>, Set<ItemType>> {
+    override fun perform(
+        all: List<ItemType>,
+        selectedItems: Set<ItemType>,
+        consumer: ItemSetChange<ItemType>
+    ) {
         val positions = getPositions(all, selectedItems)
         val positionToMoveDown = positions[0] - 1
         val itemToMoveDown = all[positionToMoveDown]
-        return Pair(mutableListOf<ItemType>().apply {
+        consumer(mutableListOf<ItemType>().apply {
             addAll(all)
             add(positions[positions.size - 1] + 1, itemToMoveDown)
             removeAt(positionToMoveDown)
         }, selectedItems)
     }
 
-    override fun canPerform(all: List<ItemType>, selectedItems: Set<ItemType>): Boolean {
+    override fun canPerform(
+        all: List<ItemType>,
+        selectedItems: Set<ItemType>,
+        consumer: CanDo
+    ) {
         val positions = getPositions(all, selectedItems)
-        return isSolidChunk(positions) && positions[0] > 0
+        consumer(isSolidChunk(positions) && positions[0] > 0)
     }
 
 }

@@ -4,7 +4,9 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import com.gurunars.item_list.Item
+import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.longToast
+import org.jetbrains.anko.uiThread
 
 internal class ActionCopyToClipboard<ItemType : Item>(
     private val context: Context,
@@ -18,21 +20,29 @@ internal class ActionCopyToClipboard<ItemType : Item>(
         context.longToast(R.string.copiedToClipboard)
     }
 
-    override fun perform(all: List<ItemType>, selectedItems: Set<ItemType>): Pair<List<ItemType>, Set<ItemType>> {
-        writeToClipboard(
-            serializer.serializationLabel,
-            serializer.toString(
+    override fun perform(
+        all: List<ItemType>,
+        selectedItems: Set<ItemType>,
+        consumer: ItemSetChange<ItemType>
+    ) {
+        doAsync {
+            val clip = serializer.toString(
                 all.filter
                 { item -> selectedItems.find { item.id == it.id } != null }
             )
-        )
-        return Pair(
-            all,
-            selectedItems
-        )
+            uiThread {
+                writeToClipboard(
+                    serializer.serializationLabel,
+                    clip
+                )
+            }
+        }
     }
 
-    override fun canPerform(all: List<ItemType>, selectedItems: Set<ItemType>) =
-        selectedItems.isNotEmpty()
+    override fun canPerform(
+        all: List<ItemType>,
+        selectedItems: Set<ItemType>,
+        consumer: CanDo
+    ) = consumer(selectedItems.isNotEmpty())
 
 }

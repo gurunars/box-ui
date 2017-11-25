@@ -39,14 +39,14 @@ internal fun <ItemType : Item> Context.contextualMenu(
             val action = getTag(R.id.action) as Action<ItemType>
 
             listOf(items, selectedItems).onChange {
-                enabled.set(action.canPerform(items.get(), selectedItems.get()))
+                action.canPerform(items.get(), selectedItems.get(), { enabled.set(it) })
             }
 
             onClick {
-                action.perform(items.get(), selectedItems.get()).apply {
+                action.perform(items.get(), selectedItems.get(), { first, second ->
                     items.set(first)
                     selectedItems.set(second)
-                }
+                })
             }
         }
         return enabled
@@ -151,7 +151,7 @@ internal fun <ItemType : Item> Context.contextualMenu(
     val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
 
     val onClipChange = {
-        canPaste.set(pasteAction.canPerform(items.get(), selectedItems.get()))
+        pasteAction.canPerform(items.get(), selectedItems.get(), { canPaste.set(it) })
     }
 
     addOnAttachStateChangeListener(object: View.OnAttachStateChangeListener {

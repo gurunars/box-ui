@@ -3,7 +3,9 @@ package com.gurunars.crud_item_list
 import android.content.ClipboardManager
 import android.content.Context
 import com.gurunars.item_list.Item
+import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.longToast
+import org.jetbrains.anko.uiThread
 
 internal class ActionPasteFromClipboard<ItemType : Item>(
     private val context: Context,
@@ -23,20 +25,28 @@ internal class ActionPasteFromClipboard<ItemType : Item>(
         }
     }
 
-    override fun perform(all: List<ItemType>, selectedItems: Set<ItemType>): Pair<List<ItemType>, Set<ItemType>> {
-        val full = getPasteCandidates()
-        if (full.isNotEmpty()) {
-            context.longToast(R.string.pastedFromClipboard)
-        } else {
-            context.longToast(R.string.failedToPaste)
+    override fun perform(
+        all: List<ItemType>,
+        selectedItems: Set<ItemType>,
+        consumer: ItemSetChange<ItemType>
+    ) {
+        doAsync {
+            val full = getPasteCandidates()
+            uiThread {
+                if (full.isNotEmpty()) {
+                    context.longToast(R.string.pastedFromClipboard)
+                } else {
+                    context.longToast(R.string.failedToPaste)
+                }
+                consumer(all + full, selectedItems)
+            }
         }
-        return Pair(
-            all + full,
-            selectedItems
-        )
     }
 
-    override fun canPerform(all: List<ItemType>, selectedItems: Set<ItemType>)
-        = getPasteCandidates().isNotEmpty()
+    override fun canPerform(
+        all: List<ItemType>,
+        selectedItems: Set<ItemType>,
+        consumer: CanDo
+    ) = consumer(getPasteCandidates().isNotEmpty())
 
 }
