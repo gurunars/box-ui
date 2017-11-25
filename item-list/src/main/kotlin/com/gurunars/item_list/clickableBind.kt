@@ -7,7 +7,8 @@ import com.gurunars.databinding.android.onLongClick
 internal fun <ItemType : Item> clickableBind(
     selectedItems: BindableField<Set<ItemType>>,
     itemViewBinder: ItemViewBinder<SelectableItem<ItemType>>,
-    field: BindableField<SelectableItem<ItemType>>
+    field: BindableField<SelectableItem<ItemType>>,
+    explicitSelectionMode: BindableField<Boolean>
 ) =
     itemViewBinder(field).apply {
         isClickable = true
@@ -16,13 +17,14 @@ internal fun <ItemType : Item> clickableBind(
             val sel = selectedItems.get()
             selectedItems.set(
                 when {
-                    sel.isEmpty() -> setOf()
+                    sel.isEmpty() && !explicitSelectionMode.get() -> setOf()
                     selectedItems.get().has(item) -> sel.exclude(item.item)
                     else -> sel.include(item.item)
                 }
             )
 
         }
+
         onLongClick {
             val item = field.get()
             val sel = selectedItems.get()

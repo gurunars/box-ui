@@ -2,12 +2,9 @@ package com.gurunars.item_list
 
 import android.content.Context
 import android.view.View
-import com.gurunars.databinding.BindableField
+import com.gurunars.databinding.*
 import com.gurunars.databinding.android.setAsOne
 import com.gurunars.databinding.android.statefulView
-import com.gurunars.databinding.fork
-import com.gurunars.databinding.onChange
-import com.gurunars.databinding.patch
 import java.util.*
 import kotlin.collections.HashSet
 
@@ -22,12 +19,14 @@ import kotlin.collections.HashSet
  * @param selectedItems A collection of items selected at the moment
  * @param itemViewBinders a type based mapping between item type and item renderer
  * @param emptyViewBinder a function returning a view to be shown when the list is empty
+ * @param explicitSelectionMode when true selection mode is initiated via normal click instead of a long one
  */
 fun <ItemType : Item> Context.selectableItemListView(
     items: BindableField<List<ItemType>>,
     selectedItems: BindableField<Set<ItemType>> = BindableField(setOf()),
     itemViewBinders: Map<Enum<*>, ItemViewBinder<SelectableItem<ItemType>>> = mapOf(),
-    emptyViewBinder: EmptyViewBinder = this::defaultBindEmpty
+    emptyViewBinder: EmptyViewBinder = this::defaultBindEmpty,
+    explicitSelectionMode: BindableField<Boolean> = false.field
 ): View = statefulView(R.id.selectableItemListView, "SELECTABLE ITEM LIST") {
 
     val kryo = getKryo()
@@ -53,7 +52,7 @@ fun <ItemType : Item> Context.selectableItemListView(
         itemViewBinders = itemViewBinders.
             map {
                 it.key to ({ item: BindableField<SelectableItem<ItemType>> ->
-                    clickableBind(copyOfSelectedItems, it.value, item)
+                    clickableBind(copyOfSelectedItems, it.value, item, explicitSelectionMode)
                 })
             }.toMap(),
         emptyViewBinder = emptyViewBinder

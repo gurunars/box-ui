@@ -103,7 +103,8 @@ fun <ItemType : Item> Context.crudItemListView(
                 { item: BindableField<SelectableItem<ItemType>> -> it.bindRow(item) }
             )
         }.toMap(),
-        emptyViewBinder = emptyViewBinder
+        emptyViewBinder = emptyViewBinder,
+        explicitSelectionMode = stateMachine.state.branch { explicitContextual }
     )
 
     val contentArea = object : ContentPane {
