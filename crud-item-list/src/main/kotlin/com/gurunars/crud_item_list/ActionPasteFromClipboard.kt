@@ -47,6 +47,13 @@ internal class ActionPasteFromClipboard<ItemType : Item>(
         all: List<ItemType>,
         selectedItems: Set<ItemType>,
         consumer: CanDo
-    ) = consumer(getPasteCandidates().isNotEmpty())
+    ) {
+        doAsync {
+            val canDo = getPasteCandidates().isNotEmpty()
+            uiThread {
+                consumer(canDo)
+            }
+        }
+    }
 
 }
