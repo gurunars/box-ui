@@ -5,6 +5,7 @@ import android.support.annotation.ColorInt
 import android.view.View
 import com.gurunars.databinding.Box
 import com.gurunars.databinding.android.asRow
+import com.gurunars.databinding.onChange
 
 typealias ItemRenderer<ItemType> = (field: Box<ItemType>) -> View
 

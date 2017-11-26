@@ -6,6 +6,7 @@ import com.gurunars.android_utils.Icon
 import com.gurunars.databinding.Box
 import com.gurunars.databinding.android.*
 import com.gurunars.databinding.branch
+import com.gurunars.databinding.onChange
 import org.jetbrains.anko.*
 
 /**

@@ -4,6 +4,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.widget.TextView
 import com.gurunars.databinding.Box
+import com.gurunars.databinding.onChange
 
 fun TextView.txt(field: Box<String>) {
     field.onChange { txt ->

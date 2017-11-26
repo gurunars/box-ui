@@ -6,12 +6,13 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
+import com.gurunars.databinding.android.VerticalPosition.*
 
 private const val MATCH_PARENT = ViewGroup.LayoutParams.MATCH_PARENT
 private const val WRAP_CONTENT = ViewGroup.LayoutParams.WRAP_CONTENT
 
 /* Replaces view marked by a specific id with a given new view */
-fun<T: View> T.set(parent: ViewGroup, id: Int, init: T.() -> Unit = {}) : T {
+fun <T : View> T.set(parent: ViewGroup, id: Int, init: T.() -> Unit = {}): T {
     val view = parent.findViewById<View>(id)
     if (view != null) parent.removeView(view)
     return add(parent, init).apply {
@@ -70,7 +71,7 @@ fun View.asRow() {
 /**
  * Removes all the views and adds this view as the only full screen child
  */
-fun<T: View> T.setAsOne(parent: FrameLayout, init: T.() -> Unit = {}): T {
+fun <T : View> T.setAsOne(parent: FrameLayout, init: T.() -> Unit = {}): T {
     fullSize()
     parent.removeAllViews()
     parent.addView(this)
@@ -81,7 +82,7 @@ fun<T: View> T.setAsOne(parent: FrameLayout, init: T.() -> Unit = {}): T {
 /**
  * Removes all the views and adds this view as the only full screen child
  */
-fun<T: View> T.setAsOne(parent: Activity, init: T.() -> Unit = {}): T {
+fun <T : View> T.setAsOne(parent: Activity, init: T.() -> Unit = {}): T {
     fullSize()
     parent.setContentView(this)
     this.init()
@@ -91,7 +92,7 @@ fun<T: View> T.setAsOne(parent: Activity, init: T.() -> Unit = {}): T {
 /**
  * Add a view to parent
  */
-fun<T: View> T.add(parent: ViewGroup, init: T.() -> Unit = {}) : T {
+fun <T : View> T.add(parent: ViewGroup, init: T.() -> Unit = {}): T {
     parent.addView(this)
     this.init()
     return this

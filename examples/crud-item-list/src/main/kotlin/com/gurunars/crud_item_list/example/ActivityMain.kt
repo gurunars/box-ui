@@ -16,6 +16,7 @@ import com.gurunars.databinding.Box
 import com.gurunars.databinding.android.fullSize
 import com.gurunars.databinding.android.setAsOne
 import com.gurunars.databinding.android.txt
+import com.gurunars.databinding.onChange
 import com.gurunars.databinding.branch
 import com.gurunars.databinding.patch
 import com.gurunars.item_list.SelectableItem

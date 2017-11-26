@@ -8,6 +8,7 @@ import com.gurunars.databinding.Box
 import com.gurunars.databinding.android.asRow
 import org.jetbrains.anko.backgroundColor
 import org.jetbrains.anko.textColor
+import com.gurunars.databinding.onChange
 
 /**
  * @param field field representing item's payload

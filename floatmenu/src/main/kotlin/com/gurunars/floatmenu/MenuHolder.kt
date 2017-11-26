@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import com.gurunars.databinding.Box
 import com.gurunars.databinding.android.setIsVisible
+import com.gurunars.databinding.onChange
 
 @SuppressLint("ViewConstructor")
 internal class MenuHolder constructor(

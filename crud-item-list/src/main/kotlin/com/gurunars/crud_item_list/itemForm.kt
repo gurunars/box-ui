@@ -9,6 +9,7 @@ import com.gurunars.crud_item_list.ItemTypeDescriptor.Status.Type.WARNING
 import com.gurunars.databinding.android.*
 import com.gurunars.databinding.field
 import com.gurunars.databinding.patch
+import com.gurunars.databinding.onChange
 import com.gurunars.item_list.Item
 import org.jetbrains.anko.*
 

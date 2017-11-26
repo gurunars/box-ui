@@ -5,6 +5,7 @@ import com.gurunars.databinding.branch
 import com.gurunars.databinding.field
 import com.gurunars.databinding.patch
 import com.gurunars.item_list.Item
+import com.gurunars.databinding.onChange
 import java.io.Serializable
 
 internal enum class ViewMode(val hasOverlay: Boolean = true) {

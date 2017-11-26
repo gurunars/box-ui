@@ -21,7 +21,7 @@ interface IBox<Type> {
      * @param value payload to set the value to
      * @param force if true - the change is made even if current and new values are the same
      */
-    fun set(item: Type, force: Boolean = false)
+    fun set(value: Type, force: Boolean = false)
     /**
      * Fetches the current value.
      */
