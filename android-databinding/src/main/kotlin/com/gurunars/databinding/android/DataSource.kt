@@ -2,6 +2,7 @@ package com.gurunars.databinding.android
 
 import com.gurunars.databinding.IBox
 import com.gurunars.databinding.Listener
+import com.gurunars.databinding.box
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.doAsyncResult
 
@@ -11,6 +12,8 @@ class DataSource<ItemType>(
     initial: ItemType,
     onFetch: () -> Any
 ) : IBox<ItemType> {
+
+    private val box = initial.box
 
     init {
         val t = doAsyncResult {

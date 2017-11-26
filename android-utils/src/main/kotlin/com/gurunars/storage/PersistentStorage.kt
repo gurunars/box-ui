@@ -45,7 +45,7 @@ class PersistentStorage(
     private val fields = mutableListOf<PersistentField<*>>()
 
     /**
-     * @param name used internally to persist the field in SharedPreferences
+     * @param name used internally to persist the box in SharedPreferences
      * @param defaultValue value to be used if none was set yet
      * @param Type data type of the value to be stored
      */
@@ -75,7 +75,7 @@ class PersistentStorage(
     }
 
     /**
-     * Drop all the field listeners.
+     * Drop all the box listeners.
      */
     fun unbindAll() {
         timer.cancel()

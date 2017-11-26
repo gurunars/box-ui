@@ -50,7 +50,7 @@ fun <ItemType : Item> Context.crudItemListView(
         id = R.id.itemForm
     }
 
-    val isOpen = false.field
+    val isOpen = false.box
 
     val stateMachine = StateMachine(
         openForm = { item ->
@@ -129,7 +129,7 @@ fun <ItemType : Item> Context.crudItemListView(
     }
 
     floatMenu(
-        contentArea.field,
+        contentArea.box,
         stateMachine.viewMode.branch { MenuArea(this) },
         isOpen = stateMachine.isOpen
     ).set(this, R.id.contentPane) {

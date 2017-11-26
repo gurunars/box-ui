@@ -7,7 +7,7 @@ import com.gurunars.android_utils.iconView
 import com.gurunars.crud_item_list.ItemTypeDescriptor.Status.Type.ERROR
 import com.gurunars.crud_item_list.ItemTypeDescriptor.Status.Type.WARNING
 import com.gurunars.databinding.android.*
-import com.gurunars.databinding.field
+import com.gurunars.databinding.box
 import com.gurunars.databinding.patch
 import com.gurunars.databinding.onChange
 import com.gurunars.item_list.Item
@@ -19,7 +19,7 @@ internal fun <ItemType : Item> Context.itemForm(
     confirmIconColors: IconColorBundle,
     formBinder: ItemTypeDescriptor<ItemType>
 ) = relativeLayout {
-    val field = item.field
+    val field = item.box
 
     val bound = formBinder.bindForm(field)
 
@@ -33,10 +33,10 @@ internal fun <ItemType : Item> Context.itemForm(
         }
     }
 
-    val canSave = false.field
+    val canSave = false.box
 
     context.iconView(
-        icon = confirmIconColors.icon(R.drawable.ic_check).field,
+        icon = confirmIconColors.icon(R.drawable.ic_check).box,
         enabled = canSave
     ).add(this) {
         id = R.id.confirm
@@ -60,7 +60,7 @@ internal fun <ItemType : Item> Context.itemForm(
         bgColor = Color.LTGRAY,
         fgColor = Color.BLACK,
         icon = R.drawable.ic_warning_sign
-    ).field
+    ).box
 
     context.iconView(
         icon = statusIcon

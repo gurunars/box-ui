@@ -1,12 +1,12 @@
 package com.gurunars.databinding
 
 /**
- * Returns a field that has a one-way binding to this one.
- * I.e. if this one changes another field gets changes as well. However if another field
+ * Returns a box that has a one-way binding to this one.
+ * I.e. if this one changes another box gets changes as well. However if another box
  * changes this one remains unchanged.
  *
- * @param reduce a function to transform the payload of this field into the payload of the other
- * field
+ * @param reduce a function to transform the payload of this box into the payload of the other
+ * box
  */
 inline fun <From, To> IBox<From>.branch(
     crossinline reduce: From.() -> To
@@ -15,7 +15,7 @@ inline fun <From, To> IBox<From>.branch(
 }
 
 /**
- * Shortcut function that alters the value of the field.
+ * Shortcut function that alters the value of the box.
  *
  * @param patcher a mutator meant to transform the original value into the patched vale.
  */
@@ -23,10 +23,10 @@ inline fun <ItemType> IBox<ItemType>.patch(patcher: ItemType.() -> ItemType) =
     set(get().patcher())
 
 /**
- * Creates a two-way binding between this and a target field. Whenever one changes another
+ * Creates a two-way binding between this and a target box. Whenever one changes another
  * gets updated automatically.
  *
- * @param target field to bind to
+ * @param target box to bind to
  */
 @Suppress("NOTHING_TO_INLINE")
 inline fun <Type> IBox<Type>.bind(target: Box<Type>) {
@@ -35,13 +35,13 @@ inline fun <Type> IBox<Type>.bind(target: Box<Type>) {
 }
 
 /**
- * Returns a field that has a two-way binding to this one.
- * I.e. if this one changes another field gets changed and vice versa.
+ * Returns a box that has a two-way binding to this one.
+ * I.e. if this one changes another box gets changed and vice versa.
  *
- * @param reduce a function to transform the payload of this field into the payload of the other
- * field
- * @param patchSource a function to transform the value of this field based on the value of the
- * other field
+ * @param reduce a function to transform the payload of this box into the payload of the other
+ * box
+ * @param patchSource a function to transform the value of this box based on the value of the
+ * other box
  */
 inline fun <From, To> IBox<From>.branch(
     crossinline reduce: From.() -> To,
@@ -55,9 +55,9 @@ inline fun <From, To> IBox<From>.branch(
 
 /**
  * A special case of a two-way branch function for the situation when
- * a both this and another field are of the same type.
+ * a both this and another box are of the same type.
  *
- * @param transform a function to be called whenever value of this or another field changes.
+ * @param transform a function to be called whenever value of this or another box changes.
  */
 inline fun <Type> IBox<Type>.fork(
     crossinline transform: Type.() -> Type
@@ -67,7 +67,7 @@ inline fun <Type> IBox<Type>.fork(
  * A short way to wrap a value into a Box
  */
 @Suppress("NOTHING_TO_INLINE")
-inline val <F> F.field
+inline val <F> F.box
     get(): IBox<F> = Box(this)
 
 /**

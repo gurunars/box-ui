@@ -7,7 +7,7 @@ import android.widget.RelativeLayout
 import com.gurunars.android_utils.iconView
 import com.gurunars.databinding.Box
 import com.gurunars.databinding.android.*
-import com.gurunars.databinding.field
+import com.gurunars.databinding.box
 import com.gurunars.databinding.onChange
 import com.gurunars.item_list.Item
 import org.jetbrains.anko.above
@@ -26,8 +26,8 @@ internal fun <ItemType : Item> Context.contextualMenu(
     id = R.id.contextualMenu
 
     fun configureIcon(icon: Int, init: View.() -> Unit): Box<Boolean> {
-        val enabled = true.field
-        val iconView = iconView(actionIcon.icon(icon).field, enabled)
+        val enabled = true.box
+        val iconView = iconView(actionIcon.icon(icon).box, enabled)
         iconView.add(this@relativeLayout)
         iconView.init()
         iconView.apply {

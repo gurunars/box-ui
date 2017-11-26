@@ -2,10 +2,10 @@ package com.gurunars.databinding
 
 
 /**
- * An observable field capable to emit changes and listen to change events
+ * An observable box capable to emit changes and listen to change events
  *
- * @param Type type of the value the field is meant to hold
- * @param value initial value of the field
+ * @param Type type of the value the box is meant to hold
+ * @param value initial value of the box
  */
 class Box<Type>(private var value: Type) : IBox<Type> {
     private val listeners: MutableList<Listener<Type>> = mutableListOf()

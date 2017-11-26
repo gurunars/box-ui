@@ -10,7 +10,7 @@ import com.gurunars.databinding.android.add
 import com.gurunars.databinding.android.fullSize
 import com.gurunars.databinding.android.onClick
 import com.gurunars.databinding.android.txt
-import com.gurunars.databinding.field
+import com.gurunars.databinding.box
 import com.gurunars.storage.PersistentStorage
 import org.jetbrains.anko.*
 
@@ -42,25 +42,25 @@ class ActivityMain : Activity() {
                 gravity = Gravity.CENTER
 
                 autoButton(
-                    text = getString(R.string.disabled).field,
-                    bgColor = getColor(android.R.color.holo_blue_light).field
+                    text = getString(R.string.disabled).box,
+                    bgColor = getColor(android.R.color.holo_blue_light).box
                 ).add(this) {
                     id = R.id.disabled
                     isEnabled = false
                 }
 
                 autoButton(
-                    text = getString(R.string.set).field,
-                    bgColor = Color.YELLOW.field,
-                    shape = OvalShape().field
+                    text = getString(R.string.set).box,
+                    bgColor = Color.YELLOW.box,
+                    shape = OvalShape().box
                 ).add(this) {
                     id = R.id.set
                     onClick { title.set("Configured") }
                 }
 
                 autoButton(
-                    text = getString(R.string.clear).field,
-                    bgColor = getColor(android.R.color.holo_green_light).field
+                    text = getString(R.string.clear).box,
+                    bgColor = getColor(android.R.color.holo_green_light).box
                 ).add(this) {
                     id = R.id.clear
                     onClick { title.set("Empty") }

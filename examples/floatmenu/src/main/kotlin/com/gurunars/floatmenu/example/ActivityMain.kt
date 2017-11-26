@@ -105,7 +105,7 @@ class ActivityMain : Activity() {
                 fgColor = Color.BLACK,
                 icon = R.drawable.ic_menu
             )
-        }.field
+        }.box
 
         class MenuArea(override val hasOverlay: Boolean) : MenuPane {
             override fun Context.render() = menuView

@@ -12,7 +12,7 @@ typealias ItemRenderer<ItemType> = (field: Box<ItemType>) -> View
 /**
  * A decorator to add row coloring behavior to the list view items.
  *
- * @param field selectable field to be bound with renderer
+ * @param field selectable box to be bound with renderer
  * @param render original view binder unaware of selection flag
  * @param selectionColor color integer applied when the row is selected
  * @param regularColor color integer applied when the row is not selected

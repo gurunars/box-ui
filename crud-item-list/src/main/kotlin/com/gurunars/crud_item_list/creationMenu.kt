@@ -5,7 +5,7 @@ import android.view.Gravity
 import com.gurunars.android_utils.iconView
 import com.gurunars.databinding.android.add
 import com.gurunars.databinding.android.fullSize
-import com.gurunars.databinding.field
+import com.gurunars.databinding.box
 import com.gurunars.item_list.Item
 import org.jetbrains.anko.*
 
@@ -21,7 +21,7 @@ internal fun <ItemType : Item> Context.creationMenu(
         linearLayout {
             gravity = Gravity.END
             group.forEach { action ->
-                iconView(icon = action.icon.field).add(this) {
+                iconView(icon = action.icon.box).add(this) {
                     tag = action.type.name
                     setOnClickListener {
                         onEditItemType(action.type)

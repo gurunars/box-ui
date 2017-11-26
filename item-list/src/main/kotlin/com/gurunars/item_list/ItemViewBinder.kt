@@ -11,8 +11,8 @@ import org.jetbrains.anko.textColor
 import com.gurunars.databinding.onChange
 
 /**
- * @param field field representing item's payload
- * @return a view bound to a field holding the item
+ * @param box box representing item's payload
+ * @return a view bound to a box holding the item
  */
 typealias ItemViewBinder<ItemType> = (field: Box<ItemType>) -> View
 

@@ -2,7 +2,7 @@ package com.gurunars.crud_item_list
 
 import com.gurunars.databinding.Box
 import com.gurunars.databinding.branch
-import com.gurunars.databinding.field
+import com.gurunars.databinding.box
 import com.gurunars.databinding.patch
 import com.gurunars.item_list.Item
 import com.gurunars.databinding.onChange
@@ -55,11 +55,11 @@ internal class StateMachine<ItemType : Item>(
     }
 ) {
 
-    val state = State<ItemType>().field
+    val state = State<ItemType>().box
 
-    val isOpen = false.field
+    val isOpen = false.box
 
-    val viewMode = ViewMode.EMPTY.field
+    val viewMode = ViewMode.EMPTY.box
 
     val selectedItems: Box<Set<ItemType>> =
         state.branch({ selectedItems }, { copy(selectedItems = it) })
