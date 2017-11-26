@@ -8,7 +8,7 @@ package com.gurunars.databinding
  * @param reduce a function to transform the payload of this box into the payload of the other
  * box
  */
-inline fun <From, To> IBox<From>.branch(
+inline fun <From, To> IRoBox<From>.branch(
     crossinline reduce: From.() -> To
 ) = Box(get().reduce()).apply {
     this@branch.onChange { item -> set(item.reduce()) }
@@ -78,7 +78,7 @@ typealias SimpleListener<Type> = (value: Type) -> Unit
 /**
  * Simple onChange listener that does not rely on a previous state of the boxed values.
  */
-inline fun <Type> IBox<Type>.onChange(
+inline fun <Type> IRoBox<Type>.onChange(
     hot: Boolean = true,
     crossinline listener: SimpleListener<Type>
 ) = onChange(hot) { _, value -> listener(value) }
