@@ -12,10 +12,6 @@ class Box<Type>(private var value: Type): IBox<Type> {
     private var prevValue: Type = value
 
     override fun onChange(
-        listener: SimpleListener<Type>
-    ) = onChange({ _, value -> listener(value) })
-
-    override fun onChange(
         listener: Listener<Type>
     ) {
         listeners.add(listener)
@@ -27,14 +23,8 @@ class Box<Type>(private var value: Type): IBox<Type> {
             it.invoke(this.prevValue, this.value)
         }
 
-    /**
-     * Change fields content to a new value. The change is made only if current and new values
-     * actually differ content-wise.
-     *
-     * @param value payload to set the value to
-     * @param force if true - the change is made even if current and new values are the same
-     */
-    fun set(value: Type, force: Boolean = false) {
+
+    override fun set(value: Type, force: Boolean) {
         if (force || !equal(this.value, value)) {
             this.prevValue = this.value
             this.value = value
