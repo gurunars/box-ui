@@ -3,34 +3,42 @@ package com.gurunars.databinding.android
 import com.gurunars.databinding.IBox
 import com.gurunars.databinding.Listener
 import com.gurunars.databinding.box
+import com.gurunars.databinding.onChange
 import org.jetbrains.anko.doAsync
-import org.jetbrains.anko.doAsyncResult
+import org.jetbrains.anko.uiThread
 
 class DataSource<ItemType>(
-    getF: () -> ItemType,
-    setF: (value: ItemType) -> Any,
-    initial: ItemType,
-    onFetch: () -> Any
+    private val getF: () -> ItemType,
+    private val setF: (value: ItemType) -> Any,
+    initial: ItemType
 ) : IBox<ItemType> {
 
     private val box = initial.box
 
-    init {
-        val t = doAsyncResult {
-            "FOO"
+    private fun refetch(after: () -> Unit) {
+        doAsync {
+            val data = getF()
+            uiThread {
+                set(data)
+                after()
+            }
         }
-        t.doAsync {  }
     }
 
-    override fun set(value: ItemType, force: Boolean) {
-        TODO("not implemented")
+    fun refetch() = refetch({})
+
+    init {
+        refetch {
+            box.onChange(false) { it -> setF(it) }
+        }
     }
 
-    override fun get(): ItemType {
-        TODO("not implemented")
-    }
+    override fun set(value: ItemType, force: Boolean) =
+        box.set(value, force)
 
-    override fun onChange(listener: Listener<ItemType>) {
-        TODO("not implemented")
-    }
+    override fun get(): ItemType =
+        box.get()
+
+    override fun onChange(hot: Boolean, listener: Listener<ItemType>) =
+        box.onChange(hot, listener)
 }

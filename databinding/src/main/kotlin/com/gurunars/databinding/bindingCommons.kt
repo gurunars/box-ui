@@ -79,5 +79,6 @@ typealias SimpleListener<Type> = (value: Type) -> Unit
  * Simple onChange listener that does not rely on a previous state of the boxed values.
  */
 inline fun <Type> IBox<Type>.onChange(
+    hot: Boolean = true,
     crossinline listener: SimpleListener<Type>
-) = onChange({ _, value -> listener(value) })
+) = onChange(hot) { _, value -> listener(value) }

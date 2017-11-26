@@ -11,11 +11,9 @@ class Box<Type>(private var value: Type) : IBox<Type> {
     private val listeners: MutableList<Listener<Type>> = mutableListOf()
     private var prevValue: Type = value
 
-    override fun onChange(
-        listener: Listener<Type>
-    ) {
+    override fun onChange(hot: Boolean, listener: Listener<Type>) {
         listeners.add(listener)
-        listener(this.value, this.value)
+        if (hot) listener(this.value, this.value)
     }
 
     private fun notifyListeners()
