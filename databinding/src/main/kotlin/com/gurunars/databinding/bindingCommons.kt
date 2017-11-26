@@ -8,7 +8,7 @@ package com.gurunars.databinding
  * @param reduce a function to transform the payload of this field into the payload of the other
  * field
  */
-inline fun <From, To> Box<From>.branch(
+inline fun <From, To> IBox<From>.branch(
     crossinline reduce: From.() -> To
 ) = Box(get().reduce()).apply {
     this@branch.onChange { item -> set(item.reduce()) }
@@ -19,7 +19,7 @@ inline fun <From, To> Box<From>.branch(
  *
  * @param patcher a mutator meant to transform the original value into the patched vale.
  */
-inline fun <ItemType> Box<ItemType>.patch(patcher: ItemType.() -> ItemType) =
+inline fun <ItemType> IBox<ItemType>.patch(patcher: ItemType.() -> ItemType) =
     set(get().patcher())
 
 /**
@@ -29,7 +29,7 @@ inline fun <ItemType> Box<ItemType>.patch(patcher: ItemType.() -> ItemType) =
  * @param target field to bind to
  */
 @Suppress("NOTHING_TO_INLINE")
-inline fun <Type> Box<Type>.bind(target: Box<Type>) {
+inline fun <Type> IBox<Type>.bind(target: Box<Type>) {
     onChange { item -> target.set(item) }
     target.onChange { item -> this.set(item) }
 }
@@ -43,7 +43,7 @@ inline fun <Type> Box<Type>.bind(target: Box<Type>) {
  * @param patchSource a function to transform the value of this field based on the value of the
  * other field
  */
-inline fun <From, To> Box<From>.branch(
+inline fun <From, To> IBox<From>.branch(
     crossinline reduce: From.() -> To,
     crossinline patchSource: From.(part: To) -> From
 ): Box<To> {
@@ -59,7 +59,7 @@ inline fun <From, To> Box<From>.branch(
  *
  * @param transform a function to be called whenever value of this or another field changes.
  */
-inline fun <Type> Box<Type>.fork(
+inline fun <Type> IBox<Type>.fork(
     crossinline transform: Type.() -> Type
 ) = branch(transform, { it.transform() })
 
@@ -68,7 +68,7 @@ inline fun <Type> Box<Type>.fork(
  */
 @Suppress("NOTHING_TO_INLINE")
 inline val <F> F.field
-    get(): Box<F> = Box(this)
+    get(): IBox<F> = Box(this)
 
 /**
  * Listener aware of the current state of the observable.
@@ -78,6 +78,6 @@ typealias SimpleListener<Type> = (value: Type) -> Unit
 /**
  * Simple onChange listener that does not rely on a previous state of the boxed values.
  */
-inline fun <Type> Box<Type>.onChange(
+inline fun <Type> IBox<Type>.onChange(
     crossinline listener: SimpleListener<Type>
 ) = onChange({ _, value -> listener(value) })

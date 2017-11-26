@@ -3,6 +3,7 @@ include  \
     ':item-list',
     ':test-utils',
     ':databinding',
+    ':android-databinding',
     ':floatmenu',
     ':crud-item-list',
     ':example-android-utils',

@@ -41,4 +41,5 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation project(':android-utils')
     implementation project(':databinding')
+    implementation project(':android-databinding')
 }
