@@ -29,7 +29,11 @@ class DataSource<ItemType>(
 
     init {
         refetch {
-            box.onChange(false) { it -> setF(it) }
+            box.onChange(false) { it ->
+                doAsync {
+                    setF(it)
+                }
+            }
         }
     }
 
