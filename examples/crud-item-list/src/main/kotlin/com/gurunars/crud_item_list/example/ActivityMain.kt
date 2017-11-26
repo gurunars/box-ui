@@ -12,7 +12,7 @@ import android.widget.TextView
 import com.gurunars.android_utils.Icon
 import com.gurunars.animal_item.AnimalItem
 import com.gurunars.crud_item_list.*
-import com.gurunars.databinding.BindableField
+import com.gurunars.databinding.Box
 import com.gurunars.databinding.android.fullSize
 import com.gurunars.databinding.android.setAsOne
 import com.gurunars.databinding.android.txt
@@ -61,7 +61,7 @@ class Descriptor(
                 ItemTypeDescriptor.Status.ok()
         }
 
-    override fun bindRow(field: BindableField<SelectableItem<AnimalItem>>) = coloredRowSelectionDecorator(field) {
+    override fun bindRow(field: Box<SelectableItem<AnimalItem>>) = coloredRowSelectionDecorator(field) {
         TextView(context).apply {
             padding = context.dip(5)
             txt(field.branch { item.toString() })
@@ -75,7 +75,7 @@ class Descriptor(
         type = type)
 
     override fun bindForm(
-        field: BindableField<AnimalItem>
+        field: Box<AnimalItem>
     ) = context.verticalLayout {
         fullSize()
         textView {
@@ -109,7 +109,7 @@ class ActivityMain : Activity() {
     private val storage = PersistentStorage(this, "main")
 
     private val isSortable = storage.storageField("isSortable", true)
-    private val items: BindableField<List<AnimalItem>> =
+    private val items: Box<List<AnimalItem>> =
         storage.storageField("items", listOf())
     private val count = storage.storageField("count", 0)
 

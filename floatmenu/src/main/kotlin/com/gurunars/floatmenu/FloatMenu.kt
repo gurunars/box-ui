@@ -3,7 +3,7 @@ package com.gurunars.floatmenu
 import android.content.Context
 import android.view.View
 import com.gurunars.android_utils.Icon
-import com.gurunars.databinding.BindableField
+import com.gurunars.databinding.Box
 import com.gurunars.databinding.android.*
 import com.gurunars.databinding.branch
 import org.jetbrains.anko.*
@@ -43,10 +43,10 @@ interface MenuPane : ContentPane {
  * @param isOpen flag indicating visibility of the menu pane on the screen
  */
 fun Context.floatMenu(
-    contentPane: BindableField<ContentPane>,
-    menuPane: BindableField<MenuPane>,
+    contentPane: Box<ContentPane>,
+    menuPane: Box<MenuPane>,
     animationDuration: Int = 400,
-    isOpen: BindableField<Boolean> = BindableField(false)
+    isOpen: Box<Boolean> = Box(false)
 ) = statefulView(R.id.floatMenu, "FLOAT MENU") {
     retain(isOpen)
 

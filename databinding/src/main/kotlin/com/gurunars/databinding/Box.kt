@@ -7,8 +7,7 @@ package com.gurunars.databinding
  * @param Type type of the value the field is meant to hold
  * @param value initial value of the field
  */
-class BindableField<Type>(private var value: Type): Observable<Type> {
-
+class Box<Type>(private var value: Type): IBox<Type> {
     private val listeners: MutableList<Listener<Type>> = mutableListOf()
     private var prevValue: Type = value
 

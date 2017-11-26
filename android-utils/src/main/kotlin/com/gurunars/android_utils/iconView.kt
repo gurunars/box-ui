@@ -12,7 +12,7 @@ import android.graphics.drawable.shapes.Shape
 import android.support.v4.content.res.ResourcesCompat
 import android.view.View
 import android.widget.ImageView
-import com.gurunars.databinding.BindableField
+import com.gurunars.databinding.Box
 import com.gurunars.databinding.bind
 import com.gurunars.databinding.onChange
 
@@ -33,13 +33,13 @@ data class Icon(
 
 private class IconView(context: Context) : ImageView(context) {
 
-    val icon = BindableField(Icon(
+    val icon = Box(Icon(
         bgColor = Color.WHITE,
         fgColor = Color.BLACK,
         icon = R.drawable.ic_plus
     ))
 
-    val enabled = BindableField(true)
+    val enabled = Box(true)
 
     private lateinit var iconDrawable: Drawable
 
@@ -103,12 +103,12 @@ private class IconView(context: Context) : ImageView(context) {
  * @param enabled Flag specifying if the icon should be clickable or not
  */
 fun Context.iconView(
-    icon: BindableField<Icon> = BindableField(Icon(
+    icon: Box<Icon> = Box(Icon(
         bgColor = Color.WHITE,
         fgColor = Color.BLACK,
         icon = R.drawable.ic_plus
     )),
-    enabled: BindableField<Boolean> = BindableField(true)
+    enabled: Box<Boolean> = Box(true)
 ): View = IconView(this).apply {
     icon.bind(this.icon)
     enabled.bind(this.enabled)

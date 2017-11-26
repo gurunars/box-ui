@@ -1,6 +1,6 @@
 package com.gurunars.crud_item_list
 
-import com.gurunars.databinding.BindableField
+import com.gurunars.databinding.Box
 import com.gurunars.databinding.branch
 import com.gurunars.databinding.field
 import com.gurunars.databinding.patch
@@ -60,7 +60,7 @@ internal class StateMachine<ItemType : Item>(
 
     val viewMode = ViewMode.EMPTY.field
 
-    val selectedItems: BindableField<Set<ItemType>> =
+    val selectedItems: Box<Set<ItemType>> =
         state.branch({ selectedItems }, { copy(selectedItems = it) })
 
     private fun openWithState(value: State<ItemType>) {

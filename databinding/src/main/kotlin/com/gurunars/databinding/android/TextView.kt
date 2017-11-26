@@ -3,9 +3,9 @@ package com.gurunars.databinding.android
 import android.text.Editable
 import android.text.TextWatcher
 import android.widget.TextView
-import com.gurunars.databinding.BindableField
+import com.gurunars.databinding.Box
 
-fun TextView.txt(field: BindableField<String>) {
+fun TextView.txt(field: Box<String>) {
     field.onChange { txt ->
         if (text.toString() != txt) {
             text = txt

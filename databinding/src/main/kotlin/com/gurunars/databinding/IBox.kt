@@ -17,7 +17,7 @@ typealias SimpleListener<Type> = (value: Type) -> Unit
  * Entity meant to hold the value and notify the observers about its
  * changes.
  */
-interface Observable<out Type> {
+interface IBox<out Type> {
     /**
      * Fetches the current value.
      */

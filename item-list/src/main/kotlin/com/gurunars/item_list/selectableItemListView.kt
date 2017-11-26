@@ -22,24 +22,24 @@ import kotlin.collections.HashSet
  * @param explicitSelectionMode when true selection mode is initiated via normal click instead of a long one
  */
 fun <ItemType : Item> Context.selectableItemListView(
-    items: BindableField<List<ItemType>>,
-    selectedItems: BindableField<Set<ItemType>> = BindableField(setOf()),
+    items: Box<List<ItemType>>,
+    selectedItems: Box<Set<ItemType>> = Box(setOf()),
     itemViewBinders: Map<Enum<*>, ItemViewBinder<SelectableItem<ItemType>>> = mapOf(),
     emptyViewBinder: EmptyViewBinder = this::defaultBindEmpty,
-    explicitSelectionMode: BindableField<Boolean> = false.field
+    explicitSelectionMode: Box<Boolean> = false.field
 ): View = statefulView(R.id.selectableItemListView, "SELECTABLE ITEM LIST") {
 
     val kryo = getKryo()
 
-    val copyOfSelectedItems: BindableField<Set<ItemType>> =
+    val copyOfSelectedItems: Box<Set<ItemType>> =
         selectedItems.fork { kryo.copy(HashSet(this)) }
 
-    val copyOfItems: BindableField<List<ItemType>> =
+    val copyOfItems: Box<List<ItemType>> =
         items.fork { kryo.copy(ArrayList(this)) }
 
     retain(copyOfSelectedItems)
 
-    val selectables = BindableField<List<SelectableItem<ItemType>>>(listOf())
+    val selectables = Box<List<SelectableItem<ItemType>>>(listOf())
 
     listOf(copyOfItems, copyOfSelectedItems).onChange {
         val its = copyOfItems.get()
@@ -51,7 +51,7 @@ fun <ItemType : Item> Context.selectableItemListView(
         items = selectables,
         itemViewBinders = itemViewBinders.
             map {
-                it.key to ({ item: BindableField<SelectableItem<ItemType>> ->
+                it.key to ({ item: Box<SelectableItem<ItemType>> ->
                     clickableBind(copyOfSelectedItems, it.value, item, explicitSelectionMode)
                 })
             }.toMap(),

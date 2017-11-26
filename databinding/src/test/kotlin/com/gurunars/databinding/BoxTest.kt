@@ -3,13 +3,12 @@ package com.gurunars.databinding
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
-class BindableFieldTest {
+class BoxTest {
 
     @Test
-    @Throws(Exception::class)
     fun onChange() {
         var value = 0
-        val field = BindableField(1)
+        val field = Box(1)
 
         field.onChange { it -> value = it }
         assertEquals(1, value)
@@ -19,13 +18,12 @@ class BindableFieldTest {
     }
 
     @Test
-    @Throws(Exception::class)
     fun onBind() {
         // master - slave relationship is important
         // for the initial value sync only - master
         // is take as the source of truth
-        val masterField = BindableField(1)
-        val slaveField = BindableField(2)
+        val masterField = Box(1)
+        val slaveField = Box(2)
 
         masterField.bind(slaveField)
         assertEquals(1, masterField.get())
@@ -41,10 +39,9 @@ class BindableFieldTest {
     }
 
     @Test
-    @Throws(Exception::class)
     fun onBindWithTransformation() {
-        val masterField = BindableField(1)
-        val slaveField = BindableField("2")
+        val masterField = Box(1)
+        val slaveField = Box("2")
 
         masterField.bind(
             slaveField.branch( { Integer.valueOf(this) }, { it.toString() })
@@ -62,11 +59,10 @@ class BindableFieldTest {
     }
 
     @Test
-    @Throws(Exception::class)
     fun multibind_shouldSyncChangesToAll() {
-        val masterField = BindableField(1)
-        val slaveField1 = BindableField(2)
-        val slaveField2 = BindableField(3)
+        val masterField = Box(1)
+        val slaveField1 = Box(2)
+        val slaveField2 = Box(3)
 
         masterField.bind(slaveField1)
         masterField.bind(slaveField2)
@@ -82,11 +78,10 @@ class BindableFieldTest {
     }
 
     @Test
-    @Throws(Exception::class)
     fun nestedBind_shouldSyncChangesToAll() {
-        val masterField = BindableField(1)
-        val slaveField1 = BindableField(2)
-        val slaveField2 = BindableField(3)
+        val masterField = Box(1)
+        val slaveField1 = Box(2)
+        val slaveField2 = Box(3)
 
         masterField.bind(slaveField1)
         slaveField1.bind(slaveField2)

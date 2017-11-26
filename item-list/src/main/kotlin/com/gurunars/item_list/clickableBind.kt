@@ -1,14 +1,14 @@
 package com.gurunars.item_list
 
-import com.gurunars.databinding.BindableField
+import com.gurunars.databinding.Box
 import com.gurunars.databinding.android.onClick
 import com.gurunars.databinding.android.onLongClick
 
 internal fun <ItemType : Item> clickableBind(
-    selectedItems: BindableField<Set<ItemType>>,
+    selectedItems: Box<Set<ItemType>>,
     itemViewBinder: ItemViewBinder<SelectableItem<ItemType>>,
-    field: BindableField<SelectableItem<ItemType>>,
-    explicitSelectionMode: BindableField<Boolean>
+    field: Box<SelectableItem<ItemType>>,
+    explicitSelectionMode: Box<Boolean>
 ) =
     itemViewBinder(field).apply {
         isClickable = true

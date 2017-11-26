@@ -7,7 +7,7 @@ import android.graphics.drawable.shapes.RectShape
 import android.graphics.drawable.shapes.Shape
 import android.view.View
 import android.widget.TextView
-import com.gurunars.databinding.BindableField
+import com.gurunars.databinding.Box
 import com.gurunars.databinding.onChange
 import org.jetbrains.anko.*
 
@@ -19,12 +19,12 @@ enum class Style(internal val value: Int) {
 }
 
 fun Context.autoButton(
-    text: BindableField<String> = BindableField(""),
-    shape: BindableField<Shape> = BindableField(RectShape()),
-    bgColor: BindableField<Int> = BindableField(Color.RED),
-    shadowWidth: BindableField<Int> = BindableField(6),
-    textSize: BindableField<Float> = BindableField(12f),
-    textStyle: BindableField<Style> = BindableField(Style.NORMAL)
+    text: Box<String> = Box(""),
+    shape: Box<Shape> = Box(RectShape()),
+    bgColor: Box<Int> = Box(Color.RED),
+    shadowWidth: Box<Int> = Box(6),
+    textSize: Box<Float> = Box(12f),
+    textStyle: Box<Style> = Box(Style.NORMAL)
 ): View = TextView(this).apply {
     isClickable = true
     isFocusable = true

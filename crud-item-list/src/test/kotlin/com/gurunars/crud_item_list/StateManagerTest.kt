@@ -1,7 +1,7 @@
 package com.gurunars.crud_item_list
 
 import com.gurunars.android_utils.Icon
-import com.gurunars.databinding.BindableField
+import com.gurunars.databinding.Box
 import com.gurunars.item_list.SelectableItem
 import org.junit.Assert.assertEquals
 import org.junit.Before
@@ -11,7 +11,7 @@ class TestDescriptor : ItemTypeDescriptor<StringItem> {
     override val icon: Icon
         get() = TODO("NOT NEEDED FOR TESTS")
 
-    override fun bindRow(field: BindableField<SelectableItem<StringItem>>)
+    override fun bindRow(field: Box<SelectableItem<StringItem>>)
         = TODO("NOT NEEDED FOR TESTS")
 
     override fun validate(item: StringItem)
@@ -20,7 +20,7 @@ class TestDescriptor : ItemTypeDescriptor<StringItem> {
     override fun createNewItem()
         = StringItem("NEW")
 
-    override fun bindForm(field: BindableField<StringItem>)
+    override fun bindForm(field: Box<StringItem>)
         = TODO("NOT NEEDED FOR TESTS")
 
     enum class Type {

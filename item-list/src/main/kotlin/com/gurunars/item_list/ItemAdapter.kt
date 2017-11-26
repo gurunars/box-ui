@@ -5,13 +5,13 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
 import com.esotericsoftware.kryo.Kryo
-import com.gurunars.databinding.BindableField
+import com.gurunars.databinding.Box
 import com.gurunars.databinding.android.asRow
 import com.gurunars.databinding.android.fullSize
 import org.objenesis.strategy.StdInstantiatorStrategy
 
 internal class ItemAdapter<ItemType : Item>(
-    private val items: BindableField<List<ItemType>>,
+    private val items: Box<List<ItemType>>,
     private val emptyViewBinder: EmptyViewBinder,
     private val itemViewBinders: Map<Enum<*>, ItemViewBinder<ItemType>>
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -69,7 +69,7 @@ internal class ItemAdapter<ItemType : Item>(
         } else {
             // If enums are from different classes - they have same ordinals
             val initialPayload = items.get().first { getItemTypeInt(it) == viewType }
-            val field = BindableField(initialPayload)
+            val field = Box(initialPayload)
             val binder = itemViewBinders[initialPayload.type] ?: parent.context::defaultBindView
             return object : RecyclerView.ViewHolder(
                 binder(field).apply {
@@ -84,7 +84,7 @@ internal class ItemAdapter<ItemType : Item>(
             return   // nothing to bind
         }
         @Suppress("UNCHECKED_CAST")
-        val field = holder.itemView.getTag(R.id.payloadTag) as BindableField<ItemType>
+        val field = holder.itemView.getTag(R.id.payloadTag) as Box<ItemType>
         field.set(items.get()[position], true)
     }
 

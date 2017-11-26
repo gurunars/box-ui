@@ -9,21 +9,21 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
-import com.gurunars.databinding.BindableField
+import com.gurunars.databinding.Box
 import com.gurunars.databinding.android.setIsVisible
 
 @SuppressLint("ViewConstructor")
 internal class MenuHolder constructor(
     context: Context,
-    hasOverlay: BindableField<Boolean>,
-    isVisible: BindableField<Boolean>,
+    hasOverlay: Box<Boolean>,
+    isVisible: Box<Boolean>,
     animationDuration: Int
 ) : FrameLayout(context) {
 
     init {
 
         val floatEvaluator = FloatEvaluator()
-        val animatedValue = BindableField(1f)
+        val animatedValue = Box(1f)
 
         hasOverlay.onChange { value ->
             setBackgroundColor(if (value) Color.parseColor("#99000000") else Color.TRANSPARENT)

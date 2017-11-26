@@ -9,7 +9,7 @@ import android.view.MenuItem
 import android.widget.TextView
 import android.widget.Toast
 import com.gurunars.animal_item.AnimalItem
-import com.gurunars.databinding.BindableField
+import com.gurunars.databinding.Box
 import com.gurunars.databinding.android.asRow
 import com.gurunars.databinding.android.setAsOne
 import com.gurunars.databinding.android.txt
@@ -21,7 +21,7 @@ import com.gurunars.storage.PersistentStorage
 import org.jetbrains.anko.dip
 import org.jetbrains.anko.padding
 
-private fun Context.bindAnimal(field: BindableField<AnimalItem>) = TextView(this).apply {
+private fun Context.bindAnimal(field: Box<AnimalItem>) = TextView(this).apply {
     asRow()
     padding = context.dip(5)
     txt(field.branch { toString() })
@@ -31,8 +31,8 @@ class ActivityMain : Activity() {
 
     private val storage = PersistentStorage(this, "main")
 
-    private val selectedItems = BindableField<Set<AnimalItem>>(setOf())
-    private val items: BindableField<List<AnimalItem>> =
+    private val selectedItems = Box<Set<AnimalItem>>(setOf())
+    private val items: Box<List<AnimalItem>> =
         storage.storageField("items", listOf())
     private val count = storage.storageField("count", 0)
 
@@ -49,7 +49,7 @@ class ActivityMain : Activity() {
             items = items,
             selectedItems = selectedItems,
             itemViewBinders = AnimalItem.Type.values().map {
-                Pair(it as Enum<*>, { item: BindableField<SelectableItem<AnimalItem>> ->
+                Pair(it as Enum<*>, { item: Box<SelectableItem<AnimalItem>> ->
                     coloredRowSelectionDecorator(item) { bindAnimal(it) }
                 })
             }.toMap()

@@ -2,12 +2,12 @@ package com.gurunars.storage
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.gurunars.databinding.BindableField
+import com.gurunars.databinding.Box
 import java.util.*
 import kotlin.concurrent.timerTask
 
 /**
- * Observable storage based on SharedPreferences
+ * IBox storage based on SharedPreferences
  *
  * @property context Android context to be used for instantiation of SharedPreferences
  * @property storageName name of the data store in SharedPreferences
@@ -26,7 +26,7 @@ class PersistentStorage(
     internal class PersistentField<Type>(
         val preferences: CachedLazyField<SharedPreferences>,
         val name: String,
-        val field: BindableField<Type>) {
+        val field: Box<Type>) {
 
         fun load() {
             val loadedValue: Type? = StringSerializer.fromString<Type>(
@@ -48,8 +48,8 @@ class PersistentStorage(
      * @param defaultValue value to be used if none was set yet
      * @param Type data type of the value to be stored
      */
-    fun <Type> storageField(name: String, defaultValue: Type): BindableField<Type> {
-        val field = BindableField(defaultValue)
+    fun <Type> storageField(name: String, defaultValue: Type): Box<Type> {
+        val field = Box(defaultValue)
         field.onChange { _ ->
             timer.cancel()
             timer = Timer()

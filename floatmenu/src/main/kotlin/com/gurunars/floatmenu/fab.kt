@@ -7,7 +7,7 @@ import android.content.Context
 import android.view.View
 import com.gurunars.android_utils.Icon
 import com.gurunars.android_utils.iconView
-import com.gurunars.databinding.BindableField
+import com.gurunars.databinding.Box
 import com.gurunars.databinding.android.add
 import com.gurunars.databinding.android.fullSize
 import com.gurunars.databinding.android.onClick
@@ -17,13 +17,13 @@ import org.jetbrains.anko.frameLayout
 
 internal fun Context.fab(
     rotationDuration: Int,
-    openIcon: BindableField<Icon>,
-    closeIcon: BindableField<Icon>,
-    isActivated: BindableField<Boolean>
+    openIcon: Box<Icon>,
+    closeIcon: Box<Icon>,
+    isActivated: Box<Boolean>
 ): View = frameLayout {
     val argbEvaluator = ArgbEvaluator()
     val floatEvaluator = FloatEvaluator()
-    val animatedValue = BindableField(1f)
+    val animatedValue = Box(1f)
 
     val icon = openIcon.branch { copy() }
 

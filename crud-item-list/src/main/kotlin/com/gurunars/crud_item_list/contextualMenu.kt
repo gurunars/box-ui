@@ -5,7 +5,7 @@ import android.content.Context
 import android.view.View
 import android.widget.RelativeLayout
 import com.gurunars.android_utils.iconView
-import com.gurunars.databinding.BindableField
+import com.gurunars.databinding.Box
 import com.gurunars.databinding.android.*
 import com.gurunars.databinding.field
 import com.gurunars.databinding.onChange
@@ -18,14 +18,14 @@ internal fun <ItemType : Item> Context.contextualMenu(
     openForm: (item: ItemType) -> Unit,
     sortable: Boolean,
     actionIcon: IconColorBundle,
-    items: BindableField<List<ItemType>>,
-    selectedItems: BindableField<Set<ItemType>>,
+    items: Box<List<ItemType>>,
+    selectedItems: Box<Set<ItemType>>,
     serializer: ClipboardSerializer<ItemType>?
 ) = relativeLayout {
     fullSize()
     id = R.id.contextualMenu
 
-    fun configureIcon(icon: Int, init: View.() -> Unit): BindableField<Boolean> {
+    fun configureIcon(icon: Int, init: View.() -> Unit): Box<Boolean> {
         val enabled = true.field
         val iconView = iconView(actionIcon.icon(icon).field, enabled)
         iconView.add(this@relativeLayout)

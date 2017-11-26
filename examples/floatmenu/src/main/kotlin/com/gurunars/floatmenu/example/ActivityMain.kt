@@ -21,8 +21,8 @@ class ActivityMain : Activity() {
 
     private val hasOverlay = storage.storageField("hasOverlay", true)
 
-    private val isOpen = BindableField(false)
-    private val notification = BindableField("")
+    private val isOpen = Box(false)
+    private val notification = Box("")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -98,7 +98,7 @@ class ActivityMain : Activity() {
             }
         }.view
 
-        val contentArea: BindableField<ContentPane> = object : ContentPane {
+        val contentArea: Box<ContentPane> = object : ContentPane {
             override fun Context.render() = contentView
             override val icon = Icon(
                 bgColor = Color.YELLOW,
