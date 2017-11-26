@@ -20,7 +20,7 @@ import com.gurunars.storage.PersistentStorage
 import org.jetbrains.anko.dip
 import org.jetbrains.anko.padding
 
-private fun Context.bindAnimal(field: Box<AnimalItem>): View = TextView(this).apply {
+private fun Context.bindAnimal(field: IBox<AnimalItem>): View = TextView(this).apply {
     asRow()
     padding = context.dip(5)
     txt(field.branch { toString() })
@@ -29,7 +29,7 @@ private fun Context.bindAnimal(field: Box<AnimalItem>): View = TextView(this).ap
 class ActivityMain : Activity() {
     private val storage = PersistentStorage(this, "main")
 
-    private val items: Box<List<AnimalItem>> =
+    private val items: IBox<List<AnimalItem>> =
         storage.storageField("items", listOf<AnimalItem>())
     private val count = storage.storageField("count", 0)
 
@@ -46,7 +46,7 @@ class ActivityMain : Activity() {
         itemListView(
             items = items,
             itemViewBinders = AnimalItem.Type.values().map {
-                Pair(it as Enum<*>, { value: Box<AnimalItem> -> this.bindAnimal(value) })
+                Pair(it as Enum<*>, { value: IBox<AnimalItem> -> this.bindAnimal(value) })
             }.toMap()
         ).setAsOne(this)
 

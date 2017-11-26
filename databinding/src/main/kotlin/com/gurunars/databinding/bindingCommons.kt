@@ -29,7 +29,7 @@ inline fun <ItemType> IBox<ItemType>.patch(patcher: ItemType.() -> ItemType) =
  * @param target box to bind to
  */
 @Suppress("NOTHING_TO_INLINE")
-inline fun <Type> IBox<Type>.bind(target: Box<Type>) {
+inline fun <Type> IBox<Type>.bind(target: IBox<Type>) {
     onChange { item -> target.set(item) }
     target.onChange { item -> this.set(item) }
 }
@@ -46,7 +46,7 @@ inline fun <Type> IBox<Type>.bind(target: Box<Type>) {
 inline fun <From, To> IBox<From>.branch(
     crossinline reduce: From.() -> To,
     crossinline patchSource: From.(part: To) -> From
-): Box<To> {
+): IBox<To> {
     val branched = Box(get().reduce())
     branched.onChange { item -> this@branch.patch { patchSource(item) } }
     onChange { parent -> branched.set(parent.reduce()) }

@@ -98,7 +98,7 @@ class ActivityMain : Activity() {
             }
         }.view
 
-        val contentArea: Box<ContentPane> = object : ContentPane {
+        val contentArea: IBox<ContentPane> = object : ContentPane {
             override fun Context.render() = contentView
             override val icon = Icon(
                 bgColor = Color.YELLOW,

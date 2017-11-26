@@ -4,7 +4,7 @@ import android.content.Context
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
-import com.gurunars.databinding.Box
+import com.gurunars.databinding.IBox
 import com.gurunars.databinding.android.fullSize
 import com.gurunars.databinding.branch
 import org.jetbrains.anko.bottomPadding
@@ -19,7 +19,7 @@ import org.jetbrains.anko.dip
  * @param stableIds - if false, forces the whole list to be updated whenever the changes arrive
  */
 fun <ItemType : Item> Context.itemListView(
-    items: Box<List<ItemType>>,
+    items: IBox<List<ItemType>>,
     itemViewBinders: Map<Enum<*>, ItemViewBinder<ItemType>> = mapOf(),
     emptyViewBinder: EmptyViewBinder = this::defaultBindEmpty,
     stableIds: Boolean = true

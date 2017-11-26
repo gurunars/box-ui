@@ -13,6 +13,7 @@ import android.support.v4.content.res.ResourcesCompat
 import android.view.View
 import android.widget.ImageView
 import com.gurunars.databinding.Box
+import com.gurunars.databinding.IBox
 import com.gurunars.databinding.bind
 import com.gurunars.databinding.onChange
 
@@ -103,12 +104,12 @@ private class IconView(context: Context) : ImageView(context) {
  * @param enabled Flag specifying if the icon should be clickable or not
  */
 fun Context.iconView(
-    icon: Box<Icon> = Box(Icon(
+    icon: IBox<Icon> = Box(Icon(
         bgColor = Color.WHITE,
         fgColor = Color.BLACK,
         icon = R.drawable.ic_plus
     )),
-    enabled: Box<Boolean> = Box(true)
+    enabled: IBox<Boolean> = Box(true)
 ): View = IconView(this).apply {
     icon.bind(this.icon)
     enabled.bind(this.enabled)

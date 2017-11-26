@@ -1,11 +1,11 @@
 package com.gurunars.databinding.android
 
 import android.widget.CompoundButton
-import com.gurunars.databinding.Box
+import com.gurunars.databinding.IBox
 import com.gurunars.databinding.onChange
 
-fun CompoundButton.isChecked(field: Box<Boolean>) {
+fun CompoundButton.isChecked(field: IBox<Boolean>) {
     setOnCheckedChangeListener { _, isChecked -> field.set(isChecked) }
-    field.onChange(this::setChecked)
+    field.onChange(listener=this::setChecked)
 }
 

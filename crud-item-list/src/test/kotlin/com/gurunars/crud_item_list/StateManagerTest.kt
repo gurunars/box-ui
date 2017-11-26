@@ -11,7 +11,7 @@ class TestDescriptor : ItemTypeDescriptor<StringItem> {
     override val icon: Icon
         get() = TODO("NOT NEEDED FOR TESTS")
 
-    override fun bindRow(field: Box<SelectableItem<StringItem>>)
+    override fun bindRow(field: IBox<SelectableItem<StringItem>>)
         = TODO("NOT NEEDED FOR TESTS")
 
     override fun validate(item: StringItem)
@@ -20,7 +20,7 @@ class TestDescriptor : ItemTypeDescriptor<StringItem> {
     override fun createNewItem()
         = StringItem("NEW")
 
-    override fun bindForm(field: Box<StringItem>)
+    override fun bindForm(field: IBox<StringItem>)
         = TODO("NOT NEEDED FOR TESTS")
 
     enum class Type {

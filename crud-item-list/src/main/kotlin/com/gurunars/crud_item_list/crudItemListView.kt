@@ -30,7 +30,7 @@ import com.gurunars.floatmenu.R as floatR
  */
 fun <ItemType : Item> Context.crudItemListView(
     groupedItemTypeDescriptors: List<List<ItemTypeDescriptor<ItemType>>>,
-    items: Box<List<ItemType>>,
+    items: IBox<List<ItemType>>,
     clipboardSerializer: ClipboardSerializer<ItemType>? = null,
     sortable: Boolean = true,
     actionIconColors: IconColorBundle = IconColorBundle(),
@@ -100,7 +100,7 @@ fun <ItemType : Item> Context.crudItemListView(
         itemViewBinders = groupedItemTypeDescriptors.flatten().map {
             Pair(
                 it.type,
-                { item: Box<SelectableItem<ItemType>> -> it.bindRow(item) }
+                { item: IBox<SelectableItem<ItemType>> -> it.bindRow(item) }
             )
         }.toMap(),
         emptyViewBinder = emptyViewBinder,

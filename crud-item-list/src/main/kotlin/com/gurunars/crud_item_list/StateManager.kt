@@ -1,11 +1,7 @@
 package com.gurunars.crud_item_list
 
-import com.gurunars.databinding.Box
-import com.gurunars.databinding.branch
-import com.gurunars.databinding.box
-import com.gurunars.databinding.patch
+import com.gurunars.databinding.*
 import com.gurunars.item_list.Item
-import com.gurunars.databinding.onChange
 import java.io.Serializable
 
 internal enum class ViewMode(val hasOverlay: Boolean = true) {
@@ -61,7 +57,7 @@ internal class StateMachine<ItemType : Item>(
 
     val viewMode = ViewMode.EMPTY.box
 
-    val selectedItems: Box<Set<ItemType>> =
+    val selectedItems: IBox<Set<ItemType>> =
         state.branch({ selectedItems }, { copy(selectedItems = it) })
 
     private fun openWithState(value: State<ItemType>) {

@@ -2,7 +2,7 @@ package com.gurunars.crud_item_list
 
 import android.view.View
 import com.gurunars.android_utils.Icon
-import com.gurunars.databinding.Box
+import com.gurunars.databinding.IBox
 import com.gurunars.item_list.Item
 import com.gurunars.item_list.SelectableItem
 
@@ -37,7 +37,7 @@ interface ItemTypeDescriptor<ItemType : Item> {
     /**
      * Return a rendered row view for a specific item
      */
-    fun bindRow(field: Box<SelectableItem<ItemType>>): View
+    fun bindRow(field: IBox<SelectableItem<ItemType>>): View
 
     /**
      * Return status of the payload: OK, error, warning
@@ -53,5 +53,5 @@ interface ItemTypeDescriptor<ItemType : Item> {
      * @param field - observable of the payload to be edited in the form
      * @return rendered form
      */
-    fun bindForm(field: Box<ItemType>): View
+    fun bindForm(field: IBox<ItemType>): View
 }

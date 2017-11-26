@@ -4,10 +4,11 @@ import android.graphics.Color
 import android.support.annotation.ColorInt
 import android.view.View
 import com.gurunars.databinding.Box
+import com.gurunars.databinding.IBox
 import com.gurunars.databinding.android.asRow
 import com.gurunars.databinding.onChange
 
-typealias ItemRenderer<ItemType> = (field: Box<ItemType>) -> View
+typealias ItemRenderer<ItemType> = (field: IBox<ItemType>) -> View
 
 /**
  * A decorator to add row coloring behavior to the list view items.
@@ -18,7 +19,7 @@ typealias ItemRenderer<ItemType> = (field: Box<ItemType>) -> View
  * @param regularColor color integer applied when the row is not selected
  */
 fun <ItemType : Item> coloredRowSelectionDecorator(
-    field: Box<SelectableItem<ItemType>>,
+    field: IBox<SelectableItem<ItemType>>,
     @ColorInt selectionColor: Int = Color.RED,
     @ColorInt regularColor: Int = Color.TRANSPARENT,
     render: ItemRenderer<ItemType>

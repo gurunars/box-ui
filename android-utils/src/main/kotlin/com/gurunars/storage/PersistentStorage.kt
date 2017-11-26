@@ -3,6 +3,7 @@ package com.gurunars.storage
 import android.content.Context
 import android.content.SharedPreferences
 import com.gurunars.databinding.Box
+import com.gurunars.databinding.IBox
 import com.gurunars.databinding.onChange
 import java.util.*
 import kotlin.concurrent.timerTask
@@ -27,7 +28,7 @@ class PersistentStorage(
     internal class PersistentField<Type>(
         val preferences: CachedLazyField<SharedPreferences>,
         val name: String,
-        val field: Box<Type>) {
+        val field: IBox<Type>) {
 
         fun load() {
             val loadedValue: Type? = StringSerializer.fromString<Type>(
@@ -49,7 +50,7 @@ class PersistentStorage(
      * @param defaultValue value to be used if none was set yet
      * @param Type data type of the value to be stored
      */
-    fun <Type> storageField(name: String, defaultValue: Type): Box<Type> {
+    fun <Type> storageField(name: String, defaultValue: Type): IBox<Type> {
         val field = Box(defaultValue)
         field.onChange { _ ->
             timer.cancel()

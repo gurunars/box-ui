@@ -5,7 +5,7 @@ import android.content.Context
 import android.view.View
 import android.widget.RelativeLayout
 import com.gurunars.android_utils.iconView
-import com.gurunars.databinding.Box
+import com.gurunars.databinding.IBox
 import com.gurunars.databinding.android.*
 import com.gurunars.databinding.box
 import com.gurunars.databinding.onChange
@@ -18,14 +18,14 @@ internal fun <ItemType : Item> Context.contextualMenu(
     openForm: (item: ItemType) -> Unit,
     sortable: Boolean,
     actionIcon: IconColorBundle,
-    items: Box<List<ItemType>>,
-    selectedItems: Box<Set<ItemType>>,
+    items: IBox<List<ItemType>>,
+    selectedItems: IBox<Set<ItemType>>,
     serializer: ClipboardSerializer<ItemType>?
 ) = relativeLayout {
     fullSize()
     id = R.id.contextualMenu
 
-    fun configureIcon(icon: Int, init: View.() -> Unit): Box<Boolean> {
+    fun configureIcon(icon: Int, init: View.() -> Unit): IBox<Boolean> {
         val enabled = true.box
         val iconView = iconView(actionIcon.icon(icon).box, enabled)
         iconView.add(this@relativeLayout)
@@ -154,10 +154,11 @@ internal fun <ItemType : Item> Context.contextualMenu(
         pasteAction.canPerform(items.get(), selectedItems.get(), { canPaste.set(it) })
     }
 
-    addOnAttachStateChangeListener(object: View.OnAttachStateChangeListener {
+    addOnAttachStateChangeListener(object : View.OnAttachStateChangeListener {
         override fun onViewDetachedFromWindow(v: View?) {
             clipboard.removePrimaryClipChangedListener(onClipChange)
         }
+
         override fun onViewAttachedToWindow(v: View?) {
             clipboard.addPrimaryClipChangedListener(onClipChange)
         }

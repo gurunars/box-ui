@@ -9,6 +9,7 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import com.gurunars.databinding.IBox
 import com.gurunars.databinding.Box
 import com.gurunars.databinding.android.setIsVisible
 import com.gurunars.databinding.onChange
@@ -16,8 +17,8 @@ import com.gurunars.databinding.onChange
 @SuppressLint("ViewConstructor")
 internal class MenuHolder constructor(
     context: Context,
-    hasOverlay: Box<Boolean>,
-    isVisible: Box<Boolean>,
+    hasOverlay: IBox<Boolean>,
+    isVisible: IBox<Boolean>,
     animationDuration: Int
 ) : FrameLayout(context) {
 

@@ -12,12 +12,12 @@ import android.widget.TextView
 import com.gurunars.android_utils.Icon
 import com.gurunars.animal_item.AnimalItem
 import com.gurunars.crud_item_list.*
-import com.gurunars.databinding.Box
+import com.gurunars.databinding.IBox
 import com.gurunars.databinding.android.fullSize
 import com.gurunars.databinding.android.setAsOne
 import com.gurunars.databinding.android.txt
-import com.gurunars.databinding.onChange
 import com.gurunars.databinding.branch
+import com.gurunars.databinding.onChange
 import com.gurunars.databinding.patch
 import com.gurunars.item_list.SelectableItem
 import com.gurunars.item_list.coloredRowSelectionDecorator
@@ -38,7 +38,7 @@ class AnimalItemSerializer : ClipboardSerializer<AnimalItem> {
 
 
     override fun toString(source: List<AnimalItem>): String =
-        source.map { "${it.type}@${it.version}" }.joinToString("\n")
+        source.joinToString("\n") { "${it.type}@${it.version}" }
 
 }
 
@@ -62,7 +62,7 @@ class Descriptor(
                 ItemTypeDescriptor.Status.ok()
         }
 
-    override fun bindRow(field: Box<SelectableItem<AnimalItem>>) = coloredRowSelectionDecorator(field) {
+    override fun bindRow(field: IBox<SelectableItem<AnimalItem>>) = coloredRowSelectionDecorator(field) {
         TextView(context).apply {
             padding = context.dip(5)
             txt(field.branch { item.toString() })
@@ -76,7 +76,7 @@ class Descriptor(
         type = type)
 
     override fun bindForm(
-        field: Box<AnimalItem>
+        field: IBox<AnimalItem>
     ) = context.verticalLayout {
         fullSize()
         textView {
@@ -110,7 +110,7 @@ class ActivityMain : Activity() {
     private val storage = PersistentStorage(this, "main")
 
     private val isSortable = storage.storageField("isSortable", true)
-    private val items: Box<List<AnimalItem>> =
+    private val items: IBox<List<AnimalItem>> =
         storage.storageField("items", listOf())
     private val count = storage.storageField("count", 0)
 

@@ -8,6 +8,7 @@ import android.view.View
 import com.gurunars.android_utils.Icon
 import com.gurunars.android_utils.iconView
 import com.gurunars.databinding.Box
+import com.gurunars.databinding.IBox
 import com.gurunars.databinding.android.add
 import com.gurunars.databinding.android.fullSize
 import com.gurunars.databinding.android.onClick
@@ -17,9 +18,9 @@ import org.jetbrains.anko.frameLayout
 
 internal fun Context.fab(
     rotationDuration: Int,
-    openIcon: Box<Icon>,
-    closeIcon: Box<Icon>,
-    isActivated: Box<Boolean>
+    openIcon: IBox<Icon>,
+    closeIcon: IBox<Icon>,
+    isActivated: IBox<Boolean>
 ): View = frameLayout {
     val argbEvaluator = ArgbEvaluator()
     val floatEvaluator = FloatEvaluator()

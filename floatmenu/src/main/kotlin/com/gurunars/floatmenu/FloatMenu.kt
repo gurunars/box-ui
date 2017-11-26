@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.View
 import com.gurunars.android_utils.Icon
 import com.gurunars.databinding.Box
+import com.gurunars.databinding.IBox
 import com.gurunars.databinding.android.*
 import com.gurunars.databinding.branch
 import com.gurunars.databinding.onChange
@@ -44,10 +45,10 @@ interface MenuPane : ContentPane {
  * @param isOpen flag indicating visibility of the menu pane on the screen
  */
 fun Context.floatMenu(
-    contentPane: Box<ContentPane>,
-    menuPane: Box<MenuPane>,
+    contentPane: IBox<ContentPane>,
+    menuPane: IBox<MenuPane>,
     animationDuration: Int = 400,
-    isOpen: Box<Boolean> = Box(false)
+    isOpen: IBox<Boolean> = Box(false)
 ) = statefulView(R.id.floatMenu, "FLOAT MENU") {
     retain(isOpen)
 

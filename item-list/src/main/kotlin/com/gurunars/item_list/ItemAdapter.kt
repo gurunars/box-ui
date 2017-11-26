@@ -6,12 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import com.esotericsoftware.kryo.Kryo
 import com.gurunars.databinding.Box
+import com.gurunars.databinding.IBox
 import com.gurunars.databinding.android.asRow
 import com.gurunars.databinding.android.fullSize
 import org.objenesis.strategy.StdInstantiatorStrategy
 
 internal class ItemAdapter<ItemType : Item>(
-    private val items: Box<List<ItemType>>,
+    private val items: IBox<List<ItemType>>,
     private val emptyViewBinder: EmptyViewBinder,
     private val itemViewBinders: Map<Enum<*>, ItemViewBinder<ItemType>>
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
