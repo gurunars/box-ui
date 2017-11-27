@@ -36,8 +36,11 @@ interface ItemTypeDescriptor<ItemType : Item> {
 
     /**
      * Return a rendered row view for a specific item
+     *
+     * @param field - payload to be rendered
+     * @param triggerEdit - function that invokes item editing dialog for the item
      */
-    fun bindRow(field: IBox<SelectableItem<ItemType>>): View
+    fun bindRow(field: IBox<SelectableItem<ItemType>>, triggerEdit: () -> Unit = {}): View
 
     /**
      * Return status of the payload: OK, error, warning

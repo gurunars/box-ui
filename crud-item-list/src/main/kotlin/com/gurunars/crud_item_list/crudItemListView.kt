@@ -100,7 +100,9 @@ fun <ItemType : Item> Context.crudItemListView(
         itemViewBinders = groupedItemTypeDescriptors.flatten().map {
             Pair(
                 it.type,
-                { item: IBox<SelectableItem<ItemType>> -> it.bindRow(item) }
+                { item: IBox<SelectableItem<ItemType>> -> it.bindRow(
+                    item, { stateMachine.loadItem(item.get().item) }
+                ) }
             )
         }.toMap(),
         emptyViewBinder = emptyViewBinder,
