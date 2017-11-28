@@ -14,12 +14,13 @@ class DataSource<ItemType>(
 ) : IBox<ItemType> {
 
     private val box = initial.box
+    private var cache = initial
 
     private fun refetch(after: () -> Unit) {
         doAsync {
-            val data = getF()
+            cache = getF()
             uiThread {
-                set(data)
+                set(cache)
                 after()
             }
         }
@@ -30,9 +31,11 @@ class DataSource<ItemType>(
     init {
         refetch {
             box.onChange(false) { it ->
-                doAsync {
-                    setF(it)
-                    refetch()
+                if (cache != it) {
+                    doAsync {
+                        setF(it)
+                        refetch()
+                    }
                 }
             }
         }
