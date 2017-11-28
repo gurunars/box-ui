@@ -32,13 +32,15 @@ class DataSource<ItemType>(
             box.onChange(false) { it ->
                 doAsync {
                     setF(it)
+                    refetch()
                 }
             }
         }
     }
 
-    override fun set(value: ItemType, force: Boolean) =
+    override fun set(value: ItemType, force: Boolean) {
         box.set(value, force)
+    }
 
     override fun get(): ItemType =
         box.get()
