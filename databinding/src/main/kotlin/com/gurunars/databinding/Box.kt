@@ -16,11 +16,9 @@ class Box<Type>(private var value: Type) : IBox<Type> {
         if (hot) listener(this.value, this.value)
     }
 
-    private fun notifyListeners()
-        = listeners.forEach {
+    private fun notifyListeners() = listeners.forEach {
         it.invoke(this.prevValue, this.value)
     }
-
 
     override fun set(value: Type, force: Boolean) {
         if (force || !equal(this.value, value)) {
