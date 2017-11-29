@@ -13,13 +13,13 @@ class CheckerSelectAllTest {
     @Test
     @Throws(Exception::class)
     fun noSelection_leadsToTrue() {
-        assertTrue(checkerSelectAll.canPerform(all, HashSet<String>()))
+        checkerSelectAll.canPerform(all, HashSet<String>(), {assertTrue(it)})
     }
 
     @Test
     @Throws(Exception::class)
     fun selectionOfAll_leadsToFalse() {
-        assertFalse(checkerSelectAll.canPerform(all, HashSet(all)))
+        checkerSelectAll.canPerform(all, HashSet(all), {assertFalse(it)})
     }
 
 }

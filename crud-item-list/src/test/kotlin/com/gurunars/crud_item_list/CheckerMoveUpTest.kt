@@ -14,19 +14,19 @@ class CheckerMoveUpTest {
     @Test
     @Throws(Exception::class)
     fun selectingFirstItem_leadsToFalse() {
-        assertFalse(moveUpChecker.canPerform(all, setOf("one")))
+        moveUpChecker.canPerform(all, setOf("one"), {assertFalse(it)})
     }
 
     @Test
     @Throws(Exception::class)
     fun selectingInterruptedChunk_leadsToFalse() {
-        assertFalse(moveUpChecker.canPerform(all, setOf("two", "four")))
+        moveUpChecker.canPerform(all, setOf("two", "four"), {assertFalse(it)})
     }
 
     @Test
     @Throws(Exception::class)
     fun selectingSolidChunkBeforeLast_leadsToTrue() {
-        assertTrue(moveUpChecker.canPerform(all, setOf("two", "three", "four")))
+        moveUpChecker.canPerform(all, setOf("two", "three", "four"), {assertTrue(it)})
     }
 
 }

@@ -2,8 +2,6 @@ package com.gurunars.crud_item_list
 
 import org.junit.Assert.assertEquals
 import org.junit.Test
-import org.mockito.internal.util.collections.Sets
-import java.util.*
 
 
 fun getRawPositions(items: List<String>, selectedItems: Set<String>): List<Int> =

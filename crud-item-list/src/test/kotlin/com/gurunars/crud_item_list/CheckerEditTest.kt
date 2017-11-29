@@ -12,19 +12,19 @@ class CheckerEditTest {
     @Test
     @Throws(Exception::class)
     fun selectionOfOne_leadsToTrue() {
-        assertTrue(checkerEdit.canPerform(all, setOf("one")))
+        checkerEdit.canPerform(all, setOf("one"), {assertTrue(it)})
     }
 
     @Test
     @Throws(Exception::class)
     fun noSelection_leadsToFalse() {
-        assertFalse(checkerEdit.canPerform(all, setOf()))
+        checkerEdit.canPerform(all, setOf(), {assertFalse(it)})
     }
 
     @Test
     @Throws(Exception::class)
     fun selectionOfMultipl_leadsToFalse() {
-        assertFalse(checkerEdit.canPerform(all, setOf("one", "two")))
+        checkerEdit.canPerform(all, setOf("one", "two"), {assertFalse(it)})
     }
 
 }

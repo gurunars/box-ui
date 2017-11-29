@@ -2,8 +2,6 @@ package com.gurunars.crud_item_list
 
 import org.junit.Assert.assertEquals
 import org.junit.Test
-import org.mockito.internal.util.collections.Sets
-import java.util.*
 
 class MoverDownTest {
 
@@ -43,7 +41,7 @@ class MoverDownTest {
     @Test
     @Throws(Exception::class)
     fun moveDown_isCorrect() {
-        assertEquals(expectedOutcome, moverDown.perform(all, selected).first)
+        moverDown.perform(all, selected, { all -> assertEquals(expectedOutcome, all) })
     }
 
 }

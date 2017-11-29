@@ -1,7 +1,8 @@
 package com.gurunars.crud_item_list
 
+import android.view.View
 import com.gurunars.android_utils.Icon
-import com.gurunars.databinding.Box
+import com.gurunars.databinding.IBox
 import com.gurunars.item_list.SelectableItem
 import org.junit.Assert.assertEquals
 import org.junit.Before
@@ -11,7 +12,7 @@ class TestDescriptor : ItemTypeDescriptor<StringItem> {
     override val icon: Icon
         get() = TODO("NOT NEEDED FOR TESTS")
 
-    override fun bindRow(field: IBox<SelectableItem<StringItem>>)
+    override fun bindRow(field: IBox<SelectableItem<StringItem>>, triggerEdit: () -> Unit): View
         = TODO("NOT NEEDED FOR TESTS")
 
     override fun validate(item: StringItem)
