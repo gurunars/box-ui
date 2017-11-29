@@ -71,7 +71,7 @@ internal class StateMachine<ItemType : Item>(
             if (value.itemTypeInLoad != null) {
                 asyncWrapper(
                     { itemTypes[value.itemTypeInLoad]!!.createNewItem() },
-                    this::loadItem
+                    { this.loadItem(it) }
                 )
             }
             if (value.itemInEdit != null) {

@@ -1,5 +1,7 @@
 package com.gurunars.databinding
 
+import java.util.*
+
 
 /**
  * An observable box capable to emit changes and listen to change events
@@ -20,12 +22,14 @@ class Box<Type>(private var value: Type) : IBox<Type> {
         it.invoke(this.prevValue, this.value)
     }
 
-    override fun set(value: Type, force: Boolean) {
-        if (force || !equal(this.value, value)) {
+    override fun set(value: Type, force: Boolean): Boolean {
+        if (force || !Objects.deepEquals(this.value, value)) {
             this.prevValue = this.value
             this.value = value
             notifyListeners()
+            return true
         }
+        return false
     }
 
     override fun get(): Type = this.value

@@ -11,6 +11,7 @@ interface IBox<Type>: IRoBox<Type> {
      *
      * @param value payload to set the value to
      * @param force if true - the change is made even if current and new values are the same
+     * @param true if the value was different from the current one and thus had to be changed
      */
-    fun set(value: Type, force: Boolean = false)
+    fun set(value: Type, force: Boolean = false): Boolean
 }

@@ -1,53 +1,41 @@
 package com.gurunars.databinding.android
 
+import com.gurunars.databinding.Box
 import com.gurunars.databinding.IBox
 import com.gurunars.databinding.Listener
-import com.gurunars.databinding.box
-import com.gurunars.databinding.onChange
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
 
-class DataSource<ItemType>(
-    private val getF: () -> ItemType,
-    private val setF: (value: ItemType) -> Any,
-    initial: ItemType
-) : IBox<ItemType> {
+class DataSource<Type>(
+    private val getF: () -> Type,
+    private val setF: (value: Type) -> Any,
+    initial: Type
+) : IBox<Type> {
+    private val box = Box(initial)
 
-    private val box = initial.box
-    private var cache = initial
-
-    private fun refetch(after: () -> Unit) {
+    fun refetch() {
         doAsync {
-            cache = getF()
+            val next = getF()
             uiThread {
-                set(cache)
-                after()
+                box.set(next, false)
             }
         }
     }
 
-    fun refetch() = refetch({})
+    override fun get() = box.get()
 
-    init {
-        refetch {
-            box.onChange(false) { it ->
-                if (cache != it) {
-                    doAsync {
-                        setF(it)
-                        refetch()
-                    }
-                }
+    override fun set(value: Type, force: Boolean): Boolean {
+        if (box.set(value, force)) {
+            doAsync {
+                setF(value)
+                refetch()
             }
+            return true
         }
+        return false
     }
 
-    override fun set(value: ItemType, force: Boolean) {
-        box.set(value, force)
-    }
+    override fun onChange(hot: Boolean, listener: Listener<Type>)
+        = box.onChange(hot, listener)
 
-    override fun get(): ItemType =
-        box.get()
-
-    override fun onChange(hot: Boolean, listener: Listener<ItemType>) =
-        box.onChange(hot, listener)
 }

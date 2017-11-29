@@ -73,7 +73,7 @@ fun <ItemType : Item> Context.crudItemListView(
     isOpen.onChange { it -> if(!it) closeKeyboard() }
 
     val contextualMenu = contextualMenu(
-        stateMachine::loadItem,
+        { stateMachine.loadItem(it) },
         sortable,
         actionIconColors,
         items,

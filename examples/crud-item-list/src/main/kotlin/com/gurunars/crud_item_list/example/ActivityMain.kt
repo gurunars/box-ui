@@ -8,6 +8,7 @@ import android.text.InputType
 import android.view.Gravity
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.TextView
 import com.gurunars.android_utils.Icon
 import com.gurunars.animal_item.AnimalItem
@@ -62,7 +63,7 @@ class Descriptor(
                 ItemTypeDescriptor.Status.ok()
         }
 
-    override fun bindRow(field: IBox<SelectableItem<AnimalItem>>) = coloredRowSelectionDecorator(field) {
+    override fun bindRow(field: IBox<SelectableItem<AnimalItem>>, triggerEdit: () -> Unit): View = coloredRowSelectionDecorator(field) {
         TextView(context).apply {
             padding = context.dip(5)
             txt(field.branch { item.toString() })
