@@ -18,7 +18,7 @@ class DataSource<Type>(
         doAsync {
             val next = preset(getF())
             uiThread {
-                box.set(next, false)
+                box.set(next, true)
             }
         }
     }
