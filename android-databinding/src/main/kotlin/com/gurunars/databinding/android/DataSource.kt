@@ -22,11 +22,13 @@ class DataSource<Type>(
     initial: Type
 ) : IBox<Type> {
     private val box = Box(initial)
+    private var ready = false
 
     fun refetch() {
         doAsync {
             val next = preprocess(getF())
             uiThread {
+                ready = true
                 box.set(next, true)
             }
         }
@@ -39,6 +41,7 @@ class DataSource<Type>(
     override fun get() = box.get()
 
     override fun set(value: Type, force: Boolean): Boolean {
+        ready = true
         val sorted = preprocess(value)
         if (box.set(sorted, force)) {
             doAsync {
@@ -51,6 +54,6 @@ class DataSource<Type>(
     }
 
     override fun onChange(hot: Boolean, listener: Listener<Type>)
-        = box.onChange(hot, listener)
+        = box.onChange(hot, { prev, cur -> if (ready) listener(prev, cur) })
 
 }
