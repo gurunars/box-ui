@@ -14,4 +14,4 @@ internal fun Action<StringItem>.canPerform(items: List<String>, selectedItems: S
 
 internal fun Action<StringItem>.perform(items: List<String>, selectedItems: Set<String>, consumer: (items: List<String>) -> Unit) =
    perform(items.itemize(), selectedItems.itemize(),
-        { first, second -> consumer(first.map { it.text }) })
+        { first, _ -> consumer(first.map { it.text }) })

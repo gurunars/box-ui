@@ -102,7 +102,7 @@ class StateManagerTest {
         manager = StateMachine<StringItem>(
             {},
             mapOf(TestDescriptor.Type.ONE to TestDescriptor()),
-            { supplier, consumer -> }
+            {_, _ -> }
         )
         manager.isOpen.set(true)
         checkState(State(

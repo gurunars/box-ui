@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lint>
+    <!-- This invalid package warning does not make sense since the package is used for testing only -->
+    <issue id="InvalidPackage"  severity="ignore" />
+</lint>

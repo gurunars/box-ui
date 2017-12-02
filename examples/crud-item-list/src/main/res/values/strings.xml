@@ -18,5 +18,5 @@
     <string name="isSeven">Can be divided by seven without a remainder</string>
     <string name="isZero">Is zero</string>
     <string name="isEven">Is even</string>
-    <string name="isOk">It is ok</string>
+    <string name="isOk">It is OK</string>
 </resources>

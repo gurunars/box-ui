@@ -3,7 +3,7 @@
     package="com.gurunars.floatmenu.example">
 
     <application
-        android:allowBackup="true"
+        android:allowBackup="false"
         android:fullBackupContent="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/appName"
