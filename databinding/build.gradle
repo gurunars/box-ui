@@ -9,5 +9,5 @@ manipulated and monitored for changes.
 """
 
 dependencies {
-    testImplementation "junit:junit:$junit_version"
+    testImplementation "junit:junit:$junitVersion"
 }

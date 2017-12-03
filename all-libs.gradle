@@ -3,17 +3,17 @@ apply plugin: 'kotlin-android'
 apply plugin: 'com.github.dcendents.android-maven'
 
 group = moduleGroup
-version = package_version
+version = packageVersion
 
 android {
-    compileSdkVersion compile_sdk_version
-    buildToolsVersion build_tools_version
+    compileSdkVersion sdkVersionTarget
+    buildToolsVersion buildToolsVersion
 
     defaultConfig {
-        minSdkVersion min_sdk_version
-        targetSdkVersion compile_sdk_version
-        versionCode package_version_code
-        versionName package_version
+        minSdkVersion sdkVersionMin
+        targetSdkVersion sdkVersionTarget
+        versionCode packageVersionCode
+        versionName packageVersion
     }
 
     sourceSets {
@@ -27,5 +27,5 @@ android {
 }
 
 dependencies {
-    api "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    api "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
 }

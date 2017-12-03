@@ -2,16 +2,16 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 
 android {
-    compileSdkVersion compile_sdk_version
-    buildToolsVersion build_tools_version
+    compileSdkVersion sdkVersionTarget
+    buildToolsVersion buildToolsVersion
 
     lintOptions.abortOnError false
 
     defaultConfig {
         testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
         applicationId appId
-        minSdkVersion min_sdk_version
-        targetSdkVersion compile_sdk_version
+        minSdkVersion sdkVersionMin
+        targetSdkVersion sdkVersionTarget
         versionCode 1
         versionName "1.0"
     }
@@ -31,14 +31,14 @@ android {
 }
 
 dependencies {
-    androidTestImplementation "junit:junit:$junit_version"
+    androidTestImplementation "junit:junit:$junitVersion"
     androidTestImplementation 'com.android.support.test:rules:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
     androidTestImplementation project(':test-utils')
-    implementation "com.android.support:support-v4:$supportlib_version"
-    implementation "com.android.support:support-annotations:$supportlib_version"
-    implementation "org.jetbrains.anko:anko:$anko_version"
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    implementation "com.android.support:support-v4:$supportlibVersion"
+    implementation "com.android.support:support-annotations:$supportlibVersion"
+    implementation "org.jetbrains.anko:anko:$ankoVersion"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
     implementation project(':android-utils')
     implementation project(':databinding')
     implementation project(':android-databinding')
