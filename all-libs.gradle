@@ -9,8 +9,6 @@ android {
     compileSdkVersion compile_sdk_version
     buildToolsVersion build_tools_version
 
-    lintOptions.abortOnError false
-
     defaultConfig {
         minSdkVersion min_sdk_version
         targetSdkVersion compile_sdk_version
@@ -23,10 +21,6 @@ android {
         test.java.srcDirs += 'src/test/kotlin'
         androidTest.java.srcDirs += 'src/androidTest/kotlin'
         main.jni.srcDirs = []
-    }
-
-    lintOptions {
-        disable 'UnusedResources'
     }
 
     return void

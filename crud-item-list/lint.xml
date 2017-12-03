@@ -1,4 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <lint>
     <issue id="VectorPath" severity="ignore" />
+    <issue id="UnusedResources">
+        <ignore path="src/main/res/drawable/ic_warning_sign.xml" />
+        <ignore path="src/main/res/drawable/ic_select_all.xml" />
+        <ignore path="src/main/res/drawable/ic_plus.xml" />
+        <ignore path="src/main/res/drawable/ic_paste.xml" />
+        <ignore path="src/main/res/drawable/ic_move_up.xml" />
+        <ignore path="src/main/res/drawable/ic_move_down.xml" />
+        <ignore path="src/main/res/drawable/ic_edit.xml" />
+        <ignore path="src/main/res/drawable/ic_delete.xml" />
+        <ignore path="src/main/res/drawable/ic_copy.xml" />
+        <ignore path="src/main/res/drawable/ic_check.xml" />
+    </issue>
+
 </lint>
