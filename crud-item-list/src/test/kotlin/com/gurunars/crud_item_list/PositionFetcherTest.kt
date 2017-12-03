@@ -3,7 +3,6 @@ package com.gurunars.crud_item_list
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
-
 fun getRawPositions(items: List<String>, selectedItems: Set<String>): List<Int> =
     getPositions(items.itemize(), selectedItems.itemize())
 
@@ -29,5 +28,4 @@ class PositionFetcherTest {
     fun properSelections_leadProperPositions() {
         assertEquals(listOf(1, 2), getRawPositions(all, selected))
     }
-
 }

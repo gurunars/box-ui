@@ -26,7 +26,6 @@ class StatefulView(context: Context) : FrameLayout(context) {
             val obtained = map[index] as T
             this.set(obtained)
         }
-
     }
 
     /**
@@ -59,7 +58,6 @@ class StatefulView(context: Context) : FrameLayout(context) {
             super.onRestoreInstanceState(state)
         }
     }
-
 }
 
 fun Context.statefulView(

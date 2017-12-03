@@ -55,7 +55,6 @@ class ActivityMain : Activity() {
                 })
             }.toMap()
         ).setAsOne(this)
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -117,5 +116,4 @@ class ActivityMain : Activity() {
         create()
         return R.string.did_reset
     }
-
 }

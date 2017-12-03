@@ -4,15 +4,29 @@ import android.content.Context
 import android.view.Gravity
 import android.view.View
 import com.gurunars.android_utils.Icon
-import com.gurunars.databinding.*
-import com.gurunars.databinding.android.*
-import com.gurunars.floatmenu.*
-import com.gurunars.item_list.*
+import com.gurunars.databinding.IBox
+import com.gurunars.databinding.android.closeKeyboard
+import com.gurunars.databinding.android.fullSize
+import com.gurunars.databinding.android.onLongClick
+import com.gurunars.databinding.android.set
+import com.gurunars.databinding.android.statefulView
+import com.gurunars.databinding.bind
+import com.gurunars.databinding.onChange
+import com.gurunars.databinding.box
+import com.gurunars.databinding.branch
+import com.gurunars.databinding.patch
+import com.gurunars.floatmenu.ContentPane
+import com.gurunars.floatmenu.MenuPane
+import com.gurunars.floatmenu.floatMenu
+import com.gurunars.item_list.EmptyViewBinder
+import com.gurunars.item_list.Item
+import com.gurunars.item_list.SelectableItem
+import com.gurunars.item_list.defaultBindEmpty
+import com.gurunars.item_list.selectableItemListView
 import org.jetbrains.anko.dip
 import org.jetbrains.anko.frameLayout
 import org.jetbrains.anko.progressBar
 import com.gurunars.floatmenu.R as floatR
-
 
 /**
  * Widget to be used for manipulating a collection of items with a dedicated set of UI controls.
@@ -40,8 +54,8 @@ fun <ItemType : Item> Context.crudItemListView(
     openIconColors: IconColorBundle = IconColorBundle()
 ): View = statefulView(R.id.crudItemListView, "CRUD ITEM LIST") {
 
-    val typeCache = groupedItemTypeDescriptors.
-        flatten().map {
+    val typeCache = groupedItemTypeDescriptors
+        .flatten().map {
         Pair(it.type, it)
     }.toMap()
 
@@ -70,7 +84,7 @@ fun <ItemType : Item> Context.crudItemListView(
         retain(state)
     }
 
-    isOpen.onChange { it -> if(!it) closeKeyboard() }
+    isOpen.onChange { it -> if (!it) closeKeyboard() }
 
     val contextualMenu = contextualMenu(
         { stateMachine.loadItem(it) },

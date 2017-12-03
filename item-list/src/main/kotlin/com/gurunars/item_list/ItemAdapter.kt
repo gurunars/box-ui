@@ -32,7 +32,6 @@ internal class ItemAdapter<ItemType : Item>(
 
         override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
             previousList.getOrNull(oldItemPosition)?.id == currentList.getOrNull(newItemPosition)?.id
-
     }
 
     private val kryo = Kryo().apply {
@@ -56,7 +55,6 @@ internal class ItemAdapter<ItemType : Item>(
                 fullSize()
                 addOnAttachStateChangeListener(object : View.OnAttachStateChangeListener {
                     override fun onViewAttachedToWindow(v: View) {
-
                     }
 
                     override fun onViewDetachedFromWindow(v: View) {
@@ -65,7 +63,6 @@ internal class ItemAdapter<ItemType : Item>(
                     }
                 })
             }) {
-
             }
         } else {
             // If enums are from different classes - they have same ordinals
@@ -82,7 +79,7 @@ internal class ItemAdapter<ItemType : Item>(
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (position == items.get().size) {
-            return   // nothing to bind
+            return // nothing to bind
         }
         @Suppress("UNCHECKED_CAST")
         val field = holder.itemView.getTag(R.id.payloadTag) as Box<ItemType>

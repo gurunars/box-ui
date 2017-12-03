@@ -3,7 +3,7 @@ package com.gurunars.crud_item_list
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
 
-internal fun<T> Any.asyncChain(
+internal fun <T> Any.asyncChain(
     supplier: () -> T,
     consumer: (item: T) -> Unit,
     exceptionHandler: (exe: Exception) -> Unit = { throw it }

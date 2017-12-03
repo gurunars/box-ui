@@ -53,7 +53,6 @@ class DataSource<Type>(
         return false
     }
 
-    override fun onChange(hot: Boolean, listener: Listener<Type>)
-        = box.onChange(hot, { prev, cur -> if (ready) listener(prev, cur) })
-
+    override fun onChange(hot: Boolean, listener: Listener<Type>) =
+        box.onChange(hot, { prev, cur -> if (ready) listener(prev, cur) })
 }

@@ -2,10 +2,14 @@ package com.gurunars.item_list
 
 import android.content.Context
 import android.view.View
-import com.gurunars.databinding.*
+import com.gurunars.databinding.Box
+import com.gurunars.databinding.IBox
 import com.gurunars.databinding.android.setAsOne
 import com.gurunars.databinding.android.statefulView
-import java.util.*
+import com.gurunars.databinding.box
+import com.gurunars.databinding.fork
+import com.gurunars.databinding.onChange
+import com.gurunars.databinding.patch
 import kotlin.collections.HashSet
 
 /**
@@ -49,8 +53,8 @@ fun <ItemType : Item> Context.selectableItemListView(
 
     itemListView(
         items = selectables,
-        itemViewBinders = itemViewBinders.
-            map {
+        itemViewBinders = itemViewBinders
+            .map {
                 it.key to ({ item: IBox<SelectableItem<ItemType>> ->
                     clickableBind(copyOfSelectedItems, it.value, item, explicitSelectionMode)
                 })

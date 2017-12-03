@@ -10,7 +10,6 @@ import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import com.gurunars.animal_item.AnimalItem
-import com.gurunars.databinding.Box
 import com.gurunars.databinding.IBox
 import com.gurunars.databinding.android.asRow
 import com.gurunars.databinding.android.setAsOne
@@ -34,7 +33,6 @@ class ActivityMain : Activity() {
         storage.storageField("items", listOf<AnimalItem>())
     private val count = storage.storageField("count", 0)
 
-
     private fun add(type: AnimalItem.Type) {
         items.set(items.get() + AnimalItem(count.get().toLong(), type, 0))
         count.set(count.get() + 1)
@@ -50,7 +48,6 @@ class ActivityMain : Activity() {
                 Pair(it as Enum<*>, { value: IBox<AnimalItem> -> this.bindAnimal(value) })
             }.toMap()
         ).setAsOne(this)
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -142,5 +139,4 @@ class ActivityMain : Activity() {
         super.onDetachedFromWindow()
         storage.unbindAll()
     }
-
 }

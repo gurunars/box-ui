@@ -1,7 +1,6 @@
 package com.gurunars.databinding
 
-import java.util.*
-
+import java.util.Objects
 
 /**
  * An observable box capable to emit changes and listen to change events
@@ -33,5 +32,4 @@ class Box<Type>(private var value: Type) : IBox<Type> {
     }
 
     override fun get(): Type = this.value
-
 }

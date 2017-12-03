@@ -43,5 +43,4 @@ class MoverDownTest {
     fun moveDown_isCorrect() {
         moverDown.perform(all, selected, { all -> assertEquals(expectedOutcome, all) })
     }
-
 }

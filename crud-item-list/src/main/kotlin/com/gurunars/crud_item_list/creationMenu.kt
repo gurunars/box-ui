@@ -7,7 +7,11 @@ import com.gurunars.databinding.android.add
 import com.gurunars.databinding.android.fullSize
 import com.gurunars.databinding.box
 import com.gurunars.item_list.Item
-import org.jetbrains.anko.*
+import org.jetbrains.anko.bottomPadding
+import org.jetbrains.anko.dip
+import org.jetbrains.anko.linearLayout
+import org.jetbrains.anko.rightPadding
+import org.jetbrains.anko.verticalLayout
 
 internal fun <ItemType : Item> Context.creationMenu(
     groupedItemTypeDescriptors: List<List<ItemTypeDescriptor<ItemType>>>,

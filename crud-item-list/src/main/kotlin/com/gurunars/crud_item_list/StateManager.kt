@@ -1,6 +1,10 @@
 package com.gurunars.crud_item_list
 
-import com.gurunars.databinding.*
+import com.gurunars.databinding.IBox
+import com.gurunars.databinding.box
+import com.gurunars.databinding.branch
+import com.gurunars.databinding.patch
+import com.gurunars.databinding.onChange
 import com.gurunars.item_list.Item
 import java.io.Serializable
 
@@ -37,7 +41,6 @@ internal data class State<out ItemType : Item>(
                 ViewMode.EMPTY
             }
         }
-
 }
 
 internal class StateMachine<ItemType : Item>(
@@ -97,13 +100,12 @@ internal class StateMachine<ItemType : Item>(
         }
     }
 
-    fun loadItem(item: ItemType)
-        = state.patch { State(itemInEdit = item) }
+    fun loadItem(item: ItemType) =
+        state.patch { State(itemInEdit = item) }
 
-    fun loadType(itemType: Enum<*>)
-        = state.patch { State(itemTypeInLoad = itemType) }
+    fun loadType(itemType: Enum<*>) =
+        state.patch { State(itemTypeInLoad = itemType) }
 
-    fun openExplicitContextualMenu()
-        = openWithState(State(explicitContextual = true))
-
+    fun openExplicitContextualMenu() =
+        openWithState(State(explicitContextual = true))
 }

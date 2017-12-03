@@ -12,7 +12,11 @@ import android.view.View
 import android.widget.TextView
 import com.gurunars.android_utils.Icon
 import com.gurunars.animal_item.AnimalItem
-import com.gurunars.crud_item_list.*
+import com.gurunars.crud_item_list.ClipboardSerializer
+import com.gurunars.crud_item_list.IconColorBundle
+import com.gurunars.crud_item_list.ItemTypeDescriptor
+import com.gurunars.crud_item_list.crudItemListView
+import com.gurunars.crud_item_list.oneOf
 import com.gurunars.databinding.IBox
 import com.gurunars.databinding.android.fullSize
 import com.gurunars.databinding.android.setAsOne
@@ -23,7 +27,13 @@ import com.gurunars.databinding.patch
 import com.gurunars.item_list.SelectableItem
 import com.gurunars.item_list.coloredRowSelectionDecorator
 import com.gurunars.storage.PersistentStorage
-import org.jetbrains.anko.*
+import org.jetbrains.anko.backgroundColor
+import org.jetbrains.anko.button
+import org.jetbrains.anko.dip
+import org.jetbrains.anko.editText
+import org.jetbrains.anko.padding
+import org.jetbrains.anko.textView
+import org.jetbrains.anko.verticalLayout
 
 class AnimalItemSerializer : ClipboardSerializer<AnimalItem> {
 
@@ -37,10 +47,8 @@ class AnimalItemSerializer : ClipboardSerializer<AnimalItem> {
             )
         }
 
-
     override fun toString(source: List<AnimalItem>): String =
         source.joinToString("\n") { "${it.type}@${it.version}" }
-
 }
 
 class Descriptor(
@@ -103,7 +111,6 @@ class Descriptor(
         gravity = Gravity.CENTER
         backgroundColor = Color.WHITE
     }
-
 }
 
 class ActivityMain : Activity() {
@@ -222,7 +229,6 @@ class ActivityMain : Activity() {
             ),
             clipboardSerializer = AnimalItemSerializer()
         ).setAsOne(this)
-
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -253,5 +259,4 @@ class ActivityMain : Activity() {
         }
         return super.onOptionsItemSelected(item)
     }
-
 }

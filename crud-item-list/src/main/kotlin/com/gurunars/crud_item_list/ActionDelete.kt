@@ -18,5 +18,4 @@ internal class ActionDelete<ItemType : Item> : Action<ItemType> {
         selectedItems: Set<ItemType>,
         consumer: CanDo
     ) = consumer(selectedItems.isNotEmpty())
-
 }

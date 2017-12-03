@@ -6,12 +6,23 @@ import com.gurunars.android_utils.Icon
 import com.gurunars.android_utils.iconView
 import com.gurunars.crud_item_list.ItemTypeDescriptor.Status.Type.ERROR
 import com.gurunars.crud_item_list.ItemTypeDescriptor.Status.Type.WARNING
-import com.gurunars.databinding.android.*
+import com.gurunars.databinding.android.HorizontalAlignment
+import com.gurunars.databinding.android.VerticalAlignment
+import com.gurunars.databinding.android.add
+import com.gurunars.databinding.android.alignInParent
+import com.gurunars.databinding.android.fullSize
+import com.gurunars.databinding.android.onClick
+import com.gurunars.databinding.android.relativeLayoutParams
+import com.gurunars.databinding.android.setIsVisible
 import com.gurunars.databinding.box
 import com.gurunars.databinding.patch
 import com.gurunars.databinding.onChange
 import com.gurunars.item_list.Item
-import org.jetbrains.anko.*
+import org.jetbrains.anko.dip
+import org.jetbrains.anko.longToast
+import org.jetbrains.anko.margin
+import org.jetbrains.anko.relativeLayout
+import org.jetbrains.anko.rightOf
 
 internal fun <ItemType : Item> Context.itemForm(
     item: ItemType,

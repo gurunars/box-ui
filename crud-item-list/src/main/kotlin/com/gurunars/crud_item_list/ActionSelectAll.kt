@@ -15,5 +15,4 @@ internal class ActionSelectAll<ItemType : Item> : Action<ItemType> {
         selectedItems: Set<ItemType>,
         consumer: CanDo
     ) = consumer(selectedItems.size < all.size)
-
 }

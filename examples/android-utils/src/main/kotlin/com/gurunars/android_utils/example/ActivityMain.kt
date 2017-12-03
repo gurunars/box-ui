@@ -12,8 +12,15 @@ import com.gurunars.databinding.android.onClick
 import com.gurunars.databinding.android.txt
 import com.gurunars.databinding.box
 import com.gurunars.storage.PersistentStorage
-import org.jetbrains.anko.*
-
+import org.jetbrains.anko.backgroundColor
+import org.jetbrains.anko.below
+import org.jetbrains.anko.dip
+import org.jetbrains.anko.linearLayout
+import org.jetbrains.anko.margin
+import org.jetbrains.anko.matchParent
+import org.jetbrains.anko.padding
+import org.jetbrains.anko.relativeLayout
+import org.jetbrains.anko.textView
 
 class ActivityMain : Activity() {
 
@@ -65,13 +72,11 @@ class ActivityMain : Activity() {
                     id = R.id.clear
                     onClick { title.set("Empty") }
                 }
-
             }.lparams {
                 width = matchParent
                 below(R.id.payloadView)
             }
         }
-
     }
 
     override fun onAttachedToWindow() {
@@ -83,5 +88,4 @@ class ActivityMain : Activity() {
         super.onDetachedFromWindow()
         storage.unbindAll()
     }
-
 }

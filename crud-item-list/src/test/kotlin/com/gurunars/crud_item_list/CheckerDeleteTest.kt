@@ -12,13 +12,12 @@ class CheckerDeleteTest {
     @Test
     @Throws(Exception::class)
     fun selection_leadsToTrue() {
-        checkerDelete.canPerform(all, setOf("one"), {assertTrue(it) })
+        checkerDelete.canPerform(all, setOf("one"), { assertTrue(it) })
     }
 
     @Test
     @Throws(Exception::class)
     fun noSelection_leadsToFalse() {
-        checkerDelete.canPerform(all, setOf(), {assertFalse(it) })
+        checkerDelete.canPerform(all, setOf(), { assertFalse(it) })
     }
-
 }

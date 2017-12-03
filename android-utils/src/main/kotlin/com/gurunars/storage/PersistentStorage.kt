@@ -5,7 +5,7 @@ import android.content.SharedPreferences
 import com.gurunars.databinding.Box
 import com.gurunars.databinding.IBox
 import com.gurunars.databinding.onChange
-import java.util.*
+import java.util.Timer
 import kotlin.concurrent.timerTask
 
 /**
@@ -20,8 +20,8 @@ class PersistentStorage(
 ) {
 
     private val preferences = CachedLazyField {
-        context.
-            getSharedPreferences(storageName, Context.MODE_PRIVATE)
+        context
+            .getSharedPreferences(storageName, Context.MODE_PRIVATE)
     }
     private var timer = Timer()
 
@@ -40,7 +40,6 @@ class PersistentStorage(
         fun save(editor: SharedPreferences.Editor) {
             editor.putString(name, StringSerializer.toString(field.get()))
         }
-
     }
 
     private val fields = mutableListOf<PersistentField<*>>()
@@ -82,5 +81,4 @@ class PersistentStorage(
         timer.cancel()
         save()
     }
-
 }

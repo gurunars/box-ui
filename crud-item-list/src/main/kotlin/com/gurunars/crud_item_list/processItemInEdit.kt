@@ -2,7 +2,7 @@ package com.gurunars.crud_item_list
 
 import com.gurunars.item_list.Item
 
-internal fun<ItemType: Item> processItemInEdit(
+internal fun <ItemType : Item> processItemInEdit(
     item: ItemType?,
     oldItems: List<ItemType>
 ): List<ItemType> {

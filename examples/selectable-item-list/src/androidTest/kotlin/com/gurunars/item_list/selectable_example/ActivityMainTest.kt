@@ -117,5 +117,4 @@ class ActivityMainTest {
     fun after() {
         clickMenu("Reset items")
     }
-
 }

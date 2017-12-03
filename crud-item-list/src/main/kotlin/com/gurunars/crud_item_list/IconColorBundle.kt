@@ -15,7 +15,7 @@ data class IconColorBundle(
 )
 
 internal fun IconColorBundle.icon(iconRes: Int) = Icon(
-    icon=iconRes,
+    icon = iconRes,
     bgColor = bgColor,
     fgColor = fgColor
 )

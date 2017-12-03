@@ -12,6 +12,10 @@ fun List<String>.itemize() = map { StringItem(it) }
 internal fun Action<StringItem>.canPerform(items: List<String>, selectedItems: Set<String>, consumer: CanDo) =
     canPerform(items.itemize(), selectedItems.itemize(), consumer)
 
-internal fun Action<StringItem>.perform(items: List<String>, selectedItems: Set<String>, consumer: (items: List<String>) -> Unit) =
-   perform(items.itemize(), selectedItems.itemize(),
+internal fun Action<StringItem>.perform(
+    items: List<String>,
+    selectedItems: Set<String>,
+    consumer: (items: List<String>) -> Unit
+) =
+    perform(items.itemize(), selectedItems.itemize(),
         { first, _ -> consumer(first.map { it.text }) })

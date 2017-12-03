@@ -12,7 +12,7 @@ import com.gurunars.databinding.android.fullSize
 typealias EmptyViewBinder = () -> View
 
 fun Context.defaultBindEmpty() = TextView(this).apply {
-    id=R.id.noItemsLabel
+    id = R.id.noItemsLabel
     fullSize()
     text = getString(R.string.empty)
     gravity = Gravity.CENTER

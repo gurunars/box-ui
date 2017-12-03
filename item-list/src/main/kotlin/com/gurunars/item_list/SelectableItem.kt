@@ -1,6 +1,5 @@
 package com.gurunars.item_list
 
-
 /**
  * Wrapper around item item with an "isSelected" flag.
  *
@@ -28,5 +27,4 @@ data class SelectableItem<out ItemType : Item> internal constructor(
      */
     override fun toString() =
         item.toString() + "|" + isSelected
-
 }

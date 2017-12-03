@@ -22,7 +22,6 @@ internal fun <ItemType : Item> clickableBind(
                     else -> sel.include(item.item)
                 }
             )
-
         }
 
         onLongClick {
@@ -31,4 +30,3 @@ internal fun <ItemType : Item> clickableBind(
             if (sel.isEmpty()) selectedItems.set(sel.include(item.item))
         }
     }
-

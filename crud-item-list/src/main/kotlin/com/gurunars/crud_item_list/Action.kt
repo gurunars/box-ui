@@ -7,7 +7,6 @@ typealias ItemSetChange<ItemType> =
 
 typealias CanDo = (canDo: Boolean) -> Unit
 
-
 internal interface Action<ItemType : Item> {
     fun perform(
         all: List<ItemType>,

@@ -26,5 +26,4 @@ internal class ActionEdit<ItemType : Item>(
         selectedItems: Set<ItemType>,
         consumer: CanDo
     ) = consumer(selectedItems.size == 1)
-
 }

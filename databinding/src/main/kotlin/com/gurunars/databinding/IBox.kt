@@ -1,10 +1,9 @@
 package com.gurunars.databinding
 
-
 /**
  * Mutable IRoBox.
  */
-interface IBox<Type>: IRoBox<Type> {
+interface IBox<Type> : IRoBox<Type> {
     /**
      * Change fields content to a new value. The change is made only if current and new values
      * actually differ content-wise.

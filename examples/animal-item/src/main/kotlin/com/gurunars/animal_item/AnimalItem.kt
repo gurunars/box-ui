@@ -14,5 +14,4 @@ data class AnimalItem(
     override fun toString(): String {
         return "#$id{$type @ $version}"
     }
-
 }

@@ -9,5 +9,4 @@ internal class CachedLazyField<out Type>(private val init: () -> Type) {
         }
         return value!!
     }
-
 }

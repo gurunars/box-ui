@@ -3,9 +3,18 @@ package com.gurunars.crud_item_list.example
 import android.content.pm.ActivityInfo
 import android.support.test.espresso.Espresso.onView
 import android.support.test.espresso.ViewInteraction
-import android.support.test.espresso.action.ViewActions.*
+import android.support.test.espresso.action.ViewActions.click
+import android.support.test.espresso.action.ViewActions.longClick
+import android.support.test.espresso.action.ViewActions.typeText
 import android.support.test.espresso.assertion.ViewAssertions.matches
-import android.support.test.espresso.matcher.ViewMatchers.*
+import android.support.test.espresso.matcher.ViewMatchers
+import android.support.test.espresso.matcher.ViewMatchers.isEnabled
+import android.support.test.espresso.matcher.ViewMatchers.withEffectiveVisibility
+import android.support.test.espresso.matcher.ViewMatchers.withId
+import android.support.test.espresso.matcher.ViewMatchers.withTagKey
+import android.support.test.espresso.matcher.ViewMatchers.withTagValue
+import android.support.test.espresso.matcher.ViewMatchers.withText
+
 import android.support.test.filters.LargeTest
 import android.support.test.rule.ActivityTestRule
 import android.support.test.runner.AndroidJUnit4
@@ -42,11 +51,11 @@ class ActivitySortableTest {
     }
 
     private fun validateDoesNotExist(id: Int) {
-        onView(withId(id)).check(matches(withEffectiveVisibility(Visibility.GONE)))
+        onView(withId(id)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.GONE)))
     }
 
     private fun validateExists(id: Int) {
-        onView(withId(id)).check(matches(withEffectiveVisibility(Visibility.VISIBLE)))
+        onView(withId(id)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)))
     }
 
     private fun atIndex(id: Int): ViewInteraction {
@@ -249,5 +258,4 @@ class ActivitySortableTest {
     fun after() {
         onView(withId(R.id.reset)).perform(click())
     }
-
 }

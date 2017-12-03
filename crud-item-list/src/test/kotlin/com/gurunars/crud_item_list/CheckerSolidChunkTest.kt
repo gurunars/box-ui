@@ -23,5 +23,4 @@ class CheckerSolidChunkTest {
     fun smallPositionDistance_leadsToTrue() {
         assertTrue(isSolidChunk(listOf(1, 2, 3)))
     }
-
 }

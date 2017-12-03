@@ -6,6 +6,5 @@ import com.gurunars.databinding.onChange
 
 fun CompoundButton.isChecked(field: IBox<Boolean>) {
     setOnCheckedChangeListener { _, isChecked -> field.set(isChecked) }
-    field.onChange(listener=this::setChecked)
+    field.onChange(listener = this::setChecked)
 }
-

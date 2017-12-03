@@ -3,9 +3,12 @@ package com.gurunars.storage
 import android.util.Base64
 import android.util.Base64InputStream
 import android.util.Base64OutputStream
-import java.io.*
+import java.io.ByteArrayInputStream
+import java.io.ByteArrayOutputStream
+import java.io.IOException
+import java.io.ObjectInputStream
+import java.io.ObjectOutputStream
 import java.lang.Exception
-
 
 internal object StringSerializer {
 
@@ -42,5 +45,4 @@ internal object StringSerializer {
             null
         }
     }
-
 }

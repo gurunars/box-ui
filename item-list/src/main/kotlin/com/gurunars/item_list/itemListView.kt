@@ -43,5 +43,3 @@ fun <ItemType : Item> Context.itemListView(
         orientation = LinearLayoutManager.VERTICAL
     }
 }
-
-

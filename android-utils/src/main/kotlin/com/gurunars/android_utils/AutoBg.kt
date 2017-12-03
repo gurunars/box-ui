@@ -9,7 +9,6 @@ import android.graphics.drawable.ShapeDrawable
 import android.graphics.drawable.shapes.RectShape
 import android.view.View
 
-
 private class AutoBgDrawable constructor(
     private val bg: Drawable,
     private val shadowWidth: Int
@@ -99,4 +98,3 @@ fun View.setAutoBg(shadowWidth: Int) {
 
     setPadding(left, top, right, bottom)
 }
-

@@ -10,7 +10,11 @@ import android.widget.TextView
 import com.gurunars.databinding.Box
 import com.gurunars.databinding.IBox
 import com.gurunars.databinding.onChange
-import org.jetbrains.anko.*
+import org.jetbrains.anko.bottomPadding
+import org.jetbrains.anko.dip
+import org.jetbrains.anko.leftPadding
+import org.jetbrains.anko.rightPadding
+import org.jetbrains.anko.topPadding
 
 enum class Style(internal val value: Int) {
     NORMAL(Typeface.NORMAL),

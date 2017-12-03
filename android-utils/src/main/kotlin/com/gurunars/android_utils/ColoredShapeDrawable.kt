@@ -11,5 +11,4 @@ class ColoredShapeDrawable(shape: Shape, color: Int) : ShapeDrawable(shape) {
     init {
         paint.color = color
     }
-
 }

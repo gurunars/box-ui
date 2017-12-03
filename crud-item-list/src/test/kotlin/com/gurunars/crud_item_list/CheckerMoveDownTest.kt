@@ -4,7 +4,6 @@ import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
-
 class CheckerMoveDownTest {
 
     private val moveDownChecker = ActionMoveDown<StringItem>()
@@ -27,5 +26,4 @@ class CheckerMoveDownTest {
     fun selectingSolidChunkBeforeLast_leadsToTrue() {
         moveDownChecker.canPerform(all, setOf("one", "two", "three"), { assertTrue(it) })
     }
-
 }

@@ -5,7 +5,7 @@ import com.gurunars.item_list.Item
 /**
  * A mean to serialize an item as a string to transfer it via clipboard.
  */
-interface ClipboardSerializer<ItemType: Item> {
+interface ClipboardSerializer<ItemType : Item> {
     fun fromString(source: String): List<ItemType>
     fun toString(source: List<ItemType>): String
 }

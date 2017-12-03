@@ -17,7 +17,7 @@ internal class ActionPasteFromClipboard<ItemType : Item>(
     private fun getPasteCandidates(): List<ItemType> {
         if (!clipboard.hasPrimaryClip()) { return listOf() }
         val clip = clipboard.primaryClip
-        if(clip.itemCount <= 0) { return listOf() }
+        if (clip.itemCount <= 0) { return listOf() }
         return try {
             serializer.fromString(clip.getItemAt(0).text.toString())
         } catch (exe: Exception) {
@@ -55,5 +55,4 @@ internal class ActionPasteFromClipboard<ItemType : Item>(
             }
         }
     }
-
 }

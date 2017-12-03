@@ -27,5 +27,4 @@ internal class ActionMoveUp<ItemType : Item> : Action<ItemType> {
         val positions = getPositions(all, selectedItems)
         consumer(isSolidChunk(positions) && positions[0] > 0)
     }
-
 }

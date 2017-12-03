@@ -44,7 +44,7 @@ class BoxTest {
         val slaveField = Box("2")
 
         masterField.bind(
-            slaveField.branch( { Integer.valueOf(this) }, { it.toString() })
+            slaveField.branch({ Integer.valueOf(this) }, { it.toString() })
         )
         assertEquals(1, masterField.get())
         assertEquals("1", slaveField.get())
@@ -95,5 +95,4 @@ class BoxTest {
         assertEquals(2, masterField.get())
         assertEquals(2, slaveField1.get())
     }
-
 }

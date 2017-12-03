@@ -87,5 +87,4 @@ internal class MenuHolder constructor(
     /* Intercept touch on the view group but not on the icons */
     override fun onInterceptTouchEvent(ev: MotionEvent): Boolean =
         !isClickable && !touchBelongsTo(this, ev)
-
 }

@@ -6,7 +6,16 @@ import android.view.View
 import android.widget.RelativeLayout
 import com.gurunars.android_utils.iconView
 import com.gurunars.databinding.IBox
-import com.gurunars.databinding.android.*
+import com.gurunars.databinding.android.HorizontalAlignment
+import com.gurunars.databinding.android.HorizontalPosition
+import com.gurunars.databinding.android.VerticalAlignment
+import com.gurunars.databinding.android.VerticalPosition
+import com.gurunars.databinding.android.add
+import com.gurunars.databinding.android.alignInParent
+import com.gurunars.databinding.android.alignWithRespectTo
+import com.gurunars.databinding.android.fullSize
+import com.gurunars.databinding.android.onClick
+import com.gurunars.databinding.android.setIsVisible
 import com.gurunars.databinding.box
 import com.gurunars.databinding.onChange
 import com.gurunars.item_list.Item
@@ -163,5 +172,4 @@ internal fun <ItemType : Item> Context.contextualMenu(
             clipboard.addPrimaryClipChangedListener(onClipChange)
         }
     })
-
 }

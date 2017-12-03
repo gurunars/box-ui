@@ -12,22 +12,21 @@ class TestDescriptor : ItemTypeDescriptor<StringItem> {
     override val icon: Icon
         get() = TODO("NOT NEEDED FOR TESTS")
 
-    override fun bindRow(field: IBox<SelectableItem<StringItem>>, triggerEdit: () -> Unit): View
-        = TODO("NOT NEEDED FOR TESTS")
+    override fun bindRow(field: IBox<SelectableItem<StringItem>>, triggerEdit: () -> Unit): View =
+        TODO("NOT NEEDED FOR TESTS")
 
-    override fun validate(item: StringItem)
-        = TODO("NOT NEEDED FOR TESTS")
+    override fun validate(item: StringItem) =
+        TODO("NOT NEEDED FOR TESTS")
 
-    override fun createNewItem()
-        = StringItem("NEW")
+    override fun createNewItem() =
+        StringItem("NEW")
 
-    override fun bindForm(field: IBox<StringItem>)
-        = TODO("NOT NEEDED FOR TESTS")
+    override fun bindForm(field: IBox<StringItem>) =
+        TODO("NOT NEEDED FOR TESTS")
 
     enum class Type {
         ONE, TWO
     }
-
 }
 
 class StateManagerTest {
@@ -46,8 +45,8 @@ class StateManagerTest {
         )
     }
 
-    private fun checkState(expectedState: State<StringItem>)
-        = assertEquals(
+    private fun checkState(expectedState: State<StringItem>) =
+        assertEquals(
         expectedState,
         manager.state.get()
     )
@@ -102,7 +101,7 @@ class StateManagerTest {
         manager = StateMachine<StringItem>(
             {},
             mapOf(TestDescriptor.Type.ONE to TestDescriptor()),
-            {_, _ -> }
+            { _, _ -> }
         )
         manager.isOpen.set(true)
         checkState(State(
@@ -132,7 +131,6 @@ class StateManagerTest {
         checkState(State())
         assertEquals(ViewMode.FORM, manager.viewMode.get())
     }
-
 }
 
 class StateTest {
@@ -219,5 +217,4 @@ class StateTest {
     fun default_isEmpty() {
         checkState(State(), ViewMode.EMPTY, false)
     }
-
 }

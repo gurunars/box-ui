@@ -8,13 +8,33 @@ import android.view.Gravity
 import android.view.Menu
 import android.view.MenuItem
 import com.gurunars.android_utils.Icon
-import com.gurunars.databinding.*
+import com.gurunars.databinding.Box
+import com.gurunars.databinding.IBox
 import com.gurunars.databinding.android.asRow
 import com.gurunars.databinding.android.fullSize
 import com.gurunars.databinding.android.setAsOne
-import com.gurunars.floatmenu.*
+import com.gurunars.databinding.box
+import com.gurunars.databinding.branch
+import com.gurunars.databinding.onChange
+import com.gurunars.databinding.patch
+import com.gurunars.floatmenu.ContentPane
+import com.gurunars.floatmenu.MenuPane
+import com.gurunars.floatmenu.floatMenu
 import com.gurunars.storage.PersistentStorage
-import org.jetbrains.anko.*
+import org.jetbrains.anko.UI
+import org.jetbrains.anko.alignParentTop
+import org.jetbrains.anko.backgroundColor
+import org.jetbrains.anko.below
+import org.jetbrains.anko.button
+import org.jetbrains.anko.centerHorizontally
+import org.jetbrains.anko.centerVertically
+import org.jetbrains.anko.dip
+import org.jetbrains.anko.frameLayout
+import org.jetbrains.anko.padding
+import org.jetbrains.anko.relativeLayout
+import org.jetbrains.anko.scrollView
+import org.jetbrains.anko.textView
+import org.jetbrains.anko.verticalLayout
 
 class ActivityMain : Activity() {
     private val storage = PersistentStorage(this, "main")
@@ -69,7 +89,6 @@ class ActivityMain : Activity() {
                         text = ""
                         true
                     }
-
                 }.lparams {
                     asRow()
                     centerHorizontally()
@@ -119,7 +138,7 @@ class ActivityMain : Activity() {
         floatMenu(
             contentArea,
             hasOverlay.branch { MenuArea(this) },
-            isOpen=isOpen
+            isOpen = isOpen
         ).setAsOne(this)
 
         storage.load()
@@ -154,5 +173,4 @@ class ActivityMain : Activity() {
             else -> return super.onOptionsItemSelected(item)
         }
     }
-
 }

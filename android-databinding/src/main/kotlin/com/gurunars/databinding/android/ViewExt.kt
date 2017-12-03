@@ -6,7 +6,6 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
-import com.gurunars.databinding.android.VerticalPosition.*
 
 private const val MATCH_PARENT = ViewGroup.LayoutParams.MATCH_PARENT
 private const val WRAP_CONTENT = ViewGroup.LayoutParams.WRAP_CONTENT

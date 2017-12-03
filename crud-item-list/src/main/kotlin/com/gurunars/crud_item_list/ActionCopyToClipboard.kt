@@ -44,5 +44,4 @@ internal class ActionCopyToClipboard<ItemType : Item>(
         selectedItems: Set<ItemType>,
         consumer: CanDo
     ) = consumer(selectedItems.isNotEmpty())
-
 }

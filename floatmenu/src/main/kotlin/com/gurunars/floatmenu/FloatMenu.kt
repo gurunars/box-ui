@@ -5,10 +5,19 @@ import android.view.View
 import com.gurunars.android_utils.Icon
 import com.gurunars.databinding.Box
 import com.gurunars.databinding.IBox
-import com.gurunars.databinding.android.*
+import com.gurunars.databinding.android.HorizontalAlignment
+import com.gurunars.databinding.android.add
+import com.gurunars.databinding.android.alignInParent
+import com.gurunars.databinding.android.fullSize
+import com.gurunars.databinding.android.setAsOne
+import com.gurunars.databinding.android.statefulView
 import com.gurunars.databinding.branch
 import com.gurunars.databinding.onChange
-import org.jetbrains.anko.*
+import org.jetbrains.anko.alignParentBottom
+import org.jetbrains.anko.dip
+import org.jetbrains.anko.frameLayout
+import org.jetbrains.anko.margin
+import org.jetbrains.anko.relativeLayout
 
 /**
  * An aggregation of view an an icon that controls its visibility in the menu.

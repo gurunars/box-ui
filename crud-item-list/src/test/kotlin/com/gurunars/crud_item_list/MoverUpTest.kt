@@ -43,5 +43,4 @@ class MoverUpTest {
     fun moveUp_isCorrect() {
         moverUp.perform(all, selected, { all -> assertEquals(expectedOutcome, all) })
     }
-
 }

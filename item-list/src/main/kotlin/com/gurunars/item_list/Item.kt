@@ -22,5 +22,4 @@ interface Item : Serializable {
      */
     val type: Enum<*>
         get() = Default.ONLY
-
 }
