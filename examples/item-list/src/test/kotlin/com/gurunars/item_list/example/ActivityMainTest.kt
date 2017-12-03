@@ -17,7 +17,7 @@ import org.robolectric.fakes.RoboMenuItem
 
 @RunWith(RobolectricTestRunner::class)
 @Config(constants = BuildConfig::class)
-class ActivityMainRoboTest {
+class ActivityMainTest {
 
     private lateinit var activity: Activity
 

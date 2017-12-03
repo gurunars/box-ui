@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
 import com.esotericsoftware.kryo.Kryo
+import com.gurunars.android_utils.Animator
 import com.gurunars.databinding.Box
 import com.gurunars.databinding.IBox
 import com.gurunars.databinding.android.asRow
@@ -46,7 +47,7 @@ internal class ItemAdapter<ItemType : Item>(
     init {
         items.onChange { prevList, list ->
             previousList = kryo.copy(ArrayList(prevList))
-            if (previousList.isEmpty() || list.isEmpty()) {
+            if (previousList.isEmpty() || list.isEmpty() || !Animator.enabled) {
                 notifyDataSetChanged()
             } else {
                 try {
