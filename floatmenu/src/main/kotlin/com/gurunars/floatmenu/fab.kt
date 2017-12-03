@@ -5,6 +5,7 @@ import android.animation.FloatEvaluator
 import android.animation.ValueAnimator
 import android.content.Context
 import android.view.View
+import com.gurunars.android_utils.Animator
 import com.gurunars.android_utils.Icon
 import com.gurunars.android_utils.iconView
 import com.gurunars.databinding.Box
@@ -64,7 +65,7 @@ internal fun Context.fab(
     }
 
     isActivated.onChange { _ ->
-        if (isAttachedToWindow) {
+        if (isAttachedToWindow && Animator.enabled) {
             ValueAnimator.ofFloat(0f, 1f).apply {
                 startDelay = 0
                 duration = rotationDuration.toLong()
