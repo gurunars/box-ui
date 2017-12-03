@@ -17,7 +17,7 @@ class Box<Type>(private var value: Type) : IBox<Type> {
         if (hot) listener(this.value, this.value)
     }
 
-    private fun notifyListeners() = listeners.forEach {
+    private fun notifyListeners() = listeners.toList().forEach {
         it.invoke(this.prevValue, this.value)
     }
 

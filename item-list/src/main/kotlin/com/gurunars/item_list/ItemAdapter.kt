@@ -18,6 +18,7 @@ internal class ItemAdapter<ItemType : Item>(
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var previousList: List<ItemType> = ArrayList()
+    private var recyclerView: RecyclerView? = null
 
     private class ItemCallback<out ItemType : Item>(
         val previousList: List<ItemType>,
@@ -38,13 +39,27 @@ internal class ItemAdapter<ItemType : Item>(
         instantiatorStrategy = Kryo.DefaultInstantiatorStrategy(StdInstantiatorStrategy())
     }
 
+    override fun onAttachedToRecyclerView(recyclerView: RecyclerView?) {
+        this.recyclerView = recyclerView
+    }
+
     init {
         items.onChange { prevList, list ->
             previousList = kryo.copy(ArrayList(prevList))
             if (previousList.isEmpty() || list.isEmpty()) {
                 notifyDataSetChanged()
             } else {
-                DiffUtil.calculateDiff(ItemCallback(previousList, list)).dispatchUpdatesTo(this)
+                try {
+                    DiffUtil.calculateDiff(ItemCallback(previousList, list)).dispatchUpdatesTo(this)
+                } catch (exe: IndexOutOfBoundsException) {
+                    // In case of a drastic failure - just reset the adapter
+                    val recycler = recyclerView ?: return@onChange
+                    recycler.recycledViewPool.clear()
+                    recycler.swapAdapter(
+                        ItemAdapter(items, emptyViewBinder, itemViewBinders),
+                        false
+                    )
+                }
             }
         }
     }

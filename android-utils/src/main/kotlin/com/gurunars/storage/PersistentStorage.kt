@@ -2,6 +2,7 @@ package com.gurunars.storage
 
 import android.content.Context
 import android.content.SharedPreferences
+import com.gurunars.android_utils.Animator
 import com.gurunars.databinding.Box
 import com.gurunars.databinding.IBox
 import com.gurunars.databinding.onChange
@@ -51,10 +52,14 @@ class PersistentStorage(
      */
     fun <Type> storageField(name: String, defaultValue: Type): IBox<Type> {
         val field = Box(defaultValue)
-        field.onChange { _ ->
+        field.onChange(hot = false) { _ ->
             timer.cancel()
-            timer = Timer()
-            timer.schedule(timerTask { save() }, 100)
+            if (Animator.enabled) {
+                timer = Timer()
+                timer.schedule(timerTask { save() }, 100)
+            } else {
+                save()
+            }
         }
         val wrapper = PersistentField(preferences, name, field)
         fields.add(wrapper)

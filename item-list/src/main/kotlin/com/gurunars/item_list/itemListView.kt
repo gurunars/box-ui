@@ -28,7 +28,7 @@ fun <ItemType : Item> Context.itemListView(
     id = R.id.recyclerView
     fullSize()
     clipToPadding = false
-    bottomPadding = dip(60)
+    bottomPadding = dip(100)
     isSaveEnabled = false
     adapter = ItemAdapter(
         items.branch {

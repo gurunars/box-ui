@@ -29,8 +29,7 @@ private fun Context.bindAnimal(field: IBox<AnimalItem>): View = TextView(this).a
 class ActivityMain : Activity() {
     private val storage = PersistentStorage(this, "main")
 
-    private val items: IBox<List<AnimalItem>> =
-        storage.storageField("items", listOf<AnimalItem>())
+    private val items: IBox<List<AnimalItem>> = storage.storageField("items", listOf())
     private val count = storage.storageField("count", 0)
 
     private fun add(type: AnimalItem.Type) {

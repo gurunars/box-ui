@@ -1,51 +1,53 @@
 package com.gurunars.item_list.example
 
-import android.support.test.InstrumentationRegistry.getInstrumentation
-import android.support.test.espresso.Espresso.onView
-import android.support.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu
-import android.support.test.espresso.action.ViewActions.click
-import android.support.test.espresso.assertion.ViewAssertions.matches
-import android.support.test.espresso.matcher.ViewMatchers.isDisplayed
-import android.support.test.espresso.matcher.ViewMatchers.withId
-import android.support.test.espresso.matcher.ViewMatchers.withText
-import android.support.test.filters.LargeTest
-import android.support.test.rule.ActivityTestRule
-import android.support.test.runner.AndroidJUnit4
-import com.gurunars.test_utils.Helpers.nthChildOf
-import org.junit.After
+import android.app.Activity
+import android.support.v7.widget.RecyclerView
+import android.widget.TextView
+import com.gurunars.android_utils.Animator
+import junit.framework.Assert.assertEquals
+import junit.framework.Assert.assertNotNull
+import org.jetbrains.anko.find
 import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.robolectric.Robolectric
+import org.robolectric.RobolectricTestRunner
+import org.robolectric.annotation.Config
+import org.robolectric.fakes.RoboMenuItem
 
-@RunWith(AndroidJUnit4::class)
-@LargeTest
-class ActivityMainTest {
+@RunWith(RobolectricTestRunner::class)
+@Config(constants = BuildConfig::class)
+class ActivityMainRoboTest {
 
-    @get:Rule
-    var mActivityRule = ActivityTestRule(
-        ActivityMain::class.java)
+    private lateinit var activity: Activity
 
-    private fun clickMenu(text: String) {
-        openActionBarOverflowOrOptionsMenu(getInstrumentation().targetContext)
-        onView(withText(text)).perform(click())
+    @Before
+    fun setUp() {
+        Animator.enabled = false
+        activity = Robolectric.setupActivity(ActivityMain::class.java)
+        clickMenu(R.id.reset)
+    }
+
+    private fun clickMenu(id: Int) {
+        activity.onOptionsItemSelected(RoboMenuItem(id))
     }
 
     @Test
     fun clickingClear_shouldShowEmptyListView() {
-        clickMenu("Clear")
-        onView(withText("Empty")).check(matches(isDisplayed()))
+        clickMenu(R.id.clear)
+        assertNotNull(activity.find(R.id.noItemsLabel))
     }
 
     private fun assertList(vararg expectedItems: String) {
+        val recycler = activity.find<RecyclerView>(R.id.recyclerView)
         for (i in expectedItems.indices) {
-            onView(nthChildOf(withId(R.id.recyclerView), i)).check(matches(withText(expectedItems[i])))
+            assertEquals(expectedItems[i], (recycler.getChildAt(i) as TextView).text.toString())
         }
     }
 
     @Test
     fun deletingItems_shouldLeadToPartialRemoval() {
-        clickMenu("Delete items")
+        clickMenu(R.id.delete)
         assertList(
             "#0{TIGER @ 0}",
             "#2{MONKEY @ 0}"
@@ -54,7 +56,7 @@ class ActivityMainTest {
 
     @Test
     fun createItems_shouldAppendItemsToTheEnd() {
-        clickMenu("Create items")
+        clickMenu(R.id.create)
         assertList(
             "#0{TIGER @ 0}",
             "#1{WOLF @ 0}",
@@ -69,7 +71,7 @@ class ActivityMainTest {
 
     @Test
     fun updateItems_shouldChangeSomeOfItems() {
-        clickMenu("Update items")
+        clickMenu(R.id.update)
         assertList(
             "#0{TIGER @ 0}",
             "#1{WOLF @ 1}",
@@ -80,7 +82,7 @@ class ActivityMainTest {
 
     @Test
     fun moveUp_shouldPutItemFromBottomToTop() {
-        clickMenu("Move up")
+        clickMenu(R.id.moveUp)
         assertList(
             "#3{LION @ 0}",
             "#0{TIGER @ 0}",
@@ -91,7 +93,7 @@ class ActivityMainTest {
 
     @Test
     fun moveDown_shouldPutItemFromTopToBottom() {
-        clickMenu("Move down")
+        clickMenu(R.id.moveDown)
         assertList(
             "#1{WOLF @ 0}",
             "#2{MONKEY @ 0}",
@@ -102,7 +104,7 @@ class ActivityMainTest {
 
     @Test
     fun resetItems_shouldSetItemsToInitialList() {
-        clickMenu("Reset items")
+        clickMenu(R.id.reset)
         assertList(
             "#0{TIGER @ 0}",
             "#1{WOLF @ 0}",
@@ -111,13 +113,5 @@ class ActivityMainTest {
         )
     }
 
-    @Before
-    fun before() {
-        clickMenu("Reset items")
-    }
 
-    @After
-    fun after() {
-        clickMenu("Reset items")
-    }
 }
