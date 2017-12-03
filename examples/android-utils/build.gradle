@@ -1,3 +1,5 @@
+ext.appId="com.gurunars.android_utils.example"
+
 apply from: '../all-examples.gradle'
 
 

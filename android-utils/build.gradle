@@ -1,3 +1,6 @@
+ext.moduleName="android-utils"
+ext.moduleGroup="com.gurunars.android_utils"
+
 apply from: '../all-modules.gradle'
 
 description = """

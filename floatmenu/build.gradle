@@ -1,3 +1,6 @@
+ext.moduleName="floatmenu"
+ext.moduleGroup="com.gurunars.floatmenu"
+
 apply from: '../all-modules.gradle'
 
 description = """

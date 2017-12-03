@@ -1,3 +1,5 @@
+ext.appId="com.gurunars.crud_item_list.example"
+
 apply from: '../all-examples.gradle'
 
 

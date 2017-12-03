@@ -1,3 +1,6 @@
+ext.moduleName="test-utils"
+ext.moduleGroup="com.gurunars.test_utils"
+
 apply from: '../all-libs.gradle'
 
 dependencies {

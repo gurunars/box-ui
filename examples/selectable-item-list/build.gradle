@@ -1,3 +1,5 @@
+ext.appId="com.gurunars.item_list.selectable_example"
+
 apply from: '../all-examples.gradle'
 
 

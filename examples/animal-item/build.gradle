@@ -1,5 +1,7 @@
-apply from: '../../all-libs.gradle'
+ext.moduleName="animal-item"
+ext.moduleGroup="com.gurunars.animal_item"
 
+apply from: '../../all-libs.gradle'
 
 dependencies {
     implementation project(':item-list')

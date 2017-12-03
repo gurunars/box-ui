@@ -1,3 +1,6 @@
+ext.moduleName="crud-item-list"
+ext.moduleGroup="com.gurunars.crud_item_list"
+
 apply from: '../all-modules.gradle'
 
 description = """

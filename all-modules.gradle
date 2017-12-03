@@ -19,7 +19,7 @@ bintray {
     configurations = ['archives']
     pkg {
         repo = "maven"
-        name = MODULE_NAME
+        name = moduleName
         websiteUrl = siteUrl
         vcsUrl = gitUrl
         licenses = [license]

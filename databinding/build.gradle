@@ -1,3 +1,6 @@
+ext.moduleName="databinding"
+ext.moduleGroup="com.gurunars.databinding"
+
 apply from: '../all-modules.gradle'
 
 description = """

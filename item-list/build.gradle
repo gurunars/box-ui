@@ -1,3 +1,6 @@
+ext.moduleName="item-list"
+ext.moduleGroup="com.gurunars.item_list"
+
 apply from: '../all-modules.gradle'
 
 description = """

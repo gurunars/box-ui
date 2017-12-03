@@ -9,7 +9,7 @@ android {
 
     defaultConfig {
         testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
-        applicationId APP_ID
+        applicationId appId
         minSdkVersion min_sdk_version
         targetSdkVersion compile_sdk_version
         versionCode 1
