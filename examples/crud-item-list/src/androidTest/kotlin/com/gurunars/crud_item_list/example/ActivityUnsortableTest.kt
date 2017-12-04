@@ -69,5 +69,4 @@ class ActivityUnsortableTest {
         onView(withId(R.id.noItemsLabel)).check(matches(withText("Empty")))
     }
 
-    // TODO: add test case for item creation and opening the form again after item creation
 }
