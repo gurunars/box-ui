@@ -1,7 +1,6 @@
 include  \
     ':android-utils',
     ':item-list',
-    ':test-utils',
     ':databinding',
     ':android-databinding',
     ':floatmenu',

@@ -39,10 +39,6 @@ android {
 dependencies {
     testImplementation "junit:junit:$junitVersion"
     testImplementation "org.robolectric:robolectric:3.5.1"
-    androidTestImplementation "junit:junit:$junitVersion"
-    androidTestImplementation 'com.android.support.test:rules:1.0.1'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
-    androidTestImplementation project(':test-utils')
     implementation "com.android.support:support-v4:$supportlibVersion"
     implementation "com.android.support:support-annotations:$supportlibVersion"
     implementation "org.jetbrains.anko:anko:$ankoVersion"
