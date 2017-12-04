@@ -36,6 +36,7 @@ class ActivityMain : Activity() {
     private val items: IBox<List<AnimalItem>> =
         storage.storageField("items", listOf())
     private val count = storage.storageField("count", 0)
+    private val explicitSelectionMode = storage.storageField("explicitSelectionMode", false)
 
     private fun add(type: AnimalItem.Type) {
         items.set(items.get() + AnimalItem(count.get().toLong(), type, 0))
@@ -47,6 +48,7 @@ class ActivityMain : Activity() {
         storage.load()
 
         selectableItemListView(
+            explicitSelectionMode = explicitSelectionMode,
             items = items,
             selectedItems = selectedItems,
             itemViewBinders = AnimalItem.Type.values().map {
@@ -70,8 +72,14 @@ class ActivityMain : Activity() {
             R.id.delete_selected -> return showToast(deleteSelected())
             R.id.update_selected -> return showToast(updateSelected())
             R.id.reset -> return showToast(reset())
+            R.id.enable_explicit_selection -> return showToast(enableExplicitSelection())
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun enableExplicitSelection(): Int {
+        explicitSelectionMode.set(true)
+        return R.string.explicit_selection_enabled
     }
 
     private fun updateSelected(): Int {
@@ -113,6 +121,7 @@ class ActivityMain : Activity() {
     @StringRes private fun reset(): Int {
         items.set(listOf())
         count.set(0)
+        explicitSelectionMode.set(false)
         create()
         return R.string.did_reset
     }

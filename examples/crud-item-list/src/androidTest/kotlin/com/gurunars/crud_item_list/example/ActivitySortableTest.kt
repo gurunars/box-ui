@@ -248,6 +248,30 @@ class ActivitySortableTest {
         validateSelection(4, "#5{LION @ 5}", false)
     }
 
+    @Test
+    fun longPressingPlus_shouldOpenContextualMenu() {
+        onView(withId(R.id.openFab)).perform(longClick())
+        rotate()
+        validateExists(R.id.menuPane)
+        validateDisabled(R.id.paste)
+        validateDisabled(R.id.copy)
+        validateDisabled(R.id.edit)
+        validateDisabled(R.id.moveUp)
+        validateDisabled(R.id.moveDown)
+        validateDisabled(R.id.delete)
+        validateEnabled(R.id.selectAll)
+    }
+
+    @Test
+    fun explicitContextualMenu_shouldEnableSelectionViaOneClick() {
+        onView(withId(R.id.openFab)).perform(longClick())
+        rotate()
+        atIndex(2).perform(click())
+        validateSelection(1, "#2{TIGER @ 0}", false)
+        validateSelection(2, "#3{MONKEY @ 0}", true)
+        validateSelection(3, "#4{WOLF @ 0}", false)
+    }
+
     @Before
     fun before() {
         onView(withId(R.id.reset)).perform(click())

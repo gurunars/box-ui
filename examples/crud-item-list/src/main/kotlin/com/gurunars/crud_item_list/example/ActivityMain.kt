@@ -1,6 +1,8 @@
 package com.gurunars.crud_item_list.example
 
 import android.app.Activity
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
@@ -143,6 +145,8 @@ class ActivityMain : Activity() {
             AnimalItem(it.toLong() + 1, getType(it, sortable), 0)
         })
         this.count.set(count)
+        val mngr = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+        mngr.primaryClip = ClipData.newPlainText("", "")
     }
 
     private fun addItems(

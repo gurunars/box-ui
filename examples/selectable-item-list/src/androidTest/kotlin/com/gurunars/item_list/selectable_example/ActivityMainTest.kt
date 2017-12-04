@@ -103,18 +103,27 @@ class ActivityMainTest {
     }
 
     @Test
+    fun explicitSelectionMode_shouldMakeItPossibleToSelectItemstViaSingleClick() {
+        clickMenu("Enable explicit selection")
+        onView(nthChildOf(withId(R.id.recyclerView), 1)).perform(click())
+        assertList(
+            Pair("#0{TIGER @ 0}", false),
+            Pair("#1{WOLF @ 0}", true),
+            Pair("#2{MONKEY @ 0}", false),
+            Pair("#3{LION @ 0}", false)
+        )
+    }
+
+    @Test
     fun clickingClearSelection_shouldDropSelection() {
         selectTwo()
         clickMenu("Clear selection")
     }
 
+    @After
     @Before
     fun before() {
         clickMenu("Reset items")
     }
 
-    @After
-    fun after() {
-        clickMenu("Reset items")
-    }
 }

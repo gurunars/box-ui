@@ -26,4 +26,9 @@
         android:showAsAction="never"
         android:title="@string/update_selected" />
 
+    <item
+        android:id="@+id/enable_explicit_selection"
+        android:showAsAction="never"
+        android:title="@string/enable_explicit_selection" />
+
 </menu>

@@ -10,4 +10,6 @@
     <string name="clear_selection">Clear selection</string>
     <string name="did_update_selected">Updated selected</string>
     <string name="did_delete_selected">Deleted selected</string>
+    <string name="enable_explicit_selection">Enable explicit selection</string>
+    <string name="explicit_selection_enabled">Explicit selection enabled</string>
 </resources>
