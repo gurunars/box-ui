@@ -24,6 +24,8 @@ class DataSource<Type>(
     private val box = Box(initial)
     private var ready = false
 
+    val buffer = UiThrottleBuffer()
+
     fun refetch() {
         doAsync {
             val next = preprocess(getF())
@@ -44,9 +46,11 @@ class DataSource<Type>(
         ready = true
         val sorted = preprocess(value)
         if (box.set(sorted, force)) {
-            doAsync {
-                setF(sorted)
-                refetch()
+            buffer.call {
+                doAsync {
+                    setF(sorted)
+                    refetch()
+                }
             }
             return true
         }
