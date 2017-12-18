@@ -31,14 +31,13 @@ android {
 }
 
 dependencies {
-    androidTestImplementation "junit:junit:$junitVersion"
+    androidTestImplementation junit
     androidTestImplementation 'com.android.support.test:rules:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
     androidTestImplementation project(':test-utils')
-    implementation "com.android.support:support-v4:$supportlibVersion"
-    implementation "com.android.support:support-annotations:$supportlibVersion"
-    implementation "org.jetbrains.anko:anko:$ankoVersion"
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
+    implementation supportV4
+    implementation anko
+    implementation kotlinStdLib
     implementation project(':android-utils')
     implementation project(':databinding')
     implementation project(':android-databinding')

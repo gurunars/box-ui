@@ -8,8 +8,8 @@ A set of helpers for working with Android.
 """
 
 dependencies {
-    api "com.android.support:support-v4:$supportlibVersion"
-    api "org.jetbrains.anko:anko:$ankoVersion"
+    api supportV4
+    api anko
     api project(':databinding')
     api project(':android-databinding')
 }

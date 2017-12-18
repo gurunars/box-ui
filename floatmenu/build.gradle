@@ -11,7 +11,7 @@ screen.
 """
 
 dependencies {
-    api "org.jetbrains.anko:anko:$ankoVersion"
+    api anko
     api project(':android-utils')
     api project(':databinding')
     api project(':android-databinding')

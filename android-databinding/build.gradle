@@ -8,7 +8,7 @@ Android specific databinding functionality.
 """
 
 dependencies {
-    api "org.jetbrains.anko:anko:$ankoVersion"
+    api anko
     api project(':databinding')
-    testImplementation "junit:junit:$junitVersion"
+    testImplementation junit
 }

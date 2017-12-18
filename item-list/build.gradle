@@ -13,14 +13,14 @@ can optionally handle item selection.
 """
 
 dependencies {
-    api "org.jetbrains.anko:anko:$ankoVersion"
+    api anko
     api 'com.esotericsoftware:kryo:4.0.1'
     api "com.android.support:recyclerview-v7:$supportlibVersion"
     api project(':android-utils')
     api project(':databinding')
     api project(':android-databinding')
-    testImplementation "junit:junit:$junitVersion"
-    testImplementation "org.mockito:mockito-core:$mockitoVersion"
+    testImplementation junit
+    testImplementation mockito
     testImplementation "org.powermock:powermock-module-junit4:1.6.6"
     testImplementation "org.powermock:powermock-module-junit4-rule:1.6.6"
     testImplementation "org.powermock:powermock-api-mockito:1.6.6"

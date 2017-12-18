@@ -10,9 +10,9 @@ edit, remove and create the items out of the box.
 """
 
 dependencies {
-    api "org.jetbrains.anko:anko:$ankoVersion"
-    testImplementation "junit:junit:$junitVersion"
-    testImplementation "org.mockito:mockito-core:$mockitoVersion"
+    api anko
+    testImplementation junit
+    testImplementation mockito
     api project(':android-utils')
     api project(':item-list')
     api project(':floatmenu')
