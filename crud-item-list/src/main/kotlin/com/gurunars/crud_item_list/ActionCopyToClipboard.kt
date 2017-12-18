@@ -3,9 +3,9 @@ package com.gurunars.crud_item_list
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
+import android.widget.Toast
 import com.gurunars.item_list.Item
 import org.jetbrains.anko.doAsync
-import org.jetbrains.anko.longToast
 import org.jetbrains.anko.uiThread
 
 internal class ActionCopyToClipboard<ItemType : Item>(
@@ -15,9 +15,11 @@ internal class ActionCopyToClipboard<ItemType : Item>(
 
     private val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
 
+    private val toast = Toast.makeText(context, R.string.copiedToClipboard, Toast.LENGTH_LONG)
+
     private fun writeToClipboard(label: String, payload: String) {
         clipboard.primaryClip = ClipData.newPlainText(label, payload)
-        context.longToast(R.string.copiedToClipboard)
+        toast.show()
     }
 
     override fun perform(
