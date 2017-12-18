@@ -1,5 +1,6 @@
 include  \
     ':android-utils',
+    ':livedata',
     ':item-list',
     ':test-utils',
     ':databinding',

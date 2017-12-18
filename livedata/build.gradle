@@ -1,0 +1,15 @@
+ext.moduleName="livedata"
+ext.moduleGroup="com.gurunars.livedata"
+
+apply from: '../all-modules.gradle'
+
+description = """
+Foo bar <TBD>
+"""
+
+dependencies {
+    api project(':databinding')
+    api "android.arch.lifecycle:extensions:1.0.0"
+    testImplementation "android.arch.core:core-testing:1.0.0"
+    testImplementation junit
+}
