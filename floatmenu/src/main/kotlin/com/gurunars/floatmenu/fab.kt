@@ -11,7 +11,7 @@ import com.gurunars.databinding.Box
 import com.gurunars.databinding.IBox
 import com.gurunars.databinding.android.add
 import com.gurunars.databinding.android.fullSize
-import com.gurunars.databinding.android.onClick
+import com.gurunars.livedata.ui.onClick
 import com.gurunars.databinding.branch
 import com.gurunars.databinding.onChange
 import org.jetbrains.anko.frameLayout

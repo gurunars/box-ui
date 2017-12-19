@@ -1,4 +1,4 @@
-package com.gurunars.databinding.android
+package com.gurunars.livedata.ui
 
 import android.app.Activity
 import android.content.Context
