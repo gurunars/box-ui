@@ -7,9 +7,8 @@ import android.graphics.drawable.shapes.RectShape
 import android.graphics.drawable.shapes.Shape
 import android.view.View
 import android.widget.TextView
-import com.gurunars.databinding.Box
-import com.gurunars.databinding.IBox
-import com.gurunars.databinding.onChange
+import com.gurunars.box.Box
+import com.gurunars.box.BoxContext
 import org.jetbrains.anko.bottomPadding
 import org.jetbrains.anko.dip
 import org.jetbrains.anko.leftPadding
@@ -23,14 +22,14 @@ enum class Style(internal val value: Int) {
     BOLD_ITALIC(Typeface.BOLD_ITALIC)
 }
 
-fun Context.autoButton(
-    text: IBox<String> = Box(""),
-    shape: IBox<Shape> = Box(RectShape()),
-    bgColor: IBox<Int> = Box(Color.RED),
-    shadowWidth: IBox<Int> = Box(6),
-    textSize: IBox<Float> = Box(12f),
-    textStyle: IBox<Style> = Box(Style.NORMAL)
-): View = TextView(this).apply {
+fun BoxContext<Context>.autoButton(
+    text: Box<String> = Box(""),
+    shape: Box<Shape> = Box(RectShape()),
+    bgColor: Box<Int> = Box(Color.RED),
+    shadowWidth: Box<Int> = Box(6),
+    textSize: Box<Float> = Box(12f),
+    textStyle: Box<Style> = Box(Style.NORMAL)
+): View = TextView(this.context).apply {
     isClickable = true
     isFocusable = true
     leftPadding = dip(20)

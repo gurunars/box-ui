@@ -12,10 +12,8 @@ import android.graphics.drawable.shapes.Shape
 import android.support.v4.content.res.ResourcesCompat
 import android.view.View
 import android.widget.ImageView
-import com.gurunars.databinding.Box
-import com.gurunars.databinding.IBox
-import com.gurunars.databinding.bind
-import com.gurunars.databinding.onChange
+import com.gurunars.box.Box
+import com.gurunars.box.BoxContext
 
 /**
  * Data class holding the values to be used for icon drawable creation
@@ -34,23 +32,9 @@ data class Icon(
 
 private class IconView(context: Context) : ImageView(context) {
 
-    val icon = Box(Icon(
-        bgColor = Color.WHITE,
-        fgColor = Color.BLACK,
-        icon = R.drawable.ic_plus
-    ))
-
-    val enabled = Box(true)
-
     private lateinit var iconDrawable: Drawable
 
-    init {
-        listOf(icon, enabled).onChange {
-            reset(icon.get(), enabled.get())
-        }
-    }
-
-    private fun reset(currentIcon: Icon, enabled: Boolean) {
+    fun reset(currentIcon: Icon, enabled: Boolean) {
         val shadowWidth = 4
         val inset = 50
 
@@ -102,14 +86,15 @@ private class IconView(context: Context) : ImageView(context) {
  * @param icon Button icon descriptor
  * @param enabled Flag specifying if the icon should be clickable or not
  */
-fun Context.iconView(
-    icon: IBox<Icon> = Box(Icon(
+fun BoxContext<Context>.iconView(
+    icon: Box<Icon> = Box(Icon(
         bgColor = Color.WHITE,
         fgColor = Color.BLACK,
         icon = R.drawable.ic_plus
     )),
-    enabled: IBox<Boolean> = Box(true)
-): View = IconView(this).apply {
-    icon.bind(this.icon)
-    enabled.bind(this.enabled)
+    enabled: Box<Boolean> = Box(true)
+): View = IconView(this.context).apply {
+    listOf(icon, enabled).onChange {
+        reset(icon.get(), enabled.get())
+    }
 }
