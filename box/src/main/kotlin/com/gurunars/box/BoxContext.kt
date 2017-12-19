@@ -10,8 +10,8 @@ class BoxContext<T>(
     /**
      * Returns a nested lifecycle annotated context
      */
-    fun <T> with(t: T): BoxContext<T> =
-        BoxContext(lifecycleOwner, t)
+    fun <T> with(t: T, handler: (ctx: BoxContext<T>) -> Unit) =
+        handler(BoxContext(lifecycleOwner, t))
 
     /**
      * Subscribes to changes of the value. Aware of the previous state.
