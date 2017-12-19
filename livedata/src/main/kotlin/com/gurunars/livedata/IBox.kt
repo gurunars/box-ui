@@ -1,4 +1,4 @@
-package com.gurunars.databinding
+package com.gurunars.livedata
 
 /**
  * Mutable IRoBox.

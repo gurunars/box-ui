@@ -1,4 +1,4 @@
-package com.gurunars.databinding
+package com.gurunars.livedata
 
 import android.arch.lifecycle.LifecycleOwner
 
@@ -30,5 +30,5 @@ interface IRoBox<Type> {
      * @param hot if true, immediately executes the listener with the current value
      *            otherwise just adds it to the collection of subscribers
      */
-    fun onChange(hot: Boolean = true, listener: Listener<Type>)
+    fun LifecycleOwner.onChange(hot: Boolean = true, listener: Listener<Type>)
 }

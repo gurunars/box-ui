@@ -1,4 +1,4 @@
-package com.gurunars.databinding
+package com.gurunars.livedata
 
 /**
  * Apply a common change listener to a list of fields
