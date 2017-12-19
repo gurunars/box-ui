@@ -4,11 +4,11 @@ ext.moduleGroup="com.gurunars.livedata"
 apply from: '../all-modules.gradle'
 
 description = """
-Foo bar <TBD>
+A library to facilitate data binding via observable data containers that can be entangled together,
+manipulated and monitored for changes.
 """
 
 dependencies {
-    api project(':databinding')
     api "android.arch.lifecycle:extensions:1.0.0"
     testImplementation "android.arch.core:core-testing:1.0.0"
     testImplementation junit

@@ -13,8 +13,8 @@ screen.
 dependencies {
     api anko
     api project(':android-utils')
-    api project(':databinding')
-    api project(':android-databinding')
+    api project(':livedata')
+    api project(':livedata-ui')
 }
 
 dokka {

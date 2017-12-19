@@ -16,8 +16,8 @@ dependencies {
     api project(':android-utils')
     api project(':item-list')
     api project(':floatmenu')
-    api project(':databinding')
-    api project(':android-databinding')
+    api project(':livedata')
+    api project(':livedata-ui')
 }
 
 dokka {

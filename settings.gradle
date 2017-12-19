@@ -3,6 +3,7 @@ include  \
     ':livedata',
     ':item-list',
     ':test-utils',
+    ':livedata-ui',
     ':floatmenu',
     ':crud-item-list',
     ':example-android-utils',

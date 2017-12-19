@@ -1,14 +1,14 @@
-ext.moduleName="android-databinding"
-ext.moduleGroup="com.gurunars.databinding.android"
+ext.moduleName="livedata-ui"
+ext.moduleGroup="com.gurunars.livedata.ui"
 
 apply from: '../all-modules.gradle'
 
 description = """
-Android specific databinding functionality.
+Android specific livedata functionality.
 """
 
 dependencies {
     api anko
-    api project(':databinding')
+    api project(':livedata')
     testImplementation junit
 }
