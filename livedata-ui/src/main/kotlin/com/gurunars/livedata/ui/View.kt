@@ -1,13 +1,13 @@
 package com.gurunars.databinding.android
 
 import android.view.View
-import com.gurunars.databinding.IBox
-import com.gurunars.databinding.onChange
+import com.gurunars.livedata.Box
+import com.gurunars.livedata.BoxContext
 
-fun View.backgroundColor(field: IBox<Int>) =
-    field.onChange(listener = this::setBackgroundColor)
+fun BoxContext<View>.backgroundColor(field: Box<Int>) =
+    field.onChange(listener = context::setBackgroundColor)
 
-fun View.isVisible(field: IBox<Boolean>) =
+fun BoxContext<View>.isVisible(field: Box<Boolean>) =
     field.onChange { status ->
-        visibility = if (status) View.VISIBLE else View.GONE
+        context.visibility = if (status) View.VISIBLE else View.GONE
     }

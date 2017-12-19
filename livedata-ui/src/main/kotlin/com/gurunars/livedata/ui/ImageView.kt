@@ -1,8 +1,8 @@
 package com.gurunars.databinding.android
 
 import android.widget.ImageView
-import com.gurunars.databinding.IBox
-import com.gurunars.databinding.onChange
+import com.gurunars.livedata.Box
+import com.gurunars.livedata.BoxContext
 
-fun ImageView.src(field: IBox<Int>) =
-    field.onChange(listener = this::setImageResource)
+fun BoxContext<ImageView>.src(field: Box<Int>) =
+    field.onChange(listener = context::setImageResource)

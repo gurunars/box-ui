@@ -3,16 +3,16 @@ package com.gurunars.databinding.android
 import android.text.Editable
 import android.text.TextWatcher
 import android.widget.TextView
-import com.gurunars.databinding.IBox
-import com.gurunars.databinding.onChange
+import com.gurunars.livedata.Box
+import com.gurunars.livedata.BoxContext
 
-fun TextView.txt(field: IBox<String>) {
+fun BoxContext<TextView>.txt(field: Box<String>) {
     field.onChange { txt ->
-        if (text.toString() != txt) {
-            text = txt
+        if (context.text.toString() != txt) {
+            context.text = txt
         }
     }
-    addTextChangedListener(object : TextWatcher {
+    context.addTextChangedListener(object : TextWatcher {
         override fun afterTextChanged(s: Editable?) {
             field.set(s.toString())
         }

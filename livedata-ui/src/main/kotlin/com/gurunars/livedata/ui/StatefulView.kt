@@ -4,24 +4,24 @@ import android.content.Context
 import android.os.Bundle
 import android.os.Parcelable
 import android.widget.FrameLayout
-import com.gurunars.databinding.IBox
+import com.gurunars.livedata.Box
 
 /**
  * A base component meant to develop custom stateful UI widgets using bindable fields
  */
 class StatefulView(context: Context) : FrameLayout(context) {
 
-    private val fields: MutableList<IBox<*>> = mutableListOf()
+    private val fields: MutableList<Box<*>> = mutableListOf()
 
     /**
      * Call with multiple fields to notify the component that the state of the fields should
      * be persisted.
      */
-    fun retain(vararg fields: IBox<*>) = this.fields.addAll(fields)
+    fun retain(vararg fields: Box<*>) = this.fields.addAll(fields)
 
     companion object {
 
-        private fun <T> IBox<T>.read(map: HashMap<Int, Any?>, index: Int) {
+        private fun <T> Box<T>.read(map: HashMap<Int, Any?>, index: Int) {
             @Suppress("UNCHECKED_CAST")
             val obtained = map[index] as T
             this.set(obtained)
@@ -63,7 +63,7 @@ class StatefulView(context: Context) : FrameLayout(context) {
 fun Context.statefulView(
     id: Int,
     tag: String = "DEFAULT",
-    vararg fields: IBox<*>,
+    vararg fields: Box<*>,
     init: StatefulView.() -> Unit = {}
 ): StatefulView =
     StatefulView(this).apply {

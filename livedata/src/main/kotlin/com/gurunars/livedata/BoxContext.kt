@@ -2,9 +2,16 @@ package com.gurunars.livedata
 
 import android.arch.lifecycle.LifecycleOwner
 
-class LifecycleContext(
-    private val lifecycleOwner: LifecycleOwner
+class BoxContext<T>(
+    private val lifecycleOwner: LifecycleOwner,
+    val context: T
 ) : LifecycleOwner by lifecycleOwner {
+
+    /**
+     * Returns a nested lifecycle annotated context
+     */
+    fun <T> with(t: T): BoxContext<T> =
+        BoxContext(lifecycleOwner, t)
 
     /**
      * Subscribes to changes of the value. Aware of the previous state.
@@ -14,7 +21,7 @@ class LifecycleContext(
      *            otherwise just adds it to the collection of subscribers
      */
     fun <T> Box<T>.onChange(hot: Boolean=true, listener: (value: T) -> Unit) {
-        onChange(this@LifecycleContext, hot, listener)
+        onChange(this@BoxContext, hot, listener)
     }
 
     /**
@@ -24,8 +31,8 @@ class LifecycleContext(
      * @param target box to bind to
      */
     fun <T> Box<T>.bind(target: Box<T>) {
-        onChange(this@LifecycleContext) { item -> target.set(item) }
-        target.onChange(this@LifecycleContext) { item -> this.set(item) }
+        onChange(this@BoxContext) { item -> target.set(item) }
+        target.onChange(this@BoxContext) { item -> this.set(item) }
     }
 
     /**
@@ -52,7 +59,7 @@ class LifecycleContext(
     fun <From, To> Box<From>.branch(
         reduce: From.() -> To
     ) = Box(get().reduce()).apply {
-        this@branch.onChange(this@LifecycleContext) { set(it.reduce()) }
+        this@branch.onChange(this@BoxContext) { set(it.reduce()) }
     }
 
     /**
@@ -67,8 +74,8 @@ class LifecycleContext(
         patchSource: From.(part: To) -> From
     ): Box<To> {
         val branched = Box(get().reduce())
-        branched.onChange(this@LifecycleContext) { item -> this@branch.patch { patchSource(item) } }
-        onChange(this@LifecycleContext) { parent -> branched.set(parent.reduce()) }
+        branched.onChange(this@BoxContext) { item -> this@branch.patch { patchSource(item) } }
+        onChange(this@BoxContext) { parent -> branched.set(parent.reduce()) }
         return branched
     }
 

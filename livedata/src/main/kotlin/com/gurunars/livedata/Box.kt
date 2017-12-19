@@ -9,7 +9,7 @@ import java.util.*
  * A convenient wrapper around Google's LiveData.
  *
  * Observer functionality is meant to work only within extension functions of
- * LifecycleContext.
+ * BoxContext.
  *
  * Methods **set** and **get**  are available at any context.
  */

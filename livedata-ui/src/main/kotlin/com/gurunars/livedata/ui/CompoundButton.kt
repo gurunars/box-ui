@@ -2,9 +2,9 @@ package com.gurunars.livedata.ui
 
 import android.widget.CompoundButton
 import com.gurunars.livedata.Box
-import com.gurunars.livedata.LifecycleContext
+import com.gurunars.livedata.BoxContext
 
-fun CompoundButton.isChecked(field: Box<Boolean>) {
-    setOnCheckedChangeListener { _, isChecked -> field.set(isChecked) }
-    field.onChange(listener = this::setChecked)
+fun BoxContext<CompoundButton>.isChecked(field: Box<Boolean>) {
+    context.setOnCheckedChangeListener { _, isChecked -> field.set(isChecked) }
+    field.onChange(listener = context::setChecked)
 }
