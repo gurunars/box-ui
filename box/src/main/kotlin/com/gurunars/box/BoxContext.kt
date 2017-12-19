@@ -1,4 +1,4 @@
-package com.gurunars.livedata
+package com.gurunars.box
 
 import android.arch.lifecycle.LifecycleOwner
 

@@ -1,4 +1,4 @@
-package com.gurunars.livedata.ui
+package com.gurunars.box.ui
 
 import android.app.Activity
 import android.content.Context

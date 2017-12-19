@@ -13,8 +13,8 @@ screen.
 dependencies {
     api anko
     api project(':android-utils')
-    api project(':livedata')
-    api project(':livedata-ui')
+    api project(':box')
+    api project(':box-ui')
 }
 
 dokka {

@@ -4,7 +4,7 @@ import android.content.Context
 import android.os.Bundle
 import android.os.Parcelable
 import android.widget.FrameLayout
-import com.gurunars.livedata.Box
+import com.gurunars.box.Box
 
 /**
  * A base component meant to develop custom stateful UI widgets using bindable fields

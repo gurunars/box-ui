@@ -5,9 +5,9 @@ import android.view.Gravity
 import android.view.View
 import com.gurunars.android_utils.Icon
 import com.gurunars.databinding.IBox
-import com.gurunars.livedata.ui.closeKeyboard
+import com.gurunars.box.ui.closeKeyboard
 import com.gurunars.databinding.android.fullSize
-import com.gurunars.livedata.ui.onLongClick
+import com.gurunars.box.ui.onLongClick
 import com.gurunars.databinding.android.set
 import com.gurunars.databinding.android.statefulView
 import com.gurunars.databinding.bind

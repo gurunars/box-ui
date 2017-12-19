@@ -1,8 +1,8 @@
 package com.gurunars.item_list
 
 import com.gurunars.databinding.IBox
-import com.gurunars.livedata.ui.onClick
-import com.gurunars.livedata.ui.onLongClick
+import com.gurunars.box.ui.onClick
+import com.gurunars.box.ui.onLongClick
 
 internal fun <ItemType : Item> clickableBind(
     selectedItems: IBox<Set<ItemType>>,

@@ -3,8 +3,8 @@ package com.gurunars.databinding.android
 import android.text.Editable
 import android.text.TextWatcher
 import android.widget.TextView
-import com.gurunars.livedata.Box
-import com.gurunars.livedata.BoxContext
+import com.gurunars.box.Box
+import com.gurunars.box.BoxContext
 
 fun BoxContext<TextView>.txt(field: Box<String>) {
     field.onChange { txt ->

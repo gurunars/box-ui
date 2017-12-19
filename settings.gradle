@@ -1,9 +1,9 @@
 include  \
     ':android-utils',
-    ':livedata',
+        ':box',
     ':item-list',
     ':test-utils',
-    ':livedata-ui',
+        ':box-ui',
     ':floatmenu',
     ':crud-item-list',
     ':example-android-utils',

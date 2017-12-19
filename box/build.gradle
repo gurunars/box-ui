@@ -1,5 +1,5 @@
-ext.moduleName="livedata"
-ext.moduleGroup="com.gurunars.livedata"
+ext.moduleName="box"
+ext.moduleGroup="com.gurunars.box"
 
 apply from: '../all-modules.gradle'
 

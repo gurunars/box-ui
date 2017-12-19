@@ -14,7 +14,7 @@ import com.gurunars.databinding.android.add
 import com.gurunars.databinding.android.alignInParent
 import com.gurunars.databinding.android.alignWithRespectTo
 import com.gurunars.databinding.android.fullSize
-import com.gurunars.livedata.ui.onClick
+import com.gurunars.box.ui.onClick
 import com.gurunars.databinding.android.setIsVisible
 import com.gurunars.databinding.box
 import com.gurunars.databinding.onChange

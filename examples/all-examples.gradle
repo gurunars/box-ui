@@ -39,6 +39,6 @@ dependencies {
     implementation anko
     implementation kotlinStdLib
     implementation project(':android-utils')
-    implementation project(':livedata')
-    implementation project(':livedata-ui')
+    implementation project(':box')
+    implementation project(':box-ui')
 }

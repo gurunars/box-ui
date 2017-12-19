@@ -1,8 +1,8 @@
 package com.gurunars.databinding.android
 
 import android.view.View
-import com.gurunars.livedata.Box
-import com.gurunars.livedata.BoxContext
+import com.gurunars.box.Box
+import com.gurunars.box.BoxContext
 
 fun BoxContext<View>.backgroundColor(field: Box<Int>) =
     field.onChange(listener = context::setBackgroundColor)

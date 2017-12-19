@@ -8,8 +8,7 @@ import android.view.Gravity
 import com.gurunars.android_utils.autoButton
 import com.gurunars.databinding.android.add
 import com.gurunars.databinding.android.fullSize
-import com.gurunars.livedata.ui.onClick
-import com.gurunars.databinding.android.txt
+import com.gurunars.box.ui.onClick
 import com.gurunars.databinding.box
 import com.gurunars.storage.PersistentStorage
 import org.jetbrains.anko.backgroundColor
