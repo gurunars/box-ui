@@ -93,7 +93,7 @@ fun BoxContext<Context>.iconView(
         icon = R.drawable.ic_plus
     )),
     enabled: Box<Boolean> = Box(true)
-): View = IconView(this.context).apply {
+): View = IconView(ctx).apply {
     listOf(icon, enabled).onChange {
         reset(icon.get(), enabled.get())
     }

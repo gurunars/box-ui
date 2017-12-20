@@ -4,14 +4,14 @@ import android.arch.lifecycle.LifecycleOwner
 
 class BoxContext<T>(
     private val lifecycleOwner: LifecycleOwner,
-    val context: T
+    val ctx: T
 ) : LifecycleOwner by lifecycleOwner {
 
     /**
-     * Returns a nested lifecycle annotated context
+     * Returns a nested lifecycle annotated ctx
      */
-    fun <T> with(t: T, handler: (ctx: BoxContext<T>) -> Unit) =
-        handler(BoxContext(lifecycleOwner, t))
+    fun <T> inContext(t: T, handler: BoxContext<T>.() -> Unit) =
+        BoxContext(lifecycleOwner, t).handler()
 
     /**
      * Subscribes to changes of the value. Aware of the previous state.

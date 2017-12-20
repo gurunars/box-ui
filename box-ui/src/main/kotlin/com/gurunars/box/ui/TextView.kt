@@ -8,11 +8,11 @@ import com.gurunars.box.BoxContext
 
 fun BoxContext<TextView>.txt(field: Box<String>) {
     field.onChange { txt ->
-        if (context.text.toString() != txt) {
-            context.text = txt
+        if (ctx.text.toString() != txt) {
+            ctx.text = txt
         }
     }
-    context.addTextChangedListener(object : TextWatcher {
+    ctx.addTextChangedListener(object : TextWatcher {
         override fun afterTextChanged(s: Editable?) {
             field.set(s.toString())
         }

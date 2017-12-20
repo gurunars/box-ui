@@ -5,6 +5,6 @@ import com.gurunars.box.Box
 import com.gurunars.box.BoxContext
 
 fun BoxContext<CompoundButton>.isChecked(field: Box<Boolean>) {
-    context.setOnCheckedChangeListener { _, isChecked -> field.set(isChecked) }
-    field.onChange(listener = context::setChecked)
+    ctx.setOnCheckedChangeListener { _, isChecked -> field.set(isChecked) }
+    field.onChange(listener = ctx::setChecked)
 }

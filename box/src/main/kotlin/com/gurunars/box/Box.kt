@@ -11,7 +11,7 @@ import java.util.*
  * Observer functionality is meant to work only within extension functions of
  * BoxContext.
  *
- * Methods **set** and **get**  are available at any context.
+ * Methods **set** and **get**  are available at any ctx.
  */
 class Box<Type>(
     private val initialValue: Type,
@@ -40,7 +40,7 @@ class Box<Type>(
      * @param force if true - the change is made even if current and new values are the same
      */
     fun set(value: Type, force: Boolean=false): Boolean {
-        if (force || !Objects.deepEquals(get(), value)) {
+        if (force || !Objects.deepEquals(this.data.value, value)) {
             this.data.value = preprocess(value)
             return true
         }

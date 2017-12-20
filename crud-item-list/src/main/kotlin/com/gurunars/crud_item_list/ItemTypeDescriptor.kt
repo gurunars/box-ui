@@ -7,7 +7,7 @@ import com.gurunars.item_list.Item
 import com.gurunars.item_list.SelectableItem
 
 /**
- * Aggregation of attributes describing a specific item type in the context of showing the item
+ * Aggregation of attributes describing a specific item type in the ctx of showing the item
  * list and editing individual items.
  *
  * @property icon Item icon for the creation menu.

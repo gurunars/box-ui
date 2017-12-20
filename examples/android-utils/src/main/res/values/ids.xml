@@ -4,4 +4,5 @@
     <item name="clear" type="id" />
     <item name="disabled" type="id" />
     <item name="set" type="id" />
+    <item name="main" type="id" />
 </resources>

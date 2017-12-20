@@ -22,14 +22,14 @@ enum class Style(internal val value: Int) {
     BOLD_ITALIC(Typeface.BOLD_ITALIC)
 }
 
-fun BoxContext<Context>.autoButton(
+fun<T: Context> BoxContext<T>.autoButton(
     text: Box<String> = Box(""),
     shape: Box<Shape> = Box(RectShape()),
     bgColor: Box<Int> = Box(Color.RED),
     shadowWidth: Box<Int> = Box(6),
     textSize: Box<Float> = Box(12f),
     textStyle: Box<Style> = Box(Style.NORMAL)
-): View = TextView(this.context).apply {
+): View = TextView(this.ctx).apply {
     isClickable = true
     isFocusable = true
     leftPadding = dip(20)
