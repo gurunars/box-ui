@@ -6,7 +6,7 @@ package com.gurunars.databinding
  * Useful in the cases when an action must be performed based on a diff between
  * a previous an a new state.
  */
-typealias Listener<Type> = (prevValue: Type, value: Type) -> Unit
+typealias Listener<Type> = (value: Type) -> Unit
 
 /**
  * Entity meant to hold the value and notify the observers about its

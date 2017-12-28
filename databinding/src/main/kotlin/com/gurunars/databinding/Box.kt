@@ -10,20 +10,18 @@ import java.util.Objects
  */
 class Box<Type>(private var value: Type) : IBox<Type> {
     private val listeners: MutableList<Listener<Type>> = mutableListOf()
-    private var prevValue: Type = value
 
     override fun onChange(hot: Boolean, listener: Listener<Type>) {
         listeners.add(listener)
-        if (hot) listener(this.value, this.value)
+        if (hot) listener(this.value)
     }
 
     private fun notifyListeners() = listeners.forEach {
-        it.invoke(this.prevValue, this.value)
+        it.invoke(this.value)
     }
 
     override fun set(value: Type, force: Boolean): Boolean {
         if (force || !Objects.deepEquals(this.value, value)) {
-            this.prevValue = this.value
             this.value = value
             notifyListeners()
             return true

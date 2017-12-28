@@ -69,16 +69,3 @@ inline fun <Type> IBox<Type>.fork(
 @Suppress("NOTHING_TO_INLINE")
 inline val <F> F.box
     get(): IBox<F> = Box(this)
-
-/**
- * Listener aware of the current state of the observable.
- */
-typealias SimpleListener<Type> = (value: Type) -> Unit
-
-/**
- * Simple onChange listener that does not rely on a previous state of the boxed values.
- */
-inline fun <Type> IRoBox<Type>.onChange(
-    hot: Boolean = true,
-    crossinline listener: SimpleListener<Type>
-) = onChange(hot) { _, value -> listener(value) }

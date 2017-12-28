@@ -45,8 +45,7 @@ internal class ItemAdapter<ItemType : Item>(
     }
 
     init {
-        items.onChange { prevList, list ->
-            previousList = kryo.copy(ArrayList(prevList))
+        items.onChange { list ->
             if (previousList.isEmpty() || list.isEmpty()) {
                 notifyDataSetChanged()
             } else {
@@ -62,6 +61,7 @@ internal class ItemAdapter<ItemType : Item>(
                     )
                 }
             }
+            previousList = kryo.copy(ArrayList(list))
         }
     }
 
