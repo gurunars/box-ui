@@ -28,10 +28,16 @@ class DataSource<Type>(
 
     fun refetch() {
         doAsync {
-            val next = preprocess(getF())
-            uiThread {
-                ready = true
-                box.set(next, true)
+            try {
+                val next = preprocess(getF())
+                uiThread {
+                    ready = true
+                    box.set(next, true)
+                }
+            } catch (exe: Exception) {
+                uiThread {
+                    throw exe
+                }
             }
         }
     }
@@ -48,8 +54,14 @@ class DataSource<Type>(
         if (box.set(sorted, force)) {
             buffer.call {
                 doAsync {
-                    setF(sorted)
-                    refetch()
+                    try {
+                        setF(sorted)
+                        refetch()
+                    } catch (exe: Exception) {
+                        uiThread {
+                            throw exe
+                        }
+                    }
                 }
             }
             return true

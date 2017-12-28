@@ -10,13 +10,13 @@ import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import com.gurunars.animal_item.AnimalItem
+import com.gurunars.animal_item.Service.Companion.getRealService
 import com.gurunars.databinding.IBox
 import com.gurunars.databinding.android.asRow
 import com.gurunars.databinding.android.setAsOne
 import com.gurunars.databinding.android.txt
 import com.gurunars.databinding.branch
 import com.gurunars.item_list.itemListView
-import com.gurunars.storage.PersistentStorage
 import org.jetbrains.anko.dip
 import org.jetbrains.anko.padding
 
@@ -27,20 +27,17 @@ private fun Context.bindAnimal(field: IBox<AnimalItem>): View = TextView(this).a
 }
 
 class ActivityMain : Activity() {
-    private val storage = PersistentStorage(this, "main")
 
-    private val items: IBox<List<AnimalItem>> =
-        storage.storageField("items", listOf<AnimalItem>())
-    private val count = storage.storageField("count", 0)
+    val srv = getRealService()
+    val items = srv.items
 
     private fun add(type: AnimalItem.Type) {
-        items.set(items.get() + AnimalItem(count.get().toLong(), type, 0))
-        count.set(count.get() + 1)
+        val values = items.get()
+        items.set(values + AnimalItem(-values.size.toLong(), type, 0))
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        storage.load()
 
         itemListView(
             items = items,
@@ -51,8 +48,7 @@ class ActivityMain : Activity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        val inflater = menuInflater
-        inflater.inflate(R.menu.activity_main, menu)
+        menuInflater.inflate(R.menu.activity_main, menu)
         return true
     }
 
@@ -75,7 +71,7 @@ class ActivityMain : Activity() {
     }
 
     @StringRes private fun clear(): Int {
-        items.set(listOf())
+        srv.clear()
         return R.string.did_clear
     }
 
@@ -129,14 +125,9 @@ class ActivityMain : Activity() {
     }
 
     @StringRes private fun reset(): Int {
-        count.set(0)
-        items.set(listOf())
+        srv.clear()
         create()
         return R.string.did_reset
     }
 
-    override fun onDetachedFromWindow() {
-        super.onDetachedFromWindow()
-        storage.unbindAll()
-    }
 }

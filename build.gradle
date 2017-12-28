@@ -11,6 +11,7 @@ buildscript {
     ext.supportlibVersion = '27.0.2'
     ext.mockitoVersion = 'latest.release'
     ext.buildToolsVersion = '26.0.2'
+    ext.roomVersion = '1.0.0'
 
     ext.junit = "junit:junit:$junitVersion"
     ext.kotlinStdLib = "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
