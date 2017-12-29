@@ -1,4 +1,4 @@
-ext.appId="com.gurunars.item_list_view.example"
+ext.appId="com.gurunars.item_list.example"
 
 apply from: '../all-examples.gradle'
 

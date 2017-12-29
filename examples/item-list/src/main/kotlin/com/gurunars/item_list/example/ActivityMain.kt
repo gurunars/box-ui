@@ -28,7 +28,7 @@ private fun Context.bindAnimal(field: IBox<AnimalItem>): View = TextView(this).a
 
 class ActivityMain : Activity() {
 
-    val srv = getRealService()
+    val srv = getRealService(this)
     val items = srv.items
 
     private fun add(type: AnimalItem.Type) {
