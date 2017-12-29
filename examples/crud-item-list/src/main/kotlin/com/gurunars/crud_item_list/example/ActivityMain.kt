@@ -14,6 +14,7 @@ import android.view.View
 import android.widget.TextView
 import com.gurunars.android_utils.Icon
 import com.gurunars.animal_item.AnimalItem
+import com.gurunars.animal_item.Service
 import com.gurunars.crud_item_list.ClipboardSerializer
 import com.gurunars.crud_item_list.IconColorBundle
 import com.gurunars.crud_item_list.ItemTypeDescriptor
@@ -22,13 +23,13 @@ import com.gurunars.crud_item_list.oneOf
 import com.gurunars.databinding.IBox
 import com.gurunars.databinding.android.fullSize
 import com.gurunars.databinding.android.setAsOne
+import com.gurunars.databinding.android.statefulView
 import com.gurunars.databinding.android.txt
+import com.gurunars.databinding.box
 import com.gurunars.databinding.branch
-import com.gurunars.databinding.onChange
 import com.gurunars.databinding.patch
 import com.gurunars.item_list.SelectableItem
 import com.gurunars.item_list.coloredRowSelectionDecorator
-import com.gurunars.storage.PersistentStorage
 import org.jetbrains.anko.backgroundColor
 import org.jetbrains.anko.button
 import org.jetbrains.anko.dip
@@ -117,15 +118,13 @@ class Descriptor(
 
 class ActivityMain : Activity() {
 
-    private val storage = PersistentStorage(this, "main")
+    private val srv = Service.getRealService(this)
+    private val items = srv.items
 
-    private val isSortable = storage.storageField("isSortable", true)
-    private val items: IBox<List<AnimalItem>> =
-        storage.storageField("items", listOf())
-    private val count = storage.storageField("count", 0)
+    private val isSortable = true.box
 
-    private fun getType(i: Int, sortable: Boolean): AnimalItem.Type {
-        return if (sortable) {
+    private fun getType(i: Int): AnimalItem.Type {
+        return if (isSortable.get()) {
             when (i % 4) {
                 0 -> AnimalItem.Type.LION
                 1 -> AnimalItem.Type.TIGER
@@ -137,30 +136,30 @@ class ActivityMain : Activity() {
         }
     }
 
-    private fun reset(
-        count: Int,
-        sortable: Boolean
-    ) {
-        items.set((0 until count).map {
-            AnimalItem(it.toLong() + 1, getType(it, sortable), 0)
-        })
-        this.count.set(count)
-        val mngr = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-        mngr.primaryClip = ClipData.newPlainText("", "")
+    override fun onPostCreate(savedInstanceState: Bundle?) {
+        super.onPostCreate(savedInstanceState)
+        isSortable.onChange { reset() }
     }
 
     private fun addItems(
-        count: Int,
-        sortable: Boolean
+        count: Int
     ) {
-        val curCount = this.count.get()
-        items.patch {
+        srv.items.patch {
             this + (0 until count).map {
-                AnimalItem(curCount + it.toLong(), getType(it, sortable), 0)
+                AnimalItem(
+                    id = -(this.size.toLong() + it.toLong()),
+                    type = getType(it),
+                    version = 0
+                )
             }
         }
+    }
 
-        this.count.set(curCount + count)
+    private fun reset() {
+        srv.clear()
+        addItems(4)
+        val mngr = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+        mngr.primaryClip = ClipData.newPlainText("", "")
     }
 
     private fun initView(sortable: Boolean) {
@@ -195,49 +194,35 @@ class ActivityMain : Activity() {
                 AnimalItem.Type.MONKEY).oneOf()
         }
 
-        // TODO: the glitch is due to infinite loop here (onChange -> set)
-        items.onChange { it ->
-            var newCount = count.get()
-            val newItems = mutableListOf<AnimalItem>()
-            it.forEach {
-                if (it.id > 0) {
-                    newItems.add(it)
-                } else {
-                    newCount++
-                    newItems.add(it.copy(id = newCount.toLong()))
-                }
-            }
-            count.set(newCount)
-            items.set(newItems)
-        }
-
-        crudItemListView(
-            confirmationActionColors = IconColorBundle(
-                bgColor = Color.BLACK,
-                fgColor = Color.GREEN
-            ),
-            cancelActionColors = IconColorBundle(
-                bgColor = Color.RED,
-                fgColor = Color.WHITE
-            ),
-            openIconColors = IconColorBundle(
-                bgColor = Color.GREEN,
-                fgColor = Color.YELLOW
-            ),
-            items = items,
-            groupedItemTypeDescriptors = descriptors,
-            sortable = sortable,
-            actionIconColors = IconColorBundle(
-                fgColor = Color.YELLOW,
-                bgColor = Color.BLUE
-            ),
-            clipboardSerializer = AnimalItemSerializer()
-        ).setAsOne(this)
+        statefulView(R.id.main) {
+            retain(isSortable)
+            crudItemListView(
+                confirmationActionColors = IconColorBundle(
+                    bgColor = Color.BLACK,
+                    fgColor = Color.GREEN
+                ),
+                cancelActionColors = IconColorBundle(
+                    bgColor = Color.RED,
+                    fgColor = Color.WHITE
+                ),
+                openIconColors = IconColorBundle(
+                    bgColor = Color.GREEN,
+                    fgColor = Color.YELLOW
+                ),
+                items = items,
+                groupedItemTypeDescriptors = descriptors,
+                sortable = sortable,
+                actionIconColors = IconColorBundle(
+                    fgColor = Color.YELLOW,
+                    bgColor = Color.BLUE
+                ),
+                clipboardSerializer = AnimalItemSerializer()
+            ).setAsOne(this)
+        }.setAsOne(this)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        storage.load()
         isSortable.onChange(listener = this::initView)
     }
 
@@ -249,17 +234,11 @@ class ActivityMain : Activity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val i = item.itemId
-
-        fun setSortable(flag: Boolean) {
-            reset(4, flag)
-            isSortable.set(flag, true)
-        }
-
         when (i) {
-            R.id.reset -> reset(4, isSortable.get())
-            R.id.lock -> setSortable(false)
-            R.id.unlock -> setSortable(true)
-            R.id.addMany -> addItems(4 * 20, isSortable.get())
+            R.id.reset -> reset()
+            R.id.lock -> isSortable.set(false, true)
+            R.id.unlock -> isSortable.set(true, true)
+            R.id.addMany -> addItems(4 * 20)
         }
         return super.onOptionsItemSelected(item)
     }

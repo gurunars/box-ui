@@ -7,4 +7,5 @@
     <item name="wolf" type="id" />
     <item name="increment" type="id" />
     <item name="versionValue" type="id" />
+    <item name="main" type="id" />
 </resources>

@@ -1,6 +1,5 @@
 package com.gurunars.animal_item
 
-import android.app.Activity
 import android.arch.persistence.room.Room
 import android.content.Context
 import com.gurunars.databinding.android.DataSource
@@ -23,7 +22,7 @@ class Service(private val db: Db) {
                 }
             )
         },
-        { it.sortedBy { it.position } },
+        { it },
         listOf()
     )
 
