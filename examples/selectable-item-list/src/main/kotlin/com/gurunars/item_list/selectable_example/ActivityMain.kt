@@ -1,46 +1,32 @@
 package com.gurunars.item_list.selectable_example
 
 import android.app.Activity
-import android.content.Context
 import android.os.Bundle
 import android.support.annotation.StringRes
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.TextView
 import android.widget.Toast
 import com.gurunars.animal_item.AnimalItem
+import com.gurunars.animal_item.bindAnimal
 import com.gurunars.animal_item.Service.Companion.getRealService
 import com.gurunars.databinding.Box
 import com.gurunars.databinding.IBox
-import com.gurunars.databinding.android.asRow
 import com.gurunars.databinding.android.setAsOne
 import com.gurunars.databinding.android.statefulView
-import com.gurunars.databinding.android.txt
 import com.gurunars.databinding.box
-import com.gurunars.databinding.branch
+import com.gurunars.databinding.patch
 import com.gurunars.item_list.SelectableItem
 import com.gurunars.item_list.coloredRowSelectionDecorator
 import com.gurunars.item_list.selectableItemListView
-import org.jetbrains.anko.dip
-import org.jetbrains.anko.padding
-
-private fun Context.bindAnimal(field: IBox<AnimalItem>) = TextView(this).apply {
-    asRow()
-    padding = context.dip(5)
-    txt(field.branch { toString() })
-}
 
 class ActivityMain : Activity() {
-
-    val srv = getRealService(this)
-    val items = srv.items
-
+    private val srv = getRealService(this)
+    private val items = srv.items
     private val selectedItems = Box<Set<AnimalItem>>(setOf())
     private val explicitSelectionMode = false.box
 
     private fun add(type: AnimalItem.Type) {
-        val values = items.get()
-        items.set(values + AnimalItem(-values.size.toLong(), type, 0))
+        items.patch { this + AnimalItem(-this.size.toLong(), type, 0) }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

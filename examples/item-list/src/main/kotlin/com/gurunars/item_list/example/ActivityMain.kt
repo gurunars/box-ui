@@ -1,30 +1,17 @@
 package com.gurunars.item_list.example
 
 import android.app.Activity
-import android.content.Context
 import android.os.Bundle
 import android.support.annotation.StringRes
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
-import android.widget.TextView
 import android.widget.Toast
 import com.gurunars.animal_item.AnimalItem
 import com.gurunars.animal_item.Service.Companion.getRealService
+import com.gurunars.animal_item.bindAnimal
 import com.gurunars.databinding.IBox
-import com.gurunars.databinding.android.asRow
 import com.gurunars.databinding.android.setAsOne
-import com.gurunars.databinding.android.txt
-import com.gurunars.databinding.branch
 import com.gurunars.item_list.itemListView
-import org.jetbrains.anko.dip
-import org.jetbrains.anko.padding
-
-private fun Context.bindAnimal(field: IBox<AnimalItem>): View = TextView(this).apply {
-    asRow()
-    padding = context.dip(5)
-    txt(field.branch { toString() })
-}
 
 class ActivityMain : Activity() {
 
