@@ -17,7 +17,6 @@ class Service(private val db: Db) {
                 it
             )
         },
-        { it },
         listOf()
     )
 

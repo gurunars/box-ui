@@ -12,13 +12,11 @@ import org.jetbrains.anko.uiThread
  *
  * @param getF reads data from the storage
  * @param setF writes data to the storage
- * @param preprocess alters the payload before storing it
  * @param initial temporary payload to be
  */
 class DataSource<Type>(
     private val getF: () -> Type,
     private val setF: (value: Type) -> Any,
-    private val preprocess: (value: Type) -> Type = { it },
     initial: Type
 ) : IBox<Type> {
     private val box = Box(initial)
@@ -29,7 +27,7 @@ class DataSource<Type>(
     fun refetch() {
         doAsync {
             try {
-                val next = preprocess(getF())
+                val next = getF()
                 uiThread {
                     ready = true
                     box.set(next, true)
@@ -50,12 +48,11 @@ class DataSource<Type>(
 
     override fun set(value: Type, force: Boolean): Boolean {
         ready = true
-        val sorted = preprocess(value)
-        if (box.set(sorted, force)) {
+        if (box.set(value, force)) {
             buffer.call {
                 doAsync {
                     try {
-                        setF(sorted)
+                        setF(value)
                         refetch()
                     } catch (exe: Exception) {
                         uiThread {
