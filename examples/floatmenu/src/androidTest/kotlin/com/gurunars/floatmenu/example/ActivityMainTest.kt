@@ -15,6 +15,7 @@ import android.support.test.espresso.matcher.ViewMatchers.withText
 import android.support.test.filters.LargeTest
 import android.support.test.rule.ActivityTestRule
 import android.support.test.runner.AndroidJUnit4
+import com.gurunars.test_utils.rotate
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -28,9 +29,7 @@ class ActivityMainTest {
     var mActivityRule = ActivityTestRule(ActivityMain::class.java)
 
     private fun rotate() {
-        mActivityRule.activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
-        mActivityRule.activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-        Thread.sleep(500)
+        mActivityRule.rotate()
     }
 
     private fun fab(): ViewInteraction {

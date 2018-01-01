@@ -20,6 +20,7 @@ import android.support.test.rule.ActivityTestRule
 import android.support.test.runner.AndroidJUnit4
 import android.view.View
 import com.gurunars.test_utils.Helpers.nthChildOf
+import com.gurunars.test_utils.rotate
 import org.hamcrest.core.Is.`is`
 import org.hamcrest.core.IsNot.not
 import org.junit.After
@@ -33,9 +34,7 @@ import org.junit.runner.RunWith
 class ActivitySortableTest {
 
     private fun rotate() {
-        mActivityRule.activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
-        mActivityRule.activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-        Thread.sleep(500)
+        mActivityRule.rotate()
     }
 
     @get:Rule

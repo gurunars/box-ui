@@ -9,6 +9,7 @@ import com.gurunars.android_utils.autoButton
 import com.gurunars.databinding.android.add
 import com.gurunars.databinding.android.fullSize
 import com.gurunars.databinding.android.onClick
+import com.gurunars.databinding.android.setAsOne
 import com.gurunars.databinding.android.statefulView
 import com.gurunars.databinding.android.txt
 import com.gurunars.databinding.box
@@ -30,6 +31,7 @@ class ActivityMain : Activity() {
         super.onCreate(savedInstanceState)
 
         statefulView(R.id.main) {
+            retain(title)
             relativeLayout {
                 gravity = Gravity.CENTER
                 fullSize()
@@ -75,7 +77,7 @@ class ActivityMain : Activity() {
                     width = matchParent
                     below(R.id.payloadView)
                 }
-            }
-        }
+            }.setAsOne(this)
+        }.setAsOne(this)
     }
 }

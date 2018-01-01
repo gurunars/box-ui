@@ -1,11 +1,20 @@
 package com.gurunars.test_utils
 
+import android.content.pm.ActivityInfo
+import android.support.test.rule.ActivityTestRule
 import android.view.View
 import android.view.ViewGroup
 
 import org.hamcrest.Description
 import org.hamcrest.Matcher
 import org.hamcrest.TypeSafeMatcher
+import java.lang.Thread.sleep
+
+fun ActivityTestRule<*>.rotate() {
+    activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+    activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+    sleep(500)
+}
 
 object Helpers {
 
