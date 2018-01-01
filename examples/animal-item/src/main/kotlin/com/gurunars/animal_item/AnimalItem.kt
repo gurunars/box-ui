@@ -9,9 +9,9 @@ data class AnimalItem(
     @PrimaryKey(autoGenerate = true)
     override var id: Long = 0,
     override var type: AnimalItem.Type = Type.EMPTY,
-    var position: Int = 0,
+    override var position: Int = 0,
     var version: Int = 0
-) : Item {
+) : ItemWithPosition {
 
     enum class Type {
         MONKEY, TIGER, WOLF, LION, EMPTY

@@ -11,15 +11,10 @@ class Service(private val db: Db) {
     val items = DataSource(
         db.animalItemDao::all,
         {
-            persistList(
+            persistOrderedList(
                 db::runInTransaction,
                 db.animalItemDao,
-                it.mapIndexed { index, animalItem ->
-                    animalItem.copy(
-                        id = Math.max(animalItem.id, 0),
-                        position = index
-                    )
-                }
+                it
             )
         },
         { it },
