@@ -6,4 +6,5 @@
     <item name="buttonFrame" type="id" />
     <item name="alertTitle" type="id" />
     <item name="notificationView" type="id" />
+    <item name="main" type="id" />
 </resources>

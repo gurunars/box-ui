@@ -8,19 +8,17 @@ import android.view.Gravity
 import android.view.Menu
 import android.view.MenuItem
 import com.gurunars.android_utils.Icon
-import com.gurunars.databinding.Box
 import com.gurunars.databinding.IBox
 import com.gurunars.databinding.android.asRow
 import com.gurunars.databinding.android.fullSize
 import com.gurunars.databinding.android.setAsOne
+import com.gurunars.databinding.android.statefulView
 import com.gurunars.databinding.box
 import com.gurunars.databinding.branch
-import com.gurunars.databinding.onChange
 import com.gurunars.databinding.patch
 import com.gurunars.floatmenu.ContentPane
 import com.gurunars.floatmenu.MenuPane
 import com.gurunars.floatmenu.floatMenu
-import com.gurunars.storage.PersistentStorage
 import org.jetbrains.anko.UI
 import org.jetbrains.anko.alignParentTop
 import org.jetbrains.anko.backgroundColor
@@ -37,12 +35,9 @@ import org.jetbrains.anko.textView
 import org.jetbrains.anko.verticalLayout
 
 class ActivityMain : Activity() {
-    private val storage = PersistentStorage(this, "main")
-
-    private val hasOverlay = storage.storageField("hasOverlay", true)
-
-    private val isOpen = Box(false)
-    private val notification = Box("")
+    private val hasOverlay = true.box
+    private val isOpen = false.box
+    private val notification = "".box
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -135,18 +130,15 @@ class ActivityMain : Activity() {
             )
         }
 
-        floatMenu(
-            contentArea,
-            hasOverlay.branch { MenuArea(this) },
-            isOpen = isOpen
-        ).setAsOne(this)
+        statefulView(R.id.main) {
+            retain(hasOverlay, isOpen, notification)
+            floatMenu(
+                contentArea,
+                hasOverlay.branch { MenuArea(this) },
+                isOpen = isOpen
+            ).setAsOne(this)
+        }.setAsOne(this)
 
-        storage.load()
-    }
-
-    override fun onDetachedFromWindow() {
-        super.onDetachedFromWindow()
-        storage.unbindAll()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -160,6 +152,7 @@ class ActivityMain : Activity() {
             R.id.reset -> {
                 isOpen.set(false)
                 hasOverlay.set(true)
+                notification.set("")
                 return true
             }
             R.id.toggleBackground -> {
