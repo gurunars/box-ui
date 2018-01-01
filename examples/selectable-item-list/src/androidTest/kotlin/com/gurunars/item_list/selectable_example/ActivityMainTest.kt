@@ -57,10 +57,10 @@ class ActivityMainTest {
     fun longClickingOneAndClickingAnother_shouldSelectTwoItems() {
         selectTwo()
         assertList(
-            Pair("#0{TIGER @ 0}", true),
-            Pair("#1{WOLF @ 0}", true),
-            Pair("#2{MONKEY @ 0}", false),
-            Pair("#3{LION @ 0}", false)
+            Pair("#1{TIGER @ 0}", true),
+            Pair("#2{WOLF @ 0}", true),
+            Pair("#3{MONKEY @ 0}", false),
+            Pair("#4{LION @ 0}", false)
         )
     }
 
@@ -68,9 +68,10 @@ class ActivityMainTest {
     fun deletingSelected_shouldRemoveTheItems() {
         selectTwo()
         clickMenu("Delete selected")
+        Thread.sleep(500)
         assertList(
-            Pair("#2{MONKEY @ 0}", false),
-            Pair("#3{LION @ 0}", false)
+            Pair("#3{MONKEY @ 0}", false),
+            Pair("#4{LION @ 0}", false)
         )
     }
 
@@ -78,11 +79,12 @@ class ActivityMainTest {
     fun updatingSelected_shouldIncrementCount() {
         selectTwo()
         clickMenu("Update selected")
+
         assertList(
-            Pair("#0{TIGER @ 1}", true),
-            Pair("#1{WOLF @ 1}", true),
-            Pair("#2{MONKEY @ 0}", false),
-            Pair("#3{LION @ 0}", false)
+            Pair("#1{TIGER @ 1}", true),
+            Pair("#2{WOLF @ 1}", true),
+            Pair("#3{MONKEY @ 0}", false),
+            Pair("#4{LION @ 0}", false)
         )
     }
 
@@ -90,15 +92,16 @@ class ActivityMainTest {
     fun creatingItems_shouldNotUnselectItems() {
         selectTwo()
         clickMenu("Create items")
+        Thread.sleep(500)
         assertList(
-            Pair("#0{TIGER @ 0}", true),
-            Pair("#1{WOLF @ 0}", true),
-            Pair("#2{MONKEY @ 0}", false),
-            Pair("#3{LION @ 0}", false),
-            Pair("#4{TIGER @ 0}", false),
-            Pair("#5{WOLF @ 0}", false),
-            Pair("#6{MONKEY @ 0}", false),
-            Pair("#7{LION @ 0}", false)
+            Pair("#1{TIGER @ 0}", true),
+            Pair("#2{WOLF @ 0}", true),
+            Pair("#3{MONKEY @ 0}", false),
+            Pair("#4{LION @ 0}", false),
+            Pair("#5{TIGER @ 0}", false),
+            Pair("#6{WOLF @ 0}", false),
+            Pair("#7{MONKEY @ 0}", false),
+            Pair("#8{LION @ 0}", false)
         )
     }
 
@@ -107,10 +110,10 @@ class ActivityMainTest {
         clickMenu("Enable explicit selection")
         onView(nthChildOf(withId(R.id.recyclerView), 1)).perform(click())
         assertList(
-            Pair("#0{TIGER @ 0}", false),
-            Pair("#1{WOLF @ 0}", true),
-            Pair("#2{MONKEY @ 0}", false),
-            Pair("#3{LION @ 0}", false)
+            Pair("#1{TIGER @ 0}", false),
+            Pair("#2{WOLF @ 0}", true),
+            Pair("#3{MONKEY @ 0}", false),
+            Pair("#4{LION @ 0}", false)
         )
     }
 
@@ -124,6 +127,7 @@ class ActivityMainTest {
     @Before
     fun before() {
         clickMenu("Reset items")
+        Thread.sleep(500)
     }
 
 }

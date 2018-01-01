@@ -4,12 +4,10 @@ import android.support.v7.util.DiffUtil
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
-import com.esotericsoftware.kryo.Kryo
 import com.gurunars.databinding.Box
 import com.gurunars.databinding.IBox
 import com.gurunars.databinding.android.asRow
 import com.gurunars.databinding.android.fullSize
-import org.objenesis.strategy.StdInstantiatorStrategy
 
 internal class ItemAdapter<ItemType : Item>(
     private val items: IBox<List<ItemType>>,
@@ -40,9 +38,7 @@ internal class ItemAdapter<ItemType : Item>(
             previousList.getOrNull(oldItemPosition)?.id == currentList.getOrNull(newItemPosition)?.id
     }
 
-    private val kryo = Kryo().apply {
-        instantiatorStrategy = Kryo.DefaultInstantiatorStrategy(StdInstantiatorStrategy())
-    }
+    private val kryo = getKryo()
 
     init {
         items.onChange { list ->

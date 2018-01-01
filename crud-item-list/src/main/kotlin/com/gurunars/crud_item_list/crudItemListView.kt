@@ -11,7 +11,6 @@ import com.gurunars.databinding.android.onLongClick
 import com.gurunars.databinding.android.set
 import com.gurunars.databinding.android.statefulView
 import com.gurunars.databinding.bind
-import com.gurunars.databinding.onChange
 import com.gurunars.databinding.box
 import com.gurunars.databinding.branch
 import com.gurunars.databinding.patch
@@ -81,6 +80,9 @@ fun <ItemType : Item> Context.crudItemListView(
         itemTypes = typeCache
     ).apply {
         this.isOpen.bind(isOpen)
+        // Items should be retains as a state to prevent the selection being dropped because
+        // of async operations done in a wrong order
+        // retain(items)
         retain(state)
     }
 

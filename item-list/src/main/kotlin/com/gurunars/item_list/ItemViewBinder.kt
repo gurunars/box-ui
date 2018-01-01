@@ -6,7 +6,6 @@ import android.view.View
 import android.widget.TextView
 import com.gurunars.databinding.IBox
 import com.gurunars.databinding.android.asRow
-import com.gurunars.databinding.onChange
 import org.jetbrains.anko.backgroundColor
 import org.jetbrains.anko.textColor
 

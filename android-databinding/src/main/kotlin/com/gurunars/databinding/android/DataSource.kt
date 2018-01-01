@@ -20,20 +20,22 @@ class DataSource<Type>(
     initial: Type
 ) : IBox<Type> {
     private val box = Box(initial)
-    private var ready = false
+    private val buffer = UiThrottleBuffer()
 
-    val buffer = UiThrottleBuffer()
+    val ready = Box(false)
 
     fun refetch() {
         doAsync {
+            ready.set(false)
             try {
                 val next = getF()
                 uiThread {
-                    ready = true
+                    ready.set(true)
                     box.set(next, true)
                 }
             } catch (exe: Exception) {
                 uiThread {
+                    ready.set(true)
                     throw exe
                 }
             }
@@ -47,7 +49,10 @@ class DataSource<Type>(
     override fun get() = box.get()
 
     override fun set(value: Type, force: Boolean): Boolean {
-        ready = true
+        // We do not want to set anything before at least the initial load took place
+        if (!ready.get() && !force) {
+            return false
+        }
         if (box.set(value, force)) {
             buffer.call {
                 doAsync {
@@ -67,5 +72,5 @@ class DataSource<Type>(
     }
 
     override fun onChange(hot: Boolean, listener: Listener<Type>) =
-        box.onChange(hot, { if (ready) listener(it) })
+        box.onChange(hot, { if (ready.get()) listener(it) })
 }

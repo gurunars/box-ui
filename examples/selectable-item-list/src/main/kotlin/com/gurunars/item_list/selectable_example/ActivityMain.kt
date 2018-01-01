@@ -7,6 +7,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import com.gurunars.animal_item.AnimalItem
+import com.gurunars.animal_item.Service
 import com.gurunars.animal_item.bindAnimal
 import com.gurunars.animal_item.Service.Companion.getRealService
 import com.gurunars.databinding.Box
@@ -20,8 +21,10 @@ import com.gurunars.item_list.coloredRowSelectionDecorator
 import com.gurunars.item_list.selectableItemListView
 
 class ActivityMain : Activity() {
-    private val srv = getRealService(this)
-    private val items = srv.items
+
+    lateinit var srv: Service
+    lateinit var items: IBox<List<AnimalItem>>
+
     private val selectedItems = Box<Set<AnimalItem>>(setOf())
     private val explicitSelectionMode = false.box
 
@@ -31,6 +34,8 @@ class ActivityMain : Activity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        srv = getRealService(this)
+        items = srv.items
 
         statefulView(R.id.main) {
             retain(selectedItems, explicitSelectionMode)
@@ -107,7 +112,7 @@ class ActivityMain : Activity() {
     }
 
     @StringRes private fun reset(): Int {
-        items.set(listOf())
+        srv.clear()
         explicitSelectionMode.set(false)
         create()
         return R.string.did_reset

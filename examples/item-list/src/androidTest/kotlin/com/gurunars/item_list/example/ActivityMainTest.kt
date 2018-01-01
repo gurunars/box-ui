@@ -47,34 +47,36 @@ class ActivityMainTest {
     fun deletingItems_shouldLeadToPartialRemoval() {
         clickMenu("Delete items")
         assertList(
-            "#0{TIGER @ 0}",
-            "#2{MONKEY @ 0}"
+            "#1{TIGER @ 0}",
+            "#3{MONKEY @ 0}"
         )
     }
 
     @Test
     fun createItems_shouldAppendItemsToTheEnd() {
         clickMenu("Create items")
+        Thread.sleep(500)
         assertList(
-            "#0{TIGER @ 0}",
-            "#1{WOLF @ 0}",
-            "#2{MONKEY @ 0}",
-            "#3{LION @ 0}",
-            "#4{TIGER @ 0}",
-            "#5{WOLF @ 0}",
-            "#6{MONKEY @ 0}",
-            "#7{LION @ 0}"
+            "#1{TIGER @ 0}",
+            "#2{WOLF @ 0}",
+            "#3{MONKEY @ 0}",
+            "#4{LION @ 0}",
+            "#5{TIGER @ 0}",
+            "#6{WOLF @ 0}",
+            "#7{MONKEY @ 0}",
+            "#8{LION @ 0}"
         )
     }
 
     @Test
     fun updateItems_shouldChangeSomeOfItems() {
         clickMenu("Update items")
+        Thread.sleep(500)
         assertList(
-            "#0{TIGER @ 0}",
-            "#1{WOLF @ 1}",
-            "#2{MONKEY @ 0}",
-            "#3{LION @ 1}"
+            "#1{TIGER @ 0}",
+            "#2{WOLF @ 1}",
+            "#3{MONKEY @ 0}",
+            "#4{LION @ 1}"
         )
     }
 
@@ -82,10 +84,10 @@ class ActivityMainTest {
     fun moveUp_shouldPutItemFromBottomToTop() {
         clickMenu("Move up")
         assertList(
-            "#3{LION @ 0}",
-            "#0{TIGER @ 0}",
-            "#1{WOLF @ 0}",
-            "#2{MONKEY @ 0}"
+            "#4{LION @ 0}",
+            "#1{TIGER @ 0}",
+            "#2{WOLF @ 0}",
+            "#3{MONKEY @ 0}"
         )
     }
 
@@ -93,21 +95,22 @@ class ActivityMainTest {
     fun moveDown_shouldPutItemFromTopToBottom() {
         clickMenu("Move down")
         assertList(
-            "#1{WOLF @ 0}",
-            "#2{MONKEY @ 0}",
-            "#3{LION @ 0}",
-            "#0{TIGER @ 0}"
+            "#2{WOLF @ 0}",
+            "#3{MONKEY @ 0}",
+            "#4{LION @ 0}",
+            "#1{TIGER @ 0}"
         )
     }
 
     @Test
     fun resetItems_shouldSetItemsToInitialList() {
         clickMenu("Reset items")
+        Thread.sleep(500)
         assertList(
-            "#0{TIGER @ 0}",
-            "#1{WOLF @ 0}",
-            "#2{MONKEY @ 0}",
-            "#3{LION @ 0}"
+            "#1{TIGER @ 0}",
+            "#2{WOLF @ 0}",
+            "#3{MONKEY @ 0}",
+            "#4{LION @ 0}"
         )
     }
 

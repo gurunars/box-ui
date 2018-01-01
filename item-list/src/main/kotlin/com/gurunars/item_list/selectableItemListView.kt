@@ -8,9 +8,7 @@ import com.gurunars.databinding.android.setAsOne
 import com.gurunars.databinding.android.statefulView
 import com.gurunars.databinding.box
 import com.gurunars.databinding.fork
-import com.gurunars.databinding.onChange
 import com.gurunars.databinding.patch
-import kotlin.collections.HashSet
 
 /**
  * Item list that has selection enabled.
@@ -35,20 +33,27 @@ fun <ItemType : Item> Context.selectableItemListView(
 
     val kryo = getKryo()
 
-    val copyOfSelectedItems: IBox<Set<ItemType>> =
-        selectedItems.fork { kryo.copy(HashSet(this)) }
-
-    val copyOfItems: IBox<List<ItemType>> =
+    retain(
+        selectedItems.fork { kryo.copy(HashSet(this)) },
         items.fork { kryo.copy(ArrayList(this)) }
+    )
 
-    retain(copyOfSelectedItems)
+    // The flag is require to prevent selection cleanup during the initialization
+    var initialized = false
 
     val selectables = Box<List<SelectableItem<ItemType>>>(listOf())
 
-    listOf(copyOfItems, copyOfSelectedItems).onChange {
-        val its = copyOfItems.get()
-        copyOfSelectedItems.patch { filter { its.has(it) }.toSet() }
-        selectables.set(its.map { SelectableItem(it, copyOfSelectedItems.get().has(it)) })
+    items.onChange(false) { its ->
+        if (initialized) {
+            selectedItems.patch { filter { its.has(it) }.toSet() }
+        }
+        initialized = true
+        val selected = selectedItems.get()
+        selectables.set(its.map { SelectableItem(it, selected.has(it)) })
+    }
+
+    selectedItems.onChange { its ->
+        selectables.set(items.get().map { SelectableItem(it, its.has(it)) })
     }
 
     itemListView(
@@ -56,7 +61,7 @@ fun <ItemType : Item> Context.selectableItemListView(
         itemViewBinders = itemViewBinders
             .map {
                 it.key to ({ item: IBox<SelectableItem<ItemType>> ->
-                    clickableBind(copyOfSelectedItems, it.value, item, explicitSelectionMode)
+                    clickableBind(selectedItems, it.value, item, explicitSelectionMode)
                 })
             }.toMap(),
         emptyViewBinder = emptyViewBinder

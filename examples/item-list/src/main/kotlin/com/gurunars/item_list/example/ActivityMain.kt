@@ -7,6 +7,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import com.gurunars.animal_item.AnimalItem
+import com.gurunars.animal_item.Service
 import com.gurunars.animal_item.Service.Companion.getRealService
 import com.gurunars.animal_item.bindAnimal
 import com.gurunars.databinding.IBox
@@ -15,8 +16,8 @@ import com.gurunars.item_list.itemListView
 
 class ActivityMain : Activity() {
 
-    val srv = getRealService(this)
-    val items = srv.items
+    lateinit var srv: Service
+    lateinit var items: IBox<List<AnimalItem>>
 
     private fun add(type: AnimalItem.Type) {
         val values = items.get()
@@ -25,6 +26,8 @@ class ActivityMain : Activity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        srv = getRealService(this)
+        items = srv.items
 
         itemListView(
             items = items,

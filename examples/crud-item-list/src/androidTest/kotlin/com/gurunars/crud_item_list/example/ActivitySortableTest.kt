@@ -1,6 +1,5 @@
 package com.gurunars.crud_item_list.example
 
-import android.content.pm.ActivityInfo
 import android.support.test.espresso.Espresso.onView
 import android.support.test.espresso.ViewInteraction
 import android.support.test.espresso.action.ViewActions.click
@@ -14,7 +13,6 @@ import android.support.test.espresso.matcher.ViewMatchers.withId
 import android.support.test.espresso.matcher.ViewMatchers.withTagKey
 import android.support.test.espresso.matcher.ViewMatchers.withTagValue
 import android.support.test.espresso.matcher.ViewMatchers.withText
-
 import android.support.test.filters.LargeTest
 import android.support.test.rule.ActivityTestRule
 import android.support.test.runner.AndroidJUnit4
@@ -191,8 +189,9 @@ class ActivitySortableTest {
         atIndex(1).perform(longClick())
         onView(withId(R.id.moveUp)).perform(click())
         onView(withId(R.id.reset)).perform(click())
+        Thread.sleep(500)
         validateSelection(0, "#1{LION @ 0}", false)
-        validateSelection(1, "#2{TIGER @ 0}", true)
+        validateSelection(1, "#2{TIGER @ 0}", false)
     }
 
     @Test
@@ -202,6 +201,7 @@ class ActivitySortableTest {
         rotate()
         onView(withId(R.id.copy)).perform(click())
         onView(withId(R.id.paste)).perform(click())
+        Thread.sleep(500)
         rotate()
         atIndex(4).perform(click())
         atIndex(5).perform(click())
@@ -218,7 +218,8 @@ class ActivitySortableTest {
         atIndex(2).perform(longClick())
         onView(withId(R.id.moveDown)).perform(click())
         onView(withId(R.id.reset)).perform(click())
-        validateSelection(2, "#3{MONKEY @ 0}", true)
+        Thread.sleep(500)
+        validateSelection(2, "#3{MONKEY @ 0}", false)
         validateSelection(3, "#4{WOLF @ 0}", false)
     }
 
@@ -244,6 +245,7 @@ class ActivitySortableTest {
         onView(withId(R.id.increment)).perform(click())
         rotate()
         onView(withId(R.id.save)).perform(click())
+        Thread.sleep(500)
         validateSelection(4, "#5{LION @ 5}", false)
     }
 
@@ -275,6 +277,7 @@ class ActivitySortableTest {
     fun before() {
         onView(withId(R.id.reset)).perform(click())
         onView(withId(R.id.unlock)).perform(click())
+        Thread.sleep(500)
     }
 
     @After

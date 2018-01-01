@@ -14,6 +14,7 @@ import com.gurunars.crud_item_list.IconColorBundle
 import com.gurunars.crud_item_list.ItemTypeDescriptor
 import com.gurunars.crud_item_list.crudItemListView
 import com.gurunars.crud_item_list.oneOf
+import com.gurunars.databinding.IBox
 import com.gurunars.databinding.android.setAsOne
 import com.gurunars.databinding.android.statefulView
 import com.gurunars.databinding.box
@@ -21,8 +22,8 @@ import com.gurunars.databinding.patch
 
 class ActivityMain : Activity() {
 
-    private val srv = Service.getRealService(this)
-    private val items = srv.items
+    private lateinit var srv: Service
+    private lateinit var items: IBox<List<AnimalItem>>
 
     private val isSortable = true.box
 
@@ -42,7 +43,7 @@ class ActivityMain : Activity() {
     private fun addItems(
         count: Int
     ) {
-        srv.items.patch {
+        items.patch {
             this + (0 until count).map {
                 AnimalItem(
                     id = -(this.size.toLong() + it.toLong()),
@@ -62,7 +63,6 @@ class ActivityMain : Activity() {
 
     private fun initView(sortable: Boolean) {
         setTitle(if (sortable) R.string.sortable else R.string.unsortable)
-        reset()
 
         val descriptors: List<List<ItemTypeDescriptor<AnimalItem>>>
 
@@ -122,6 +122,8 @@ class ActivityMain : Activity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        srv = Service.getRealService(this)
+        items = srv.items
         isSortable.onChange(listener = this::initView)
     }
 
@@ -135,8 +137,14 @@ class ActivityMain : Activity() {
         val i = item.itemId
         when (i) {
             R.id.reset -> reset()
-            R.id.lock -> isSortable.set(false, true)
-            R.id.unlock -> isSortable.set(true, true)
+            R.id.lock -> {
+                isSortable.set(false, true)
+                reset()
+            }
+            R.id.unlock -> {
+                isSortable.set(true, true)
+                reset()
+            }
             R.id.addMany -> addItems(4 * 20)
         }
         return super.onOptionsItemSelected(item)
