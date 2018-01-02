@@ -3,7 +3,6 @@ apply plugin: 'kotlin-android'
 apply plugin: 'com.github.dcendents.android-maven'
 
 group = moduleGroup
-version = packageVersion
 
 android {
     compileSdkVersion sdkVersionTarget
@@ -13,7 +12,7 @@ android {
         minSdkVersion sdkVersionMin
         targetSdkVersion sdkVersionTarget
         versionCode packageVersionCode
-        versionName packageVersion
+        versionName project.version
     }
 
     sourceSets {

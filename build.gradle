@@ -1,10 +1,16 @@
+description = """
+A collection of modules aiming to simplify creation of very specific simple
+CRUD apps for Android.
+"""
+
+version = "0.144.0"
+
 buildscript {
     ext.mavenRepoUrl = 'http://dl.bintray.com/berezin/maven'
     ext.siteUrl = 'https://gurunars.github.io/android-crud-ui'
     ext.gitUrl = 'git@github.com:gurunars/android-crud-ui.git'
     ext.license = "Apache-2.0"
     ext.packageVersionCode = 144
-    ext.packageVersion = "0.144.0"
 
     ext.junitVersion = '4.12'
     ext.kotlinVersion = '1.2.10'
@@ -37,8 +43,8 @@ buildscript {
         classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3'
         classpath "com.github.dcendents:android-maven-gradle-plugin:1.4.1"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
-        classpath 'com.github.gurunars:styled-android-dokka:1.24.0'
-        //classpath 'com.gurunars.dokka:styled-android-dokka:2.0.0'
+        classpath 'com.github.gurunars:styled-android-dokka:1.25.0'
+        //classpath 'com.gurunars.dokka:styled-android-dokka:2.0.4'
     }
 }
 
