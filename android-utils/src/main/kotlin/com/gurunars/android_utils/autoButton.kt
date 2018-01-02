@@ -7,9 +7,9 @@ import android.graphics.drawable.shapes.RectShape
 import android.graphics.drawable.shapes.Shape
 import android.view.View
 import android.widget.TextView
-import com.gurunars.databinding.Box
-import com.gurunars.databinding.IBox
-import com.gurunars.databinding.onChange
+import com.gurunars.box.Box
+import com.gurunars.box.IBox
+import com.gurunars.box.onChange
 import org.jetbrains.anko.bottomPadding
 import org.jetbrains.anko.dip
 import org.jetbrains.anko.leftPadding

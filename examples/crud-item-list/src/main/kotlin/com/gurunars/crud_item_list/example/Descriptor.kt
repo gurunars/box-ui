@@ -9,10 +9,10 @@ import com.gurunars.android_utils.Icon
 import com.gurunars.animal_item.AnimalItem
 import com.gurunars.animal_item.bindAnimal
 import com.gurunars.crud_item_list.ItemTypeDescriptor
-import com.gurunars.databinding.IBox
-import com.gurunars.databinding.android.fullSize
-import com.gurunars.databinding.android.txt
-import com.gurunars.databinding.branch
+import com.gurunars.box.IBox
+import com.gurunars.box.ui.fullSize
+import com.gurunars.box.ui.txt
+import com.gurunars.box.branch
 import com.gurunars.item_list.SelectableItem
 import com.gurunars.item_list.coloredRowSelectionDecorator
 import org.jetbrains.anko.backgroundColor

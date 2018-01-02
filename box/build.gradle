@@ -1,0 +1,13 @@
+ext.moduleName="box"
+ext.moduleGroup="com.gurunars.box"
+
+apply from: '../all-modules.gradle'
+
+description = """
+A library to facilitate data binding via observable data containers that can be entangled together,
+manipulated and monitored for changes.
+"""
+
+dependencies {
+    testImplementation junit
+}

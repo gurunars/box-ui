@@ -2,7 +2,7 @@ package com.gurunars.animal_item
 
 import android.arch.persistence.room.Room
 import android.content.Context
-import com.gurunars.databinding.android.DataSource
+import com.gurunars.box.ui.DataSource
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
 

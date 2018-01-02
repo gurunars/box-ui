@@ -3,10 +3,9 @@ package com.gurunars.item_list
 import android.graphics.Color
 import android.support.annotation.ColorInt
 import android.view.View
-import com.gurunars.databinding.Box
-import com.gurunars.databinding.IBox
-import com.gurunars.databinding.android.asRow
-import com.gurunars.databinding.onChange
+import com.gurunars.box.Box
+import com.gurunars.box.IBox
+import com.gurunars.box.ui.asRow
 
 typealias ItemRenderer<ItemType> = (field: IBox<ItemType>) -> View
 

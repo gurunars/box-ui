@@ -3,10 +3,10 @@ package com.gurunars.animal_item
 import android.content.Context
 import android.view.View
 import android.widget.TextView
-import com.gurunars.databinding.IBox
-import com.gurunars.databinding.android.asRow
-import com.gurunars.databinding.android.txt
-import com.gurunars.databinding.branch
+import com.gurunars.box.IBox
+import com.gurunars.box.ui.asRow
+import com.gurunars.box.ui.txt
+import com.gurunars.box.branch
 import org.jetbrains.anko.dip
 import org.jetbrains.anko.padding
 

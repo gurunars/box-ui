@@ -4,9 +4,9 @@ import android.content.Context
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
-import com.gurunars.databinding.IBox
-import com.gurunars.databinding.android.fullSize
-import com.gurunars.databinding.branch
+import com.gurunars.box.IBox
+import com.gurunars.box.ui.fullSize
+import com.gurunars.box.branch
 import org.jetbrains.anko.bottomPadding
 import org.jetbrains.anko.dip
 

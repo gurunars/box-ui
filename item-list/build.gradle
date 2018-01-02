@@ -18,8 +18,8 @@ dependencies {
     api 'com.esotericsoftware:kryo:4.0.1'
     api "com.android.support:recyclerview-v7:$supportlibVersion"
     api project(':android-utils')
-    api project(':databinding')
-    api project(':android-databinding')
+    api project(':box')
+    api project(':box-ui')
 }
 
 dokka {

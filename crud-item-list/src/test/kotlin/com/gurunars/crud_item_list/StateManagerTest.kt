@@ -2,7 +2,7 @@ package com.gurunars.crud_item_list
 
 import android.view.View
 import com.gurunars.android_utils.Icon
-import com.gurunars.databinding.IBox
+import com.gurunars.box.IBox
 import com.gurunars.item_list.SelectableItem
 import org.junit.Assert.assertEquals
 import org.junit.Before

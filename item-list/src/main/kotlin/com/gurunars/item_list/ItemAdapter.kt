@@ -4,10 +4,10 @@ import android.support.v7.util.DiffUtil
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
-import com.gurunars.databinding.Box
-import com.gurunars.databinding.IBox
-import com.gurunars.databinding.android.asRow
-import com.gurunars.databinding.android.fullSize
+import com.gurunars.box.Box
+import com.gurunars.box.IBox
+import com.gurunars.box.ui.asRow
+import com.gurunars.box.ui.fullSize
 
 internal class ItemAdapter<ItemType : Item>(
     private val items: IBox<List<ItemType>>,

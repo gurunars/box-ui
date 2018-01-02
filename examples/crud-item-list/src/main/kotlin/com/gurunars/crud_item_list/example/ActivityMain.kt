@@ -14,11 +14,11 @@ import com.gurunars.crud_item_list.IconColorBundle
 import com.gurunars.crud_item_list.ItemTypeDescriptor
 import com.gurunars.crud_item_list.crudItemListView
 import com.gurunars.crud_item_list.oneOf
-import com.gurunars.databinding.IBox
-import com.gurunars.databinding.android.setAsOne
-import com.gurunars.databinding.android.statefulView
-import com.gurunars.databinding.box
-import com.gurunars.databinding.patch
+import com.gurunars.box.IBox
+import com.gurunars.box.ui.setAsOne
+import com.gurunars.box.ui.statefulView
+import com.gurunars.box.box
+import com.gurunars.box.patch
 
 class ActivityMain : Activity() {
 

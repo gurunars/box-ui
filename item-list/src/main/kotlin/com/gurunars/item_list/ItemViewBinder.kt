@@ -4,8 +4,8 @@ import android.content.Context
 import android.graphics.Color
 import android.view.View
 import android.widget.TextView
-import com.gurunars.databinding.IBox
-import com.gurunars.databinding.android.asRow
+import com.gurunars.box.IBox
+import com.gurunars.box.ui.asRow
 import org.jetbrains.anko.backgroundColor
 import org.jetbrains.anko.textColor
 

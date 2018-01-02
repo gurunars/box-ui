@@ -12,10 +12,10 @@ import android.graphics.drawable.shapes.Shape
 import android.support.v4.content.res.ResourcesCompat
 import android.view.View
 import android.widget.ImageView
-import com.gurunars.databinding.Box
-import com.gurunars.databinding.IBox
-import com.gurunars.databinding.bind
-import com.gurunars.databinding.onChange
+import com.gurunars.box.Box
+import com.gurunars.box.IBox
+import com.gurunars.box.bind
+import com.gurunars.box.onChange
 
 /**
  * Data class holding the values to be used for icon drawable creation

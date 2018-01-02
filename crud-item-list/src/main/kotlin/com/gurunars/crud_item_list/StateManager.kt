@@ -1,9 +1,9 @@
 package com.gurunars.crud_item_list
 
-import com.gurunars.databinding.IBox
-import com.gurunars.databinding.box
-import com.gurunars.databinding.branch
-import com.gurunars.databinding.patch
+import com.gurunars.box.IBox
+import com.gurunars.box.box
+import com.gurunars.box.branch
+import com.gurunars.box.patch
 import com.gurunars.item_list.Item
 import java.io.Serializable
 

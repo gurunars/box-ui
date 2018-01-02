@@ -39,6 +39,6 @@ dependencies {
     implementation anko
     implementation kotlinStdLib
     implementation project(':android-utils')
-    implementation project(':databinding')
-    implementation project(':android-databinding')
+    implementation project(':box')
+    implementation project(':box-ui')
 }

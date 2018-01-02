@@ -2,13 +2,13 @@ package com.gurunars.item_list
 
 import android.content.Context
 import android.view.View
-import com.gurunars.databinding.Box
-import com.gurunars.databinding.IBox
-import com.gurunars.databinding.android.setAsOne
-import com.gurunars.databinding.android.statefulView
-import com.gurunars.databinding.box
-import com.gurunars.databinding.fork
-import com.gurunars.databinding.patch
+import com.gurunars.box.Box
+import com.gurunars.box.IBox
+import com.gurunars.box.ui.setAsOne
+import com.gurunars.box.ui.statefulView
+import com.gurunars.box.box
+import com.gurunars.box.fork
+import com.gurunars.box.patch
 
 /**
  * Item list that has selection enabled.

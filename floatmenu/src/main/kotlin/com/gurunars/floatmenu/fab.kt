@@ -7,13 +7,13 @@ import android.content.Context
 import android.view.View
 import com.gurunars.android_utils.Icon
 import com.gurunars.android_utils.iconView
-import com.gurunars.databinding.Box
-import com.gurunars.databinding.IBox
-import com.gurunars.databinding.android.add
-import com.gurunars.databinding.android.fullSize
-import com.gurunars.databinding.android.onClick
-import com.gurunars.databinding.branch
-import com.gurunars.databinding.onChange
+import com.gurunars.box.Box
+import com.gurunars.box.IBox
+import com.gurunars.box.ui.add
+import com.gurunars.box.ui.fullSize
+import com.gurunars.box.ui.onClick
+import com.gurunars.box.branch
+import com.gurunars.box.onChange
 import org.jetbrains.anko.frameLayout
 
 internal fun Context.fab(

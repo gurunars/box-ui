@@ -1,0 +1,14 @@
+ext.moduleName="box-ui"
+ext.moduleGroup="com.gurunars.box.ui"
+
+apply from: '../all-modules.gradle'
+
+description = """
+Android specific databinding functionality.
+"""
+
+dependencies {
+    api anko
+    api project(':box')
+    testImplementation junit
+}
