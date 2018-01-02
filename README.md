@@ -18,19 +18,6 @@ NOTE: the project has a very opinionated set of constraints that guarantees
 that simple CRUD apps can be created with as little cognitive effort as
 possible.
 
-In order to fetch the modules as dependencies add the following to your
-top level **build.gradle**:
-
-```
-allprojects {
-    repositories {
-        ...
-        maven {url "http://dl.bintray.com/berezin/maven"}
-        ...
-    }
-}
-```
-
 For installation instractions and API documentation of individual packages
 go [here](http://android-crud-ui.gurunars.com/)
 
