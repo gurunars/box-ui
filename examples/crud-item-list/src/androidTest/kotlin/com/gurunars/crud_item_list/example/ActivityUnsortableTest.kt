@@ -69,5 +69,4 @@ class ActivityUnsortableTest {
         onView(withId(R.id.delete)).perform(click())
         onView(withId(R.id.noItemsLabel)).check(matches(withText("Empty")))
     }
-
 }

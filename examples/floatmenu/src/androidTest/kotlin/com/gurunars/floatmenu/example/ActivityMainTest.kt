@@ -1,6 +1,5 @@
 package com.gurunars.floatmenu.example
 
-import android.content.pm.ActivityInfo
 import android.graphics.Color
 import android.support.test.InstrumentationRegistry.getInstrumentation
 import android.support.test.espresso.Espresso.onView

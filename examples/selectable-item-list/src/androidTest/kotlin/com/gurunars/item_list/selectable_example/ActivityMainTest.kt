@@ -129,5 +129,4 @@ class ActivityMainTest {
         clickMenu("Reset items")
         Thread.sleep(500)
     }
-
 }

@@ -138,7 +138,6 @@ class ActivityMain : Activity() {
                 isOpen = isOpen
             ).setAsOne(this)
         }.setAsOne(this)
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

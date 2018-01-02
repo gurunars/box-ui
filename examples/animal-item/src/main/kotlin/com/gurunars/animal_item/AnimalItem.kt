@@ -2,7 +2,6 @@ package com.gurunars.animal_item
 
 import android.arch.persistence.room.Entity
 import android.arch.persistence.room.PrimaryKey
-import com.gurunars.item_list.Item
 
 @Entity
 data class AnimalItem(

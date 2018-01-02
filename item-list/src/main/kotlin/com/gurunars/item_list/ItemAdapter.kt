@@ -22,7 +22,6 @@ internal class ItemAdapter<ItemType : Item>(
         this.recyclerView = recyclerView
     }
 
-
     private class ItemCallback<out ItemType : Item>(
         val previousList: List<ItemType>,
         val currentList: List<ItemType>) : DiffUtil.Callback() {

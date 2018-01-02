@@ -40,8 +40,5 @@ class Service(private val db: Db) {
             Service(Room.databaseBuilder(
                 ctx, Db::class.java, "AnimalList").build()
             )
-
     }
-
 }
-

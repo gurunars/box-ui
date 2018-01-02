@@ -119,5 +119,4 @@ class ActivityMain : Activity() {
         create()
         return R.string.did_reset
     }
-
 }
