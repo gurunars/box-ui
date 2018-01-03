@@ -3,14 +3,14 @@ A collection of modules aiming to simplify creation of very specific simple
 CRUD apps for Android.
 """
 
-version = "0.144.0"
+version = "0.145.0"
 
 buildscript {
     ext.mavenRepoUrl = 'http://dl.bintray.com/berezin/maven'
     ext.siteUrl = 'https://gurunars.github.io/android-crud-ui'
     ext.gitUrl = 'git@github.com:gurunars/android-crud-ui.git'
     ext.license = "Apache-2.0"
-    ext.packageVersionCode = 144
+    ext.packageVersionCode = 145
 
     ext.junitVersion = '4.12'
     ext.kotlinVersion = '1.2.10'
