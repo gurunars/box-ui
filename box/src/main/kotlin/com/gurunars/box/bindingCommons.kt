@@ -8,16 +8,16 @@ package com.gurunars.box
  * @param reduce a function to transform the payload of this box into the payload of the other
  * box
  */
-inline fun <From, To> IRoBox<From>.branch(
+inline fun <From, To> IRoBox<From>.oneWayBranch(
     crossinline reduce: From.() -> To
 ) = Box(get().reduce()).apply {
-    this@branch.onChange { item -> set(item.reduce()) }
+    this@oneWayBranch.onChange { item -> set(item.reduce()) }
 }
 
 /**
  * Shortcut function that alters the value of the box.
  *
- * @param patcher a mutator meant to transform the original value into the patched vale.
+ * @param patcher a mutator meant to transform the original value into the patched value.
  */
 inline fun <ItemType> IBox<ItemType>.patch(patcher: ItemType.() -> ItemType) =
     set(get().patcher())
@@ -29,9 +29,15 @@ inline fun <ItemType> IBox<ItemType>.patch(patcher: ItemType.() -> ItemType) =
  * @param target box to bind to
  */
 @Suppress("NOTHING_TO_INLINE")
-inline fun <Type> IBox<Type>.bind(target: IBox<Type>) {
-    onChange { item -> target.set(item) }
-    target.onChange { item -> this.set(item) }
+inline fun <Type> IBox<Type>.bind(target: IBox<Type>): Bond {
+    val there = onChange { item -> target.set(item) }
+    val back = target.onChange { item -> this.set(item) }
+    return object : Bond {
+        override fun drop() {
+            there.drop()
+            back.drop()
+        }
+    }
 }
 
 /**
@@ -54,7 +60,7 @@ inline fun <From, To> IBox<From>.branch(
 }
 
 /**
- * A special case of a two-way branch function for the situation when
+ * A special case of a two-way oneWayBranch function for the situation when
  * a both this and another box are of the same type.
  *
  * @param transform a function to be called whenever value of this or another box changes.

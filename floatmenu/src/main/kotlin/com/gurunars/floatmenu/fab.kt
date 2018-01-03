@@ -12,7 +12,7 @@ import com.gurunars.box.IBox
 import com.gurunars.box.ui.add
 import com.gurunars.box.ui.fullSize
 import com.gurunars.box.ui.onClick
-import com.gurunars.box.branch
+import com.gurunars.box.oneWayBranch
 import com.gurunars.box.onChange
 import org.jetbrains.anko.frameLayout
 
@@ -26,7 +26,7 @@ internal fun Context.fab(
     val floatEvaluator = FloatEvaluator()
     val animatedValue = Box(1f)
 
-    val icon = openIcon.branch { copy() }
+    val icon = openIcon.oneWayBranch { copy() }
 
     val actualImageView = iconView(icon = icon).add(this) {
         id = R.id.iconView

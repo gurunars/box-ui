@@ -95,4 +95,40 @@ class BoxTest {
         assertEquals(2, masterField.get())
         assertEquals(2, slaveField1.get())
     }
+
+    @Test
+    fun droppingBond_shouldRemoveTheLinkBetweenBoxes() {
+        val masterField = Box(1)
+        val slaveField1 = Box(2)
+        val slaveField2 = Box(3)
+
+        val masterBond = masterField.bind(slaveField1)
+        masterBond.drop()
+        slaveField1.bind(slaveField2)
+
+        assertEquals(1, masterField.get())
+        assertEquals(1, slaveField1.get())
+        assertEquals(1, slaveField2.get())
+
+        slaveField2.set(2)
+
+        assertEquals(1, masterField.get())
+        assertEquals(2, slaveField1.get())
+    }
+
+    @Test
+    fun coldObserver_shouldNotTriggerChangeOnBind() {
+        val field = Box(1)
+        var test = 123
+
+        field.onChange(hot = false) {
+            test = it
+        }
+
+        assertEquals(123, test)
+
+        field.set(22)
+
+        assertEquals(22, test)
+    }
 }

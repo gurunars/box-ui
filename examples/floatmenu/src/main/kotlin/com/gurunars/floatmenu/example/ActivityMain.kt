@@ -14,7 +14,7 @@ import com.gurunars.box.ui.fullSize
 import com.gurunars.box.ui.setAsOne
 import com.gurunars.box.ui.statefulView
 import com.gurunars.box.box
-import com.gurunars.box.branch
+import com.gurunars.box.oneWayBranch
 import com.gurunars.box.patch
 import com.gurunars.floatmenu.ContentPane
 import com.gurunars.floatmenu.MenuPane
@@ -134,7 +134,7 @@ class ActivityMain : Activity() {
             retain(hasOverlay, isOpen, notification)
             floatMenu(
                 contentArea,
-                hasOverlay.branch { MenuArea(this) },
+                hasOverlay.oneWayBranch { MenuArea(this) },
                 isOpen = isOpen
             ).setAsOne(this)
         }.setAsOne(this)

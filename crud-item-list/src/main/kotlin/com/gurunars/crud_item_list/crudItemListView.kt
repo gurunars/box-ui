@@ -12,7 +12,7 @@ import com.gurunars.box.ui.set
 import com.gurunars.box.ui.statefulView
 import com.gurunars.box.bind
 import com.gurunars.box.box
-import com.gurunars.box.branch
+import com.gurunars.box.oneWayBranch
 import com.gurunars.box.patch
 import com.gurunars.floatmenu.ContentPane
 import com.gurunars.floatmenu.MenuPane
@@ -122,7 +122,7 @@ fun <ItemType : Item> Context.crudItemListView(
             )
         }.toMap(),
         emptyViewBinder = emptyViewBinder,
-        explicitSelectionMode = stateMachine.state.branch { explicitContextual }
+        explicitSelectionMode = stateMachine.state.oneWayBranch { explicitContextual }
     )
 
     val contentArea = object : ContentPane {
@@ -148,7 +148,7 @@ fun <ItemType : Item> Context.crudItemListView(
 
     floatMenu(
         contentArea.box,
-        stateMachine.viewMode.branch { MenuArea(this) },
+        stateMachine.viewMode.oneWayBranch { MenuArea(this) },
         isOpen = stateMachine.isOpen
     ).set(this, R.id.contentPane) {
         findViewById<View>(floatR.id.openFab).onLongClick {

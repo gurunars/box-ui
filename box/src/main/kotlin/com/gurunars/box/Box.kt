@@ -11,9 +11,15 @@ import java.util.Objects
 class Box<Type>(private var value: Type) : IBox<Type> {
     private val listeners: MutableList<Listener<Type>> = mutableListOf()
 
-    override fun onChange(hot: Boolean, listener: Listener<Type>) {
+    override fun onChange(hot: Boolean, listener: Listener<Type>): Bond {
         listeners.add(listener)
         if (hot) listener(this.value)
+
+        return object : Bond {
+            override fun drop() {
+                listeners.remove(listener)
+            }
+        }
     }
 
     private fun notifyListeners() = listeners.forEach {

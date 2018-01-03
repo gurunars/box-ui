@@ -11,7 +11,7 @@ import com.gurunars.box.ui.alignInParent
 import com.gurunars.box.ui.fullSize
 import com.gurunars.box.ui.setAsOne
 import com.gurunars.box.ui.statefulView
-import com.gurunars.box.branch
+import com.gurunars.box.oneWayBranch
 import org.jetbrains.anko.alignParentBottom
 import org.jetbrains.anko.dip
 import org.jetbrains.anko.frameLayout
@@ -72,7 +72,7 @@ fun Context.floatMenu(
         }.fullSize()
 
         MenuHolder(context,
-            menuPane.branch { hasOverlay },
+            menuPane.oneWayBranch { hasOverlay },
             isOpen,
             animationDuration
         ).add(this) {
@@ -86,8 +86,8 @@ fun Context.floatMenu(
             }
         }
         fab(animationDuration,
-            contentPane.branch { icon },
-            menuPane.branch { icon },
+            contentPane.oneWayBranch { icon },
+            menuPane.oneWayBranch { icon },
             isOpen
         ).add(this) {
             id = R.id.openFab

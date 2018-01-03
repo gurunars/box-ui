@@ -24,5 +24,5 @@ interface IRoBox<Type> {
      * @param hot if true, immediately executes the listener with the current value
      *            otherwise just adds it to the collection of subscribers
      */
-    fun onChange(hot: Boolean = true, listener: Listener<Type>)
+    fun onChange(hot: Boolean = true, listener: Listener<Type>): Bond
 }

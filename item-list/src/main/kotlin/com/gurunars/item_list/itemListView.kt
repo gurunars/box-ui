@@ -6,7 +6,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import com.gurunars.box.IBox
 import com.gurunars.box.ui.fullSize
-import com.gurunars.box.branch
+import com.gurunars.box.oneWayBranch
 import org.jetbrains.anko.bottomPadding
 import org.jetbrains.anko.dip
 
@@ -31,7 +31,7 @@ fun <ItemType : Item> Context.itemListView(
     bottomPadding = dip(60)
     isSaveEnabled = false
     adapter = ItemAdapter(
-        items.branch {
+        items.oneWayBranch {
             kryo.copy(if (stableIds) distinctBy { it.id } else this)
         },
         emptyViewBinder,
