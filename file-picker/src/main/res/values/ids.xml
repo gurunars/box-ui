@@ -2,4 +2,6 @@
 <resources>
     <item name="parentIcon" type="id" />
     <item name="currentPathText" type="id" />
+    <item name="files" type="id" />
+    <item name="filePicker" type="id" />
 </resources>

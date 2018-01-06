@@ -9,6 +9,7 @@ A file picker activity with a limitied ability to customize its theming.
 
 dependencies {
     api anko
+    api project(':item-list')
     api project(':box')
     testImplementation junit
 }
