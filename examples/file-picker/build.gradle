@@ -1,0 +1,8 @@
+ext.appId="com.gurunars.file_picker.example"
+
+apply from: '../all-examples.gradle'
+
+
+dependencies {
+    implementation project(':file-picker')
+}

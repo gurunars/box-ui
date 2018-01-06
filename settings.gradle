@@ -2,10 +2,12 @@ include  \
     ':android-utils',
     ':item-list',
     ':test-utils',
-        ':box',
-        ':box-ui',
+    ':file-picker',
+    ':box',
+    ':box-ui',
     ':floatmenu',
     ':crud-item-list',
+    ':example-file-picker',
     ':example-android-utils',
     ':example-animal-item',
     ':example-item-list',
@@ -18,3 +20,4 @@ project(":example-selectable-item-list").projectDir = file("examples/selectable-
 project(":example-crud-item-list").projectDir = file("examples/crud-item-list")
 project(":example-android-utils").projectDir = file("examples/android-utils")
 project(":example-floatmenu").projectDir = file("examples/floatmenu")
+project(":example-file-picker").projectDir = file("examples/file-picker")
