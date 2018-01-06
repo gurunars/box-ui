@@ -2,13 +2,14 @@ package com.gurunars.crud_item_list
 
 import android.content.ClipboardManager
 import android.content.Context
+import android.util.Log
 import android.widget.Toast
 import com.gurunars.item_list.Item
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
 
 internal class ActionPasteFromClipboard<ItemType : Item>(
-    private val context: Context,
+    context: Context,
     private val serializer: ClipboardSerializer<ItemType>
 ) : Action<ItemType> {
 
@@ -27,6 +28,7 @@ internal class ActionPasteFromClipboard<ItemType : Item>(
         return try {
             serializer.fromString(clip.getItemAt(0).text.toString())
         } catch (exe: Exception) {
+            Log.d("crud-item-list", "Can't paste", exe.cause)
             listOf()
         }
     }
