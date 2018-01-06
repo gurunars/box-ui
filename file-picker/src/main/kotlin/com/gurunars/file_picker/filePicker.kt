@@ -10,7 +10,7 @@ import org.jetbrains.anko.padding
 import org.jetbrains.anko.textView
 import org.jetbrains.anko.verticalLayout
 
-fun Context.fileList(
+fun Context.filePicker(
 
 ) = verticalLayout {
     linearLayout {
