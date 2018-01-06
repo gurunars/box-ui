@@ -26,6 +26,7 @@ enum class Style(internal val value: Int) {
 fun Context.autoButton(
     text: IBox<String> = Box(""),
     shape: IBox<Shape> = Box(RectShape()),
+    textColor: IBox<Int> = Box(Color.BLACK),
     bgColor: IBox<Int> = Box(Color.RED),
     shadowWidth: IBox<Int> = Box(6),
     textSize: IBox<Float> = Box(12f),
@@ -37,9 +38,10 @@ fun Context.autoButton(
     rightPadding = dip(20)
     topPadding = dip(15)
     bottomPadding = dip(15)
-    textStyle.onChange { value -> setTypeface(null, value.value) }
-    textSize.onChange { value -> setTextSize(value) }
-    text.onChange { value -> setText(value) }
+    textColor.onChange { setBackgroundColor(it)  }
+    textStyle.onChange { setTypeface(null, it.value) }
+    textSize.onChange { setTextSize(it) }
+    text.onChange { setText(it) }
     listOf(shadowWidth, shape, bgColor).onChange {
         background = ColoredShapeDrawable(shape.get(), bgColor.get())
         setAutoBg(shadowWidth.get())
