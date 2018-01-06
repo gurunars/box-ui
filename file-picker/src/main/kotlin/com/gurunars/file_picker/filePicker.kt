@@ -1,21 +1,20 @@
 package com.gurunars.file_picker
 
-import com.gurunars.item_list.itemListView
 import android.content.Context
 import android.graphics.Color
 import android.view.Gravity
 import android.view.View
 import com.gurunars.box.Box
 import com.gurunars.box.IBox
-import com.gurunars.box.box
 import com.gurunars.box.oneWayBranch
 import com.gurunars.box.ui.add
-import com.gurunars.box.ui.txt
-import com.gurunars.box.ui.statefulView
-import com.gurunars.box.ui.isVisible
 import com.gurunars.box.ui.asRow
 import com.gurunars.box.ui.backgroundColor
+import com.gurunars.box.ui.isVisible
 import com.gurunars.box.ui.src
+import com.gurunars.box.ui.statefulView
+import com.gurunars.box.ui.txt
+import com.gurunars.item_list.itemListView
 import org.jetbrains.anko.dip
 import org.jetbrains.anko.imageView
 import org.jetbrains.anko.linearLayout
@@ -32,8 +31,8 @@ fun Context.renderItem(
     selectedColor: Int
 ): View = linearLayout {
     asRow()
-    padding=dip(3)
-    gravity=Gravity.CENTER_VERTICAL
+    padding = dip(3)
+    gravity = Gravity.CENTER_VERTICAL
 
     setOnClickListener {
         val item = field.get()
@@ -49,28 +48,28 @@ fun Context.renderItem(
     imageView {
         src(
             field.oneWayBranch {
-                when(this.type) {
+                when (this.type) {
                     FileItem.Type.FILE -> R.drawable.ic_file
                     else -> R.drawable.ic_folder
                 }
             }
         )
     }.lparams {
-        width=dip(24)
-        height=dip(24)
+        width = dip(24)
+        height = dip(24)
     }
 
     textView {
         txt(field.oneWayBranch { path })
     }.lparams {
         asRow()
-        leftMargin=dip(10)
+        leftMargin = dip(10)
     }
 }
 
 fun Context.filePicker(
-    pickMode: PickMode,
     fileBrowser: FileBrowser,
+    pickMode: PickMode = PickMode.ALL,
     regularColor: Int = Color.TRANSPARENT,
     selectedColor: Int = Color.RED
 ) = statefulView(R.id.filePicker) {
@@ -102,13 +101,15 @@ fun Context.filePicker(
 
         val selectedItem: Box<FileItem?> = Box(null)
 
-        val render = { field: IBox<FileItem> -> renderItem(
-            field,
-            selectedItem,
-            pickMode,
-            regularColor,
-            selectedColor
-        ) }
+        val render = { field: IBox<FileItem> ->
+            renderItem(
+                field,
+                selectedItem,
+                pickMode,
+                regularColor,
+                selectedColor
+            )
+        }
 
         val binders = mapOf<Enum<*>, (field: IBox<FileItem>) -> View>(
             FileItem.Type.FOLDER to render,
