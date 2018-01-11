@@ -118,7 +118,7 @@ fun <ItemType : Item> Context.crudItemListView(
             )
         }.toMap(),
         emptyViewBinder = emptyViewBinder,
-        explicitSelectionMode = ComputedRoBox(stateMachine.state, { explicitContextual })
+        explicitSelectionMode = stateMachine.state.oneWayBranch { explicitContextual }
     )
 
     val contentArea = object : ContentPane {
@@ -144,7 +144,7 @@ fun <ItemType : Item> Context.crudItemListView(
 
     floatMenu(
         contentArea.box,
-        ComputedRoBox(stateMachine.viewMode, { MenuArea(this) }),
+        stateMachine.viewMode.oneWayBranch { MenuArea(this) },
         isOpen = stateMachine.isOpen
     ).set(this, R.id.contentPane) {
         findViewById<View>(floatR.id.openFab).onLongClick {

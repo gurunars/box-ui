@@ -30,8 +30,8 @@ fun <ItemType : Item> Context.selectableItemListView(
     val kryo = getKryo()
 
     retain(
-        TransformerBox(selectedItems, { kryo.copy(HashSet(this)) }),
-        TransformerBox(items, { kryo.copy(ArrayList(this)) })
+        selectedItems.fork { kryo.copy(HashSet(this)) },
+        items.fork { kryo.copy(ArrayList(this)) }
     )
 
     // The flag is require to prevent selection cleanup during the initialization

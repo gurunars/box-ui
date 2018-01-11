@@ -70,7 +70,7 @@ fun Context.floatMenu(
         }.fullSize()
 
         MenuHolder(context,
-            ComputedRoBox(menuPane, { hasOverlay }),
+            menuPane.oneWayBranch { hasOverlay },
             isOpen,
             animationDuration
         ).add(this) {
@@ -84,8 +84,8 @@ fun Context.floatMenu(
             }
         }
         fab(animationDuration,
-            ComputedRoBox(contentPane, { icon }),
-            ComputedRoBox(menuPane, { icon }),
+            contentPane.oneWayBranch { icon },
+            menuPane.oneWayBranch { icon },
             isOpen
         ).add(this) {
             id = R.id.openFab

@@ -131,7 +131,7 @@ class ActivityMain : Activity() {
             retain(hasOverlay, isOpen, notification)
             floatMenu(
                 contentArea,
-                ComputedRoBox(hasOverlay, { MenuArea(this) }),
+                hasOverlay.oneWayBranch { MenuArea(this) },
                 isOpen = isOpen
             ).setAsOne(this)
         }.setAsOne(this)
