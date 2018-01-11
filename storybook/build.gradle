@@ -1,0 +1,21 @@
+ext.moduleName="storybook"
+ext.moduleGroup="com.gurunars.storybook"
+
+apply from: '../all-modules.gradle'
+
+description = """
+A library to help developing custom box-ui components via a registry based storybook
+activity.
+"""
+
+dependencies {
+    api anko
+    testImplementation junit
+    testImplementation mockito
+    api "com.android.support:appcompat-v7:$supportlibVersion"
+    api project(':android-utils')
+    api project(':item-list')
+    api project(':floatmenu')
+    api project(':box')
+    api project(':box-ui')
+}

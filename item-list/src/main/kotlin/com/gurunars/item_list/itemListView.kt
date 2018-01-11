@@ -5,6 +5,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import com.gurunars.box.IBox
+import com.gurunars.box.IRoBox
 import com.gurunars.box.oneWayBranch
 import com.gurunars.box.ui.fullSize
 import org.jetbrains.anko.bottomPadding
@@ -19,7 +20,7 @@ import org.jetbrains.anko.dip
  * @param stableIds - if false, forces the whole list to be updated whenever the changes arrive
  */
 fun <ItemType : Item> Context.itemListView(
-    items: IBox<List<ItemType>>,
+    items: IRoBox<List<ItemType>>,
     itemViewBinders: Map<Enum<*>, ItemViewBinder<ItemType>> = mapOf(),
     emptyViewBinder: EmptyViewBinder = this::defaultBindEmpty,
     stableIds: Boolean = true
@@ -31,11 +32,11 @@ fun <ItemType : Item> Context.itemListView(
     bottomPadding = dip(60)
     isSaveEnabled = false
     adapter = ItemAdapter(
-        items.oneWayBranch {
-            kryo.copy(if (stableIds) distinctBy { it.id } else this)
-        },
-        emptyViewBinder,
-        itemViewBinders
+            items.oneWayBranch {
+                kryo.copy(if (stableIds) distinctBy { it.id } else this)
+            },
+            emptyViewBinder,
+            itemViewBinders
     ).apply {
         setHasStableIds(stableIds)
     }
