@@ -7,8 +7,8 @@ version = "0.149.0"
 
 buildscript {
     ext.mavenRepoUrl = 'http://dl.bintray.com/berezin/maven'
-    ext.siteUrl = 'https://gurunars.github.io/android-crud-ui'
-    ext.gitUrl = 'git@github.com:gurunars/android-crud-ui.git'
+    ext.siteUrl = 'https://gurunars.github.io/box-ui'
+    ext.gitUrl = 'git@github.com:gurunars/box.git'
     ext.license = "Apache-2.0"
     ext.packageVersionCode = 149
 

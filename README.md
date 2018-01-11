@@ -19,7 +19,7 @@ that simple CRUD apps can be created with as little cognitive effort as
 possible.
 
 For installation instractions and API documentation of individual packages
-go [here](http://android-crud-ui.gurunars.com/)
+go [here](http://box-ui.gurunars.com/)
 
 ## More information
 

@@ -3,8 +3,8 @@
 set -eu
 
 GITHUB_ACCOUNT=gurunars
-PROJECT_NAME=android-crud-ui
-DOMAIN_NAME=android-crud-ui.gurunars.com
+PROJECT_NAME=box-ui
+DOMAIN_NAME=box-ui.gurunars.com
 
 TMP=/tmp/pages.${PROJECT_NAME}
 
