@@ -6,13 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import com.gurunars.box.Box
 import com.gurunars.box.IBox
+import com.gurunars.box.IRoBox
 import com.gurunars.box.ui.asRow
 import com.gurunars.box.ui.fullSize
 
 internal class ItemAdapter<ItemType : Item>(
-    private val items: IBox<List<ItemType>>,
-    private val emptyViewBinder: EmptyViewBinder,
-    private val itemViewBinders: Map<Enum<*>, ItemViewBinder<ItemType>>
+        private val items: IRoBox<List<ItemType>>,
+        private val emptyViewBinder: EmptyViewBinder,
+        private val itemViewBinders: Map<Enum<*>, ItemViewBinder<ItemType>>
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var previousList: List<ItemType> = ArrayList()
@@ -23,18 +24,18 @@ internal class ItemAdapter<ItemType : Item>(
     }
 
     private class ItemCallback<out ItemType : Item>(
-        val previousList: List<ItemType>,
-        val currentList: List<ItemType>) : DiffUtil.Callback() {
+            val previousList: List<ItemType>,
+            val currentList: List<ItemType>) : DiffUtil.Callback() {
 
         override fun getOldListSize() = Math.max(1, previousList.size)
 
         override fun getNewListSize() = Math.max(1, currentList.size)
 
         override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
-            previousList.getOrNull(oldItemPosition) == currentList.getOrNull(newItemPosition)
+                previousList.getOrNull(oldItemPosition) == currentList.getOrNull(newItemPosition)
 
         override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
-            previousList.getOrNull(oldItemPosition)?.id == currentList.getOrNull(newItemPosition)?.id
+                previousList.getOrNull(oldItemPosition)?.id == currentList.getOrNull(newItemPosition)?.id
     }
 
     private val kryo = getKryo()
@@ -51,8 +52,8 @@ internal class ItemAdapter<ItemType : Item>(
                     val recycler = recyclerView ?: return@onChange
                     recycler.recycledViewPool.clear()
                     recycler.swapAdapter(
-                        ItemAdapter(items, emptyViewBinder, itemViewBinders),
-                        false
+                            ItemAdapter(items, emptyViewBinder, itemViewBinders),
+                            false
                     )
                 }
             }
@@ -81,10 +82,10 @@ internal class ItemAdapter<ItemType : Item>(
             val field = Box(initialPayload)
             val binder = itemViewBinders[initialPayload.type] ?: parent.context::defaultBindView
             return object : RecyclerView.ViewHolder(
-                binder(field).apply {
-                    asRow()
-                    setTag(R.id.payloadTag, field)
-                }) {}
+                    binder(field).apply {
+                        asRow()
+                        setTag(R.id.payloadTag, field)
+                    }) {}
         }
     }
 
@@ -98,24 +99,24 @@ internal class ItemAdapter<ItemType : Item>(
     }
 
     override fun getItemId(position: Int) =
-        if (!hasStableIds()) {
-            RecyclerView.NO_ID
-        } else {
-            val itemList = items.get()
-            if (itemList.isNotEmpty()) {
-                items.get()[position].id
-            } else {
+            if (!hasStableIds()) {
                 RecyclerView.NO_ID
+            } else {
+                val itemList = items.get()
+                if (itemList.isNotEmpty()) {
+                    items.get()[position].id
+                } else {
+                    RecyclerView.NO_ID
+                }
             }
-        }
 
     private fun getItemTypeInt(item: ItemType) = itemViewBinders.keys.indexOf(item.type)
 
     override fun getItemViewType(position: Int) =
-        if (items.get().isEmpty())
-            EMPTY_TYPE
-        else
-            getItemTypeInt(items.get()[position])
+            if (items.get().isEmpty())
+                EMPTY_TYPE
+            else
+                getItemTypeInt(items.get()[position])
 
     override fun getItemCount() = Math.max(1, items.get().size)
 

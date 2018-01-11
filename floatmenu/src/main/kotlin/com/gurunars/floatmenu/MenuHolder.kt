@@ -11,13 +11,14 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import com.gurunars.box.IBox
 import com.gurunars.box.Box
+import com.gurunars.box.IRoBox
 import com.gurunars.box.ui.setIsVisible
 
 @SuppressLint("ViewConstructor")
 internal class MenuHolder constructor(
     context: Context,
-    hasOverlay: IBox<Boolean>,
-    isVisible: IBox<Boolean>,
+    hasOverlay: IRoBox<Boolean>,
+    isVisible: IRoBox<Boolean>,
     animationDuration: Int
 ) : FrameLayout(context) {
 

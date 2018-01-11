@@ -1,8 +1,8 @@
 package com.gurunars.crud_item_list
 
+import com.gurunars.box.ComputedBox
 import com.gurunars.box.IBox
 import com.gurunars.box.box
-import com.gurunars.box.branch
 import com.gurunars.box.patch
 import com.gurunars.item_list.Item
 import java.io.Serializable
@@ -60,7 +60,7 @@ internal class StateMachine<ItemType : Item>(
     val viewMode = ViewMode.EMPTY.box
 
     val selectedItems: IBox<Set<ItemType>> =
-        state.branch({ selectedItems }, { copy(selectedItems = it) })
+        ComputedBox(state, { selectedItems }, { copy(selectedItems = it) })
 
     private fun openWithState(value: State<ItemType>) {
         if (state.get().viewMode == ViewMode.EMPTY) {

@@ -3,15 +3,13 @@ package com.gurunars.floatmenu
 import android.content.Context
 import android.view.View
 import com.gurunars.android_utils.Icon
-import com.gurunars.box.Box
-import com.gurunars.box.IBox
+import com.gurunars.box.*
 import com.gurunars.box.ui.HorizontalAlignment
 import com.gurunars.box.ui.add
 import com.gurunars.box.ui.alignInParent
 import com.gurunars.box.ui.fullSize
 import com.gurunars.box.ui.setAsOne
 import com.gurunars.box.ui.statefulView
-import com.gurunars.box.oneWayBranch
 import org.jetbrains.anko.alignParentBottom
 import org.jetbrains.anko.dip
 import org.jetbrains.anko.frameLayout
@@ -53,8 +51,8 @@ interface MenuPane : ContentPane {
  * @param isOpen flag indicating visibility of the menu pane on the screen
  */
 fun Context.floatMenu(
-    contentPane: IBox<ContentPane>,
-    menuPane: IBox<MenuPane>,
+    contentPane: IRoBox<ContentPane>,
+    menuPane: IRoBox<MenuPane>,
     animationDuration: Int = 400,
     isOpen: IBox<Boolean> = Box(false)
 ) = statefulView(R.id.floatMenu, "FLOAT MENU") {
@@ -72,7 +70,7 @@ fun Context.floatMenu(
         }.fullSize()
 
         MenuHolder(context,
-            menuPane.oneWayBranch { hasOverlay },
+            ComputedRoBox(menuPane, { hasOverlay }),
             isOpen,
             animationDuration
         ).add(this) {
@@ -86,8 +84,8 @@ fun Context.floatMenu(
             }
         }
         fab(animationDuration,
-            contentPane.oneWayBranch { icon },
-            menuPane.oneWayBranch { icon },
+            ComputedRoBox(contentPane, { icon }),
+            ComputedRoBox(menuPane, { icon }),
             isOpen
         ).add(this) {
             id = R.id.openFab

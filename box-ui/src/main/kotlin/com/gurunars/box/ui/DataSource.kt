@@ -2,7 +2,6 @@ package com.gurunars.box.ui
 
 import com.gurunars.box.Box
 import com.gurunars.box.IBox
-import com.gurunars.box.Listener
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
 
@@ -71,6 +70,6 @@ class DataSource<Type>(
         return false
     }
 
-    override fun onChange(hot: Boolean, listener: Listener<Type>) =
+    override fun onChange(hot: Boolean, listener: (item: Type) -> Unit) =
         box.onChange(hot, { if (ready.get()) listener(it) })
 }

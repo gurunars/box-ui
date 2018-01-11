@@ -4,16 +4,12 @@ import android.content.Context
 import android.view.Gravity
 import android.view.View
 import com.gurunars.android_utils.Icon
-import com.gurunars.box.IBox
+import com.gurunars.box.*
 import com.gurunars.box.ui.closeKeyboard
 import com.gurunars.box.ui.fullSize
 import com.gurunars.box.ui.onLongClick
 import com.gurunars.box.ui.set
 import com.gurunars.box.ui.statefulView
-import com.gurunars.box.bind
-import com.gurunars.box.box
-import com.gurunars.box.oneWayBranch
-import com.gurunars.box.patch
 import com.gurunars.floatmenu.ContentPane
 import com.gurunars.floatmenu.MenuPane
 import com.gurunars.floatmenu.floatMenu
@@ -122,7 +118,7 @@ fun <ItemType : Item> Context.crudItemListView(
             )
         }.toMap(),
         emptyViewBinder = emptyViewBinder,
-        explicitSelectionMode = stateMachine.state.oneWayBranch { explicitContextual }
+        explicitSelectionMode = ComputedRoBox(stateMachine.state, { explicitContextual })
     )
 
     val contentArea = object : ContentPane {
@@ -148,7 +144,7 @@ fun <ItemType : Item> Context.crudItemListView(
 
     floatMenu(
         contentArea.box,
-        stateMachine.viewMode.oneWayBranch { MenuArea(this) },
+        ComputedRoBox(stateMachine.viewMode, { MenuArea(this) }),
         isOpen = stateMachine.isOpen
     ).set(this, R.id.contentPane) {
         findViewById<View>(floatR.id.openFab).onLongClick {

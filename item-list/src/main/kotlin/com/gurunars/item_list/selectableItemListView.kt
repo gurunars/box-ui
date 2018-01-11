@@ -2,13 +2,9 @@ package com.gurunars.item_list
 
 import android.content.Context
 import android.view.View
-import com.gurunars.box.Box
-import com.gurunars.box.IBox
+import com.gurunars.box.*
 import com.gurunars.box.ui.setAsOne
 import com.gurunars.box.ui.statefulView
-import com.gurunars.box.box
-import com.gurunars.box.fork
-import com.gurunars.box.patch
 
 /**
  * Item list that has selection enabled.
@@ -24,18 +20,18 @@ import com.gurunars.box.patch
  * @param explicitSelectionMode when true selection mode is initiated via normal click instead of a long one
  */
 fun <ItemType : Item> Context.selectableItemListView(
-    items: IBox<List<ItemType>>,
+    items: IBox<List<ItemType>>,  // TODO: IRoBox? No retain?
     selectedItems: IBox<Set<ItemType>> = Box(setOf()),
     itemViewBinders: Map<Enum<*>, ItemViewBinder<SelectableItem<ItemType>>> = mapOf(),
     emptyViewBinder: EmptyViewBinder = this::defaultBindEmpty,
-    explicitSelectionMode: IBox<Boolean> = false.box
+    explicitSelectionMode: IRoBox<Boolean> = false.box
 ): View = statefulView(R.id.selectableItemListView, "SELECTABLE ITEM LIST") {
 
     val kryo = getKryo()
 
     retain(
-        selectedItems.fork { kryo.copy(HashSet(this)) },
-        items.fork { kryo.copy(ArrayList(this)) }
+        TransformerBox(selectedItems, { kryo.copy(HashSet(this)) }),
+        TransformerBox(items, { kryo.copy(ArrayList(this)) })
     )
 
     // The flag is require to prevent selection cleanup during the initialization

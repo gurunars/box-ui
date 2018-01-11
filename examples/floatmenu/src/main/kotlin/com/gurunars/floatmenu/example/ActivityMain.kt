@@ -8,14 +8,11 @@ import android.view.Gravity
 import android.view.Menu
 import android.view.MenuItem
 import com.gurunars.android_utils.Icon
-import com.gurunars.box.IBox
+import com.gurunars.box.*
 import com.gurunars.box.ui.asRow
 import com.gurunars.box.ui.fullSize
 import com.gurunars.box.ui.setAsOne
 import com.gurunars.box.ui.statefulView
-import com.gurunars.box.box
-import com.gurunars.box.oneWayBranch
-import com.gurunars.box.patch
 import com.gurunars.floatmenu.ContentPane
 import com.gurunars.floatmenu.MenuPane
 import com.gurunars.floatmenu.floatMenu
@@ -134,7 +131,7 @@ class ActivityMain : Activity() {
             retain(hasOverlay, isOpen, notification)
             floatMenu(
                 contentArea,
-                hasOverlay.oneWayBranch { MenuArea(this) },
+                ComputedRoBox(hasOverlay, { MenuArea(this) }),
                 isOpen = isOpen
             ).setAsOne(this)
         }.setAsOne(this)
@@ -155,7 +152,7 @@ class ActivityMain : Activity() {
                 return true
             }
             R.id.toggleBackground -> {
-                hasOverlay.set(!hasOverlay.get())
+                hasOverlay.patch { !this }
                 return true
             }
             R.id.toggleMenu -> {

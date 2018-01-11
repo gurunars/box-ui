@@ -77,12 +77,12 @@ class ActivityMain : Activity() {
 
     private fun updateSelected(): Int {
         val selected = selectedItems.get()
-        items.set(items.get().map {
+        items.patch { this.map {
             if (selected.any { (id) -> it.id == id })
                 it.copy(version = it.version + 1)
             else
                 it
-        })
+        } }
         return R.string.did_update_selected
     }
 

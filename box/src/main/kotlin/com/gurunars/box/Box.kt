@@ -9,9 +9,9 @@ import java.util.Objects
  * @param value initial value of the box
  */
 class Box<Type>(private var value: Type) : IBox<Type> {
-    private val listeners: MutableList<Listener<Type>> = mutableListOf()
+    private val listeners: MutableList<(value: Type) -> Unit> = mutableListOf()
 
-    override fun onChange(hot: Boolean, listener: Listener<Type>): Bond {
+    override fun onChange(hot: Boolean, listener: (value: Type) -> Unit): Bond {
         listeners.add(listener)
         if (hot) listener(this.value)
 

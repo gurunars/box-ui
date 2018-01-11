@@ -8,11 +8,11 @@ import android.view.View
 import com.gurunars.android_utils.Icon
 import com.gurunars.animal_item.AnimalItem
 import com.gurunars.animal_item.bindAnimal
+import com.gurunars.box.ComputedBox
 import com.gurunars.crud_item_list.ItemTypeDescriptor
 import com.gurunars.box.IBox
 import com.gurunars.box.ui.fullSize
 import com.gurunars.box.ui.txt
-import com.gurunars.box.branch
 import com.gurunars.item_list.SelectableItem
 import com.gurunars.item_list.coloredRowSelectionDecorator
 import org.jetbrains.anko.backgroundColor
@@ -60,7 +60,7 @@ internal class Descriptor(
         editText {
             id = R.id.versionValue
             inputType = InputType.TYPE_CLASS_NUMBER
-            txt(field.branch(
+            txt(ComputedBox(field,
                 { version.toString() },
                 { copy(version = if (it.isEmpty()) 0 else it.toInt()) }
             ))
