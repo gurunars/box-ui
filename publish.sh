@@ -19,5 +19,7 @@ git checkout -b gh-pages
 echo "${DOMAIN_NAME}" > CNAME
 git add .
 git commit -am init
+git config user.email publisher@gurunars.com
+git config user.name Publisher
 git remote add origin git@github.com:${GITHUB_ACCOUNT}/${PROJECT_NAME}.git
 git push origin gh-pages -f
