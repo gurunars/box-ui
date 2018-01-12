@@ -25,10 +25,12 @@ fun ProcessingEnvironment.buildAnkoFiles(
         return
     }
 
-    roundEnv
+    val mapping = roundEnv
         .getElementsAnnotatedWith(StorybookComponent::class.java)
         .filter { it.kind == ElementKind.CLASS }
-        .forEach { processElement(kaptKotlinGeneratedDir, it as TypeElement) }
+        .map { it as TypeElement }
+
+    processElement(kaptKotlinGeneratedDir, mapping)
 }
 
 fun ProcessingEnvironment.note(msg: String) = messager.printMessage(Diagnostic.Kind.NOTE, msg)
@@ -37,15 +39,14 @@ fun ProcessingEnvironment.warning(msg: String) = messager.printMessage(Diagnosti
 
 fun ProcessingEnvironment.processElement(
     kaptKotlinGeneratedDir: String,
-    element: TypeElement
+    elements: List<TypeElement>
 ) {
     note("Processing ${element.simpleName}")
     val componentName = element.simpleName.toString()
     val packageName = elementUtils.getPackageOf(element).qualifiedName.toString()
-    val generatedClassName = "Anko$componentName"
 
-    // TODO: make sure that the component is a view subclass
-    // TODO: make sure that the first parameter has a Context type
+    // TODO: make sure that the component is a no arg extension function of Context
+    // TODO: make sure that the component returns a View
 
     fun ExecutableElement.allButFirstParams() =
         ParameterSpec.parametersOf(this).drop(1)
