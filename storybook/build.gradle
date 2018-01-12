@@ -10,12 +10,16 @@ activity.
 
 dependencies {
     api anko
-    testImplementation junit
-    testImplementation mockito
+    api "com.google.auto.service:auto-service:1.0-rc3"
+    api ('com.squareup:kotlinpoet:0.5.0') {
+        exclude group: 'org.jetbrains.kotlin', module: 'kotlin-stdlib'
+    }
     api "com.android.support:appcompat-v7:$supportlibVersion"
     api project(':android-utils')
     api project(':item-list')
     api project(':floatmenu')
     api project(':box')
     api project(':box-ui')
+    testImplementation junit
+    testImplementation mockito
 }

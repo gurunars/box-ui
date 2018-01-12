@@ -3,12 +3,9 @@ apply plugin: 'java-library'
 
 dependencies {
     compileOnly 'com.google.android:android:4.1.1.4'
-    compile "com.google.auto.service:auto-service:1.0-rc3"
-    compile ('com.squareup:kotlinpoet:0.5.0') {
+    api "com.google.auto.service:auto-service:1.0-rc3"
+    api ('com.squareup:kotlinpoet:0.5.0') {
         exclude group: 'org.jetbrains.kotlin', module: 'kotlin-stdlib'
     }
     compile kotlinStdLib
 }
-
-sourceCompatibility = "1.7"
-targetCompatibility = "1.7"

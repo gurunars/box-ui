@@ -51,7 +51,7 @@ private fun Context.bindString(
     asRow()
 }
 
-abstract class ActivityStorybook : Activity() {
+abstract class AbstractActivityStorybook : Activity() {
 
     private lateinit var drawerToggle: ActionBarDrawerToggle
     private lateinit var drawerLayout: DrawerLayout
@@ -110,7 +110,7 @@ abstract class ActivityStorybook : Activity() {
 
         activeSection.onChange {
             val renderer = views[it] ?: return@onChange
-            renderer(this@ActivityStorybook).setAsOne(root)
+            renderer(this@AbstractActivityStorybook).setAsOne(root)
             title = it
             drawerLayout.closeDrawer(Gravity.LEFT)
         }

@@ -41,48 +41,23 @@ fun ProcessingEnvironment.processElement(
     kaptKotlinGeneratedDir: String,
     elements: List<TypeElement>
 ) {
+    /*
     note("Processing ${element.simpleName}")
     val componentName = element.simpleName.toString()
     val packageName = elementUtils.getPackageOf(element).qualifiedName.toString()
+    */
 
     // TODO: make sure that the component is a no arg extension function of Context
     // TODO: make sure that the component returns a View
 
-    fun ExecutableElement.allButFirstParams() =
-        ParameterSpec.parametersOf(this).drop(1)
+    val builder = FileSpec
+        .builder("com.gurunars.storybook", "ActivityStorybook.kt")
 
-    fun getFunSpec(
-        reciever: KClass<*>,
-        constructor: ExecutableElement
-    ) = FunSpec
-        .builder(componentName.decapitalize())
-        .addTypeVariables(element.typeParameters.map { it.asTypeVariableName() })
-        .receiver(reciever)
-        .addParameters(constructor.allButFirstParams())
-        .addParameter(
-            "init",
-            LambdaTypeName.get(
-                element.asType().asTypeName(),
-                returnType = Unit::class.java.asTypeName()))
-        .addCode("return ankoView({ $componentName(${
-        (listOf("it") + constructor.allButFirstParams().map {
-            it.name
-        }).joinToString()
-        }) }, 0, init)")
-        .returns(element.asType().asTypeName())
+    val activity = TypeSpec
+        .classBuilder("ActivityStorybook")
         .build()
 
-    val builder = FileSpec
-        .builder(packageName, generatedClassName)
-        .addStaticImport("org.jetbrains.anko.custom", "ankoView")
-
-    element.enclosedElements.filter { it.kind == ElementKind.CONSTRUCTOR }.forEach {
-        it as ExecutableElement
-        builder
-            .addFunction(getFunSpec(ViewManager::class, it))
-            .addFunction(getFunSpec(Activity::class, it))
-            .addFunction(getFunSpec(Context::class, it))
-    }
+    builder.addType(activity)
 
     val file = builder.build()
     try {
@@ -97,7 +72,7 @@ fun ProcessingEnvironment.processElement(
         ).forEach {
             value = value.replace("import ${it}", "")
         }
-        File(kaptKotlinGeneratedDir, "${generatedClassName.decapitalize()}.kt").apply {
+        File(kaptKotlinGeneratedDir, "ActivityStorybook.kt").apply {
             parentFile.mkdirs()
             writeText(value)
         }
