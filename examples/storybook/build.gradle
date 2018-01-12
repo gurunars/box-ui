@@ -1,0 +1,7 @@
+ext.appId="com.gurunars.storybook.example"
+
+apply from: '../all-examples.gradle'
+
+dependencies {
+    implementation project(':storybook')
+}

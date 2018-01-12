@@ -11,47 +11,66 @@ import android.view.Gravity
 import android.view.MenuItem
 import android.view.View
 import android.widget.FrameLayout
-import android.widget.TextView
 import com.gurunars.box.IBox
 import com.gurunars.box.box
-import com.gurunars.box.ui.*
 import com.gurunars.box.onChange
 import com.gurunars.box.oneWayBranch
+import com.gurunars.box.ui.add
+import com.gurunars.box.ui.asRow
+import com.gurunars.box.ui.closeKeyboard
+import com.gurunars.box.ui.fullSize
+import com.gurunars.box.ui.onClick
+import com.gurunars.box.ui.setAsOne
+import com.gurunars.box.ui.txt
 import com.gurunars.item_list.Item
 import com.gurunars.item_list.itemListView
-import org.jetbrains.anko.*
+import org.jetbrains.anko.backgroundColor
+import org.jetbrains.anko.dip
+import org.jetbrains.anko.editText
+import org.jetbrains.anko.frameLayout
+import org.jetbrains.anko.matchParent
+import org.jetbrains.anko.padding
 import org.jetbrains.anko.support.v4.drawerLayout
+import org.jetbrains.anko.textView
+import org.jetbrains.anko.verticalLayout
 
 typealias RenderDemo = Context.() -> View
 
-private data class StringHolder(
+private data class PackageName(
     override val id: Long,
-    val payload: String
+    val fullName: String
 ) : Item
 
-private fun Context.bindString(
-    field: IBox<StringHolder>,
-    activeSection: IBox<String>) = TextView(this).apply {
-
+private fun Context.bindPackageName(
+    field: IBox<PackageName>,
+    activeSection: IBox<String>
+) = verticalLayout {
+    asRow()
+    onClick {
+        activeSection.set(field.get().fullName)
+    }
     listOf(activeSection, field).onChange {
-        backgroundColor = if (field.get().payload == activeSection.get()) {
+        backgroundColor = if (field.get().fullName == activeSection.get()) {
             Color.RED
         } else {
             Color.WHITE
         }
     }
-
     isClickable = true
     padding = dip(6)
-    onClick {
-        activeSection.set(field.get().payload)
+    textView {
+        txt(field.oneWayBranch { fullName.split(".").last() })
+        textSize = 20f
+        asRow()
     }
-    txt(field.oneWayBranch { payload })
-    textSize = 20f
-    asRow()
+    textView {
+        txt(field.oneWayBranch { fullName })
+        textSize = 10f
+        asRow()
+    }
 }
 
-class ActivityStorybook : Activity() {
+abstract class AbstractActivityStorybook : Activity() {
 
     private lateinit var drawerToggle: ActionBarDrawerToggle
     private lateinit var drawerLayout: DrawerLayout
@@ -60,10 +79,7 @@ class ActivityStorybook : Activity() {
     private val activeSection = "".box
     private val searchPattern = "".box
 
-    // TODO: implement registry using annotations
-    private val views = mapOf<String, RenderDemo>(
-
-    )
+    abstract val views: Map<String, RenderDemo>
 
     @SuppressLint("RtlHardcoded")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -94,11 +110,13 @@ class ActivityStorybook : Activity() {
                 }
                 itemListView(
                     itemViewBinders = mapOf(
-                        Item.Default.ONLY as Enum<*> to { field: IBox<StringHolder> -> bindString(field, activeSection) }
+                        Item.Default.ONLY as Enum<*> to { field: IBox<PackageName> ->
+                            bindPackageName(field, activeSection)
+                        }
                     ),
                     items = searchPattern.oneWayBranch {
-                        views.keys.mapIndexed { index, s -> StringHolder(index.toLong(), s) }
-                            .filter { it.payload.contains(this) }
+                        views.keys.mapIndexed { index, s -> PackageName(index.toLong(), s) }
+                            .filter { it.fullName.contains(this) }
                     }
                 ).add(this).lparams {
                     width = matchParent
@@ -113,8 +131,8 @@ class ActivityStorybook : Activity() {
 
         activeSection.onChange {
             val renderer = views[it] ?: return@onChange
-            renderer(this@ActivityStorybook).setAsOne(root)
-            title = it
+            renderer(this@AbstractActivityStorybook).setAsOne(root)
+            title = it.split(".").last()
             drawerLayout.closeDrawer(Gravity.LEFT)
         }
 

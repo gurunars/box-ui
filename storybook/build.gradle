@@ -10,12 +10,12 @@ activity.
 
 dependencies {
     api anko
-    testImplementation junit
-    testImplementation mockito
     api "com.android.support:appcompat-v7:$supportlibVersion"
     api project(':android-utils')
     api project(':item-list')
     api project(':floatmenu')
     api project(':box')
     api project(':box-ui')
+    testImplementation junit
+    testImplementation mockito
 }
