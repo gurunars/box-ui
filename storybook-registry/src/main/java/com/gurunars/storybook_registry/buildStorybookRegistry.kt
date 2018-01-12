@@ -1,18 +1,14 @@
 package com.gurunars.storybook_registry
 
-import android.app.Activity
-import android.content.Context
-import android.view.ViewManager
-import com.squareup.kotlinpoet.*
+import com.squareup.kotlinpoet.FileSpec
+import com.squareup.kotlinpoet.TypeSpec
 import java.io.File
 import java.io.IOException
 import javax.annotation.processing.ProcessingEnvironment
 import javax.annotation.processing.RoundEnvironment
 import javax.lang.model.element.ElementKind
-import javax.lang.model.element.ExecutableElement
 import javax.lang.model.element.TypeElement
 import javax.tools.Diagnostic
-import kotlin.reflect.KClass
 
 fun ProcessingEnvironment.buildAnkoFiles(
     roundEnv: RoundEnvironment
