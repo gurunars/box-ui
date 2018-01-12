@@ -51,7 +51,7 @@ private fun Context.bindString(
     asRow()
 }
 
-class ActivityStorybook : Activity() {
+abstract class ActivityStorybook : Activity() {
 
     private lateinit var drawerToggle: ActionBarDrawerToggle
     private lateinit var drawerLayout: DrawerLayout
@@ -60,10 +60,7 @@ class ActivityStorybook : Activity() {
     private val activeSection = "".box
     private val searchPattern = "".box
 
-    // TODO: implement registry using annotations
-    private val views = mapOf<String, RenderDemo>(
-
-    )
+    abstract val views: Map<String, RenderDemo>
 
     @SuppressLint("RtlHardcoded")
     override fun onCreate(savedInstanceState: Bundle?) {

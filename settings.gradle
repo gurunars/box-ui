@@ -5,6 +5,7 @@ include  \
     ':box',
     ':box-ui',
     ':storybook',
+    ':storybook-registry',
     ':floatmenu',
     ':crud-item-list',
     ':example-android-utils',

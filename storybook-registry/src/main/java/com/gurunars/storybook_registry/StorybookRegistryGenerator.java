@@ -1,4 +1,4 @@
-package com.gurunars.anko_generator;
+package com.gurunars.storybook_registry;
 
 import com.google.auto.service.AutoService;
 
@@ -12,19 +12,18 @@ import javax.annotation.processing.SupportedOptions;
 import javax.annotation.processing.SupportedSourceVersion;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.TypeElement;
-import javax.tools.Diagnostic;
 
 @SupportedSourceVersion(SourceVersion.RELEASE_7)
 @AutoService(Processor.class)
-@SupportedOptions(AnkoGenerator.KAPT_KOTLIN_GENERATED_OPTION_NAME)
-public class AnkoGenerator extends AbstractProcessor {
+@SupportedOptions(StorybookRegistryGenerator.KAPT_KOTLIN_GENERATED_OPTION_NAME)
+public class StorybookRegistryGenerator extends AbstractProcessor {
 
     public final static String KAPT_KOTLIN_GENERATED_OPTION_NAME = "kapt.kotlin.generated";
 
     @Override
     public Set<String> getSupportedAnnotationTypes() {
         Set<String> rval = new HashSet<>();
-        rval.add(AnkoComponent.class.getCanonicalName());
+        rval.add(StorybookComponent.class.getCanonicalName());
         return rval;
     }
 
@@ -33,7 +32,7 @@ public class AnkoGenerator extends AbstractProcessor {
             Set<? extends TypeElement> annotations,
             RoundEnvironment roundEnv
     ) {
-        BuildAnkoFilesKt.buildAnkoFiles(processingEnv, roundEnv);
+        BuildStorybookRegistryKt.buildAnkoFiles(processingEnv, roundEnv);
         return false;
     }
 }

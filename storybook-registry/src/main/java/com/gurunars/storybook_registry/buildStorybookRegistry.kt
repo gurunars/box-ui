@@ -1,4 +1,4 @@
-package com.gurunars.anko_generator
+package com.gurunars.storybook_registry
 
 import android.app.Activity
 import android.content.Context
@@ -18,7 +18,7 @@ fun ProcessingEnvironment.buildAnkoFiles(
     roundEnv: RoundEnvironment
 ) {
 
-    val kaptKotlinGeneratedDir = options[AnkoGenerator.KAPT_KOTLIN_GENERATED_OPTION_NAME] ?: run {
+    val kaptKotlinGeneratedDir = options[StorybookRegistryGenerator.KAPT_KOTLIN_GENERATED_OPTION_NAME] ?: run {
         messager.printMessage(
             Diagnostic.Kind.ERROR,
             "Can't find the target directory for generated Kotlin files.")
@@ -26,7 +26,7 @@ fun ProcessingEnvironment.buildAnkoFiles(
     }
 
     roundEnv
-        .getElementsAnnotatedWith(AnkoComponent::class.java)
+        .getElementsAnnotatedWith(StorybookComponent::class.java)
         .filter { it.kind == ElementKind.CLASS }
         .forEach { processElement(kaptKotlinGeneratedDir, it as TypeElement) }
 }
