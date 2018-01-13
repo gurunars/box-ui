@@ -7,5 +7,5 @@ dependencies {
     api ('com.squareup:kotlinpoet:0.5.0') {
         exclude group: 'org.jetbrains.kotlin', module: 'kotlin-stdlib'
     }
-    compile kotlinStdLib
+    api kotlinStdLib
 }
