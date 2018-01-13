@@ -17,10 +17,6 @@ android {
     }
 
     sourceSets {
-        generated.java.srcDirs += 'build/generated/source/kapt/main'
-        generated.java.srcDirs += 'build/generated/source/kaptKotlin/main'
-        main.java.srcDirs += 'build/generated/source/kapt/main'
-        main.java.srcDirs += 'build/generated/source/kaptKotlin/main'
         main.java.srcDirs += 'src/main/kotlin'
         test.java.srcDirs += 'src/test/kotlin'
         androidTest.java.srcDirs += 'src/androidTest/kotlin'
@@ -32,15 +28,4 @@ android {
 
 dependencies {
     api kotlinStdLib
-    compile project(':storybook-registry')
-    kapt project(':storybook-registry')
-}
-
-apply plugin: 'idea'
-
-idea {
-    module {
-        sourceDirs += files('build/generated/source/kapt/main', 'build/generated/source/kaptKotlin/main')
-        generatedSourceDirs += files('build/generated/source/kapt/main', 'build/generated/source/kaptKotlin/main')
-    }
 }

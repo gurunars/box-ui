@@ -8,7 +8,7 @@ class ActivityMain : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-
+        setContentView(sampleComponent())
 
     }
 }
