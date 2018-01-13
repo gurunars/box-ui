@@ -22,7 +22,6 @@ fun ProcessingEnvironment.buildAnkoFiles(
 
     val mapping = roundEnv
         .getElementsAnnotatedWith(StorybookComponent::class.java)
-        .filter { it.kind == ElementKind.METHOD }
         .map { it as ExecutableElement }
 
     processElement(kaptKotlinGeneratedDir, mapping)
@@ -51,6 +50,8 @@ fun ProcessingEnvironment.processElement(
 
     val tpl = """
     package com.gurunars.storybook
+
+    // ${elements.size}
 
     ${imports.joinToString("\n")}
 
