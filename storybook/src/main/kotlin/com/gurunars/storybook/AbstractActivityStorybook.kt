@@ -36,6 +36,15 @@ import org.jetbrains.anko.verticalLayout
 
 typealias RenderDemo = Context.() -> View
 
+private fun DrawerLayout.getToggle(activity: Activity) = ActionBarDrawerToggle(
+    activity,
+    this,
+    R.string.open_main_menu,
+    R.string.close_main_menu
+).apply {
+    addDrawerListener(this)
+}
+
 private data class PackageName(
     override val id: Long,
     val fullName: String
