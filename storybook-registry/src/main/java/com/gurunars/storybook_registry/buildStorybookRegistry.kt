@@ -1,8 +1,11 @@
 package com.gurunars.storybook_registry
 
+import com.squareup.kotlinpoet.CodeBlock
 import com.squareup.kotlinpoet.FileSpec
+import com.squareup.kotlinpoet.PropertySpec
 import com.squareup.kotlinpoet.TypeName
 import com.squareup.kotlinpoet.TypeSpec
+import com.squareup.kotlinpoet.asClassName
 import java.io.File
 import java.io.IOException
 import javax.annotation.processing.ProcessingEnvironment
@@ -47,32 +50,20 @@ fun ProcessingEnvironment.processElement(
     // TODO: make sure that the component is a no arg extension function of Context
     // TODO: make sure that the component returns a View
 
-    val builder = FileSpec
-        .builder("com.gurunars.storybook", "ActivityStorybook.kt")
+    val tpl = """
+    package com.gurunars.storybook
 
-    val activity = TypeSpec
-        .classBuilder("ActivityStorybook")
-        .superclass()
-        .build()
+    class ActivityStorybook(): AbstractActivityStorybook() {
+        override val views: Map<String, RenderDemo> = mapOf(
 
-    builder.addType(activity)
+        )
+    }
+    """
 
-    val file = builder.build()
     try {
-        val string = StringBuilder()
-        file.writeTo(string)
-
-        var value = string.toString()
-        listOf(
-            "java.lang.Enum",
-            "java.util.Map",
-            "java.util.List"
-        ).forEach {
-            value = value.replace("import ${it}", "")
-        }
         File(kaptKotlinGeneratedDir, "ActivityStorybook.kt").apply {
             parentFile.mkdirs()
-            writeText(value)
+            writeText(tpl)
         }
     } catch (e: IOException) {
         e.printStackTrace()
