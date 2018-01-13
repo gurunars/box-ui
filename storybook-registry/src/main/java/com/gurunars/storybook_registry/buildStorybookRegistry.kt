@@ -4,12 +4,14 @@ import java.io.File
 import java.io.IOException
 import javax.annotation.processing.ProcessingEnvironment
 import javax.annotation.processing.RoundEnvironment
-import javax.lang.model.element.ElementKind
 import javax.lang.model.element.ExecutableElement
-import javax.lang.model.element.TypeElement
 import javax.tools.Diagnostic
 
-fun ProcessingEnvironment.buildAnkoFiles(
+fun ProcessingEnvironment.note(msg: String) = messager.printMessage(Diagnostic.Kind.NOTE, msg)
+fun ProcessingEnvironment.error(msg: String) = messager.printMessage(Diagnostic.Kind.ERROR, msg)
+fun ProcessingEnvironment.warning(msg: String) = messager.printMessage(Diagnostic.Kind.WARNING, msg)
+
+fun ProcessingEnvironment.buildStorybookRegistry(
     roundEnv: RoundEnvironment
 ) {
 
@@ -20,33 +22,19 @@ fun ProcessingEnvironment.buildAnkoFiles(
         return
     }
 
-    val mapping = roundEnv
+    val elements = roundEnv
         .getElementsAnnotatedWith(StorybookComponent::class.java)
         .map { it as ExecutableElement }
 
-    processElement(kaptKotlinGeneratedDir, mapping)
-}
-
-fun ProcessingEnvironment.note(msg: String) = messager.printMessage(Diagnostic.Kind.NOTE, msg)
-fun ProcessingEnvironment.error(msg: String) = messager.printMessage(Diagnostic.Kind.ERROR, msg)
-fun ProcessingEnvironment.warning(msg: String) = messager.printMessage(Diagnostic.Kind.WARNING, msg)
-
-fun ProcessingEnvironment.processElement(
-    kaptKotlinGeneratedDir: String,
-    elements: List<ExecutableElement>
-) {
-
-    val views = elements.map {
-        val componentName = it.simpleName.toString()
-        val packageName = elementUtils.getPackageOf(it).qualifiedName.toString()
-        """ "$packageName.$componentName" to Context:$componentName """
+    val pairs = elements.map {
+        Pair(
+            elementUtils.getPackageOf(it).qualifiedName.toString(),
+            it.simpleName.toString()
+        )
     }
 
-    val imports = elements.map {
-        val componentName = it.simpleName.toString()
-        val packageName = elementUtils.getPackageOf(it).qualifiedName.toString()
-        "import ${packageName}.$componentName"
-    }
+    val views = pairs.map { """ "${it.first}.${it.second}" to Context:${it.second} """ }
+    val imports = pairs.map { "import ${it.first}.${it.second}" }
 
     val tpl = """
     package com.gurunars.storybook

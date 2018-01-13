@@ -32,7 +32,7 @@ public class StorybookRegistryGenerator extends AbstractProcessor {
             Set<? extends TypeElement> annotations,
             RoundEnvironment roundEnv
     ) {
-        BuildStorybookRegistryKt.buildAnkoFiles(processingEnv, roundEnv);
+        BuildStorybookRegistryKt.buildStorybookRegistry(processingEnv, roundEnv);
         return false;
     }
 }
