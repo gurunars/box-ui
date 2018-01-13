@@ -51,7 +51,7 @@ dependencies {
     implementation project(':android-utils')
     implementation project(':box')
     implementation project(':box-ui')
-    compile project(':storybook-registry')
+    implementation project(':storybook-registry')
     kapt project(':storybook-registry')
 }
 

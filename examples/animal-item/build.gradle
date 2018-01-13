@@ -1,3 +1,5 @@
+apply plugin: 'kotlin-kapt'
+
 ext.moduleName="animal-item"
 ext.moduleGroup="com.gurunars.animal_item"
 
