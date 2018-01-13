@@ -1,16 +1,11 @@
 package com.gurunars.storybook_registry
 
-import com.squareup.kotlinpoet.CodeBlock
-import com.squareup.kotlinpoet.FileSpec
-import com.squareup.kotlinpoet.PropertySpec
-import com.squareup.kotlinpoet.TypeName
-import com.squareup.kotlinpoet.TypeSpec
-import com.squareup.kotlinpoet.asClassName
 import java.io.File
 import java.io.IOException
 import javax.annotation.processing.ProcessingEnvironment
 import javax.annotation.processing.RoundEnvironment
 import javax.lang.model.element.ElementKind
+import javax.lang.model.element.ExecutableElement
 import javax.lang.model.element.TypeElement
 import javax.tools.Diagnostic
 
@@ -27,8 +22,8 @@ fun ProcessingEnvironment.buildAnkoFiles(
 
     val mapping = roundEnv
         .getElementsAnnotatedWith(StorybookComponent::class.java)
-        .filter { it.kind == ElementKind.CLASS }
-        .map { it as TypeElement }
+        .filter { it.kind == ElementKind.METHOD }
+        .map { it as ExecutableElement }
 
     processElement(kaptKotlinGeneratedDir, mapping)
 }
@@ -39,23 +34,29 @@ fun ProcessingEnvironment.warning(msg: String) = messager.printMessage(Diagnosti
 
 fun ProcessingEnvironment.processElement(
     kaptKotlinGeneratedDir: String,
-    elements: List<TypeElement>
+    elements: List<ExecutableElement>
 ) {
-    /*
-    note("Processing ${element.simpleName}")
-    val componentName = element.simpleName.toString()
-    val packageName = elementUtils.getPackageOf(element).qualifiedName.toString()
-    */
 
-    // TODO: make sure that the component is a no arg extension function of Context
-    // TODO: make sure that the component returns a View
+    val views = elements.map {
+        val componentName = it.simpleName.toString()
+        val packageName = elementUtils.getPackageOf(it).qualifiedName.toString()
+        """ "$packageName.$componentName" to Context:$componentName """
+    }
+
+    val imports = elements.map {
+        val componentName = it.simpleName.toString()
+        val packageName = elementUtils.getPackageOf(it).qualifiedName.toString()
+        "import ${packageName}.$componentName"
+    }
 
     val tpl = """
     package com.gurunars.storybook
 
+    ${imports.joinToString("\n")}
+
     class ActivityStorybook(): AbstractActivityStorybook() {
         override val views: Map<String, RenderDemo> = mapOf(
-
+            ${views.joinToString(",\n")}
         )
     }
     """
