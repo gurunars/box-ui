@@ -8,7 +8,7 @@ import com.gurunars.box.ui.onLongClick
 internal fun <ItemType : Item> clickableBind(
     selectedItems: IBox<Set<ItemType>>,
     itemViewBinder: ItemViewBinder<SelectableItem<ItemType>>,
-    field: IBox<SelectableItem<ItemType>>,
+    field: IRoBox<SelectableItem<ItemType>>,
     explicitSelectionMode: IRoBox<Boolean>
 ) =
     itemViewBinder(field).apply {

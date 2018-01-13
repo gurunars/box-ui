@@ -3,6 +3,7 @@ package com.gurunars.crud_item_list
 import android.view.View
 import com.gurunars.android_utils.Icon
 import com.gurunars.box.IBox
+import com.gurunars.box.IRoBox
 import com.gurunars.item_list.Item
 import com.gurunars.item_list.SelectableItem
 
@@ -40,7 +41,7 @@ interface ItemTypeDescriptor<ItemType : Item> {
      * @param field - payload to be rendered
      * @param triggerEdit - function that invokes item editing dialog for the item
      */
-    fun bindRow(field: IBox<SelectableItem<ItemType>>, triggerEdit: () -> Unit = {}): View
+    fun bindRow(field: IRoBox<SelectableItem<ItemType>>, triggerEdit: () -> Unit = {}): View
 
     /**
      * Return status of the payload: OK, error, warning

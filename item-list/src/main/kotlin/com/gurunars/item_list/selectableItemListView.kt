@@ -56,7 +56,7 @@ fun <ItemType : Item> Context.selectableItemListView(
         items = selectables,
         itemViewBinders = itemViewBinders
             .map {
-                it.key to ({ item: IBox<SelectableItem<ItemType>> ->
+                it.key to ({ item: IRoBox<SelectableItem<ItemType>> ->
                     clickableBind(selectedItems, it.value, item, explicitSelectionMode)
                 })
             }.toMap(),
