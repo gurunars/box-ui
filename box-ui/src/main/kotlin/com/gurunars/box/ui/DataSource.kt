@@ -12,6 +12,8 @@ import org.jetbrains.anko.uiThread
  * @param getF reads data from the storage
  * @param setF writes data to the storage
  * @param initial temporary payload to be
+ * @property ready true if the box contains the latest version of the payload, false if the payload
+ *                 is being fetched
  */
 class DataSource<Type>(
     private val getF: () -> Type,
@@ -19,10 +21,11 @@ class DataSource<Type>(
     initial: Type
 ) : IBox<Type> {
     private val box = Box(initial)
-    private val buffer = UiThrottleBuffer()
+    private val buffer = ThrottleBuffer()
 
     val ready = Box(false)
 
+    /** Reloads the payload from data storage. */
     fun refetch() {
         doAsync {
             ready.set(false)
@@ -45,8 +48,10 @@ class DataSource<Type>(
         refetch()
     }
 
+    /** @see Box.get */
     override fun get() = box.get()
 
+    /** @see Box.set */
     override fun set(value: Type, force: Boolean): Boolean {
         // We do not want to set anything before at least the initial load took place
         if (!ready.get() && !force) {
@@ -70,6 +75,7 @@ class DataSource<Type>(
         return false
     }
 
+    /** @see Box.onChange */
     override fun onChange(hot: Boolean, listener: (item: Type) -> Unit) =
         box.onChange(hot, { if (ready.get()) listener(it) })
 }

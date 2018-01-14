@@ -2,10 +2,10 @@ package com.gurunars.crud_item_list
 
 import com.gurunars.item_list.Item
 
-typealias ItemSetChange<ItemType> =
+internal typealias ItemSetChange<ItemType> =
     (newAll: List<ItemType>, newSelectedItems: Set<ItemType>) -> Unit
 
-typealias CanDo = (canDo: Boolean) -> Unit
+internal typealias CanDo = (canDo: Boolean) -> Unit
 
 internal interface Action<ItemType : Item> {
     fun perform(

@@ -6,10 +6,8 @@ import android.os.Parcelable
 import android.widget.FrameLayout
 import com.gurunars.box.IBox
 
-/**
- * A base component meant to develop custom stateful UI widgets using bindable fields
- */
-class StatefulView(context: Context) : FrameLayout(context) {
+/** A base component meant to develop custom stateful UI widgets using bindable fields */
+class StatefulView internal constructor(context: Context) : FrameLayout(context) {
 
     private val fields: MutableList<IBox<*>> = mutableListOf()
 
@@ -28,9 +26,7 @@ class StatefulView(context: Context) : FrameLayout(context) {
         }
     }
 
-    /**
-     * @suppress
-     */
+    /** @suppress */
     override fun onSaveInstanceState() = Bundle().apply {
         putParcelable("superState", super.onSaveInstanceState())
         val payload = hashMapOf<Int, Any?>()
@@ -40,9 +36,7 @@ class StatefulView(context: Context) : FrameLayout(context) {
         putSerializable("payload", payload)
     }
 
-    /**
-     * @suppress
-     */
+    /** @suppress */
     override fun onRestoreInstanceState(state: Parcelable) {
         if (state is Bundle) {
             state.apply {
@@ -60,6 +54,7 @@ class StatefulView(context: Context) : FrameLayout(context) {
     }
 }
 
+/** @see StatefulView */
 fun Context.statefulView(
     id: Int,
     tag: String = "DEFAULT",

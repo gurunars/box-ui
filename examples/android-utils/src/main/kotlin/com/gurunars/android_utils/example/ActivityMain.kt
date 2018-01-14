@@ -11,7 +11,7 @@ import com.gurunars.box.ui.fullSize
 import com.gurunars.box.ui.onClick
 import com.gurunars.box.ui.setAsOne
 import com.gurunars.box.ui.statefulView
-import com.gurunars.box.ui.txt
+import com.gurunars.box.ui.text
 import com.gurunars.box.box
 import org.jetbrains.anko.backgroundColor
 import org.jetbrains.anko.below
@@ -40,7 +40,7 @@ class ActivityMain : Activity() {
                     padding = dip(15)
                     gravity = Gravity.CENTER
                     backgroundColor = Color.parseColor("#FFFFAA")
-                    txt(title)
+                    text(title)
                 }.lparams {
                     width = matchParent
                     margin = dip(10)

@@ -4,11 +4,8 @@ import android.graphics.Color
 import android.support.annotation.ColorInt
 import android.view.View
 import com.gurunars.box.Box
-import com.gurunars.box.IBox
 import com.gurunars.box.IRoBox
 import com.gurunars.box.ui.asRow
-
-typealias ItemRenderer<ItemType> = (field: IBox<ItemType>) -> View
 
 /**
  * A decorator to add row coloring behavior to the list view items.
@@ -22,7 +19,7 @@ fun <ItemType : Item> coloredRowSelectionDecorator(
     field: IRoBox<SelectableItem<ItemType>>,
     @ColorInt selectionColor: Int = Color.RED,
     @ColorInt regularColor: Int = Color.TRANSPARENT,
-    render: ItemRenderer<ItemType>
+    render: (field: IRoBox<ItemType>) -> View
 ): View {
     val newField = Box(field.get().item)
     return render(newField).apply {

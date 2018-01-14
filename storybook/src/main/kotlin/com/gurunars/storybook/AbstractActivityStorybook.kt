@@ -22,7 +22,7 @@ import com.gurunars.box.ui.closeKeyboard
 import com.gurunars.box.ui.fullSize
 import com.gurunars.box.ui.onClick
 import com.gurunars.box.ui.setAsOne
-import com.gurunars.box.ui.txt
+import com.gurunars.box.ui.text
 import com.gurunars.item_list.Item
 import com.gurunars.item_list.itemListView
 import org.jetbrains.anko.backgroundColor
@@ -34,8 +34,6 @@ import org.jetbrains.anko.padding
 import org.jetbrains.anko.support.v4.drawerLayout
 import org.jetbrains.anko.textView
 import org.jetbrains.anko.verticalLayout
-
-typealias RenderDemo = Context.() -> View
 
 private fun DrawerLayout.getToggle(activity: Activity) = ActionBarDrawerToggle(
     activity,
@@ -69,17 +67,22 @@ private fun Context.bindPackageName(
     isClickable = true
     padding = dip(6)
     textView {
-        txt(field.oneWayBranch { fullName.split(".").last() })
+        text(field.oneWayBranch { fullName.split(".").last() })
         textSize = 20f
         asRow()
     }
     textView {
-        txt(field.oneWayBranch { fullName })
+        text(field.oneWayBranch { fullName })
         textSize = 10f
         asRow()
     }
 }
 
+/**
+ * Base class for Storybook registry.
+ *
+ * Best to be used with storybook-registry package and @StorybookComponent annotation.
+ */
 abstract class AbstractActivityStorybook : Activity() {
 
     private lateinit var drawerToggle: ActionBarDrawerToggle
@@ -89,8 +92,10 @@ abstract class AbstractActivityStorybook : Activity() {
     private val activeSection = "".box
     private val searchPattern = "".box
 
-    abstract val views: Map<String, RenderDemo>
+    /** A collection of view functions registered within the Storybook. */
+    abstract val views: Map<String, Context.() -> View>
 
+    /** @suppress */
     @SuppressLint("RtlHardcoded")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -113,7 +118,7 @@ abstract class AbstractActivityStorybook : Activity() {
                 backgroundColor = Color.WHITE
                 editText {
                     hint = getString(R.string.storyName)
-                    txt(searchPattern)
+                    text(searchPattern)
                 }.lparams {
                     asRow()
                     bottomMargin = dip(10)
@@ -157,6 +162,7 @@ abstract class AbstractActivityStorybook : Activity() {
         drawerToggle.syncState()
     }
 
+    /** @suppress */
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         this.closeKeyboard()
         return drawerToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item)

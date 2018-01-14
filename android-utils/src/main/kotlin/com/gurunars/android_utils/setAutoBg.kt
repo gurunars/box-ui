@@ -73,7 +73,7 @@ private fun transform(bg: Drawable): Drawable {
  * There is a bug (feature?) in Android that remove the view padding whenever you set the
  * background.
  *
- * @param shadowWidth shadow size (can be 0)
+ * @param shadowWidth shadow textSize (can be 0)
  */
 fun View.setAutoBg(shadowWidth: Int) {
     var bg: Drawable = background ?: return

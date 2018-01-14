@@ -85,9 +85,7 @@ inline fun <Type> IBox<Type>.fork(
         crossinline transform: Type.() -> Type
 ) = branch(transform, { it.transform() })
 
-/**
- * A short way to wrap a value into a Box
- */
+/** A short way to wrap a value into a Box */
 @Suppress("NOTHING_TO_INLINE")
 inline val <F> F.box
     get(): IBox<F> = Box(this)

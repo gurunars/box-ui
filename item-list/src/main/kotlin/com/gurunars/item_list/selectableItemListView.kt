@@ -23,7 +23,7 @@ fun <ItemType : Item> Context.selectableItemListView(
     items: IBox<List<ItemType>>,  // TODO: IRoBox? No retain?
     selectedItems: IBox<Set<ItemType>> = Box(setOf()),
     itemViewBinders: Map<Enum<*>, ItemViewBinder<SelectableItem<ItemType>>> = mapOf(),
-    emptyViewBinder: EmptyViewBinder = this::defaultBindEmpty,
+    emptyViewBinder: EmptyViewBinder = this::defaultEmptyViewBinder,
     explicitSelectionMode: IRoBox<Boolean> = false.box
 ): View = statefulView(R.id.selectableItemListView, "SELECTABLE ITEM LIST") {
 

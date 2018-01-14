@@ -16,7 +16,7 @@ import com.gurunars.floatmenu.floatMenu
 import com.gurunars.item_list.EmptyViewBinder
 import com.gurunars.item_list.Item
 import com.gurunars.item_list.SelectableItem
-import com.gurunars.item_list.defaultBindEmpty
+import com.gurunars.item_list.defaultEmptyViewBinder
 import com.gurunars.item_list.selectableItemListView
 import org.jetbrains.anko.dip
 import org.jetbrains.anko.frameLayout
@@ -43,7 +43,7 @@ fun <ItemType : Item> Context.crudItemListView(
     clipboardSerializer: ClipboardSerializer<ItemType>? = null,
     sortable: Boolean = true,
     actionIconColors: IconColorBundle = IconColorBundle(),
-    emptyViewBinder: EmptyViewBinder = this::defaultBindEmpty,
+    emptyViewBinder: EmptyViewBinder = this::defaultEmptyViewBinder,
     confirmationActionColors: IconColorBundle = IconColorBundle(),
     cancelActionColors: IconColorBundle = IconColorBundle(),
     openIconColors: IconColorBundle = IconColorBundle()

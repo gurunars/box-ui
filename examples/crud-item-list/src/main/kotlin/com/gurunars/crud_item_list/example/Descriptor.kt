@@ -13,7 +13,7 @@ import com.gurunars.box.IBox
 import com.gurunars.box.IRoBox
 import com.gurunars.box.branch
 import com.gurunars.box.ui.fullSize
-import com.gurunars.box.ui.txt
+import com.gurunars.box.ui.text
 import com.gurunars.item_list.SelectableItem
 import com.gurunars.item_list.coloredRowSelectionDecorator
 import org.jetbrains.anko.backgroundColor
@@ -61,7 +61,7 @@ internal class Descriptor(
         editText {
             id = R.id.versionValue
             inputType = InputType.TYPE_CLASS_NUMBER
-            txt(field.branch(
+            text(field.branch(
                 { version.toString() },
                 { copy(version = if (it.isEmpty()) 0 else it.toInt()) }
             ))

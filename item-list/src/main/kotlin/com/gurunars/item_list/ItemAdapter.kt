@@ -5,7 +5,6 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
 import com.gurunars.box.Box
-import com.gurunars.box.IBox
 import com.gurunars.box.IRoBox
 import com.gurunars.box.ui.asRow
 import com.gurunars.box.ui.fullSize
@@ -80,7 +79,7 @@ internal class ItemAdapter<ItemType : Item>(
             // If enums are from different classes - they have same ordinals
             val initialPayload = items.get().first { getItemTypeInt(it) == viewType }
             val field = Box(initialPayload)
-            val binder = itemViewBinders[initialPayload.type] ?: parent.context::defaultBindView
+            val binder = itemViewBinders[initialPayload.type] ?: parent.context::defaultItemViewBinder
             return object : RecyclerView.ViewHolder(
                     binder(field).apply {
                         asRow()

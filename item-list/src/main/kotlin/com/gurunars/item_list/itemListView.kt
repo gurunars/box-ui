@@ -4,7 +4,6 @@ import android.content.Context
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
-import com.gurunars.box.IBox
 import com.gurunars.box.IRoBox
 import com.gurunars.box.oneWayBranch
 import com.gurunars.box.ui.fullSize
@@ -22,7 +21,7 @@ import org.jetbrains.anko.dip
 fun <ItemType : Item> Context.itemListView(
     items: IRoBox<List<ItemType>>,
     itemViewBinders: Map<Enum<*>, ItemViewBinder<ItemType>> = mapOf(),
-    emptyViewBinder: EmptyViewBinder = this::defaultBindEmpty,
+    emptyViewBinder: EmptyViewBinder = this::defaultEmptyViewBinder,
     stableIds: Boolean = true
 ): View = RecyclerView(this).apply {
     val kryo = getKryo()

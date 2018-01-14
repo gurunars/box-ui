@@ -5,9 +5,7 @@ package com.gurunars.box
  * changes.
  */
 interface IRoBox<Type> {
-    /**
-     * Fetches the current value.
-     */
+    /** Fetches the current value. */
     fun get(): Type
     /**
      * Subscribes to changes of the value. Aware of the previous state.

@@ -37,16 +37,12 @@ publishing {
     }
 }
 
-artifacts {
-    archives sourcesJar
-}
-
 bintray {
     user = bintrayUser
     key = bintrayApikey
 
-    configurations = ['archives']
     pkg {
+        desc = description
         repo = "maven"
         name = moduleName
         websiteUrl = siteUrl
@@ -57,4 +53,4 @@ bintray {
     }
 }
 
-bintrayUpload.dependsOn([build, sourcesJar])
+bintrayUpload.dependsOn([build])

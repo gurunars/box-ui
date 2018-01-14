@@ -5,8 +5,6 @@ package com.gurunars.box
  * that at least one of them is being observed by the others.
  */
 interface Bond {
-    /**
-     * Removes the bond between the entities
-     */
+    /** Removes the bond between the entities */
     fun drop()
 }

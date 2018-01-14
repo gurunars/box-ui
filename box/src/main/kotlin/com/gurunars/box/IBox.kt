@@ -1,8 +1,6 @@
 package com.gurunars.box
 
-/**
- * Mutable IRoBox.
- */
+/** Mutable IRoBox. */
 interface IBox<Type> : IRoBox<Type> {
     /**
      * Change fields content to a new value. The change is made only if current and new values

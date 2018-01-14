@@ -12,19 +12,13 @@ data class SelectableItem<out ItemType : Item> internal constructor(
     val isSelected: Boolean
 ) : Item {
 
-    /**
-     * @see Item.id
-     */
+    /** @see Item.id */
     override val id = item.id
 
-    /**
-     * @see Item.type
-     */
+    /** @see Item.type */
     override val type = item.type
 
-    /**
-     * @suppress
-     */
+    /** @suppress */
     override fun toString() =
         item.toString() + "|" + isSelected
 }

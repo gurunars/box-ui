@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.view.inputmethod.InputMethodManager
 
+/***/
 fun Context.closeKeyboard() {
     if (this is Activity) {
         val view = this.currentFocus

@@ -19,18 +19,34 @@ interface ItemTypeDescriptor<ItemType : Item> {
     val type: Enum<*>
         get() = Item.Default.ONLY
 
+    /**
+     * Represents validity status of form's payload.
+     *
+     * @property type severity of the status
+     * @property message payload shown to the end user to describe the issue
+     */
     data class Status(
         val type: Type,
         val message: String
     ) {
-        enum class Type(val isBlocking: Boolean) {
-            INFO(false), WARNING(false), ERROR(true)
+        /***/
+        enum class Type(internal val isBlocking: Boolean) {
+            /***/
+            INFO(false),
+            /***/
+            WARNING(false),
+            /***/
+            ERROR(true)
         }
 
         companion object {
+            /***/
             fun ok() = info("")
+            /***/
             fun error(msg: String) = Status(Type.ERROR, msg)
+            /***/
             fun warning(msg: String) = Status(Type.WARNING, msg)
+            /***/
             fun info(msg: String) = Status(Type.INFO, msg)
         }
     }
@@ -43,14 +59,10 @@ interface ItemTypeDescriptor<ItemType : Item> {
      */
     fun bindRow(field: IRoBox<SelectableItem<ItemType>>, triggerEdit: () -> Unit = {}): View
 
-    /**
-     * Return status of the payload: OK, error, warning
-     */
+    /** Returns status of the payload: OK, error, warning */
     fun validate(item: ItemType): Status
 
-    /**
-     * Return a newly created item of a specific type without saving it.
-     */
+    /** Returns a newly created item of a specific type without saving it. */
     fun createNewItem(): ItemType
 
     /**

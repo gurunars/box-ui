@@ -22,9 +22,7 @@ import org.jetbrains.anko.relativeLayout
  * @property icon FAB icon to be shown when the view is visible
  */
 interface ContentPane {
-    /**
-     * Returns a rendered view.
-     */
+    /** Returns a rendered view. */
     fun Context.render(): View
 
     val icon: Icon

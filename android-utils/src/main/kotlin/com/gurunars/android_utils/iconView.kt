@@ -89,9 +89,7 @@ private class IconView(context: Context) : ImageView(context) {
         }
     }
 
-    /**
-     * @suppress
-     */
+    /** @suppress */
     override fun setRotation(rotation: Float) {
         setImageDrawable(getRotateDrawable(iconDrawable, rotation))
     }

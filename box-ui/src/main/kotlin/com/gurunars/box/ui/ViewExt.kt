@@ -6,11 +6,14 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
+import com.gurunars.box.ui.VerticalPosition.ABOVE
+import com.gurunars.box.ui.VerticalPosition.BELOW
+import com.gurunars.box.ui.VerticalPosition.SAME
 
 private const val MATCH_PARENT = ViewGroup.LayoutParams.MATCH_PARENT
 private const val WRAP_CONTENT = ViewGroup.LayoutParams.WRAP_CONTENT
 
-/* Replaces view marked by a specific id with a given new view */
+/** Replaces view marked by a specific id with a given new view */
 fun <T : View> T.set(parent: ViewGroup, id: Int, init: T.() -> Unit = {}): T {
     val view = parent.findViewById<View>(id)
     if (view != null) parent.removeView(view)
@@ -19,13 +22,13 @@ fun <T : View> T.set(parent: ViewGroup, id: Int, init: T.() -> Unit = {}): T {
     }
 }
 
-/* Returns layout params with WRAP_CONTENT for both width and height */
+/** Returns layout params with WRAP_CONTENT for both width and height */
 fun relativeLayoutParams(init: RelativeLayout.LayoutParams.() -> Unit = {}) = RelativeLayout.LayoutParams(
     WRAP_CONTENT,
     WRAP_CONTENT
 ).apply { init() }
 
-/* Returns layout params with WRAP_CONTENT for both width and height */
+/** Returns layout params with WRAP_CONTENT for both width and height */
 fun linearLayoutParams(init: LinearLayout.LayoutParams.() -> Unit = {}) = LinearLayout.LayoutParams(
     WRAP_CONTENT,
     WRAP_CONTENT
@@ -67,9 +70,7 @@ fun View.asRow() {
     layoutParams.asRow()
 }
 
-/**
- * Removes all the views and adds this view as the only full screen child
- */
+/** Removes all the views and adds this view as the only full screen child */
 fun <T : View> T.setAsOne(parent: FrameLayout, init: T.() -> Unit = {}): T {
     fullSize()
     parent.removeAllViews()
@@ -78,9 +79,7 @@ fun <T : View> T.setAsOne(parent: FrameLayout, init: T.() -> Unit = {}): T {
     return this
 }
 
-/**
- * Removes all the views and adds this view as the only full screen child
- */
+/** Removes all the views and adds this view as the only full screen child */
 fun <T : View> T.setAsOne(parent: Activity, init: T.() -> Unit = {}): T {
     fullSize()
     parent.setContentView(this)
@@ -88,63 +87,39 @@ fun <T : View> T.setAsOne(parent: Activity, init: T.() -> Unit = {}): T {
     return this
 }
 
-/**
- * Add a view to parent
- */
+/** Add a view to parent */
 fun <T : View> T.add(parent: ViewGroup, init: T.() -> Unit = {}): T {
     parent.addView(this)
     this.init()
     return this
 }
 
-/**
- * @param isVisible if true - marks view as VISIBLE, otherwise marks it as GONE
- */
+/** @param isVisible if true - marks view as VISIBLE, otherwise marks it as GONE */
 fun View.setIsVisible(isVisible: Boolean) {
     visibility = if (isVisible) View.VISIBLE else View.GONE
 }
 
-/**
- * Position along X axis.
- */
+/** Position along X axis. */
 enum class HorizontalAlignment(internal val alignment: Int) {
-    /**
-     * on the left side
-     */
+    /** on the left side */
     LEFT(RelativeLayout.ALIGN_PARENT_LEFT),
-    /**
-     * on the right side
-     */
+    /** on the right side */
     RIGHT(RelativeLayout.ALIGN_PARENT_RIGHT),
-    /**
-     * current value remains unchanged
-     */
+    /** current value remains unchanged */
     SAME(-42),
-    /**
-     * in the middle
-     */
+    /** in the middle */
     CENTER(RelativeLayout.CENTER_HORIZONTAL)
 }
 
-/**
- * Position along Y axis.
- */
+/** Position along Y axis. */
 enum class VerticalAlignment(internal val alignment: Int) {
-    /**
-     * in the top
-     */
+    /** in the top */
     TOP(RelativeLayout.ALIGN_PARENT_TOP),
-    /**
-     * in the bottom
-     */
+    /** in the bottom */
     BOTTOM(RelativeLayout.ALIGN_PARENT_BOTTOM),
-    /**
-     * current value remains unchanged
-     */
+    /** current value remains unchanged */
     SAME(-42),
-    /**
-     * in the middle
-     */
+    /** in the middle */
     CENTER(RelativeLayout.CENTER_VERTICAL)
 }
 
@@ -172,21 +147,13 @@ fun RelativeLayout.LayoutParams.alignInParent(
     }
 }
 
-/**
- * Position along X axis.
- */
+/** Position along X axis. */
 enum class HorizontalPosition(internal val alignment: Int) {
-    /**
-     * left of another item
-     */
+    /** left of another item */
     LEFT_OF(RelativeLayout.LEFT_OF),
-    /**
-     * right of another item
-     */
+    /** right of another item */
     RIGHT_OF(RelativeLayout.RIGHT_OF),
-    /**
-     * current value remains unchanged
-     */
+    /** current value remains unchanged */
     SAME(-42)
 }
 
@@ -198,17 +165,11 @@ enum class HorizontalPosition(internal val alignment: Int) {
  * @property SAME current value remains unchanged
  */
 enum class VerticalPosition(internal val alignment: Int) {
-    /**
-     * current value remains unchanged
-     */
+    /** current value remains unchanged */
     ABOVE(RelativeLayout.ABOVE),
-    /**
-     * current value remains unchanged
-     */
+    /** current value remains unchanged */
     BELOW(RelativeLayout.BELOW),
-    /**
-     * current value remains unchanged
-     */
+    /** current value remains unchanged */
     SAME(-42)
 }
 

@@ -16,7 +16,8 @@ import org.jetbrains.anko.textColor
  */
 typealias ItemViewBinder<ItemType> = (field: IRoBox<ItemType>) -> View
 
-fun <ItemType : Item> Context.defaultBindView(field: IRoBox<ItemType>) = TextView(this).apply {
+/***/
+fun <ItemType : Item> Context.defaultItemViewBinder(field: IRoBox<ItemType>) = TextView(this).apply {
     backgroundColor = Color.YELLOW
     textColor = Color.RED
     field.onChange { value ->
