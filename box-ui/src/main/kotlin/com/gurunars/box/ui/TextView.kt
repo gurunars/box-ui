@@ -1,9 +1,11 @@
 package com.gurunars.box.ui
 
+import android.content.Context
 import android.text.Editable
 import android.text.TextWatcher
 import android.widget.EditText
 import android.widget.TextView
+import com.gurunars.box.Box
 import com.gurunars.box.IBox
 import com.gurunars.box.IRoBox
 
