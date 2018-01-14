@@ -52,11 +52,12 @@ class StorybookRegistryGenerator : AbstractProcessor() {
         package com.gurunars.storybook
 
         import android.content.Context
+        import android.view.View
 
         ${imports.joinToString("\n")}
 
         class ActivityStorybook(): AbstractActivityStorybook() {
-            override val views: Map<String, RenderDemo> = mapOf(
+            override val views: Map<String, Context.() -> View> = mapOf(
                 ${views.joinToString(",\n" )}
             )
         }

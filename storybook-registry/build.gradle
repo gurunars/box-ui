@@ -17,6 +17,11 @@ publishing {
     }
 }
 
+compileJava {
+    sourceCompatibility = rootProject.ext.javaVersion
+    targetCompatibility = rootProject.ext.javaVersion
+}
+
 bintray {
     user = bintrayUser
     key = bintrayApikey

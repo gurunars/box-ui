@@ -12,6 +12,7 @@ buildscript {
     ext.license = "Apache-2.0"
     ext.packageVersionCode = 159
 
+    ext.javaVersion = JavaVersion.VERSION_1_8
     ext.junitVersion = '4.12'
     ext.kotlinVersion = '1.2.10'
     ext.ankoVersion = '0.10.1'

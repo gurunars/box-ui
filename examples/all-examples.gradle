@@ -33,6 +33,11 @@ android {
         main.jni.srcDirs = []
     }
 
+    compileOptions {
+        sourceCompatibility rootProject.ext.javaVersion
+        targetCompatibility rootProject.ext.javaVersion
+    }
+
     lintOptions {
         disable 'UnusedResources'
     }
