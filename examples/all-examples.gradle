@@ -15,18 +15,13 @@ android {
         targetSdkVersion sdkVersionTarget
         versionCode 1
         versionName "1.0"
-        javaCompileOptions {
-            annotationProcessorOptions {
-                includeCompileClasspath false
-            }
-        }
     }
 
     sourceSets {
-        generated.java.srcDirs += 'build/generated/source/kapt/main'
-        generated.java.srcDirs += 'build/generated/source/kaptKotlin/main'
-        main.java.srcDirs += 'build/generated/source/kapt/main'
-        main.java.srcDirs += 'build/generated/source/kaptKotlin/main'
+        generated.java.srcDirs += 'build/generated/source/kapt/debug'
+        generated.java.srcDirs += 'build/generated/source/kaptKotlin/debug'
+        main.java.srcDirs += 'build/generated/source/kapt/debug'
+        main.java.srcDirs += 'build/generated/source/kaptKotlin/debug'
         main.java.srcDirs += 'src/main/kotlin'
         test.java.srcDirs += 'src/test/kotlin'
         androidTest.java.srcDirs += 'src/androidTest/kotlin'
@@ -57,14 +52,6 @@ dependencies {
     implementation project(':box')
     implementation project(':box-ui')
     implementation project(':storybook-registry')
+    annotationProcessor project(':storybook-registry')
     kapt project(':storybook-registry')
-}
-
-apply plugin: 'idea'
-
-idea {
-    module {
-        sourceDirs += files('build/generated/source/kapt/main', 'build/generated/source/kaptKotlin/main')
-        generatedSourceDirs += files('build/generated/source/kapt/main', 'build/generated/source/kaptKotlin/main')
-    }
 }
