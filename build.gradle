@@ -3,14 +3,14 @@ A collection of modules aiming to simplify creation of very specific simple
 CRUD apps for Android.
 """
 
-version = "0.154.0"
+version = "0.155.0"
 
 buildscript {
     ext.mavenRepoUrl = 'http://dl.bintray.com/berezin/maven'
     ext.siteUrl = 'https://gurunars.github.io/box-ui'
     ext.gitUrl = 'git@github.com:gurunars/box.git'
     ext.license = "Apache-2.0"
-    ext.packageVersionCode = 154
+    ext.packageVersionCode = 155
 
     ext.junitVersion = '4.12'
     ext.kotlinVersion = '1.2.10'
