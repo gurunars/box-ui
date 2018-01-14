@@ -12,15 +12,18 @@ import org.jetbrains.anko.uiThread
  * @param getF reads data from the storage
  * @param setF writes data to the storage
  * @param initial temporary payload to be
+ * @param preprocess function to process the data just after it is set before refetching - it is
+ *                   a reasonable way e.g. to enforce sorting without UI flickering
  * @property ready true if the box contains the latest version of the payload, false if the payload
  *                 is being fetched
  */
 class DataSource<Type>(
     private val getF: () -> Type,
     private val setF: (value: Type) -> Any,
+    private val preprocess: (value: Type) -> Type={ it },
     initial: Type
 ) : IBox<Type> {
-    private val box = Box(initial)
+    private val box = Box(preprocess(initial))
     private val buffer = ThrottleBuffer()
 
     val ready = Box(false)
@@ -57,11 +60,12 @@ class DataSource<Type>(
         if (!ready.get() && !force) {
             return false
         }
-        if (box.set(value, force)) {
+        val preprocessed = preprocess(value)
+        if (box.set(preprocessed, force)) {
             buffer.call {
                 doAsync {
                     try {
-                        setF(value)
+                        setF(preprocessed)
                         refetch()
                     } catch (exe: Exception) {
                         uiThread {
