@@ -41,6 +41,22 @@ inline fun <Type> IBox<Type>.bind(target: IBox<Type>): Bond {
 }
 
 /**
+ * Creates a one-way binding between this and a target box. Whenever this one changes another
+ * one gets updated.
+ *
+ * @param target box to bind to
+ */
+@Suppress("NOTHING_TO_INLINE")
+inline fun <Type> IRoBox<Type>.bind(target: IBox<Type>): Bond {
+    val there = onChange { item -> target.set(item) }
+    return object: Bond {
+        override fun drop() {
+            there.drop()
+        }
+    }
+}
+
+/**
  * Returns a box that has a two-way binding to this one.
  * I.e. if this one changes another box gets changed and vice versa.
  *

@@ -14,6 +14,7 @@ import android.view.View
 import android.widget.ImageView
 import com.gurunars.box.Box
 import com.gurunars.box.IBox
+import com.gurunars.box.IRoBox
 import com.gurunars.box.bind
 import com.gurunars.box.onChange
 
@@ -103,12 +104,12 @@ private class IconView(context: Context) : ImageView(context) {
  * @param enabled Flag specifying if the icon should be clickable or not
  */
 fun Context.iconView(
-    icon: IBox<Icon> = Box(Icon(
+    icon: IRoBox<Icon> = Box(Icon(
         bgColor = Color.WHITE,
         fgColor = Color.BLACK,
         icon = R.drawable.ic_plus
     )),
-    enabled: IBox<Boolean> = Box(true)
+    enabled: IRoBox<Boolean> = Box(true)
 ): View = IconView(this).apply {
     icon.bind(this.icon)
     enabled.bind(this.enabled)
