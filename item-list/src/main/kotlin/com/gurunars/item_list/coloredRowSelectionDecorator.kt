@@ -5,6 +5,7 @@ import android.support.annotation.ColorInt
 import android.view.View
 import com.gurunars.box.Box
 import com.gurunars.box.IBox
+import com.gurunars.box.IRoBox
 import com.gurunars.box.ui.asRow
 
 typealias ItemRenderer<ItemType> = (field: IBox<ItemType>) -> View
@@ -18,7 +19,7 @@ typealias ItemRenderer<ItemType> = (field: IBox<ItemType>) -> View
  * @param regularColor color integer applied when the row is not selected
  */
 fun <ItemType : Item> coloredRowSelectionDecorator(
-    field: IBox<SelectableItem<ItemType>>,
+    field: IRoBox<SelectableItem<ItemType>>,
     @ColorInt selectionColor: Int = Color.RED,
     @ColorInt regularColor: Int = Color.TRANSPARENT,
     render: ItemRenderer<ItemType>

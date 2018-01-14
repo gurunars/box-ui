@@ -11,6 +11,7 @@ import com.gurunars.animal_item.Service
 import com.gurunars.animal_item.Service.Companion.getRealService
 import com.gurunars.animal_item.bindAnimal
 import com.gurunars.box.IBox
+import com.gurunars.box.IRoBox
 import com.gurunars.box.ui.setAsOne
 import com.gurunars.item_list.itemListView
 
@@ -32,7 +33,7 @@ class ActivityMain : Activity() {
         itemListView(
             items = items,
             itemViewBinders = AnimalItem.Type.values().map {
-                Pair(it as Enum<*>, { value: IBox<AnimalItem> -> this.bindAnimal(value) })
+                Pair(it as Enum<*>, { value: IRoBox<AnimalItem> -> this.bindAnimal(value) })
             }.toMap()
         ).setAsOne(this)
     }

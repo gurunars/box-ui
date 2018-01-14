@@ -10,6 +10,7 @@ import com.gurunars.animal_item.AnimalItem
 import com.gurunars.animal_item.bindAnimal
 import com.gurunars.crud_item_list.ItemTypeDescriptor
 import com.gurunars.box.IBox
+import com.gurunars.box.IRoBox
 import com.gurunars.box.branch
 import com.gurunars.box.ui.fullSize
 import com.gurunars.box.ui.txt
@@ -41,7 +42,7 @@ internal class Descriptor(
                 ItemTypeDescriptor.Status.ok()
         }
 
-    override fun bindRow(field: IBox<SelectableItem<AnimalItem>>, triggerEdit: () -> Unit): View =
+    override fun bindRow(field: IRoBox<SelectableItem<AnimalItem>>, triggerEdit: () -> Unit): View =
         coloredRowSelectionDecorator(field) { context.bindAnimal(it) }
 
     override val icon = Icon(icon = iconId)

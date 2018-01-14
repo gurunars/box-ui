@@ -5,7 +5,6 @@ apply from: '../../all-libs.gradle'
 
 dependencies {
     implementation "android.arch.persistence.room:runtime:$roomVersion"
-    annotationProcessor "android.arch.persistence.room:compiler:$roomVersion"
     kapt "android.arch.persistence.room:compiler:$roomVersion"
     implementation project(':item-list')
     implementation project(':box-ui')

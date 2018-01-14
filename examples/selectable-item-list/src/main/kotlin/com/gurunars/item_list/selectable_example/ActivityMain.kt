@@ -12,6 +12,7 @@ import com.gurunars.animal_item.bindAnimal
 import com.gurunars.animal_item.Service.Companion.getRealService
 import com.gurunars.box.Box
 import com.gurunars.box.IBox
+import com.gurunars.box.IRoBox
 import com.gurunars.box.ui.setAsOne
 import com.gurunars.box.ui.statefulView
 import com.gurunars.box.box
@@ -44,7 +45,7 @@ class ActivityMain : Activity() {
                 items = items,
                 selectedItems = selectedItems,
                 itemViewBinders = AnimalItem.Type.values().map {
-                    Pair(it as Enum<*>, { item: IBox<SelectableItem<AnimalItem>> ->
+                    Pair(it as Enum<*>, { item: IRoBox<SelectableItem<AnimalItem>> ->
                         coloredRowSelectionDecorator(item) { bindAnimal(it) }
                     })
                 }.toMap()
