@@ -1,7 +1,13 @@
 ext.moduleName="storybook-registry"
 ext.moduleGroup="com.gurunars.storybook_registry"
+ext.isAnnotationProcessor=true
 
 apply from: '../all-java-modules.gradle'
+
+description = """
+A storybook-registry annotation processor to be used together with storybook and 
+storybook-annotation.
+"""
 
 dependencies {
     compileOnly 'com.google.android:android:4.1.1.4'

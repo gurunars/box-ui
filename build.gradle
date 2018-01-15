@@ -20,6 +20,7 @@ buildscript {
     ext.mockitoVersion = 'latest.release'
     ext.buildToolsVersion = '26.0.2'
     ext.roomVersion = '1.0.0'
+    ext.androidGradleVersion = '3.0.1'
 
     ext.junit = "junit:junit:$junitVersion"
     ext.kotlinStdLib = "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
@@ -41,11 +42,9 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.0.1'
+        classpath "com.android.tools.build:gradle:$androidGradleVersion"
         classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
-        classpath 'com.github.gurunars:styled-android-dokka:1.26.0'
-        //classpath 'com.gurunars.dokka:styled-android-dokka:2.0.4'
     }
 }
 

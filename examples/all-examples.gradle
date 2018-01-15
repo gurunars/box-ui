@@ -18,9 +18,7 @@ android {
     }
 
     sourceSets {
-        generated.java.srcDirs += 'build/generated/source/kapt/debug'
         generated.java.srcDirs += 'build/generated/source/kaptKotlin/debug'
-        main.java.srcDirs += 'build/generated/source/kapt/debug'
         main.java.srcDirs += 'build/generated/source/kaptKotlin/debug'
         main.java.srcDirs += 'src/main/kotlin'
         test.java.srcDirs += 'src/test/kotlin'
