@@ -1,0 +1,8 @@
+ext.moduleName="storybook-annotations"
+ext.moduleGroup="com.gurunars.storybook_annotations"
+
+apply from: '../all-java-modules.gradle'
+
+dependencies {
+    api kotlinStdLib
+}

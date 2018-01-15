@@ -1,5 +1,6 @@
 package com.gurunars.storybook_registry
 
+import com.gurunars.storybook_annotations.StorybookComponent
 import java.io.File
 import java.io.IOException
 import javax.annotation.processing.AbstractProcessor
@@ -12,16 +13,12 @@ import javax.lang.model.SourceVersion
 import javax.lang.model.element.TypeElement
 import javax.tools.Diagnostic
 
-@Target(AnnotationTarget.FUNCTION)
-@Retention(AnnotationRetention.SOURCE)
-annotation class StorybookComponent
-
 fun ProcessingEnvironment.note(msg: String) = messager.printMessage(Diagnostic.Kind.NOTE, msg)
 fun ProcessingEnvironment.error(msg: String) = messager.printMessage(Diagnostic.Kind.ERROR, msg)
 fun ProcessingEnvironment.warning(msg: String) = messager.printMessage(Diagnostic.Kind.WARNING, msg)
 
 @SupportedSourceVersion(SourceVersion.RELEASE_8)
-@SupportedAnnotationTypes("com.gurunars.storybook_registry.StorybookComponent")
+@SupportedAnnotationTypes("com.gurunars.storybook_annotations.StorybookComponent")
 @SupportedOptions(StorybookRegistryGenerator.KAPT_KOTLIN_GENERATED_OPTION_NAME)
 class StorybookRegistryGenerator : AbstractProcessor() {
 

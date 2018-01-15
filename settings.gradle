@@ -5,6 +5,7 @@ include  \
     ':box',
     ':box-ui',
     ':storybook',
+    ':storybook-annotations',
     ':storybook-registry',
     ':floatmenu',
     ':crud-item-list',

@@ -17,7 +17,7 @@ class Service(private val db: Db) {
                 it
             )
         },
-        listOf()
+        initial=listOf()
     )
 
     fun clear() {

@@ -51,7 +51,4 @@ dependencies {
     implementation project(':android-utils')
     implementation project(':box')
     implementation project(':box-ui')
-    implementation project(':storybook-registry')
-    annotationProcessor project(':storybook-registry')
-    kapt project(':storybook-registry')
 }
