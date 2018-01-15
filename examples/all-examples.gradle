@@ -26,6 +26,13 @@ android {
         main.jni.srcDirs = []
     }
 
+    buildTypes {
+        debug {
+            minifyEnabled true
+            testProguardFile 'proguard-rules.pro'
+        }
+    }
+
     compileOptions {
         sourceCompatibility rootProject.ext.javaVersion
         targetCompatibility rootProject.ext.javaVersion
