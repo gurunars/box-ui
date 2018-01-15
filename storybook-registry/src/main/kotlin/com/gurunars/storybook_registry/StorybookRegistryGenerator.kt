@@ -13,15 +13,21 @@ import javax.lang.model.SourceVersion
 import javax.lang.model.element.TypeElement
 import javax.tools.Diagnostic
 
-fun ProcessingEnvironment.note(msg: String) = messager.printMessage(Diagnostic.Kind.NOTE, msg)
-fun ProcessingEnvironment.error(msg: String) = messager.printMessage(Diagnostic.Kind.ERROR, msg)
-fun ProcessingEnvironment.warning(msg: String) = messager.printMessage(Diagnostic.Kind.WARNING, msg)
+private fun ProcessingEnvironment.note(msg: String) = messager.printMessage(Diagnostic.Kind.NOTE, msg)
+private fun ProcessingEnvironment.error(msg: String) = messager.printMessage(Diagnostic.Kind.ERROR, msg)
+private fun ProcessingEnvironment.warning(msg: String) = messager.printMessage(Diagnostic.Kind.WARNING, msg)
 
+/**
+ * Generates a **com.gurunars.storybook.ActivityStorybook** class that implements
+ * **com.gurunars.storybook.AbstractActivityStorybook** by injecting all the stories marked
+ * by a **@StorybookComponent** annotation.
+ */
 @SupportedSourceVersion(SourceVersion.RELEASE_8)
 @SupportedAnnotationTypes("com.gurunars.storybook_annotations.StorybookComponent")
 @SupportedOptions(StorybookRegistryGenerator.KAPT_KOTLIN_GENERATED_OPTION_NAME)
 class StorybookRegistryGenerator : AbstractProcessor() {
 
+    /** @suppress */
     override fun process(
         annotations: Set<TypeElement>,
         roundEnv: RoundEnvironment
@@ -71,7 +77,9 @@ class StorybookRegistryGenerator : AbstractProcessor() {
         return true
     }
 
+    /** @suppress */
     companion object {
+        /** @suppress */
         const val KAPT_KOTLIN_GENERATED_OPTION_NAME = "kapt.kotlin.generated"
     }
 }

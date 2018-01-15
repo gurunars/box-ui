@@ -1,7 +1,7 @@
 package com.gurunars.storybook_annotations
 
 /**
- * Annotation that aims to demarcates a storybook view function.
+ * Annotation that demarcates a storybook view function.
  *
  * The function should implement the following interface:
  *
