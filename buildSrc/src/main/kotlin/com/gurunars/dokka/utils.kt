@@ -8,9 +8,7 @@ import java.io.File
 import java.io.InputStream
 import java.nio.charset.Charset
 
-
 private val dimRegexp = Regex("""^\d+x\d+$""")
-
 
 private class ParamParseStateMachine(
         private val consumer: (tags: Element) -> Unit
@@ -63,9 +61,7 @@ private class ParamParseStateMachine(
     fun process(child: Node) {
         state = transit(child)
     }
-
 }
-
 
 private fun beautifyParameters(doc: Document) {
     val parameters = Element(Tag.valueOf("div"), "", Attributes().apply {
@@ -82,7 +78,6 @@ private fun beautifyParameters(doc: Document) {
     doc.body().appendChild(parameters)
 }
 
-
 private fun orderAllTypes(doc: Document) {
     doc.body().select("table").first()?.apply {
         insertChildren(0,
@@ -92,7 +87,6 @@ private fun orderAllTypes(doc: Document) {
         )
     }
 }
-
 
 private fun formatBreadCrumbs(moduleName: String, doc: Document) {
     val tag = Element(Tag.valueOf("div"), "", Attributes().apply {
@@ -136,7 +130,6 @@ private fun formatBreadCrumbs(moduleName: String, doc: Document) {
     doc.body().appendChild(tag)
 }
 
-
 private fun replaceImageLinksWithImgs(doc: Document) {
     doc.select("a[href]").filter { dimRegexp.matches(it.text()) }.forEach {
         val parts = it.text().split("x")
@@ -147,7 +140,6 @@ private fun replaceImageLinksWithImgs(doc: Document) {
         }))
     }
 }
-
 
 private fun beautifyHtml(rootPath: String, moduleName: String, file: File) {
     val doc = Jsoup.parse(
@@ -164,7 +156,6 @@ private fun beautifyHtml(rootPath: String, moduleName: String, file: File) {
     file.writeText(doc.outerHtml())
 }
 
-
 private fun copy(from: String, to: String) {
     val source = File(from)
     val target = File(to)
@@ -175,14 +166,12 @@ private fun copy(from: String, to: String) {
     source.copyRecursively(target, true)
 }
 
-
 private fun InputStream.readTextAndClose(charset: Charset = Charsets.UTF_8): String {
     return this.bufferedReader(charset).use { it.readText() }
 }
 
 private fun Project.requirePlugins(vararg pluginNames: String) =
     pluginNames.all { plugins.findPlugin(it) != null }
-
 
 internal fun Project.isAndroidLib() =
     requirePlugins("com.android.library", "org.jetbrains.dokka-android", "kotlin-android")
@@ -217,7 +206,6 @@ internal fun beautify(project: Project, modules: Collection<Project>) {
                 beautifyHtml(root, module.name, it)
             }
         }
-
     }
 
     val projectDivs = modules.map {
@@ -298,13 +286,11 @@ internal fun beautify(project: Project, modules: Collection<Project>) {
                 top level <b>build.gradle</b>:
                 </p>
 
-                <pre class="install-line">${installLine}</pre>
+                <pre class="install-line">$installLine</pre>
             </div>
 
             ${projectDivs.joinToString("\n")}
         </body>
     </html>
     """)
-
 }
-

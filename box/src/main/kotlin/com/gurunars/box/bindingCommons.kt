@@ -49,7 +49,7 @@ inline fun <Type> IBox<Type>.bind(target: IBox<Type>): Bond {
 @Suppress("NOTHING_TO_INLINE")
 inline fun <Type> IRoBox<Type>.bind(target: IBox<Type>): Bond {
     val there = onChange { item -> target.set(item) }
-    return object: Bond {
+    return object : Bond {
         override fun drop() {
             there.drop()
         }

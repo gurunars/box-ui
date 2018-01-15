@@ -4,7 +4,6 @@ import android.content.Context
 import android.graphics.Color
 import android.view.View
 import android.widget.TextView
-import com.gurunars.box.IBox
 import com.gurunars.box.IRoBox
 import com.gurunars.box.ui.asRow
 import org.jetbrains.anko.backgroundColor

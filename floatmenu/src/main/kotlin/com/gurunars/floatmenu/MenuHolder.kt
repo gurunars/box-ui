@@ -9,7 +9,6 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
-import com.gurunars.box.IBox
 import com.gurunars.box.Box
 import com.gurunars.box.IRoBox
 import com.gurunars.box.ui.setIsVisible

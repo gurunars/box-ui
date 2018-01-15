@@ -13,7 +13,6 @@ import android.support.v4.content.res.ResourcesCompat
 import android.view.View
 import android.widget.ImageView
 import com.gurunars.box.Box
-import com.gurunars.box.IBox
 import com.gurunars.box.IRoBox
 import com.gurunars.box.bind
 import com.gurunars.box.onChange

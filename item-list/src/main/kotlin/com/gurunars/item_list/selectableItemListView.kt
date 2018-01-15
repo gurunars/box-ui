@@ -20,7 +20,7 @@ import com.gurunars.box.ui.statefulView
  * @param explicitSelectionMode when true selection mode is initiated via normal click instead of a long one
  */
 fun <ItemType : Item> Context.selectableItemListView(
-    items: IBox<List<ItemType>>,  // TODO: IRoBox? No retain?
+    items: IBox<List<ItemType>>, // TODO: IRoBox? No retain?
     selectedItems: IBox<Set<ItemType>> = Box(setOf()),
     itemViewBinders: Map<Enum<*>, ItemViewBinder<SelectableItem<ItemType>>> = mapOf(),
     emptyViewBinder: EmptyViewBinder = this::defaultEmptyViewBinder,

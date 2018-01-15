@@ -14,7 +14,7 @@ class StyledDokka : Plugin<Project> {
                 description = "Aggregate API docs of all subprojects with custom styles."
                 group = JavaBasePlugin.DOCUMENTATION_GROUP
 
-                val modules = project.subprojects.filter {it.isAndroidLib() || it.isJavaLib()}
+                val modules = project.subprojects.filter { it.isAndroidLib() || it.isJavaLib() }
 
                 val nameToModuleMap = mutableMapOf<String, Project>()
                 modules.forEach { nameToModuleMap.put("${it.group}:${it.name}:${it.version}", it) }
@@ -36,13 +36,13 @@ class StyledDokka : Plugin<Project> {
                         setMustRunAfter(moduleDepFullNames.map {
                             nameToModuleMap[it]!!.getTasksByName("dokka", true)
                         }.flatten())
-                        moduleName=it.name
+                        moduleName = it.name
                         outputFormat = "html"
                         outputDirectory = "${project.projectDir.absolutePath}/html-docs"
                         externalDocumentationLinks.addAll(
                             moduleDepFullNames.map { nameToModuleMap[it]!!.name }.map {
                                 DokkaConfiguration.ExternalDocumentationLink.Builder(
-                                    "file://${project.projectDir.absolutePath}/html-docs/${it}/"
+                                    "file://${project.projectDir.absolutePath}/html-docs/$it/"
                                 ).build()
                             }
                         )
@@ -59,5 +59,4 @@ class StyledDokka : Plugin<Project> {
             }
         }
     }
-
 }

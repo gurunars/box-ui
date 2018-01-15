@@ -20,7 +20,7 @@ import org.jetbrains.anko.uiThread
 class DataSource<Type>(
     private val getF: () -> Type,
     private val setF: (value: Type) -> Any,
-    private val preprocess: (value: Type) -> Type={ it },
+    private val preprocess: (value: Type) -> Type = { it },
     initial: Type
 ) : IBox<Type> {
     private val box = Box(preprocess(initial))
