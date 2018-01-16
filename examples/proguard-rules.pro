@@ -3,12 +3,14 @@
 -dontwarn java.beans.**
 -dontwarn sun.nio.ch.**
 -dontwarn java.lang.invoke.**
--dontwarn kotlin.internal.jdk8.**
--dontwarn kotlin.internal.jdk7.**
--dontwarn kotlin.internal.**
--dontwarn kotlin.jvm.internal.**
+# These are not used at runtime actually
+-dontnote sun.reflect.**
+-dontnote kotlin.internal.jdk8.**
+-dontnote kotlin.internal.jdk7.**
+-dontnote kotlin.internal.**
+-dontnote kotlin.jvm.internal.**
 # Only for Perk JVM
--dontwarn COM.newmonics.PercClassLoader.**
+-dontnote COM.newmonics.PercClassLoader.**
 # These duplicates can't be avoided
 -dontnote android.net.http.**
 -dontnote org.apache.http.**
