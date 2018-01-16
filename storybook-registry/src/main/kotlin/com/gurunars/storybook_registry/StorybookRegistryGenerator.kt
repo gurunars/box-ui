@@ -67,7 +67,8 @@ class StorybookRegistryGenerator : AbstractProcessor() {
         """
 
         try {
-            File(kaptKotlinGeneratedDir, "ActivityStorybook.kt").apply {
+            File(File(kaptKotlinGeneratedDir).resolveSibling(File("main")),
+                    "ActivityStorybook.kt").apply {
                 parentFile.mkdirs()
                 writeText(tpl.trimIndent())
             }
