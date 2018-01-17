@@ -55,7 +55,7 @@ class ActivityMainTest {
     @Test
     fun createItems_shouldAppendItemsToTheEnd() {
         clickMenu("Create items")
-        Thread.sleep(500)
+        Thread.sleep(700)
         assertList(
             "#1{TIGER @ 0}",
             "#2{WOLF @ 0}",
@@ -71,7 +71,7 @@ class ActivityMainTest {
     @Test
     fun updateItems_shouldChangeSomeOfItems() {
         clickMenu("Update items")
-        Thread.sleep(500)
+        Thread.sleep(700)
         assertList(
             "#1{TIGER @ 0}",
             "#2{WOLF @ 1}",
@@ -105,7 +105,7 @@ class ActivityMainTest {
     @Test
     fun resetItems_shouldSetItemsToInitialList() {
         clickMenu("Reset items")
-        Thread.sleep(500)
+        Thread.sleep(700)
         assertList(
             "#1{TIGER @ 0}",
             "#2{WOLF @ 0}",

@@ -68,7 +68,7 @@ class ActivityMainTest {
     fun deletingSelected_shouldRemoveTheItems() {
         selectTwo()
         clickMenu("Delete selected")
-        Thread.sleep(500)
+        Thread.sleep(700)
         assertList(
             Pair("#3{MONKEY @ 0}", false),
             Pair("#4{LION @ 0}", false)
@@ -92,7 +92,7 @@ class ActivityMainTest {
     fun creatingItems_shouldNotUnselectItems() {
         selectTwo()
         clickMenu("Create items")
-        Thread.sleep(500)
+        Thread.sleep(700)
         assertList(
             Pair("#1{TIGER @ 0}", true),
             Pair("#2{WOLF @ 0}", true),
@@ -127,6 +127,6 @@ class ActivityMainTest {
     @Before
     fun before() {
         clickMenu("Reset items")
-        Thread.sleep(500)
+        Thread.sleep(700)
     }
 }
