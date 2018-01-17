@@ -48,7 +48,7 @@ internal fun <ItemType : Item> Context.itemForm(
             }
 
             bound.add(this) {
-                padding=dip(10)
+                padding = dip(10)
             }.lparams {
                 fullSize()
             }

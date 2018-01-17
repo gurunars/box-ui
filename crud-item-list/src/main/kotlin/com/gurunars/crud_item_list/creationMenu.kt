@@ -31,13 +31,13 @@ internal fun <ItemType : Item> Context.creationMenu(
 
                     gravity = Gravity.RIGHT
 
-                    text=descriptor.title
-                    background=drawable
-                    textColor= alterBrightness(descriptor.icon.fgColor)
+                    text = descriptor.title
+                    background = drawable
+                    textColor = alterBrightness(descriptor.icon.fgColor)
                 }.lparams()
             }.lparams {
                 height = matchParent
-                rightMargin=dip(10)
+                rightMargin = dip(10)
             }
 
             iconView(icon = descriptor.icon.box).add(this) {
