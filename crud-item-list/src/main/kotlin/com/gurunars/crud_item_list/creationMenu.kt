@@ -5,10 +5,8 @@ import android.content.Context
 import android.graphics.drawable.GradientDrawable
 import android.view.Gravity
 import com.gurunars.android_utils.iconView
-import com.gurunars.box.ui.add
-import com.gurunars.box.ui.fullSize
 import com.gurunars.box.box
-import com.gurunars.box.ui.onClick
+import com.gurunars.box.ui.*
 import com.gurunars.item_list.Item
 import org.jetbrains.anko.*
 
@@ -29,13 +27,13 @@ internal fun <ItemType : Item> Context.creationMenu(
                 gravity = Gravity.CENTER_VERTICAL
                 textView {
                     val drawable = getDrawable(R.drawable.bg_round_corners) as GradientDrawable
-                    drawable.setColor(descriptor.icon.bgColor)
+                    drawable.setColor(alterBrightness(descriptor.icon.bgColor, 0.6f))
 
                     gravity = Gravity.RIGHT
 
                     text=descriptor.type.name
                     background=drawable
-                    textColor=descriptor.icon.fgColor
+                    textColor= alterBrightness(descriptor.icon.fgColor)
                 }.lparams()
             }.lparams {
                 height = matchParent
