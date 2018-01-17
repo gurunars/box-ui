@@ -41,7 +41,7 @@ class ActivityUnsortableTest {
     fun before() {
         onView(withId(R.id.reset)).perform(click())
         onView(withId(R.id.lock)).perform(click())
-        Thread.sleep(500)
+        Thread.sleep(700)
     }
 
     @After
