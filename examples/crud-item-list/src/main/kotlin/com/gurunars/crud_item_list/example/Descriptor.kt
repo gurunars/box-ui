@@ -28,6 +28,8 @@ internal class Descriptor(
     override val type: AnimalItem.Type
 ) : ItemTypeDescriptor<AnimalItem> {
 
+    override val title = type.name
+
     override fun validate(item: AnimalItem): ItemTypeDescriptor.Status =
         when {
             item.version == 0 ->

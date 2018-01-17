@@ -31,7 +31,7 @@ internal fun <ItemType : Item> Context.creationMenu(
 
                     gravity = Gravity.RIGHT
 
-                    text=descriptor.type.name
+                    text=descriptor.title
                     background=drawable
                     textColor= alterBrightness(descriptor.icon.fgColor)
                 }.lparams()

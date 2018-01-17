@@ -13,11 +13,14 @@ import com.gurunars.item_list.SelectableItem
  *
  * @property icon Item icon for the creation menu.
  * @property type Type of the item the descriptor to be associated to.
+ * @property title Value shown as a hint for the icon and as a title of the creation form
  */
 interface ItemTypeDescriptor<ItemType : Item> {
     val icon: Icon
     val type: Enum<*>
         get() = Item.Default.ONLY
+
+    val title: String
 
     /**
      * Represents validity status of form's payload.

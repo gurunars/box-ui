@@ -10,6 +10,9 @@ import org.junit.Before
 import org.junit.Test
 
 class TestDescriptor : ItemTypeDescriptor<StringItem> {
+    override val title: String
+        get() = TODO("NOT NEEDED FOR TESTS")
+
     override val icon: Icon
         get() = TODO("NOT NEEDED FOR TESTS")
 
