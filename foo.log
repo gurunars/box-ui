@@ -1,0 +1,156 @@
+example-storybook: 'androidProcessor' dependencies won't be recognized as kapt annotation processors. Please change the configuration name to 'kapt' for these artifacts: 'box-ui:storybook-registry:unspecified'.
+
+w: [kapt] Sources output directory is not specified for example-android-utils_debug, skipping annotation processing
+:example-android-utils:kaptDebugKotlin
+w: [kapt] Sources output directory is not specified for example-android-utils_debug, skipping annotation processing
+
+Note: kotlin.internal.PlatformImplementationsKt: can't find dynamically referenced class kotlin.internal.jdk8.JDK8PlatformImplementations
+Note: kotlin.internal.PlatformImplementationsKt: can't find dynamically referenced class kotlin.internal.JRE8PlatformImplementations
+Note: kotlin.internal.PlatformImplementationsKt: can't find dynamically referenced class kotlin.internal.jdk7.JDK7PlatformImplementations
+Note: kotlin.internal.PlatformImplementationsKt: can't find dynamically referenced class kotlin.internal.JRE7PlatformImplementations
+Note: kotlin.jvm.internal.Reflection: can't find dynamically referenced class kotlin.reflect.jvm.internal.ReflectionFactoryImpl
+Note: there were 5 unresolved dynamic references to classes or interfaces.
+      You should check if you need to specify additional program jars.
+      (http://proguard.sourceforge.net/manual/troubleshooting.html#dynamicalclass)
+
+w: [kapt] Sources output directory is not specified for example-android-utils_release, skipping annotation processing
+:example-android-utils:kaptReleaseKotlin
+w: [kapt] Sources output directory is not specified for example-android-utils_release, skipping annotation processing
+
+w: [kapt] Sources output directory is not specified for example-android-utils_debug, skipping annotation processing
+w: [kapt] Sources output directory is not specified for example-android-utils_release, skipping annotation processing
+
+w: [kapt] Sources output directory is not specified for example-floatmenu_debug, skipping annotation processing
+:example-floatmenu:kaptDebugKotlin
+w: [kapt] Sources output directory is not specified for example-floatmenu_debug, skipping annotation processing
+
+Note: kotlin.internal.PlatformImplementationsKt: can't find dynamically referenced class kotlin.internal.jdk8.JDK8PlatformImplementations
+Note: kotlin.internal.PlatformImplementationsKt: can't find dynamically referenced class kotlin.internal.JRE8PlatformImplementations
+Note: kotlin.internal.PlatformImplementationsKt: can't find dynamically referenced class kotlin.internal.jdk7.JDK7PlatformImplementations
+Note: kotlin.internal.PlatformImplementationsKt: can't find dynamically referenced class kotlin.internal.JRE7PlatformImplementations
+Note: kotlin.jvm.internal.Reflection: can't find dynamically referenced class kotlin.reflect.jvm.internal.ReflectionFactoryImpl
+Note: there were 5 unresolved dynamic references to classes or interfaces.
+      You should check if you need to specify additional program jars.
+      (http://proguard.sourceforge.net/manual/troubleshooting.html#dynamicalclass)
+
+w: [kapt] Sources output directory is not specified for example-floatmenu_release, skipping annotation processing
+:example-floatmenu:kaptReleaseKotlin
+w: [kapt] Sources output directory is not specified for example-floatmenu_release, skipping annotation processing
+
+:example-floatmenu:kaptDebugUnitTestKotlin
+w: [kapt] Sources output directory is not specified for example-floatmenu_debug, skipping annotation processing
+
+:example-floatmenu:kaptReleaseUnitTestKotlin
+w: [kapt] Sources output directory is not specified for example-floatmenu_release, skipping annotation processing
+
+:example-animal-item:kaptDebugKotlin
+w: warning: Supported source version 'RELEASE_7' from annotation processor 'android.arch.persistence.room.RoomProcessor' less than -source '1.8'
+w: 
+
+w: /home/antonb/personal/box-ui/examples/animal-item/build/tmp/kapt3/stubs/debug/com/gurunars/animal_item/AnimalItem.java:5: warning: There are multiple good constructors and Room will pick the no-arg constructor. You can use the @Ignore annotation to eliminate unwanted constructors.
+w: 
+
+w: public final class AnimalItem implements com.gurunars.animal_item.ItemWithPosition {
+w:              ^
+w: /home/antonb/personal/box-ui/examples/animal-item/build/tmp/kapt3/stubs/debug/com/gurunars/animal_item/AnimalItem.java:5: warning: There are multiple good constructors and Room will pick the no-arg constructor. You can use the @Ignore annotation to eliminate unwanted constructors.
+w: 
+
+w: public final class AnimalItem implements com.gurunars.animal_item.ItemWithPosition {
+w:              ^
+
+:example-animal-item:kaptReleaseKotlin
+w: warning: Supported source version 'RELEASE_7' from annotation processor 'android.arch.persistence.room.RoomProcessor' less than -source '1.8'
+w: 
+
+w: /home/antonb/personal/box-ui/examples/animal-item/build/tmp/kapt3/stubs/release/com/gurunars/animal_item/AnimalItem.java:5: warning: There are multiple good constructors and Room will pick the no-arg constructor. You can use the @Ignore annotation to eliminate unwanted constructors.
+w: 
+
+w: public final class AnimalItem implements com.gurunars.animal_item.ItemWithPosition {
+w:              ^
+w: /home/antonb/personal/box-ui/examples/animal-item/build/tmp/kapt3/stubs/release/com/gurunars/animal_item/AnimalItem.java:5: warning: There are multiple good constructors and Room will pick the no-arg constructor. You can use the @Ignore annotation to eliminate unwanted constructors.
+w: 
+
+w: public final class AnimalItem implements com.gurunars.animal_item.ItemWithPosition {
+w:              ^
+
+Note: duplicate definition of library class [org.apache.http.params.HttpConnectionParams]
+Note: duplicate definition of library class [org.apache.http.params.HttpParams]
+Note: duplicate definition of library class [org.apache.http.params.CoreConnectionPNames]
+Note: duplicate definition of library class [org.apache.http.conn.ConnectTimeoutException]
+Note: duplicate definition of library class [org.apache.http.conn.scheme.HostNameResolver]
+Note: duplicate definition of library class [org.apache.http.conn.scheme.SocketFactory]
+Note: duplicate definition of library class [org.apache.http.conn.scheme.LayeredSocketFactory]
+Note: duplicate definition of library class [android.net.http.SslCertificate$DName]
+Note: duplicate definition of library class [android.net.http.SslCertificate]
+Note: duplicate definition of library class [android.net.http.HttpResponseCache]
+Note: duplicate definition of library class [android.net.http.SslError]
+Initializing...
+Note: kotlin.internal.PlatformImplementationsKt: can't find dynamically referenced class kotlin.internal.jdk8.JDK8PlatformImplementations
+Note: kotlin.internal.PlatformImplementationsKt: can't find dynamically referenced class kotlin.internal.JRE8PlatformImplementations
+Note: kotlin.internal.PlatformImplementationsKt: can't find dynamically referenced class kotlin.internal.jdk7.JDK7PlatformImplementations
+Note: kotlin.internal.PlatformImplementationsKt: can't find dynamically referenced class kotlin.internal.JRE7PlatformImplementations
+Note: kotlin.jvm.internal.Reflection: can't find dynamically referenced class kotlin.reflect.jvm.internal.ReflectionFactoryImpl
+Note: org.objenesis.instantiator.perc.PercSerializationInstantiator: can't find dynamically referenced class COM.newmonics.PercClassLoader.Method
+Note: org.objenesis.instantiator.perc.PercSerializationInstantiator: can't find dynamically referenced class COM.newmonics.PercClassLoader.PercClass
+Note: org.objenesis.instantiator.sun.SunReflectionFactoryHelper: can't find dynamically referenced class sun.reflect.ReflectionFactory
+Note: the configuration keeps the entry point 'com.esotericsoftware.reflectasm.ConstructorAccess { void insertConstructor(org.objectweb.asm.ClassWriter,java.lang.String); }', but not the descriptor class 'org.objectweb.asm.ClassWriter'
+Note: the configuration keeps the entry point 'com.esotericsoftware.reflectasm.ConstructorAccess { void insertNewInstance(org.objectweb.asm.ClassWriter,java.lang.String); }', but not the descriptor class 'org.objectweb.asm.ClassWriter'
+Note: the configuration keeps the entry point 'com.esotericsoftware.reflectasm.ConstructorAccess { void insertNewInstanceInner(org.objectweb.asm.ClassWriter,java.lang.String,java.lang.String); }', but not the descriptor class 'org.objectweb.asm.ClassWriter'
+Note: the configuration keeps the entry point 'com.esotericsoftware.reflectasm.FieldAccess { void insertConstructor(org.objectweb.asm.ClassWriter); }', but not the descriptor class 'org.objectweb.asm.ClassWriter'
+Note: the configuration keeps the entry point 'com.esotericsoftware.reflectasm.FieldAccess { void insertSetObject(org.objectweb.asm.ClassWriter,java.lang.String,java.util.ArrayList); }', but not the descriptor class 'org.objectweb.asm.ClassWriter'
+Note: the configuration keeps the entry point 'com.esotericsoftware.reflectasm.FieldAccess { void insertGetObject(org.objectweb.asm.ClassWriter,java.lang.String,java.util.ArrayList); }', but not the descriptor class 'org.objectweb.asm.ClassWriter'
+Note: the configuration keeps the entry point 'com.esotericsoftware.reflectasm.FieldAccess { void insertGetString(org.objectweb.asm.ClassWriter,java.lang.String,java.util.ArrayList); }', but not the descriptor class 'org.objectweb.asm.ClassWriter'
+Note: the configuration keeps the entry point 'com.esotericsoftware.reflectasm.FieldAccess { void insertSetPrimitive(org.objectweb.asm.ClassWriter,java.lang.String,java.util.ArrayList,org.objectweb.asm.Type); }', but not the descriptor class 'org.objectweb.asm.ClassWriter'
+Note: the configuration keeps the entry point 'com.esotericsoftware.reflectasm.FieldAccess { void insertSetPrimitive(org.objectweb.asm.ClassWriter,java.lang.String,java.util.ArrayList,org.objectweb.asm.Type); }', but not the descriptor class 'org.objectweb.asm.Type'
+Note: the configuration keeps the entry point 'com.esotericsoftware.reflectasm.FieldAccess { void insertGetPrimitive(org.objectweb.asm.ClassWriter,java.lang.String,java.util.ArrayList,org.objectweb.asm.Type); }', but not the descriptor class 'org.objectweb.asm.ClassWriter'
+Note: the configuration keeps the entry point 'com.esotericsoftware.reflectasm.FieldAccess { void insertGetPrimitive(org.objectweb.asm.ClassWriter,java.lang.String,java.util.ArrayList,org.objectweb.asm.Type); }', but not the descriptor class 'org.objectweb.asm.Type'
+Note: the configuration keeps the entry point 'com.esotericsoftware.reflectasm.FieldAccess { org.objectweb.asm.MethodVisitor insertThrowExceptionForFieldNotFound(org.objectweb.asm.MethodVisitor); }', but not the descriptor class 'org.objectweb.asm.MethodVisitor'
+Note: the configuration keeps the entry point 'com.esotericsoftware.reflectasm.FieldAccess { org.objectweb.asm.MethodVisitor insertThrowExceptionForFieldType(org.objectweb.asm.MethodVisitor,java.lang.String); }', but not the descriptor class 'org.objectweb.asm.MethodVisitor'
+Note: there were 13 unkept descriptor classes in kept class members.
+      You should consider explicitly keeping the mentioned classes
+      (using '-keep').
+      (http://proguard.sourceforge.net/manual/troubleshooting.html#descriptorclass)
+Note: there were 8 unresolved dynamic references to classes or interfaces.
+      You should check if you need to specify additional program jars.
+      (http://proguard.sourceforge.net/manual/troubleshooting.html#dynamicalclass)
+
+Note: duplicate definition of library class [org.apache.http.params.HttpConnectionParams]
+Note: duplicate definition of library class [org.apache.http.params.HttpParams]
+Note: duplicate definition of library class [org.apache.http.params.CoreConnectionPNames]
+Note: duplicate definition of library class [org.apache.http.conn.ConnectTimeoutException]
+Note: duplicate definition of library class [org.apache.http.conn.scheme.HostNameResolver]
+Note: duplicate definition of library class [org.apache.http.conn.scheme.SocketFactory]
+Note: duplicate definition of library class [org.apache.http.conn.scheme.LayeredSocketFactory]
+Note: duplicate definition of library class [android.net.http.SslCertificate$DName]
+Note: duplicate definition of library class [android.net.http.SslCertificate]
+Note: duplicate definition of library class [android.net.http.HttpResponseCache]
+Note: duplicate definition of library class [android.net.http.SslError]
+Initializing...
+Note: kotlin.internal.PlatformImplementationsKt: can't find dynamically referenced class kotlin.internal.jdk8.JDK8PlatformImplementations
+Note: kotlin.internal.PlatformImplementationsKt: can't find dynamically referenced class kotlin.internal.JRE8PlatformImplementations
+Note: kotlin.internal.PlatformImplementationsKt: can't find dynamically referenced class kotlin.internal.jdk7.JDK7PlatformImplementations
+Note: kotlin.internal.PlatformImplementationsKt: can't find dynamically referenced class kotlin.internal.JRE7PlatformImplementations
+Note: kotlin.jvm.internal.Reflection: can't find dynamically referenced class kotlin.reflect.jvm.internal.ReflectionFactoryImpl
+Note: org.objenesis.instantiator.perc.PercSerializationInstantiator: can't find dynamically referenced class COM.newmonics.PercClassLoader.Method
+Note: org.objenesis.instantiator.perc.PercSerializationInstantiator: can't find dynamically referenced class COM.newmonics.PercClassLoader.PercClass
+Note: org.objenesis.instantiator.sun.SunReflectionFactoryHelper: can't find dynamically referenced class sun.reflect.ReflectionFactory
+Note: the configuration keeps the entry point 'com.esotericsoftware.reflectasm.ConstructorAccess { void insertConstructor(org.objectweb.asm.ClassWriter,java.lang.String); }', but not the descriptor class 'org.objectweb.asm.ClassWriter'
+Note: the configuration keeps the entry point 'com.esotericsoftware.reflectasm.ConstructorAccess { void insertNewInstance(org.objectweb.asm.ClassWriter,java.lang.String); }', but not the descriptor class 'org.objectweb.asm.ClassWriter'
+Note: the configuration keeps the entry point 'com.esotericsoftware.reflectasm.ConstructorAccess { void insertNewInstanceInner(org.objectweb.asm.ClassWriter,java.lang.String,java.lang.String); }', but not the descriptor class 'org.objectweb.asm.ClassWriter'
+Note: the configuration keeps the entry point 'com.esotericsoftware.reflectasm.FieldAccess { void insertConstructor(org.objectweb.asm.ClassWriter); }', but not the descriptor class 'org.objectweb.asm.ClassWriter'
+Note: the configuration keeps the entry point 'com.esotericsoftware.reflectasm.FieldAccess { void insertSetObject(org.objectweb.asm.ClassWriter,java.lang.String,java.util.ArrayList); }', but not the descriptor class 'org.objectweb.asm.ClassWriter'
+Note: the configuration keeps the entry point 'com.esotericsoftware.reflectasm.FieldAccess { void insertGetObject(org.objectweb.asm.ClassWriter,java.lang.String,java.util.ArrayList); }', but not the descriptor class 'org.objectweb.asm.ClassWriter'
+Note: the configuration keeps the entry point 'com.esotericsoftware.reflectasm.FieldAccess { void insertGetString(org.objectweb.asm.ClassWriter,java.lang.String,java.util.ArrayList); }', but not the descriptor class 'org.objectweb.asm.ClassWriter'
+Note: the configuration keeps the entry point 'com.esotericsoftware.reflectasm.FieldAccess { void insertSetPrimitive(org.objectweb.asm.ClassWriter,java.lang.String,java.util.ArrayList,org.objectweb.asm.Type); }', but not the descriptor class 'org.objectweb.asm.ClassWriter'
+Note: the configuration keeps the entry point 'com.esotericsoftware.reflectasm.FieldAccess { void insertSetPrimitive(org.objectweb.asm.ClassWriter,java.lang.String,java.util.ArrayList,org.objectweb.asm.Type); }', but not the descriptor class 'org.objectweb.asm.Type'
+Note: the configuration keeps the entry point 'com.esotericsoftware.reflectasm.FieldAccess { void insertGetPrimitive(org.objectweb.asm.ClassWriter,java.lang.String,java.util.ArrayList,org.objectweb.asm.Type); }', but not the descriptor class 'org.objectweb.asm.ClassWriter'
+Note: the configuration keeps the entry point 'com.esotericsoftware.reflectasm.FieldAccess { void insertGetPrimitive(org.objectweb.asm.ClassWriter,java.lang.String,java.util.ArrayList,org.objectweb.asm.Type); }', but not the descriptor class 'org.objectweb.asm.Type'
+Note: the configuration keeps the entry point 'com.esotericsoftware.reflectasm.FieldAccess { org.objectweb.asm.MethodVisitor insertThrowExceptionForFieldNotFound(org.objectweb.asm.MethodVisitor); }', but not the descriptor class 'org.objectweb.asm.MethodVisitor'
+Note: the configuration keeps the entry point 'com.esotericsoftware.reflectasm.FieldAccess { org.objectweb.asm.MethodVisitor insertThrowExceptionForFieldType(org.objectweb.asm.MethodVisitor,java.lang.String); }', but not the descriptor class 'org.objectweb.asm.MethodVisitor'
+Note: there were 13 unkept descriptor classes in kept class members.
+      You should consider explicitly keeping the mentioned classes
+      (using '-keep').
+      (http://proguard.sourceforge.net/manual/troubleshooting.html#descriptorclass)
+Note: there were 8 unresolved dynamic references to classes or interfaces.
+      You should check if you need to specify additional program jars.
+      (http://proguard.sourceforge.net/manual/troubleshooting.html#dynamicalclass)

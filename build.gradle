@@ -31,7 +31,6 @@ buildscript {
     ext.sdkVersionTarget = 26
     ext.sdkVersionMin = 24
 
-
     repositories {
         mavenCentral()
         mavenLocal()

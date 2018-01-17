@@ -5,6 +5,5 @@ apply from: '../all-examples.gradle'
 dependencies {
     implementation project(':storybook')
     api project(':storybook-annotations')
-    annotationProcessor project(':storybook-registry')
     kapt project(':storybook-registry')
 }
