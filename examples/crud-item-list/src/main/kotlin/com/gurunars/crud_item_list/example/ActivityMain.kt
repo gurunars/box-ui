@@ -64,10 +64,10 @@ class ActivityMain : Activity() {
     private fun initView(sortable: Boolean) {
         setTitle(if (sortable) R.string.sortable else R.string.unsortable)
 
-        val descriptors: List<List<ItemTypeDescriptor<AnimalItem>>>
+        val descriptors: List<ItemTypeDescriptor<AnimalItem>>
 
         if (sortable) {
-            descriptors = listOf(listOf(
+            descriptors = listOf(
                 Descriptor(
                     this,
                     R.drawable.ic_menu_monkey,
@@ -75,8 +75,7 @@ class ActivityMain : Activity() {
                 Descriptor(
                     this,
                     R.drawable.ic_menu_lion,
-                    AnimalItem.Type.LION)
-            ), listOf(
+                    AnimalItem.Type.LION),
                 Descriptor(
                     this,
                     R.drawable.ic_menu_tiger,
@@ -85,7 +84,7 @@ class ActivityMain : Activity() {
                     this,
                     R.drawable.ic_menu_wolf,
                     AnimalItem.Type.WOLF)
-            ))
+            )
         } else {
             descriptors = Descriptor(
                 this,
@@ -109,7 +108,7 @@ class ActivityMain : Activity() {
                     fgColor = Color.YELLOW
                 ),
                 items = items,
-                groupedItemTypeDescriptors = descriptors,
+                itemTypeDescriptors = descriptors,
                 sortable = sortable,
                 actionIconColors = IconColorBundle(
                     fgColor = Color.YELLOW,

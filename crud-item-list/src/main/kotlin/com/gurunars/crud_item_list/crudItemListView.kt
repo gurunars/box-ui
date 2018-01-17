@@ -28,7 +28,7 @@ import com.gurunars.floatmenu.R as floatR
  *
  * @param ItemType type of the item to be shown in the list
  * @param emptyViewBinder a function returning a view to be shown when the list is empty
- * @param groupedItemTypeDescriptors a collection of item type descriptors
+ * @param itemTypeDescriptors a collection of item type descriptors
  * @param confirmationActionColors Check mark icon color settings. The icon is shown when contextual
  * menu is opened. Clicking the icon closes contextual menu.
  * @param cancelActionColors Cross icon color settings. The icon is shown when creation menu is
@@ -38,7 +38,7 @@ import com.gurunars.floatmenu.R as floatR
  * @param items A collection of items shown and manipulated by the view.
  */
 fun <ItemType : Item> Context.crudItemListView(
-    groupedItemTypeDescriptors: List<List<ItemTypeDescriptor<ItemType>>>,
+    itemTypeDescriptors: List<ItemTypeDescriptor<ItemType>>,
     items: IBox<List<ItemType>>,
     clipboardSerializer: ClipboardSerializer<ItemType>? = null,
     sortable: Boolean = true,
@@ -49,10 +49,7 @@ fun <ItemType : Item> Context.crudItemListView(
     openIconColors: IconColorBundle = IconColorBundle()
 ): View = statefulView(R.id.crudItemListView, "CRUD ITEM LIST") {
 
-    val typeCache = groupedItemTypeDescriptors
-        .flatten().map {
-        Pair(it.type, it)
-    }.toMap()
+    val typeCache = itemTypeDescriptors.map { Pair(it.type, it) }.toMap()
 
     val itemForm = context.frameLayout {
         fullSize()
@@ -102,14 +99,14 @@ fun <ItemType : Item> Context.crudItemListView(
     }
 
     val creationMenu = creationMenu(
-        groupedItemTypeDescriptors,
+            itemTypeDescriptors,
         { stateMachine.loadType(it) }
     )
 
     val itemListView = selectableItemListView(
         items = items,
         selectedItems = stateMachine.selectedItems,
-        itemViewBinders = groupedItemTypeDescriptors.flatten().map {
+        itemViewBinders = itemTypeDescriptors.map {
             Pair(
                 it.type,
                 { item: IRoBox<SelectableItem<ItemType>> -> it.bindRow(
