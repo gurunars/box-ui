@@ -12,8 +12,10 @@ data class AnimalItem(
     var version: Int = 0
 ) : ItemWithPosition {
 
-    enum class Type {
-        MONKEY, TIGER, WOLF, LION, EMPTY
+    enum class Type(val resourceId: Int) {
+        MONKEY(R.drawable.ic_menu_monkey), TIGER(R.drawable.ic_menu_tiger),
+        WOLF(R.drawable.ic_menu_wolf), LION(R.drawable.ic_menu_lion),
+        EMPTY(R.drawable.ic_plus)
     }
 
     override fun toString(): String {

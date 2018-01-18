@@ -28,6 +28,7 @@ internal fun <ItemType : Item> Context.itemForm(
                 imageView {
                     setImageDrawable(
                         context.getDrawable(formBinder.icon.icon)!!.apply {
+                            mutate()
                             setColorFilter(formBinder.icon.fgColor, PorterDuff.Mode.SRC_IN)
                         }
                     )

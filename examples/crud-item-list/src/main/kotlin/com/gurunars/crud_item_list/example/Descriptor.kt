@@ -24,7 +24,7 @@ import org.jetbrains.anko.verticalLayout
 
 internal class Descriptor(
     private val context: Context,
-    iconId: Int,
+    private val iconId: Int,
     override val type: AnimalItem.Type
 ) : ItemTypeDescriptor<AnimalItem> {
 
@@ -45,7 +45,7 @@ internal class Descriptor(
         }
 
     override fun bindRow(field: IRoBox<SelectableItem<AnimalItem>>, triggerEdit: () -> Unit): View =
-        coloredRowSelectionDecorator(field) { context.bindAnimal(it) }
+        coloredRowSelectionDecorator(field) { context.bindAnimal(it        ) }
 
     override val icon = Icon(icon = iconId)
     override fun createNewItem() = AnimalItem(
