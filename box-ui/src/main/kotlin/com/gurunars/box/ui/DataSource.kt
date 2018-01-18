@@ -31,7 +31,9 @@ class DataSource<Type>(
     /** Reloads the payload from data storage. */
     fun refetch() {
         doAsync {
-            ready.set(false)
+            uiThread {
+                ready.set(false)
+            }
             try {
                 val next = getF()
                 uiThread {
