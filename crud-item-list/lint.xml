@@ -12,6 +12,7 @@
         <ignore path="src/main/res/drawable/ic_delete.xml" />
         <ignore path="src/main/res/drawable/ic_copy.xml" />
         <ignore path="src/main/res/drawable/ic_check.xml" />
+        <ignore path="src/main/res/drawable/bg_round_corners.xml" />
     </issue>
 
 </lint>
