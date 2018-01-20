@@ -9,4 +9,5 @@ A library to help writing state based tests.
 
 dependencies {
     testImplementation junit
+    compile 'org.jetbrains.kotlin:kotlin-stdlib:1.2.10'
 }
