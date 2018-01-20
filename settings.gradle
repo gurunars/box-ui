@@ -9,6 +9,7 @@ include  \
     ':storybook-registry',
     ':floatmenu',
     ':crud-item-list',
+    ':state-machine-crawler',
     ':example-android-utils',
     ':example-animal-item',
     ':example-item-list',
