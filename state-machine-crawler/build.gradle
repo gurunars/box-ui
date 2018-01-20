@@ -4,8 +4,7 @@ ext.moduleGroup="com.gurunars.state_machine_crawler"
 apply from: '../all-java-modules.gradle'
 
 description = """
-A library to facilitate data binding via observable data containers that can be entangled together,
-manipulated and monitored for changes.
+A library to help writing state based tests.
 """
 
 dependencies {
