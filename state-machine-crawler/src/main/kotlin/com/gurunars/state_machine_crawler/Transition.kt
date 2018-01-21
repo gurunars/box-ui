@@ -1,8 +1,8 @@
 package com.gurunars.state_machine_crawler
 
-import kotlin.reflect.KClass
-
-interface Transition<SystemType, TargetState: State<SystemType>> {
-    val target: KClass<TargetState>
+interface Transition<SystemType, out TargetState: State<SystemType>>: KeyBasedItem {
+    val expectedDuration: Int
+        get() = 0
+    val target: TargetState
     fun perform(system: SystemType): Unit
 }
