@@ -6,6 +6,8 @@ class StateMachineCrawler<SystemType>(
     private val rootState: State<SystemType>
 ) {
 
+
+
     private val qualifiers: List<Qualifier<SystemType>> = flattenGraph(
         { it.dependencies.map { it.first } },
         rootState.quallifiers.map { it.first }
