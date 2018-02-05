@@ -35,7 +35,7 @@ class DataSource<Type>(
                 ready.set(false)
             }
             try {
-                val next = getF()
+                val next = preprocess(getF())
                 uiThread {
                     ready.set(true)
                     box.set(next)
