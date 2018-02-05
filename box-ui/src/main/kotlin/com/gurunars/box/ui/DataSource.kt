@@ -38,7 +38,7 @@ class DataSource<Type>(
                 val next = getF()
                 uiThread {
                     ready.set(true)
-                    box.set(next, true)
+                    box.set(next)
                 }
             } catch (exe: Exception) {
                 uiThread {

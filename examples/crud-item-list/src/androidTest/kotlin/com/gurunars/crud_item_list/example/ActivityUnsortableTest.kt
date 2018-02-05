@@ -25,6 +25,10 @@ import org.junit.runner.RunWith
 @LargeTest
 class ActivityUnsortableTest {
 
+    private fun sleep() {
+        Thread.sleep(700)
+    }
+
     private fun validateEnabled(id: Int) {
         onView(withId(id)).check(matches(isEnabled()))
     }
@@ -41,7 +45,7 @@ class ActivityUnsortableTest {
     fun before() {
         onView(withId(R.id.reset)).perform(click())
         onView(withId(R.id.lock)).perform(click())
-        Thread.sleep(700)
+        sleep()
     }
 
     @After

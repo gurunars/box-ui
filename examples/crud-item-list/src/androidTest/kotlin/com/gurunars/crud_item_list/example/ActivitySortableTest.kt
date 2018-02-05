@@ -60,8 +60,12 @@ class ActivitySortableTest {
     }
 
     private fun validateSelection(index: Int, text: String, isSelected: Boolean) {
-        atIndex(index).check(matches(withText(text)))
+        onView(nthChildOf(nthChildOf(withId(R.id.recyclerView), index), 1)).check(matches(withText(text)))
         atIndex(index).check(matches(withTagKey(R.id.isSelected, `is`(isSelected))))
+    }
+
+    private fun sleep() {
+        Thread.sleep(700)
     }
 
     @Test
@@ -189,7 +193,7 @@ class ActivitySortableTest {
         atIndex(1).perform(longClick())
         onView(withId(R.id.moveUp)).perform(click())
         onView(withId(R.id.reset)).perform(click())
-        Thread.sleep(700)
+        sleep()
         validateSelection(0, "#1{LION @ 0}", false)
         validateSelection(1, "#2{TIGER @ 0}", false)
     }
@@ -201,7 +205,7 @@ class ActivitySortableTest {
         rotate()
         onView(withId(R.id.copy)).perform(click())
         onView(withId(R.id.paste)).perform(click())
-        Thread.sleep(700)
+        sleep()
         rotate()
         atIndex(4).perform(click())
         atIndex(5).perform(click())
@@ -218,7 +222,7 @@ class ActivitySortableTest {
         atIndex(2).perform(longClick())
         onView(withId(R.id.moveDown)).perform(click())
         onView(withId(R.id.reset)).perform(click())
-        Thread.sleep(700)
+        sleep()
         validateSelection(2, "#3{MONKEY @ 0}", false)
         validateSelection(3, "#4{WOLF @ 0}", false)
     }
@@ -231,7 +235,7 @@ class ActivitySortableTest {
         rotate()
         onView(withId(R.id.save)).perform(click())
         // Save operation updates the value asynchronously - we need to wait
-        Thread.sleep(700)
+        sleep()
         rotate()
         validateSelection(3, "#4{WOLF @ 1}", false)
     }
@@ -245,7 +249,7 @@ class ActivitySortableTest {
         onView(withId(R.id.increment)).perform(click())
         rotate()
         onView(withId(R.id.save)).perform(click())
-        Thread.sleep(700)
+        sleep()
         validateSelection(4, "#5{LION @ 5}", false)
     }
 
@@ -277,7 +281,7 @@ class ActivitySortableTest {
     fun before() {
         onView(withId(R.id.reset)).perform(click())
         onView(withId(R.id.unlock)).perform(click())
-        Thread.sleep(700)
+        sleep()
     }
 
     @After
