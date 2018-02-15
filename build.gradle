@@ -3,14 +3,21 @@ A collection of modules aiming to simplify creation of very specific simple
 CRUD apps for Android.
 """
 
-version = "0.171.0"
-
 buildscript {
+
+    version = "0.173.0"
+
+    ext.computeVersion = {
+        def (major, minor, patch) = version.tokenize('.')
+        (major, minor, patch) = [major, minor, patch].collect{it.toInteger()}
+        return (major * 1000000) + (minor * 10000) + (patch * 100)
+    }
+
     ext.mavenRepoUrl = 'http://dl.bintray.com/berezin/maven'
     ext.siteUrl = 'https://gurunars.github.io/box-ui'
     ext.gitUrl = 'git@github.com:gurunars/box.git'
     ext.license = "Apache-2.0"
-    ext.packageVersionCode = 171
+    ext.packageVersionCode = computeVersion()
 
     ext.javaVersion = JavaVersion.VERSION_1_8
     ext.junitVersion = '4.12'
