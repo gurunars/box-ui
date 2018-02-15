@@ -45,7 +45,7 @@ private class IconView(context: Context) : ImageView(context) {
     private lateinit var iconDrawable: Drawable
 
     init {
-        listOf(icon, enabled).onChange {
+        onChange(icon, enabled) {
             reset(icon.get(), enabled.get())
         }
     }

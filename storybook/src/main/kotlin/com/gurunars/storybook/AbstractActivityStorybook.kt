@@ -57,7 +57,7 @@ private fun Context.bindPackageName(
     onClick {
         activeSection.set(field.get().fullName)
     }
-    listOf(activeSection, field).onChange {
+    onChange(activeSection, field) {
         backgroundColor = if (field.get().fullName == activeSection.get()) {
             Color.RED
         } else {

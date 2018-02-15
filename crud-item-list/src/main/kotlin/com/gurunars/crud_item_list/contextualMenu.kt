@@ -47,7 +47,7 @@ internal fun <ItemType : Item> Context.contextualMenu(
             @Suppress("UNCHECKED_CAST")
             val action = getTag(R.id.action) as Action<ItemType>
 
-            listOf(items, selectedItems).onChange {
+            onChange(items, selectedItems) {
                 action.canPerform(items.get(), selectedItems.get(), { enabled.set(it) })
             }
 

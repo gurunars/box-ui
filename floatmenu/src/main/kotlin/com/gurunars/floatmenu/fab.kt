@@ -56,7 +56,7 @@ internal fun Context.fab(
         )
     }
 
-    listOf(openIcon, closeIcon, animatedValue).onChange {
+    onChange(openIcon, closeIcon, animatedValue) {
         updateIcon()
     }
 

@@ -40,7 +40,7 @@ fun Context.autoButton(
     style(textStyle)
     textSize(textSize)
     text(text)
-    listOf(shadowWidth, shape, bgColor).onChange {
+    onChange(shadowWidth, shape, bgColor) {
         background = ColoredShapeDrawable(shape.get(), bgColor.get())
         setAutoBg(shadowWidth.get())
     }
