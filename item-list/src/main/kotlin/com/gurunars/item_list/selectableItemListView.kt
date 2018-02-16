@@ -20,7 +20,7 @@ import com.gurunars.box.ui.statefulView
  * @param explicitSelectionMode when true selection mode is initiated via normal click instead of a long one
  */
 fun <ItemType : Item> Context.selectableItemListView(
-    items: IBox<List<ItemType>>, // TODO: IRoBox? No retain?
+    items: IRoBox<List<ItemType>>,
     selectedItems: IBox<Set<ItemType>> = Box(setOf()),
     itemViewBinders: Map<Enum<*>, ItemViewBinder<SelectableItem<ItemType>>> = mapOf(),
     emptyViewBinder: EmptyViewBinder = this::defaultEmptyViewBinder,
@@ -30,8 +30,7 @@ fun <ItemType : Item> Context.selectableItemListView(
     val kryo = getKryo()
 
     retain(
-        selectedItems.fork { kryo.copy(HashSet(this)) },
-        items.fork { kryo.copy(ArrayList(this)) }
+        selectedItems.fork { kryo.copy(HashSet(this)) }
     )
 
     // The flag is require to prevent selection cleanup during the initialization
