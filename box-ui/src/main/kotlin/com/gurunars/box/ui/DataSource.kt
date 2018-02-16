@@ -25,7 +25,8 @@ class DataSource<Type>(
     private val getF: () -> Type,
     private val setF: (value: Type) -> Any,
     private val preprocess: (value: Type) -> Type = { it },
-    initial: Type
+    initial: Type,
+    timeout: Long = 500
 ) : IBox<Type> {
     private val box = Box(preprocess(initial))
 
@@ -40,7 +41,7 @@ class DataSource<Type>(
         box.toObservable()
             .skip(1)
             .subscribeOn(Schedulers.newThread())
-            .debounce(500, TimeUnit.MILLISECONDS)
+            .debounce(timeout, TimeUnit.MILLISECONDS)
             .filter { ready.get() }
             .map {
                 ready.set(false)

@@ -17,7 +17,8 @@ class Service(private val db: Db) {
                 it
             )
         },
-        initial = listOf()
+        initial = listOf(),
+        timeout = 100
     )
 
     fun clear() {

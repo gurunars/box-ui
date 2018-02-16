@@ -65,7 +65,7 @@ class ActivitySortableTest {
     }
 
     private fun sleep() {
-        Thread.sleep(700)
+        Thread.sleep(2100)
     }
 
     @Test
