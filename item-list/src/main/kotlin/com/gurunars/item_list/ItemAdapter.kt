@@ -43,18 +43,16 @@ internal class ItemAdapter<ItemType : Item>(
         items.onChange { list ->
             if (previousList.isEmpty() || list.isEmpty()) {
                 notifyDataSetChanged()
-            } else {
-                try {
-                    DiffUtil.calculateDiff(ItemCallback(previousList, list)).dispatchUpdatesTo(this)
-                } catch (exe: IndexOutOfBoundsException) {
-                    // In case of a drastic failure - just reset the adapter
-                    val recycler = recyclerView ?: return@onChange
-                    recycler.recycledViewPool.clear()
-                    recycler.swapAdapter(
-                            ItemAdapter(items, emptyViewBinder, itemViewBinders),
-                            false
-                    )
-                }
+            } else try {
+                DiffUtil.calculateDiff(ItemCallback(previousList, list)).dispatchUpdatesTo(this)
+            } catch (exe: IndexOutOfBoundsException) {
+                // In case of a drastic failure - just reset the adapter
+                val recycler = recyclerView ?: return@onChange
+                recycler.recycledViewPool.clear()
+                recycler.swapAdapter(
+                        ItemAdapter(items, emptyViewBinder, itemViewBinders),
+                        false
+                )
             }
             previousList = kryo.copy(ArrayList(list))
         }

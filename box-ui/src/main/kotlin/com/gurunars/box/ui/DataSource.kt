@@ -2,8 +2,12 @@ package com.gurunars.box.ui
 
 import com.gurunars.box.Box
 import com.gurunars.box.IBox
+import com.gurunars.box.toObservable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
+import java.util.concurrent.TimeUnit
 
 /**
  * Special IBox to glue data storage with an Observerable value
@@ -24,33 +28,31 @@ class DataSource<Type>(
     initial: Type
 ) : IBox<Type> {
     private val box = Box(preprocess(initial))
-    private val buffer = ThrottleBuffer()
 
     val ready = Box(false)
 
-    /** Reloads the payload from data storage. */
-    fun refetch() {
-        doAsync {
-            uiThread {
-                ready.set(false)
-            }
-            try {
-                val next = preprocess(getF())
-                uiThread {
-                    ready.set(true)
-                    box.set(next)
-                }
-            } catch (exe: Exception) {
-                uiThread {
-                    ready.set(true)
-                    throw exe
-                }
-            }
-        }
+    private fun set(value: Type) {
+        ready.set(true)
+        box.set(value)
     }
 
     init {
-        refetch()
+        box.toObservable()
+            .skip(1)
+            .subscribeOn(Schedulers.newThread())
+            .debounce(500, TimeUnit.MILLISECONDS)
+            .filter { ready.get() }
+            .map {
+                ready.set(false)
+                setF(it)
+                preprocess(getF())
+            }
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(this::set, { throw it })
+        doAsync {
+            val init = preprocess(getF())
+            uiThread { _ -> this@DataSource.set(init) }
+        }
     }
 
     /** @see Box.get */
@@ -59,26 +61,11 @@ class DataSource<Type>(
     /** @see Box.set */
     override fun set(value: Type, force: Boolean): Boolean {
         // We do not want to set anything before at least the initial load took place
-        if (!ready.get() && !force) {
-            return false
+        return if (!ready.get() && !force) {
+            false
+        } else {
+            box.set(preprocess(value), force)
         }
-        val preprocessed = preprocess(value)
-        if (box.set(preprocessed, force)) {
-            buffer.call {
-                doAsync {
-                    try {
-                        setF(preprocessed)
-                        refetch()
-                    } catch (exe: Exception) {
-                        uiThread {
-                            throw exe
-                        }
-                    }
-                }
-            }
-            return true
-        }
-        return false
     }
 
     /** @see Box.onChange */
