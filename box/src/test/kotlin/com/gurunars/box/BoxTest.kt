@@ -103,7 +103,7 @@ class BoxTest {
         val slaveField2 = Box(3)
 
         val masterDisposable = masterField.bind(slaveField1)
-        masterDisposable.drop()
+        masterDisposable.dispose()
         slaveField1.bind(slaveField2)
 
         assertEquals(1, masterField.get())
@@ -114,21 +114,5 @@ class BoxTest {
 
         assertEquals(1, masterField.get())
         assertEquals(2, slaveField1.get())
-    }
-
-    @Test
-    fun coldObserver_shouldNotTriggerChangeOnBind() {
-        val field = Box(1)
-        var test = 123
-
-        field.onChange(hot = false) {
-            test = it
-        }
-
-        assertEquals(123, test)
-
-        field.set(22)
-
-        assertEquals(22, test)
     }
 }
