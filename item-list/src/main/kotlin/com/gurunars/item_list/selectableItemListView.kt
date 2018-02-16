@@ -39,7 +39,7 @@ fun <ItemType : Item> Context.selectableItemListView(
 
     val selectables = Box<List<SelectableItem<ItemType>>>(listOf())
 
-    items.onChange(false) { its ->
+    items.onChange { its ->
         if (initialized) {
             selectedItems.patch { filter { its.has(it) }.toSet() }
         }

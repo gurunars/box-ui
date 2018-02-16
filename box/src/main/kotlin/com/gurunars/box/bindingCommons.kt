@@ -1,5 +1,9 @@
 package com.gurunars.box
 
+import io.reactivex.Observable
+import io.reactivex.disposables.Disposable
+import io.reactivex.subjects.BehaviorSubject
+
 /**
  * Returns a box that has a one-way binding to this one.
  * I.e. if this one changes another box gets changes as well. However if another box
@@ -29,13 +33,17 @@ inline fun <ItemType> IBox<ItemType>.patch(patcher: ItemType.() -> ItemType) =
  * @param target box to bind to
  */
 @Suppress("NOTHING_TO_INLINE")
-inline fun <Type> IBox<Type>.bind(target: IBox<Type>): Bond {
+inline fun <Type> IBox<Type>.bind(target: IBox<Type>): Disposable {
     val there = onChange { item -> target.set(item) }
     val back = target.onChange { item -> this.set(item) }
-    return object : Bond {
-        override fun drop() {
-            there.drop()
-            back.drop()
+    return object : Disposable {
+
+        override fun isDisposed() =
+            there.isDisposed && back.isDisposed
+
+        override fun dispose() {
+            there.dispose()
+            back.dispose()
         }
     }
 }
@@ -47,13 +55,8 @@ inline fun <Type> IBox<Type>.bind(target: IBox<Type>): Bond {
  * @param target box to bind to
  */
 @Suppress("NOTHING_TO_INLINE")
-inline fun <Type> IRoBox<Type>.bind(target: IBox<Type>): Bond {
-    val there = onChange { item -> target.set(item) }
-    return object : Bond {
-        override fun drop() {
-            there.drop()
-        }
-    }
+inline fun <Type> IRoBox<Type>.bind(target: IBox<Type>): Disposable {
+    return onChange { item -> target.set(item) }
 }
 
 /**
@@ -85,7 +88,28 @@ inline fun <Type> IBox<Type>.fork(
         crossinline transform: Type.() -> Type
 ) = branch(transform, { it.transform() })
 
-/** A short way to wrap a value into a Box */
+/** A short way to wrap a value into a Box without parentheses */
 @Suppress("NOTHING_TO_INLINE")
 inline val <F> F.box
     get(): IBox<F> = Box(this)
+
+/** Obtain an observable from a box */
+fun <T> IRoBox<T>.toObservable(): Observable<T> {
+    // There is no need to spawn extra instances if we know that there is one already.
+    return if (this is Box) {
+        this.subject
+    } else {
+        BehaviorSubject.createDefault(get()).apply {
+            onChange { onNext(it) }
+        }
+    }
+}
+
+/**
+ * Combines changes from several boxes together
+ * and invokes a consumer with the combined set
+ * of box payloads.
+ */
+fun onChange(vararg params: IRoBox<*>, listener: () -> Unit) {
+    params.forEach { it.onChange { _ -> listener() } }
+}

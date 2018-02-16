@@ -97,13 +97,13 @@ class BoxTest {
     }
 
     @Test
-    fun droppingBond_shouldRemoveTheLinkBetweenBoxes() {
+    fun droppingDisposable_shouldRemoveTheLinkBetweenBoxes() {
         val masterField = Box(1)
         val slaveField1 = Box(2)
         val slaveField2 = Box(3)
 
-        val masterBond = masterField.bind(slaveField1)
-        masterBond.drop()
+        val masterDisposable = masterField.bind(slaveField1)
+        masterDisposable.drop()
         slaveField1.bind(slaveField2)
 
         assertEquals(1, masterField.get())

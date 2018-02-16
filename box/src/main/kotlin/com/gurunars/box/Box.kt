@@ -1,5 +1,7 @@
 package com.gurunars.box
 
+import io.reactivex.disposables.Disposable
+import io.reactivex.subjects.BehaviorSubject
 import java.util.*
 
 /**
@@ -8,34 +10,24 @@ import java.util.*
  * @param Type type of the value the box is meant to hold
  * @param value initial value of the box
  */
-class Box<Type>(private var value: Type) : IBox<Type> {
-    private val listeners: MutableList<(value: Type) -> Unit> = mutableListOf()
+class Box<Type>(initial: Type) : IBox<Type> {
+    internal val subject = BehaviorSubject.createDefault<Type>(initial)
 
-    override fun onChange(hot: Boolean, listener: (value: Type) -> Unit): Bond {
-        synchronized(this) {
-            listeners.add(listener)
-            if (hot) listener(this.value)
-
-            return object : Bond {
-                override fun drop() {
-                    synchronized(this) {
-                        listeners.remove(listener)
-                    }
-                }
-            }
+    override fun onChange(listener: (value: Type) -> Unit): Disposable {
+        return subject.subscribe {
+            listener(subject.value)
         }
     }
 
     override fun set(value: Type, force: Boolean): Boolean {
-        synchronized(this) {
-            if (force || !Objects.deepEquals(this.value, value)) {
-                this.value = value
-                listeners.forEach { it.invoke(value) }
-                return true
-            }
-            return false
+        // Safeguard against modifications that do not mutate the value
+        val current = subject.value
+        if (force || !Objects.deepEquals(current, value)) {
+            subject.onNext(value)
+            return true
         }
+        return false
     }
 
-    override fun get(): Type = this.value
+    override fun get(): Type = this.subject.value
 }

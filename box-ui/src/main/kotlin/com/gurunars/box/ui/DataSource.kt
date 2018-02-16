@@ -82,6 +82,6 @@ class DataSource<Type>(
     }
 
     /** @see Box.onChange */
-    override fun onChange(hot: Boolean, listener: (item: Type) -> Unit) =
-        box.onChange(hot, { if (ready.get()) listener(it) })
+    override fun onChange(listener: (item: Type) -> Unit) =
+        box.onChange { if (ready.get()) listener(it) }
 }
