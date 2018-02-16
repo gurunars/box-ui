@@ -11,13 +11,13 @@ import com.gurunars.box.ui.text
 import org.jetbrains.anko.*
 
 fun Context.bindAnimal(field: IRoBox<AnimalItem>): View = linearLayout {
-    gravity=Gravity.CENTER_VERTICAL
+    gravity = Gravity.CENTER_VERTICAL
     imageView().apply {
         resource(field.oneWayBranch { type.resourceId })
         padding = dip(5)
     }.lparams {
-        width=dip(25)
-        height=dip(25)
+        width = dip(25)
+        height = dip(25)
     }
     textView {
         asRow()

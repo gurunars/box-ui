@@ -226,8 +226,7 @@ internal fun beautify(project: Project, modules: Collection<Project>) {
             """
             api '$ref
             """
-        else
-            """
+        else """
             implementation '$ref'
             """
 
@@ -237,8 +236,7 @@ internal fun beautify(project: Project, modules: Collection<Project>) {
             ${
                 if (it.description != null)
                     "<p>${it.description}</p>"
-                else
-                    ""
+                else ""
             }
             <pre class="install-line">${installLine.trimIndent()}</pre>
         </div>
@@ -250,8 +248,7 @@ internal fun beautify(project: Project, modules: Collection<Project>) {
     val mavenRepo =
         if (extras.has("mavenRepoUrl"))
             extras.get("mavenRepoUrl")
-        else
-            "<TBD>"
+        else "<TBD>"
 
     val installLine = """
     allprojects {

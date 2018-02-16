@@ -85,8 +85,7 @@ class ActivityMain : Activity() {
         items.set(items.get().mapIndexed { index, animalItem ->
             if (index % 2 != 0)
                 animalItem.copy(version = animalItem.version + 1)
-            else
-                animalItem
+            else animalItem
         })
         return R.string.did_update
     }

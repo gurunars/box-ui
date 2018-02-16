@@ -81,8 +81,7 @@ class ActivityMain : Activity() {
         items.patch { this.map {
             if (selected.any { (id) -> it.id == id })
                 it.copy(version = it.version + 1)
-            else
-                it
+            else it
         } }
         return R.string.did_update_selected
     }

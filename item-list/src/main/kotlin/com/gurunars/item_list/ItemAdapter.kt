@@ -114,8 +114,7 @@ internal class ItemAdapter<ItemType : Item>(
     override fun getItemViewType(position: Int) =
             if (items.get().isEmpty())
                 EMPTY_TYPE
-            else
-                getItemTypeInt(items.get()[position])
+            else getItemTypeInt(items.get()[position])
 
     override fun getItemCount() = Math.max(1, items.get().size)
 
