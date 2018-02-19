@@ -39,15 +39,15 @@ class DataSource<Type>(
 
     init {
         box.toObservable()
+            .subscribeOn(AndroidSchedulers.mainThread())
             .skip(1)
             .filter { ready.get() }
             .debounce(timeout, TimeUnit.MILLISECONDS)
-            .subscribeOn(AndroidSchedulers.mainThread())
             .map {
                 ready.set(false)
                 it
             }
-            .subscribeOn(Schedulers.io())
+            .observeOn(Schedulers.io())
             .map {
                 setF(it)
                 preprocess(getF())
