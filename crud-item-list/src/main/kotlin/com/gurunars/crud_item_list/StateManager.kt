@@ -99,7 +99,7 @@ internal class StateMachine<ItemType : Item>(
         }
     }
 
-    fun loadItem(item: ItemType) =
+    fun loadItem(item: ItemType?) =
         state.patch { State(itemInEdit = item) }
 
     fun loadType(itemType: Enum<*>) =

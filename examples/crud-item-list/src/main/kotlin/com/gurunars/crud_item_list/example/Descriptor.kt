@@ -44,7 +44,7 @@ internal class Descriptor(
                 ItemTypeDescriptor.Status.ok()
         }
 
-    override fun bindRow(field: IRoBox<SelectableItem<AnimalItem>>, triggerEdit: () -> Unit): View =
+    override fun bindRow(field: IRoBox<SelectableItem<AnimalItem>>): View =
         coloredRowSelectionDecorator(field) { context.bindAnimal(it ) }
 
     override val icon = Icon(icon = iconId)

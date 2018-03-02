@@ -15,12 +15,12 @@ import com.gurunars.floatmenu.MenuPane
 import com.gurunars.floatmenu.floatMenu
 import com.gurunars.item_list.EmptyViewBinder
 import com.gurunars.item_list.Item
-import com.gurunars.item_list.SelectableItem
 import com.gurunars.item_list.defaultEmptyViewBinder
 import com.gurunars.item_list.selectableItemListView
 import org.jetbrains.anko.dip
 import org.jetbrains.anko.frameLayout
 import org.jetbrains.anko.progressBar
+import java.util.*
 import com.gurunars.floatmenu.R as floatR
 
 /**
@@ -46,7 +46,8 @@ fun <ItemType : Item> Context.crudItemListView(
     emptyViewBinder: EmptyViewBinder = this::defaultEmptyViewBinder,
     confirmationActionColors: IconColorBundle = IconColorBundle(),
     cancelActionColors: IconColorBundle = IconColorBundle(),
-    openIconColors: IconColorBundle = IconColorBundle()
+    openIconColors: IconColorBundle = IconColorBundle(),
+    itemInEdit: IBox<Optional<ItemType>> = Optional.empty<ItemType>().box
 ): View = statefulView(R.id.crudItemListView, "CRUD ITEM LIST") {
 
     val typeCache = itemTypeDescriptors.map { Pair(it.type, it) }.toMap()
@@ -64,7 +65,7 @@ fun <ItemType : Item> Context.crudItemListView(
                 item,
                 { it ->
                     isOpen.set(false)
-                    items.patch { processItemInEdit(it, this) }
+                    items.patch { processItemInEdit(this, it) }
                 },
                 confirmationActionColors,
                 typeCache[item.type]!!
@@ -103,17 +104,14 @@ fun <ItemType : Item> Context.crudItemListView(
         { stateMachine.loadType(it) }
     )
 
+    itemInEdit.onChange {
+        stateMachine.loadItem(if (it.isPresent) it.get() else null)
+    }
+
     val itemListView = selectableItemListView(
         items = items,
         selectedItems = stateMachine.selectedItems,
-        itemViewBinders = itemTypeDescriptors.map {
-            Pair(
-                it.type,
-                { item: IRoBox<SelectableItem<ItemType>> -> it.bindRow(
-                    item, { stateMachine.loadItem(item.get().item) }
-                ) }
-            )
-        }.toMap(),
+        itemViewBinders = itemTypeDescriptors.map { Pair(it.type, it::bindRow) }.toMap(),
         emptyViewBinder = emptyViewBinder,
         explicitSelectionMode = stateMachine.state.oneWayBranch { explicitContextual }
     )
