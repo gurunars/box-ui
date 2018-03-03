@@ -24,9 +24,11 @@ fun <ItemType : DbItem> persistList(
     runInTransaction(Runnable {
         delete(with(asMap(items)) { source?.filter { !this.contains(it.id) } ?: listOf() })
         update(items.filterNot { it.id == 0L })
-        insert(items.filter { it.id <= 0L }.map { kryo.copy(it).apply {
-            id = 0L
-        } })
+        insert(items.filter { it.id <= 0L }.map {
+            kryo.copy(it).apply {
+                id = 0L
+            }
+        })
     })
     return all()
 }
