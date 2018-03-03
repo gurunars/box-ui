@@ -1,7 +1,7 @@
 ext.moduleName="test-utils"
 ext.moduleGroup="com.gurunars.test_utils"
 
-apply from: '../all-libs.gradle'
+apply from: '../android-module-base.gradle'
 
 dependencies {
     api 'com.android.support.test:rules:1.0.1'

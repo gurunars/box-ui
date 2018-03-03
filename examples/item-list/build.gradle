@@ -1,6 +1,6 @@
 ext.appId="com.gurunars.item_list.example"
 
-apply from: '../all-examples.gradle'
+apply from: '../example.gradle'
 
 dependencies {
     implementation project(':item-list')

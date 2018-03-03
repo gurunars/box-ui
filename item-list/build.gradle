@@ -1,7 +1,7 @@
 ext.moduleName="item-list"
 ext.moduleGroup="com.gurunars.item_list"
 
-apply from: '../all-modules.gradle'
+apply from: '../android-module.gradle'
 
 description = """
 A component based on RecyclerView with a simplified interface capable of

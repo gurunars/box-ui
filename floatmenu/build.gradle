@@ -1,7 +1,7 @@
 ext.moduleName="floatmenu"
 ext.moduleGroup="com.gurunars.floatmenu"
 
-apply from: '../all-modules.gradle'
+apply from: '../android-module.gradle'
 
 description = """
 A component for creating FAB based menus

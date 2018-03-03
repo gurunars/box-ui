@@ -3,7 +3,7 @@ apply plugin: 'kotlin-kapt'
 ext.moduleName="animal-item"
 ext.moduleGroup="com.gurunars.animal_item"
 
-apply from: '../../all-libs.gradle'
+apply from: '../../android-module-base.gradle'
 
 dependencies {
     implementation "android.arch.persistence.room:runtime:$roomVersion"

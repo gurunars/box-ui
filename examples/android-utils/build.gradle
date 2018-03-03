@@ -1,6 +1,6 @@
 ext.appId="com.gurunars.android_utils.example"
 
-apply from: '../all-examples.gradle'
+apply from: '../example.gradle'
 
 
 dependencies {

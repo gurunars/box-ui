@@ -1,4 +1,4 @@
-apply from: '../all-libs.gradle'
+apply from: '../android-module-base.gradle'
 
 apply plugin: 'org.jetbrains.dokka-android'
 apply plugin: 'maven-publish'

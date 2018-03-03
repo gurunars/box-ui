@@ -2,7 +2,7 @@ ext.moduleName="storybook-annotations"
 ext.moduleGroup="com.gurunars.storybook_annotations"
 ext.isAnnotation=true
 
-apply from: '../all-java-modules.gradle'
+apply from: '../pure-java-module.gradle'
 
 description = """
 A StorybookComponent annotation to be used together with storybook and storybook-registry.

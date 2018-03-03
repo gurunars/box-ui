@@ -1,7 +1,7 @@
 ext.moduleName="storybook"
 ext.moduleGroup="com.gurunars.storybook"
 
-apply from: '../all-modules.gradle'
+apply from: '../android-module.gradle'
 
 description = """
 A library to help developing custom box-ui components via a registry based storybook

@@ -1,7 +1,7 @@
 ext.moduleName="box"
 ext.moduleGroup="com.gurunars.box"
 
-apply from: '../all-modules.gradle'
+apply from: '../pure-java-module.gradle'
 
 description = """
 A library to facilitate data binding via observable data containers that can be entangled together,
@@ -11,4 +11,5 @@ manipulated and monitored for changes.
 dependencies {
     testImplementation junit
     api 'io.reactivex.rxjava2:rxjava:2.1.9'
+    api kotlinStdLib
 }

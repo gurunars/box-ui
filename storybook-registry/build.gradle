@@ -2,7 +2,7 @@ ext.moduleName="storybook-registry"
 ext.moduleGroup="com.gurunars.storybook_registry"
 ext.isAnnotationProcessor=true
 
-apply from: '../all-java-modules.gradle'
+apply from: '../pure-java-module.gradle'
 
 description = """
 A storybook-registry annotation processor to be used together with storybook and 
