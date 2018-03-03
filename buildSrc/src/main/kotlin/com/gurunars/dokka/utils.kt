@@ -219,12 +219,11 @@ internal fun beautify(project: Project, modules: Collection<Project>) {
             """
         else if (it.isAnnotationProcessor())
             """
-            annotationProcessor '$ref'
             kapt '$ref'
             """
         else if (it.isAnnotation())
             """
-            api '$ref
+            implementation '$ref
             """
         else """
             implementation '$ref'
