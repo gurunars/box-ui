@@ -1,6 +1,7 @@
 package com.gurunars.floatmenu
 
 import android.animation.FloatEvaluator
+import android.animation.LayoutTransition
 import android.animation.ValueAnimator
 import android.annotation.SuppressLint
 import android.content.Context
@@ -22,6 +23,10 @@ internal class MenuHolder constructor(
 ) : FrameLayout(context) {
 
     init {
+
+        layoutTransition = LayoutTransition().apply {
+            setDuration(500)
+        }
 
         val floatEvaluator = FloatEvaluator()
         val animatedValue = Box(1f)
