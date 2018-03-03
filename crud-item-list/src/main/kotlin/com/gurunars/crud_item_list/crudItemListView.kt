@@ -36,10 +36,11 @@ import com.gurunars.floatmenu.R as floatR
  * @param openIconColors Plus icon color settings. The icon is shown when the menu is closed.
  * Clicking the icon opens the creation menu
  * @param items A collection of items shown and manipulated by the view.
+ * @param itemInEdit item currently being edited. If not null - the form is opened. The form is
+ *                   closed otherwise
  */
 fun <ItemType : Item> Context.crudItemListView(
     itemTypeDescriptors: List<ItemTypeDescriptor<ItemType>>,
-    items: IBox<List<ItemType>>,
     clipboardSerializer: ClipboardSerializer<ItemType>? = null,
     sortable: Boolean = true,
     actionIconColors: IconColorBundle = IconColorBundle(),
@@ -47,6 +48,7 @@ fun <ItemType : Item> Context.crudItemListView(
     confirmationActionColors: IconColorBundle = IconColorBundle(),
     cancelActionColors: IconColorBundle = IconColorBundle(),
     openIconColors: IconColorBundle = IconColorBundle(),
+    items: IBox<List<ItemType>>,
     itemInEdit: IBox<Optional<ItemType>> = Optional.empty<ItemType>().box
 ): View = statefulView(R.id.crudItemListView, "CRUD ITEM LIST") {
 
@@ -99,14 +101,9 @@ fun <ItemType : Item> Context.crudItemListView(
         }
     }
 
-    val creationMenu = creationMenu(
-            itemTypeDescriptors,
-        { stateMachine.loadType(it) }
-    )
-
-    itemInEdit.onChange {
-        stateMachine.loadItem(if (it.isPresent) it.get() else null)
-    }
+    val creationMenu = creationMenu(itemTypeDescriptors, { stateMachine.loadType(it) })
+    itemInEdit.onChange { stateMachine.loadItem(it.toNullable()) }
+    stateMachine.state.onChange { itemInEdit.set(it.itemInEdit.toOptional()) }
 
     val itemListView = selectableItemListView(
         items = items,
