@@ -6,13 +6,13 @@ import android.support.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu
 import android.support.test.espresso.action.ViewActions.click
 import android.support.test.espresso.assertion.ViewAssertions.matches
 import android.support.test.espresso.matcher.ViewMatchers.isDisplayed
-import android.support.test.espresso.matcher.ViewMatchers.withId
 import android.support.test.espresso.matcher.ViewMatchers.withText
 import android.support.test.filters.LargeTest
 import android.support.test.rule.ActivityTestRule
 import android.support.test.runner.AndroidJUnit4
-import com.gurunars.test_utils.Helpers.nthChildOf
-import org.junit.After
+import android.support.v7.widget.RecyclerView
+import android.widget.TextView
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -39,7 +39,14 @@ class ActivityMainTest {
 
     private fun assertList(vararg expectedItems: String) {
         for (i in expectedItems.indices) {
-            onView(nthChildOf(withId(R.id.recyclerView), i)).check(matches(withText(expectedItems[i])))
+            assertEquals(
+                expectedItems[i],
+                mActivityRule.activity
+                    .findViewById<RecyclerView>(R.id.recyclerView)
+                    .getChildAt(i)
+                    .findViewById<TextView>(R.id.title)
+                    .text
+            )
         }
     }
 
@@ -117,10 +124,7 @@ class ActivityMainTest {
     @Before
     fun before() {
         clickMenu("Reset items")
+        Thread.sleep(700)
     }
 
-    @After
-    fun after() {
-        clickMenu("Reset items")
-    }
 }

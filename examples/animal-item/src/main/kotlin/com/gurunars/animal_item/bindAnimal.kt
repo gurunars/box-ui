@@ -20,6 +20,7 @@ fun Context.bindAnimal(field: IRoBox<AnimalItem>): View = linearLayout {
         height = dip(25)
     }
     textView {
+        id=R.id.title
         asRow()
         padding = context.dip(5)
         text(field.oneWayBranch { toString() })

@@ -3,19 +3,19 @@ package com.gurunars.item_list.selectable_example
 import android.support.test.InstrumentationRegistry.getInstrumentation
 import android.support.test.espresso.Espresso.onView
 import android.support.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu
-import android.support.test.espresso.ViewInteraction
 import android.support.test.espresso.action.ViewActions.click
 import android.support.test.espresso.action.ViewActions.longClick
-import android.support.test.espresso.assertion.ViewAssertions.matches
-import android.support.test.espresso.matcher.ViewMatchers
 import android.support.test.espresso.matcher.ViewMatchers.withId
 import android.support.test.espresso.matcher.ViewMatchers.withText
 import android.support.test.filters.LargeTest
 import android.support.test.rule.ActivityTestRule
 import android.support.test.runner.AndroidJUnit4
+import android.support.v7.widget.RecyclerView
+import android.view.View
+import android.widget.TextView
 import com.gurunars.test_utils.Helpers.nthChildOf
-import org.hamcrest.core.Is
 import org.junit.After
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -33,13 +33,21 @@ class ActivityMainTest {
         onView(withText(text)).perform(click())
     }
 
-    private fun atIndex(id: Int): ViewInteraction {
-        return onView(nthChildOf(withId(R.id.recyclerView), id))
+    private fun atIndex(id: Int): View {
+        return mActivityRule.activity
+            .findViewById<RecyclerView>(R.id.recyclerView)
+            .getChildAt(id)
     }
 
     private fun validateSelection(index: Int, text: String, isSelected: Boolean) {
-        atIndex(index).check(matches(withText(text)))
-        atIndex(index).check(matches(ViewMatchers.withTagKey(R.id.isSelected, Is.`is`(isSelected))))
+        assertEquals(
+            text,
+            atIndex(index).findViewById<TextView>(R.id.title).text
+        )
+        assertEquals(
+            isSelected,
+            atIndex(index).getTag(R.id.isSelected)
+        )
     }
 
     private fun assertList(vararg expectedItems: Pair<String, Boolean>) {

@@ -2,17 +2,10 @@ package com.gurunars.crud_item_list.example
 
 import android.support.test.espresso.Espresso.onView
 import android.support.test.espresso.ViewInteraction
-import android.support.test.espresso.action.ViewActions.click
-import android.support.test.espresso.action.ViewActions.longClick
-import android.support.test.espresso.action.ViewActions.typeText
+import android.support.test.espresso.action.ViewActions.*
 import android.support.test.espresso.assertion.ViewAssertions.matches
 import android.support.test.espresso.matcher.ViewMatchers
-import android.support.test.espresso.matcher.ViewMatchers.isEnabled
-import android.support.test.espresso.matcher.ViewMatchers.withEffectiveVisibility
-import android.support.test.espresso.matcher.ViewMatchers.withId
-import android.support.test.espresso.matcher.ViewMatchers.withTagKey
-import android.support.test.espresso.matcher.ViewMatchers.withTagValue
-import android.support.test.espresso.matcher.ViewMatchers.withText
+import android.support.test.espresso.matcher.ViewMatchers.*
 import android.support.test.filters.LargeTest
 import android.support.test.rule.ActivityTestRule
 import android.support.test.runner.AndroidJUnit4
@@ -211,10 +204,10 @@ class ActivitySortableTest {
         atIndex(5).perform(click())
 
         validateSelection(1, "#2{TIGER @ 0}", true)
-        validateSelection(4, "#5{TIGER @ 0}", false)
-        validateSelection(5, "#6{MONKEY @ 0}", false)
         validateSelection(2, "#3{MONKEY @ 0}", true)
-        validateSelection(3, "#4{WOLF @ 0}", true)
+        validateSelection(3, "#5{TIGER @ 0}", false)
+        validateSelection(4, "#6{MONKEY @ 0}", true)
+        validateSelection(5, "#4{WOLF @ 0}", true)
     }
 
     @Test
@@ -285,7 +278,8 @@ class ActivitySortableTest {
     }
 
     @After
-    fun after() {
-        onView(withId(R.id.reset)).perform(click())
+    fun waitd() {
+        //Thread.sleep(100000)
     }
+
 }
