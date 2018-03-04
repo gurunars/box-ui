@@ -39,14 +39,14 @@ internal class ActionPasteFromClipboard<ItemType : Item>(
         consumer: ItemSetChange<ItemType>
     ) {
         doAsync {
-            val full = getPasteCandidates()
+            val toPaste = getPasteCandidates()
             uiThread {
-                if (full.isNotEmpty()) {
+                if (toPaste.isNotEmpty()) {
                     okToast
                 } else {
                     nokToast
                 }.show()
-                consumer(all + full, selectedItems)
+                consumer(insertAfterLastSelected(all, selectedItems, toPaste), selectedItems)
             }
         }
     }

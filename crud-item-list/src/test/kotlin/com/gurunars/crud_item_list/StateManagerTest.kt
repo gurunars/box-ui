@@ -16,7 +16,7 @@ class TestDescriptor : ItemTypeDescriptor<StringItem> {
     override val icon: Icon
         get() = TODO("NOT NEEDED FOR TESTS")
 
-    override fun bindRow(field: IRoBox<SelectableItem<StringItem>>, triggerEdit: () -> Unit): View =
+    override fun bindRow(field: IRoBox<SelectableItem<StringItem>>): View =
         TODO("NOT NEEDED FOR TESTS")
 
     override fun validate(item: StringItem) =
