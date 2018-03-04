@@ -18,7 +18,7 @@ internal class ItemAdapter<ItemType : Item>(
     private var previousList: List<ItemType> = ArrayList()
     private var recyclerView: RecyclerView? = null
 
-    override fun onAttachedToRecyclerView(recyclerView: RecyclerView?) {
+    override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
         this.recyclerView = recyclerView
     }
 

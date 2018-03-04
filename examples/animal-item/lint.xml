@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lint>
+    <issue id="VectorPath" severity="ignore" />
+    <issue id="UnusedResources">
+        <ignore path="src/main/res/drawable/ic_menu_lion.xml" />
+        <ignore path="src/main/res/drawable/ic_menu_monkey.xml" />
+        <ignore path="src/main/res/drawable/ic_menu_tiger.xml" />
+        <ignore path="src/main/res/drawable/ic_menu_wolf.xml" />
+    </issue>
+</lint>

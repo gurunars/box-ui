@@ -211,10 +211,10 @@ class ActivitySortableTest {
         atIndex(5).perform(click())
 
         validateSelection(1, "#2{TIGER @ 0}", true)
+        validateSelection(4, "#5{TIGER @ 0}", false)
+        validateSelection(5, "#6{MONKEY @ 0}", false)
         validateSelection(2, "#3{MONKEY @ 0}", true)
-        validateSelection(3, "#4{WOLF @ 0}", false)
-        validateSelection(4, "#5{TIGER @ 0}", true)
-        validateSelection(5, "#6{MONKEY @ 0}", true)
+        validateSelection(3, "#4{WOLF @ 0}", true)
     }
 
     @Test
