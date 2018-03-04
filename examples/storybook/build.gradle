@@ -1,9 +1,10 @@
 ext.appId="com.gurunars.storybook.example"
 
+apply plugin: 'kotlin-kapt'
 apply from: '../example.gradle'
 
 dependencies {
     implementation project(':storybook')
-    api project(':storybook-annotations')
+    implementation project(':storybook-annotations')
     kapt project(':storybook-registry')
 }

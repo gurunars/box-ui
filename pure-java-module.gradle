@@ -4,6 +4,8 @@ apply plugin: 'org.jetbrains.dokka'
 apply plugin: 'maven-publish'
 apply plugin: 'com.jfrog.bintray'
 
+apply from: '../with-test-log.gradle'
+
 publishing {
     publications {
         StorybookPublication(MavenPublication) {

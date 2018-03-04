@@ -1,6 +1,8 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 
+apply from: '../../with-test-log.gradle'
+
 android {
     compileSdkVersion sdkVersionTarget
     buildToolsVersion buildToolsVersion

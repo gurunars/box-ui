@@ -1,4 +1,5 @@
 apply from: '../android-module-base.gradle'
+apply from: '../with-test-log.gradle'
 
 apply plugin: 'org.jetbrains.dokka-android'
 apply plugin: 'maven-publish'
