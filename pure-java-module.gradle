@@ -6,6 +6,9 @@ apply plugin: 'com.jfrog.bintray'
 
 apply from: '../with-test-log.gradle'
 
+group = moduleGroup
+version = rootProject.version
+
 publishing {
     publications {
         StorybookPublication(MavenPublication) {
