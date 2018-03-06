@@ -1,6 +1,6 @@
 package com.gurunars.crud_item_list
 
-fun<ItemType> insertAfterLastSelected(
+internal fun<ItemType> insertAfterLastSelected(
     all: List<ItemType>,
     selectedItems: Set<ItemType>,
     newItems: List<ItemType>
