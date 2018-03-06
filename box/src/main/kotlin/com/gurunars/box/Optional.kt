@@ -2,7 +2,11 @@ package com.gurunars.box
 
 /***/
 sealed class Optional<out T> {
-    /** If there is a value */
+    /**
+     * If there is a value
+     *
+     * @property element item that is stored within a placeholder
+     */
     class Some<out T>(val element: T): Optional<T>()
     /** If there is no value */
     object None: Optional<Nothing>()
