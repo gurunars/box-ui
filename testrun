@@ -1,0 +1,2 @@
+#!/bin/bash
+./gradlew example-selectable-item-list:connectedAndroidTest -Pandroid.testInstrumentationRunnerArguments.class=com.gurunars.crud_item_list.example.ActivitySortableTest#movingSelectionToBottom_shouldDisableMoveDown
