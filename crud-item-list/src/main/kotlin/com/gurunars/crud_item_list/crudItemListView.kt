@@ -5,11 +5,7 @@ import android.view.Gravity
 import android.view.View
 import com.gurunars.android_utils.Icon
 import com.gurunars.box.*
-import com.gurunars.box.ui.closeKeyboard
-import com.gurunars.box.ui.fullSize
-import com.gurunars.box.ui.onLongClick
-import com.gurunars.box.ui.set
-import com.gurunars.box.ui.statefulView
+import com.gurunars.box.ui.*
 import com.gurunars.floatmenu.ContentPane
 import com.gurunars.floatmenu.MenuPane
 import com.gurunars.floatmenu.floatMenu
@@ -20,7 +16,6 @@ import com.gurunars.item_list.selectableItemListView
 import org.jetbrains.anko.dip
 import org.jetbrains.anko.frameLayout
 import org.jetbrains.anko.progressBar
-import java.util.*
 import com.gurunars.floatmenu.R as floatR
 
 /**
@@ -49,7 +44,7 @@ fun <ItemType : Item> Context.crudItemListView(
     cancelActionColors: IconColorBundle = IconColorBundle(),
     openIconColors: IconColorBundle = IconColorBundle(),
     items: IBox<List<ItemType>>,
-    itemInEdit: IBox<Optional<ItemType>> = Optional.empty<ItemType>().box
+    itemInEdit: IBox<Optional<ItemType>> = Optional.None.box
 ): View = statefulView(R.id.crudItemListView, "CRUD ITEM LIST") {
 
     val typeCache = itemTypeDescriptors.map { Pair(it.type, it) }.toMap()
