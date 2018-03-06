@@ -10,6 +10,6 @@ manipulated and monitored for changes.
 
 dependencies {
     testImplementation junit
-    api 'io.reactivex.rxjava2:rxjava:2.1.9'
+    api 'io.reactivex.rxjava2:rxjava:2.1.10'
     api kotlinStdLib
 }
