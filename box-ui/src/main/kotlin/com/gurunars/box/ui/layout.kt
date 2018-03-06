@@ -53,6 +53,15 @@ fun ViewGroup.LayoutParams.asRow() {
 }
 
 /**
+ * width = 0
+ * height = 0
+ */
+fun ViewGroup.LayoutParams.asEmpty() {
+    width = 0
+    height = 0
+}
+
+/**
  * width = MATCH_PARENT
  * height = MATCH_PARENT
  */
@@ -68,6 +77,15 @@ fun View.fullSize() {
 fun View.asRow() {
     layoutParams = layoutParams ?: ViewGroup.LayoutParams(MATCH_PARENT, WRAP_CONTENT)
     layoutParams.asRow()
+}
+
+/**
+ * width = 0
+ * height = 0
+ */
+fun View.asEmpty() {
+    layoutParams = layoutParams ?: ViewGroup.LayoutParams(0, 0)
+    layoutParams.asEmpty()
 }
 
 /** Removes all the views and adds this view as the only full screen child */
