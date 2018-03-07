@@ -2,6 +2,7 @@ package com.gurunars.item_list
 
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.LayerDrawable
 import android.support.annotation.ColorInt
 import android.view.View
 import com.gurunars.box.Box
@@ -25,7 +26,8 @@ fun <ItemType : Item> coloredRowSelectionDecorator(
         asRow()
         field.onChange { item ->
             setTag(R.id.isSelected, item.isSelected)
-            background = if (item.isSelected) ColorDrawable(selectionColor) else background
+            background = if (item.isSelected) LayerDrawable(
+                listOf(ColorDrawable(selectionColor), background).toTypedArray()) else background
             newField.set(item.item, true)
         }
     }

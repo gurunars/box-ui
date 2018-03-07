@@ -46,7 +46,7 @@ private class BorderDrawable(
         val topBorder = RectF(0.0f, 0.0f, width, spec.top.toFloat())
         val bottomBorder = RectF(0.0f, height - spec.bottom.toFloat(), width, height)
         val leftBorder = RectF(0.0f, 0.0f, spec.left.toFloat(), height)
-        val rightBorder = RectF(width - spec.right.toFloat(), 0.0f, spec.right.toFloat(), height)
+        val rightBorder = RectF(width - spec.right.toFloat(), 0.0f, width, height)
 
         listOf(topBorder, bottomBorder, leftBorder, rightBorder).forEach {
             canvas.drawRect(it, paint)
