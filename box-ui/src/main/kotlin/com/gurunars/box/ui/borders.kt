@@ -1,7 +1,8 @@
 package com.gurunars.box.ui
 
-import android.graphics.Color
+import android.graphics.*
 import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.Drawable
 import android.graphics.drawable.LayerDrawable
 import android.graphics.drawable.ShapeDrawable
 import android.graphics.drawable.shapes.RectShape
@@ -27,20 +28,53 @@ data class Spec(
     constructor(horizontal: Int = 0, vertical: Int = 0) : this(horizontal, horizontal, vertical, vertical)
 }
 
+
+private class BorderDrawable(
+    private val spec: Spec,
+    private @ColorInt val borderColor: Int = Color.BLACK
+): Drawable() {
+    private val paint = Paint().apply {
+        color = borderColor
+    }
+
+    override fun draw(canvas: Canvas) {
+        val height = bounds.height().toFloat()
+        val width = bounds.width().toFloat()
+
+        //left, top is 0,0
+        //left, top, right, bottom
+        val topBorder = RectF(0.0f, 0.0f, width, spec.top.toFloat())
+        val bottomBorder = RectF(0.0f, height - spec.bottom.toFloat(), width, height)
+        val leftBorder = RectF(0.0f, 0.0f, spec.left.toFloat(), height)
+        val rightBorder = RectF(width - spec.right.toFloat(), 0.0f, spec.right.toFloat(), height)
+
+        listOf(topBorder, bottomBorder, leftBorder, rightBorder).forEach {
+            canvas.drawRect(it, paint)
+        }
+    }
+
+    override fun setAlpha(alpha: Int) {
+        paint.alpha = alpha
+    }
+
+    override fun getOpacity() = PixelFormat.TRANSLUCENT
+
+    override fun setColorFilter(cf: ColorFilter?) {
+        paint.colorFilter = cf
+    }
+
+}
+
+
 /***/
 fun View.setBorders(
     spec: Spec,
     @ColorInt color: Int = Color.BLACK
 ) {
     background = LayerDrawable(listOf(
-        ShapeDrawable(RectShape()).apply {
-            paint.color = color
-        },
-        ColorDrawable(color),
-        ColorDrawable(color),
-        ColorDrawable(color),
+        BorderDrawable(spec, color),
         background ?: ColorDrawable(Color.TRANSPARENT)
     ).toTypedArray()).apply {
-
+        setLayerInset(1, spec.left, spec.top, spec.right, spec.bottom)
     }
 }
