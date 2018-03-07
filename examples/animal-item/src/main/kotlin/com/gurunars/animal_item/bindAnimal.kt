@@ -5,9 +5,7 @@ import android.view.Gravity
 import android.view.View
 import com.gurunars.box.IRoBox
 import com.gurunars.box.oneWayBranch
-import com.gurunars.box.ui.asRow
-import com.gurunars.box.ui.resource
-import com.gurunars.box.ui.text
+import com.gurunars.box.ui.*
 import org.jetbrains.anko.*
 
 fun Context.bindAnimal(field: IRoBox<AnimalItem>): View = linearLayout {
@@ -25,4 +23,5 @@ fun Context.bindAnimal(field: IRoBox<AnimalItem>): View = linearLayout {
         padding = context.dip(5)
         text(field.oneWayBranch { toString() })
     }
+    setBorders(Spec(bottom=1))
 }

@@ -3,7 +3,10 @@ package com.gurunars.box.ui
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.LayerDrawable
+import android.graphics.drawable.ShapeDrawable
+import android.graphics.drawable.shapes.RectShape
 import android.support.annotation.ColorInt
+import android.view.Gravity
 import android.view.View
 
 /**
@@ -27,13 +30,17 @@ data class Spec(
 /***/
 fun View.setBorders(
     spec: Spec,
-    @ColorInt color: Int = Color.BLACK,
-    @ColorInt backgroundColor: Int = Color.WHITE
+    @ColorInt color: Int = Color.BLACK
 ) {
     background = LayerDrawable(listOf(
+        ShapeDrawable(RectShape()).apply {
+            paint.color = color
+        },
         ColorDrawable(color),
-        background ?: ColorDrawable(backgroundColor)
+        ColorDrawable(color),
+        ColorDrawable(color),
+        background ?: ColorDrawable(Color.TRANSPARENT)
     ).toTypedArray()).apply {
-        setLayerInset(1, spec.left, spec.top, spec.right, spec.bottom)
+
     }
 }
