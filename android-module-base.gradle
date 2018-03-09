@@ -9,6 +9,7 @@ android {
     buildToolsVersion buildToolsVersion
 
     defaultConfig {
+        testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
         minSdkVersion sdkVersionMin
         targetSdkVersion sdkVersionTarget
         versionCode packageVersionCode

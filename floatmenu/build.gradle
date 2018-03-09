@@ -12,6 +12,9 @@ screen.
 
 dependencies {
     api anko
+    androidTestImplementation junit
+    androidTestImplementation mockito
+    androidTestImplementation 'com.android.support.test:rules:1.0.1'
     api project(':android-utils')
     api project(':box')
     api project(':box-ui')
