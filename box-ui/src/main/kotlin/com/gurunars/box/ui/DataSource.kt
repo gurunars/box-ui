@@ -2,6 +2,7 @@ package com.gurunars.box.ui
 
 import com.gurunars.box.Box
 import com.gurunars.box.IBox
+import com.gurunars.box.IRoBox
 import com.gurunars.box.toObservable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -30,21 +31,22 @@ class DataSource<Type>(
 ) : IBox<Type> {
     private val box = Box(preprocess(initial))
 
-    val ready = Box(false)
+    private val _ready = Box(false)
+    val ready: IRoBox<Boolean> = _ready
 
     private fun set(value: Type) {
-        ready.set(true)
+        _ready.set(true)
         box.set(value)
     }
 
     init {
         box.toObservable()
             .skip(1)
-            .filter { ready.get() }
+            .filter { _ready.get() }
             .debounce(timeout, TimeUnit.MILLISECONDS)
             .observeOn(AndroidSchedulers.mainThread())
             .map {
-                ready.set(false)
+                _ready.set(false)
                 it
             }
             .observeOn(Schedulers.io())
@@ -60,13 +62,19 @@ class DataSource<Type>(
         }
     }
 
+    fun reload() {
+        _ready.set(false)
+        box.set(getF())
+        _ready.set(true)
+    }
+
     /** @see Box.get */
     override fun get() = box.get()
 
     /** @see Box.set */
     override fun set(value: Type, force: Boolean): Boolean {
         // We do not want to set anything before at least the initial load took place
-        return if (!ready.get() && !force) {
+        return if (!_ready.get() && !force) {
             false
         } else {
             box.set(preprocess(value), force)
@@ -75,5 +83,5 @@ class DataSource<Type>(
 
     /** @see Box.onChange */
     override fun onChange(listener: (item: Type) -> Unit) =
-        box.onChange { if (ready.get()) listener(it) }
+        box.onChange { if (_ready.get()) listener(it) }
 }
