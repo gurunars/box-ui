@@ -56,16 +56,16 @@ class DataSource<Type>(
             }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(this::set, { throw it })
-        doAsync {
-            val init = preprocess(getF())
-            uiThread { _ -> this@DataSource.set(init) }
-        }
+        reload()
     }
 
     /** Triggers data source refetch */
     fun reload() {
         _ready.set(false)
-        box.set(getF())
+        doAsync {
+            val init = preprocess(getF())
+            uiThread { _ -> this@DataSource.set(init) }
+        }
         _ready.set(true)
     }
 
