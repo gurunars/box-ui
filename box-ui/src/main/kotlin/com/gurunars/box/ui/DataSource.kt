@@ -62,6 +62,7 @@ class DataSource<Type>(
         }
     }
 
+    /** Triggers data source refetch */
     fun reload() {
         _ready.set(false)
         box.set(getF())
