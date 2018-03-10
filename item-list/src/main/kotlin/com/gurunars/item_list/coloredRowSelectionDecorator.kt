@@ -24,10 +24,11 @@ fun <ItemType : Item> coloredRowSelectionDecorator(
     val newField = Box(field.get().item)
     return render(newField).apply {
         asRow()
+        val originalBackground = background.mutate()
         field.onChange { item ->
             setTag(R.id.isSelected, item.isSelected)
             background = if (item.isSelected) LayerDrawable(
-                listOf(ColorDrawable(selectionColor), background).toTypedArray()) else background
+                listOf(ColorDrawable(selectionColor), background).toTypedArray()) else originalBackground
             newField.set(item.item, true)
         }
     }

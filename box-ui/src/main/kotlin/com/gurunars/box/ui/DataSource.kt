@@ -34,9 +34,9 @@ class DataSource<Type>(
     private val _ready = Box(false)
     val ready: IRoBox<Boolean> = _ready
 
-    private fun set(value: Type) {
-        _ready.set(true)
+    private fun setV(value: Type) {
         box.set(value)
+        _ready.set(true)
     }
 
     init {
@@ -55,7 +55,7 @@ class DataSource<Type>(
                 preprocess(getF())
             }
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(this::set, { throw it })
+            .subscribe(this::setV, { throw it })
         reload()
     }
 
@@ -64,9 +64,8 @@ class DataSource<Type>(
         _ready.set(false)
         doAsync {
             val init = preprocess(getF())
-            uiThread { _ -> this@DataSource.set(init) }
+            uiThread { _ -> this@DataSource.setV(init) }
         }
-        _ready.set(true)
     }
 
     /** @see Box.get */
@@ -84,5 +83,5 @@ class DataSource<Type>(
 
     /** @see Box.onChange */
     override fun onChange(listener: (item: Type) -> Unit) =
-        box.onChange { if (_ready.get()) listener(it) }
+        box.onChange { listener(it) }
 }
