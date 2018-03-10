@@ -39,7 +39,7 @@ internal fun <ItemType : Item> Context.itemForm(
                     rightMargin = dip(6)
                 }
                 textView {
-                    text = formBinder.title
+                    text(formBinder.getItemTitle(field))
                     textColor = formBinder.icon.fgColor
                     textSize = 20f
                 }

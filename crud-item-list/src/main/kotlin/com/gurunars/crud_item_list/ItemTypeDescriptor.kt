@@ -4,6 +4,7 @@ import android.view.View
 import com.gurunars.android_utils.Icon
 import com.gurunars.box.IBox
 import com.gurunars.box.IRoBox
+import com.gurunars.box.box
 import com.gurunars.item_list.Item
 import com.gurunars.item_list.SelectableItem
 
@@ -19,6 +20,13 @@ interface ItemTypeDescriptor<ItemType : Item> {
     val icon: Icon
     val type: Enum<*>
         get() = Item.Default.ONLY
+
+    /**
+     * Return an observable of the title that is a specific for
+     * each individual item
+     */
+    fun getItemTitle(item: IRoBox<ItemType>): IRoBox<String> =
+        title.box
 
     val title: String
 

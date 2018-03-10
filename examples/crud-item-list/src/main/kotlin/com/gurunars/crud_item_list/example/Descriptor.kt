@@ -12,6 +12,7 @@ import com.gurunars.crud_item_list.ItemTypeDescriptor
 import com.gurunars.box.IBox
 import com.gurunars.box.IRoBox
 import com.gurunars.box.branch
+import com.gurunars.box.oneWayBranch
 import com.gurunars.box.ui.fullSize
 import com.gurunars.box.ui.text
 import com.gurunars.item_list.SelectableItem
@@ -27,6 +28,9 @@ internal class Descriptor(
     private val iconId: Int,
     override val type: AnimalItem.Type
 ) : ItemTypeDescriptor<AnimalItem> {
+
+    override fun getItemTitle(item: IRoBox<AnimalItem>) =
+        item.oneWayBranch { "${type.name} ${version}" }
 
     override val title = type.name
 
