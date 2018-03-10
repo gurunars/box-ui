@@ -5,7 +5,7 @@ CRUD apps for Android.
 
 buildscript {
 
-    version = "0.185.0"
+    version = "0.186.0"
 
     ext.computeVersion = {
         def (major, minor, patch) = version.tokenize('.')
