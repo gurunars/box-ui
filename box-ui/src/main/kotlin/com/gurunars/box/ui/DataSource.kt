@@ -18,7 +18,7 @@ class DataSource<Type> private constructor(
     private val getF: () -> Type,
     private val setF: (value: Type) -> Any,
     private val preprocess: (value: Type) -> Type = { it },
-    timeout: Long = 500,
+    private val timeout: Long = 500,
     private val box: BoxWithLifecycle<Type>
 ) : IBox<Type> by box, WithLifecycle by box  {
 

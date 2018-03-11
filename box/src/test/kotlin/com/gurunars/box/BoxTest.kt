@@ -150,24 +150,24 @@ class BoxTest {
         assertEquals(1, slaveField1.get())
         assertEquals(1, slaveField2.get())
 
-        masterField.pause()
+        masterField.stop()
         masterField.set(2)
 
         assertEquals(2, masterField.get())
         assertEquals(1, slaveField1.get())
         assertEquals(1, slaveField2.get())
 
-        masterField.resume()
+        masterField.start()
 
         assertEquals(2, masterField.get())
         assertEquals(2, slaveField1.get())
         assertEquals(2, slaveField2.get())
 
-        masterField.pause()
+        masterField.stop()
 
         slaveField1.set(3)
 
-        // Note - pause does not block value events' consumption
+        // Note - stop does not block value events' consumption
         assertEquals(3, masterField.get())
         assertEquals(3, slaveField1.get())
         // But since slaveField2 is connected to master - it is unaware of the change

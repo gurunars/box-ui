@@ -7,9 +7,9 @@ import io.reactivex.disposables.Disposable
  */
 interface WithLifecycle {
     /** Temporarily pauses value syncing */
-    fun pause()
+    fun stop()
     /** Resumes value syncing */
-    fun resume()
+    fun start()
     /** Drops all the disposables of the IRoBox */
     fun dispose()
 }
@@ -17,10 +17,10 @@ interface WithLifecycle {
 private class LifecycleHandler: WithLifecycle {
 
     private val disposables = mutableListOf<Disposable>()
-    private var isActive = true
+    private var isActive = false
 
-    override fun pause() { isActive = false }
-    override fun resume() { isActive = true }
+    override fun stop() { isActive = false }
+    override fun start() { isActive = true }
 
     override fun dispose() {
         disposables.forEach { if (!it.isDisposed) it.dispose() }
@@ -40,8 +40,8 @@ class BoxWithLifecycle<Type> private constructor(
     override fun onChange(listener: (value: Type) -> Unit) =
         lifecycleHandler.onChange(box, listener)
 
-    override fun resume() {
-        lifecycleHandler.resume()
+    override fun start() {
+        lifecycleHandler.start()
         broadcast()
     }
 }
@@ -55,8 +55,8 @@ class RoBoxWithLifecycle<Type> private constructor(
     override fun onChange(listener: (value: Type) -> Unit) =
         lifecycleHandler.onChange(box, listener)
 
-    override fun resume() {
-        lifecycleHandler.resume()
+    override fun start() {
+        lifecycleHandler.start()
         broadcast()
     }
 }
