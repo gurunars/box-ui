@@ -93,13 +93,13 @@ inline fun <Type> IBox<Type>.fork(
 inline val <F> F.box
     get(): IBox<F> = Box(this)
 
-/** A short way to wrap a IBox into a DisposableBox without parentheses */
+/** A short way to wrap a IBox into a BoxWithLifecycle without parentheses */
 inline val <F> IBox<F>.disposable
-    get() = DisposableBox(this)
+    get() = BoxWithLifecycle(this)
 
-/** A short way to wrap a IRoBox into a DisposableRoBox without parentheses */
+/** A short way to wrap a IRoBox into a RoBoxWithLifecycle without parentheses */
 inline val <F> IRoBox<F>.disposable
-    get() = DisposableRoBox(this)
+    get() = RoBoxWithLifecycle(this)
 
 /** Obtain an observable from a box */
 fun <T> IRoBox<T>.toObservable(): Observable<T> {

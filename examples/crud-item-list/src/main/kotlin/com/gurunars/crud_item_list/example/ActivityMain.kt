@@ -137,11 +137,13 @@ class ActivityMain : Activity() {
         when (i) {
             R.id.reset -> reset()
             R.id.lock -> {
-                isSortable.set(false, true)
+                isSortable.set(false)
+                isSortable.broadcast()
                 reset()
             }
             R.id.unlock -> {
-                isSortable.set(true, true)
+                isSortable.set(true)
+                isSortable.broadcast()
                 reset()
             }
             R.id.addMany -> addItems(4 * 20)

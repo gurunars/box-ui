@@ -11,6 +11,11 @@ import java.util.*
  * @param value initial value of the box
  */
 class Box<Type>(initial: Type) : IBox<Type> {
+
+    override fun broadcast() {
+        subject.onNext(subject.value)
+    }
+
     internal val subject = BehaviorSubject.createDefault<Type>(initial)
 
     override fun onChange(listener: (value: Type) -> Unit): Disposable {
@@ -19,10 +24,10 @@ class Box<Type>(initial: Type) : IBox<Type> {
         }
     }
 
-    override fun set(value: Type, force: Boolean): Boolean {
+    override fun set(value: Type): Boolean {
         // Safeguard against modifications that do not mutate the value
         val current = subject.value
-        if (force || !Objects.deepEquals(current, value)) {
+        if (!Objects.deepEquals(current, value)) {
             subject.onNext(value)
             return true
         }

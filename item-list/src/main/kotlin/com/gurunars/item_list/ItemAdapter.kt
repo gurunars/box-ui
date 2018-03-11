@@ -92,7 +92,7 @@ internal class ItemAdapter<ItemType : Item>(
         }
         @Suppress("UNCHECKED_CAST")
         val field = holder.itemView.getTag(R.id.payloadTag) as Box<ItemType>
-        field.set(items.get()[position], true)
+        field.set(items.get()[position])
     }
 
     override fun getItemId(position: Int) =

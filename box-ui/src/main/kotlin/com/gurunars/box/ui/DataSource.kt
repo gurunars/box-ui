@@ -29,6 +29,7 @@ class DataSource<Type>(
     initial: Type,
     timeout: Long = 500
 ) : IBox<Type> {
+
     private val box = Box(preprocess(initial))
 
     private val _ready = Box(false)
@@ -71,13 +72,18 @@ class DataSource<Type>(
     /** @see Box.get */
     override fun get() = box.get()
 
+    /** @see Box.broadcast */
+    override fun broadcast() {
+        box.broadcast()
+    }
+
     /** @see Box.set */
-    override fun set(value: Type, force: Boolean): Boolean {
+    override fun set(value: Type): Boolean {
         // We do not want to set anything before at least the initial load took place
-        return if (!_ready.get() && !force) {
+        return if (!_ready.get()) {
             false
         } else {
-            box.set(preprocess(value), force)
+            box.set(preprocess(value))
         }
     }
 

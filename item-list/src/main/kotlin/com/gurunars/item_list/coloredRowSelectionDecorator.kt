@@ -29,7 +29,7 @@ fun <ItemType : Item> coloredRowSelectionDecorator(
             setTag(R.id.isSelected, item.isSelected)
             background = if (item.isSelected) LayerDrawable(
                 listOf(ColorDrawable(selectionColor), background).toTypedArray()) else originalBackground
-            newField.set(item.item, true)
+            newField.set(item.item)
         }
     }
 }

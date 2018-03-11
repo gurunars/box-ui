@@ -15,4 +15,9 @@ interface IRoBox<Type> {
      * @param listener a function called with a new value after the change takes place
      */
     fun onChange(listener: (value: Type) -> Unit): Disposable
+
+    /**
+     * Notifies all the listeners about the current state of the value.
+     */
+    fun broadcast()
 }

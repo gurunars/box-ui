@@ -44,7 +44,8 @@ internal class MenuHolder constructor(
                     start()
                 }
             } else {
-                animatedValue.set(1f, true)
+                animatedValue.set(1f)
+                animatedValue.broadcast()
             }
         }
         animatedValue.onChange { value ->
