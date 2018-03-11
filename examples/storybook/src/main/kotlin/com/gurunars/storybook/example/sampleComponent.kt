@@ -10,6 +10,7 @@ import org.jetbrains.anko.textView
 fun Context.sampleComponent(): View =
     frameLayout {
         textView {
+            id=R.id.sampleText
             text = getString(R.string.title)
         }
     }
