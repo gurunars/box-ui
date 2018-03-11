@@ -94,11 +94,11 @@ inline val <F> F.box
     get(): IBox<F> = Box(this)
 
 /** A short way to wrap a IBox into a BoxWithLifecycle without parentheses */
-inline val <F> IBox<F>.disposable
+inline val <F> IBox<F>.withLifecycle
     get() = BoxWithLifecycle(this)
 
 /** A short way to wrap a IRoBox into a RoBoxWithLifecycle without parentheses */
-inline val <F> IRoBox<F>.disposable
+inline val <F> IRoBox<F>.withLifecycle
     get() = RoBoxWithLifecycle(this)
 
 /** Obtain an observable from a box */

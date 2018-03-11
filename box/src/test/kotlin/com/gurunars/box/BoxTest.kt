@@ -118,7 +118,7 @@ class BoxTest {
 
     @Test
     fun disposingBox_disposesAllListeners() {
-        val masterField = 1.box.disposable
+        val masterField = 1.box.withLifecycle
         val slaveField1 = 2.box
         val slaveField2 = 3.box
 
@@ -139,7 +139,7 @@ class BoxTest {
 
     @Test
     fun pausingUnpausing_affectsEventHandling() {
-        val masterField = 1.box.disposable
+        val masterField = 1.box.withLifecycle
         val slaveField1 = 2.box
         val slaveField2 = 3.box
 
