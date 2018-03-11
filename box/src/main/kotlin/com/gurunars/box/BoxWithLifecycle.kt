@@ -2,6 +2,9 @@ package com.gurunars.box
 
 import io.reactivex.disposables.Disposable
 
+/**
+ * Interface to manipulate lifecycle related behavior of the Box
+ */
 interface WithLifecycle {
     /** Temporarily pauses value syncing */
     fun pause()
@@ -32,6 +35,7 @@ private class LifecycleHandler: WithLifecycle {
 class BoxWithLifecycle<Type> private constructor(
     private val box: IBox<Type>, private val lifecycleHandler: LifecycleHandler
 ): IBox<Type> by box, WithLifecycle by lifecycleHandler {
+    /** */
     constructor(box: IBox<Type>): this(box, LifecycleHandler())
     override fun onChange(listener: (value: Type) -> Unit) =
         lifecycleHandler.onChange(box, listener)
@@ -46,6 +50,7 @@ class BoxWithLifecycle<Type> private constructor(
 class RoBoxWithLifecycle<Type> private constructor(
     private val box: IRoBox<Type>, private val lifecycleHandler: LifecycleHandler
 ): IRoBox<Type> by box, WithLifecycle by lifecycleHandler {
+    /** */
     constructor(box: IRoBox<Type>): this(box, LifecycleHandler())
     override fun onChange(listener: (value: Type) -> Unit) =
         lifecycleHandler.onChange(box, listener)
