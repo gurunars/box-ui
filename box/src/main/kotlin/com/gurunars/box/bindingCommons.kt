@@ -13,7 +13,7 @@ import io.reactivex.subjects.BehaviorSubject
  * box
  */
 inline fun <From, To> IRoBox<From>.oneWayBranch(
-        crossinline reduce: From.() -> To
+    crossinline reduce: From.() -> To
 ): IRoBox<To> = Box(get().reduce()).apply {
     this@oneWayBranch.onChange { item -> set(item.reduce()) }
 }
@@ -24,7 +24,7 @@ inline fun <From, To> IRoBox<From>.oneWayBranch(
  * @param patcher a mutator meant to transform the original value into the patched value.
  */
 inline fun <ItemType> IBox<ItemType>.patch(patcher: ItemType.() -> ItemType) =
-        set(get().patcher())
+    set(get().patcher())
 
 /**
  * Creates a two-way binding between this and a target box. Whenever one changes another
@@ -69,8 +69,8 @@ inline fun <Type> IRoBox<Type>.bind(target: IBox<Type>): Disposable {
  * other box
  */
 inline fun <From, To> IBox<From>.branch(
-        crossinline reduce: From.() -> To,
-        crossinline patchSource: From.(part: To) -> From
+    crossinline reduce: From.() -> To,
+    crossinline patchSource: From.(part: To) -> From
 ): IBox<To> {
     val branched = Box(get().reduce())
     branched.onChange { item -> this@branch.patch { patchSource(item) } }
@@ -85,13 +85,21 @@ inline fun <From, To> IBox<From>.branch(
  * @param transform a function to be called whenever value of this or another box changes.
  */
 inline fun <Type> IBox<Type>.fork(
-        crossinline transform: Type.() -> Type
+    crossinline transform: Type.() -> Type
 ) = branch(transform, { it.transform() })
 
 /** A short way to wrap a value into a Box without parentheses */
 @Suppress("NOTHING_TO_INLINE")
 inline val <F> F.box
     get(): IBox<F> = Box(this)
+
+/** A short way to wrap a IBox into a DisposableBox without parentheses */
+inline val <F> IBox<F>.disposable
+    get() = DisposableBox(this)
+
+/** A short way to wrap a IRoBox into a DisposableRoBox without parentheses */
+inline val <F> IRoBox<F>.disposable
+    get() = DisposableRoBox(this)
 
 /** Obtain an observable from a box */
 fun <T> IRoBox<T>.toObservable(): Observable<T> {

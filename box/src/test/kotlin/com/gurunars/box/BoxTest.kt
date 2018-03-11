@@ -115,4 +115,26 @@ class BoxTest {
         assertEquals(1, masterField.get())
         assertEquals(2, slaveField1.get())
     }
+
+    @Test
+    fun disposingBox_disposesAllListeners() {
+        val masterField = 1.box.disposable
+        val slaveField1 = 2.box
+        val slaveField2 = 3.box
+
+        masterField.bind(slaveField1)
+        masterField.bind(slaveField2)
+
+        assertEquals(1, masterField.get())
+        assertEquals(1, slaveField1.get())
+        assertEquals(1, slaveField2.get())
+
+        masterField.dispose()
+        masterField.set(2)
+
+        assertEquals(2, masterField.get())
+        assertEquals(1, slaveField1.get())
+        assertEquals(1, slaveField2.get())
+
+    }
 }
