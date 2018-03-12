@@ -27,7 +27,7 @@ class ActivityMain : Activity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        srv = getRealService(this)
+        srv = getRealService()
         items = srv.items
 
         itemListView(

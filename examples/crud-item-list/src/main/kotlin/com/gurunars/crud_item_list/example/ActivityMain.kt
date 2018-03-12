@@ -10,6 +10,7 @@ import android.view.Menu
 import android.view.MenuItem
 import com.gurunars.animal_item.AnimalItem
 import com.gurunars.animal_item.Service
+import com.gurunars.animal_item.Service.Companion.getRealService
 import com.gurunars.crud_item_list.IconColorBundle
 import com.gurunars.crud_item_list.ItemTypeDescriptor
 import com.gurunars.crud_item_list.crudItemListView
@@ -19,6 +20,7 @@ import com.gurunars.box.ui.setAsOne
 import com.gurunars.box.ui.statefulView
 import com.gurunars.box.box
 import com.gurunars.box.patch
+import com.gurunars.box.ui.bindToLifecycle
 
 class ActivityMain : Activity() {
 
@@ -121,7 +123,7 @@ class ActivityMain : Activity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        srv = Service.getRealService(this)
+        srv = getRealService()
         items = srv.items
         isSortable.onChange(listener = this::initView)
     }

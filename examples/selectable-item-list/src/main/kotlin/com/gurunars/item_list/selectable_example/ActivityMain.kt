@@ -8,15 +8,11 @@ import android.view.MenuItem
 import android.widget.Toast
 import com.gurunars.animal_item.AnimalItem
 import com.gurunars.animal_item.Service
-import com.gurunars.animal_item.bindAnimal
 import com.gurunars.animal_item.Service.Companion.getRealService
-import com.gurunars.box.Box
-import com.gurunars.box.IBox
-import com.gurunars.box.IRoBox
+import com.gurunars.animal_item.bindAnimal
+import com.gurunars.box.*
 import com.gurunars.box.ui.setAsOne
 import com.gurunars.box.ui.statefulView
-import com.gurunars.box.box
-import com.gurunars.box.patch
 import com.gurunars.item_list.SelectableItem
 import com.gurunars.item_list.coloredRowSelectionDecorator
 import com.gurunars.item_list.selectableItemListView
@@ -35,7 +31,7 @@ class ActivityMain : Activity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        srv = getRealService(this)
+        srv = getRealService()
         items = srv.items
 
         statefulView(R.id.main) {
@@ -78,11 +74,13 @@ class ActivityMain : Activity() {
 
     private fun updateSelected(): Int {
         val selected = selectedItems.get()
-        items.patch { this.map {
-            if (selected.any { (id) -> it.id == id })
-                it.copy(version = it.version + 1)
-            else it
-        } }
+        items.patch {
+            this.map {
+                if (selected.any { (id) -> it.id == id })
+                    it.copy(version = it.version + 1)
+                else it
+            }
+        }
         return R.string.did_update_selected
     }
 
