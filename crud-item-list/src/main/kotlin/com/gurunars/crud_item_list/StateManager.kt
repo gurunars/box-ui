@@ -55,6 +55,8 @@ internal class StateMachine<ItemType : Item>(
 
     val state = State<ItemType>().box
 
+    private var previousState: State<ItemType> = State()
+
     val isOpen = false.box
 
     val viewMode = ViewMode.EMPTY.box
@@ -76,7 +78,7 @@ internal class StateMachine<ItemType : Item>(
                     { this.loadItem(it) }
                 )
             }
-            if (value.itemInEdit != null) {
+            if (previousState.itemInEdit == null && value.itemInEdit != null) {
                 openForm(value.itemInEdit)
             }
             // View mode changes are allowed only when the menu is open to prevent
@@ -85,6 +87,7 @@ internal class StateMachine<ItemType : Item>(
                 viewMode.set(value.viewMode)
             }
             isOpen.set(value.isOpen)
+            previousState = value
         }
         isOpen.onChange { it ->
             if (it) {

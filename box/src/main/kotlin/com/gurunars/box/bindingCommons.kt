@@ -78,6 +78,22 @@ inline fun <From, To> IBox<From>.branch(
 }
 
 /**
+ * Returns a special binding that propagates updates only for non null (Optional.Some) values.
+ *
+ * @param initial the value that is set before any of the events are propagated
+ *
+ * @see branch
+ */
+@Suppress("NOTHING_TO_INLINE")
+inline fun <Type> IBox<Optional<Type>>.branch(initial: Type): IBox<Type> {
+    val branched = Box(initial)
+    branched.onChange { set(it.toOptional()) }
+    onChange { if (it is Optional.Some<Type>) branched.set(it.element) }
+    return branched
+}
+
+
+/**
  * A special case of a two-way oneWayBranch function for the situation when
  * a both this and another box are of the same type.
  *
