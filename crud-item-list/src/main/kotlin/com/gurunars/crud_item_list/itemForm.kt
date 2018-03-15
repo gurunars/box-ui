@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.graphics.PorterDuff
 import com.gurunars.android_utils.Icon
 import com.gurunars.android_utils.iconView
+import com.gurunars.box.IBox
 import com.gurunars.box.box
 import com.gurunars.box.patch
 import com.gurunars.box.ui.*
@@ -14,13 +15,12 @@ import com.gurunars.item_list.Item
 import org.jetbrains.anko.*
 
 internal fun <ItemType : Item> Context.itemForm(
-    item: ItemType,
+    itemBox: IBox<ItemType>,
     confirmationHandler: (item: ItemType) -> Unit,
     confirmIconColors: IconColorBundle,
     formBinder: ItemTypeDescriptor<ItemType>
 ) = relativeLayout {
-        val field = item.box
-        val bound = formBinder.bindForm(field)
+        val bound = formBinder.bindForm(itemBox)
 
         verticalLayout {
 
@@ -39,7 +39,7 @@ internal fun <ItemType : Item> Context.itemForm(
                     rightMargin = dip(6)
                 }
                 textView {
-                    text(formBinder.getItemTitle(field))
+                    text(formBinder.getItemTitle(itemBox))
                     textColor = formBinder.icon.fgColor
                     textSize = 20f
                 }
@@ -69,13 +69,13 @@ internal fun <ItemType : Item> Context.itemForm(
         ).add(this) {
             id = R.id.confirm
             id = R.id.save
-            field.onChange { it ->
+            itemBox.onChange { it ->
                 asyncChain(
                     { formBinder.validate(it).type.isBlocking },
                     { canSave.set(!it) }
                 )
             }
-            setOnClickListener { confirmationHandler(field.get()) }
+            setOnClickListener { confirmationHandler(itemBox.get()) }
             layoutParams = relativeLayoutParams {
                 width = dip(60)
                 height = dip(60)
@@ -94,7 +94,7 @@ internal fun <ItemType : Item> Context.itemForm(
                 icon = statusIcon
         ).add(this) {
             id = R.id.hint
-            field.onChange { it ->
+            itemBox.onChange { it ->
                 asyncChain(
                     {
                         val status = formBinder.validate(it)

@@ -59,7 +59,7 @@ fun <ItemType : Item> Context.crudItemListView(
     val stateMachine = StateMachine(
         openForm = { item ->
             itemForm(
-                item,
+                itemInEdit.branch( { this.toNullable() ?: item }, { it.toOptional() } ),
                 { it ->
                     isOpen.set(false)
                     items.patch { processItemInEdit(this, it) }

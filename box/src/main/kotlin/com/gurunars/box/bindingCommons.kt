@@ -55,9 +55,8 @@ inline fun <Type> IBox<Type>.bind(target: IBox<Type>): Disposable {
  * @param target box to bind to
  */
 @Suppress("NOTHING_TO_INLINE")
-inline fun <Type> IRoBox<Type>.bind(target: IBox<Type>): Disposable {
-    return onChange { item -> target.set(item) }
-}
+inline fun <Type> IRoBox<Type>.bind(target: IBox<Type>): Disposable =
+    onChange { item -> target.set(item) }
 
 /**
  * Returns a box that has a two-way binding to this one.
