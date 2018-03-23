@@ -20,7 +20,9 @@ import com.gurunars.box.ui.setAsOne
 import com.gurunars.box.ui.statefulView
 import com.gurunars.box.box
 import com.gurunars.box.patch
+import com.gurunars.box.ui.backgroundColor
 import com.gurunars.box.ui.bindToLifecycle
+import org.jetbrains.anko.backgroundColor
 
 class ActivityMain : Activity() {
 
@@ -95,6 +97,7 @@ class ActivityMain : Activity() {
         }
 
         statefulView(R.id.main) {
+            backgroundColor=Color.WHITE
             retain(isSortable)
             crudItemListView(
                 confirmationActionColors = IconColorBundle(

@@ -36,7 +36,7 @@ buildscript {
     ext.supportV4 = "com.android.support:support-v4:$supportlibVersion"
 
     ext.sdkVersionTarget = 26
-    ext.sdkVersionMin = 24
+    ext.sdkVersionMin = 23
 
     repositories {
         mavenCentral()
