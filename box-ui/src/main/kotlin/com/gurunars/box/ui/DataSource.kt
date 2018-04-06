@@ -18,9 +18,9 @@ class DataSource<Type> private constructor(
     private val getF: () -> Type,
     private val setF: (value: Type) -> Any,
     private val preprocess: (value: Type) -> Type = { it },
-    private val timeout: Long = 500,
+    timeout: Long = 500,
     private val box: BoxWithLifecycle<Type>
-) : IBox<Type> by box, WithLifecycle by box  {
+) : IBox<Type> by box, WithLifecycle by box {
 
     /**
      * @param getF reads data from the storage
@@ -35,14 +35,16 @@ class DataSource<Type> private constructor(
         preprocess: (value: Type) -> Type = { it },
         initial: Type,
         timeout: Long = 500
-    ): this(getF, setF, preprocess, timeout, Box<Type>(preprocess(initial)).withLifecycle)
+    ) : this(getF, setF, preprocess, timeout, Box<Type>(preprocess(initial)).withLifecycle)
 
     private val _ready = Box(false)
     val ready: IRoBox<Boolean> = _ready
+    private val started = false.box
 
     private fun setV(value: Type) {
         box.set(value)
         _ready.set(true)
+        started.set(true)
     }
 
     init {
@@ -62,7 +64,14 @@ class DataSource<Type> private constructor(
             }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(this::setV, { throw it })
-        reload()
+
+        started.onChange {
+            if (it) {
+                box.start()
+            } else {
+                box.stop()
+            }
+        }
     }
 
     /** Triggers data source refetch */
@@ -82,6 +91,14 @@ class DataSource<Type> private constructor(
         } else {
             box.set(preprocess(value))
         }
+    }
+
+    override fun start() {
+        reload()
+    }
+
+    override fun stop() {
+        started.set(false)
     }
 
 }

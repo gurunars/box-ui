@@ -11,17 +11,15 @@ import android.view.MenuItem
 import com.gurunars.animal_item.AnimalItem
 import com.gurunars.animal_item.Service
 import com.gurunars.animal_item.Service.Companion.getRealService
+import com.gurunars.box.IBox
+import com.gurunars.box.box
+import com.gurunars.box.patch
+import com.gurunars.box.ui.setAsOne
+import com.gurunars.box.ui.statefulView
 import com.gurunars.crud_item_list.IconColorBundle
 import com.gurunars.crud_item_list.ItemTypeDescriptor
 import com.gurunars.crud_item_list.crudItemListView
 import com.gurunars.crud_item_list.oneOf
-import com.gurunars.box.IBox
-import com.gurunars.box.ui.setAsOne
-import com.gurunars.box.ui.statefulView
-import com.gurunars.box.box
-import com.gurunars.box.patch
-import com.gurunars.box.ui.backgroundColor
-import com.gurunars.box.ui.bindToLifecycle
 import org.jetbrains.anko.backgroundColor
 
 class ActivityMain : Activity() {
@@ -97,7 +95,7 @@ class ActivityMain : Activity() {
         }
 
         statefulView(R.id.main) {
-            backgroundColor=Color.WHITE
+            backgroundColor = Color.WHITE
             retain(isSortable)
             crudItemListView(
                 confirmationActionColors = IconColorBundle(
