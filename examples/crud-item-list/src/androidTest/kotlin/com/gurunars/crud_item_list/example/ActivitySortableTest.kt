@@ -191,6 +191,7 @@ class ActivitySortableTest {
         validateSelection(1, "#2{TIGER @ 0}", false)
     }
 
+    // TODO: flaky
     @Test
     fun testCopyAndPaste() {
         atIndex(1).perform(longClick())
