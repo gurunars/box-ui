@@ -11,11 +11,7 @@ import android.view.Gravity
 import android.view.MenuItem
 import android.view.View
 import android.widget.FrameLayout
-import com.gurunars.box.IBox
-import com.gurunars.box.IRoBox
-import com.gurunars.box.box
-import com.gurunars.box.onChange
-import com.gurunars.box.oneWayBranch
+import com.gurunars.box.*
 import com.gurunars.box.ui.add
 import com.gurunars.box.ui.asRow
 import com.gurunars.box.ui.closeKeyboard
@@ -57,8 +53,8 @@ private fun Context.bindPackageName(
     onClick {
         activeSection.set(field.get().fullName)
     }
-    onChange(activeSection, field) {
-        backgroundColor = if (field.get().fullName == activeSection.get()) {
+    merge(activeSection, field).onChange {
+        backgroundColor = if (it.second.fullName == it.first) {
             Color.RED
         } else {
             Color.WHITE

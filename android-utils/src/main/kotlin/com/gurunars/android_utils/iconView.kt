@@ -15,7 +15,7 @@ import android.widget.ImageView
 import com.gurunars.box.Box
 import com.gurunars.box.IRoBox
 import com.gurunars.box.bind
-import com.gurunars.box.onChange
+import com.gurunars.box.merge
 
 /**
  * Data class holding the values to be used for icon drawable creation
@@ -45,9 +45,7 @@ private class IconView(context: Context) : ImageView(context) {
     private lateinit var iconDrawable: Drawable
 
     init {
-        onChange(icon, enabled) {
-            reset(icon.get(), enabled.get())
-        }
+        merge(icon, enabled).onChange { reset(it.first, it.second) }
     }
 
     private fun reset(currentIcon: Icon, enabled: Boolean) {

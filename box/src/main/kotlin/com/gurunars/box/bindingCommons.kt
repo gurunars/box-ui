@@ -129,7 +129,7 @@ fun <T> IRoBox<T>.toObservable(): Observable<T> {
 }
 
 /** Merges two boxes into a box of a pair */
-fun<One, Two> onChange(one: IRoBox<One>, two: IRoBox<Two>): IRoBox<Pair<One, Two>> {
+fun<One, Two> merge(one: IRoBox<One>, two: IRoBox<Two>): IRoBox<Pair<One, Two>> {
     val box = Pair(one.get(), two.get()).box
     one.onChange { box.patch { copy(first=it) } }
     two.onChange { box.patch { copy(second=it) } }
@@ -146,12 +146,3 @@ fun<One, Two, Three> merge(one: IRoBox<One>, two: IRoBox<Two>, three: IRoBox<Thr
 }
 
 // NOTE: It is a good idea to rethink code layout if the results depend on more than three boxes
-
-/**
- * Combines changes from several boxes together
- * and invokes a consumer with the combined set
- * of box payloads.
- */
-fun onChange(vararg params: IRoBox<*>, listener: () -> Unit) {
-    params.forEach { it.onChange { _ -> listener() } }
-}

@@ -6,18 +6,9 @@ import android.view.View
 import android.widget.RelativeLayout
 import com.gurunars.android_utils.iconView
 import com.gurunars.box.IBox
-import com.gurunars.box.ui.HorizontalAlignment
-import com.gurunars.box.ui.HorizontalPosition
-import com.gurunars.box.ui.VerticalAlignment
-import com.gurunars.box.ui.VerticalPosition
-import com.gurunars.box.ui.add
-import com.gurunars.box.ui.alignInParent
-import com.gurunars.box.ui.alignWithRespectTo
-import com.gurunars.box.ui.fullSize
-import com.gurunars.box.ui.onClick
-import com.gurunars.box.ui.setIsVisible
 import com.gurunars.box.box
-import com.gurunars.box.onChange
+import com.gurunars.box.merge
+import com.gurunars.box.ui.*
 import com.gurunars.item_list.Item
 import org.jetbrains.anko.above
 import org.jetbrains.anko.dip
@@ -47,8 +38,8 @@ internal fun <ItemType : Item> Context.contextualMenu(
             @Suppress("UNCHECKED_CAST")
             val action = getTag(R.id.action) as Action<ItemType>
 
-            onChange(items, selectedItems) {
-                action.canPerform(items.get(), selectedItems.get(), { enabled.set(it) })
+            merge(items, selectedItems).onChange {
+                action.canPerform(it.first, it.second, { enabled.set(it) })
             }
 
             onClick {
