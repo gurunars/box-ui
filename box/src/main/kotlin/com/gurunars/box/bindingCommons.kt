@@ -128,6 +128,25 @@ fun <T> IRoBox<T>.toObservable(): Observable<T> {
     }
 }
 
+/** Merges two boxes into a box of a pair */
+fun<One, Two> onChange(one: IRoBox<One>, two: IRoBox<Two>): IRoBox<Pair<One, Two>> {
+    val box = Pair(one.get(), two.get()).box
+    one.onChange { box.patch { copy(first=it) } }
+    two.onChange { box.patch { copy(second=it) } }
+    return box
+}
+
+/** Merges three boxes into a box of a triple */
+fun<One, Two, Three> merge(one: IRoBox<One>, two: IRoBox<Two>, three: IRoBox<Three>): IRoBox<Triple<One, Two, Three>> {
+    val box = Triple(one.get(), two.get(), three.get()).box
+    one.onChange { box.patch { copy(first=it) } }
+    two.onChange { box.patch { copy(second=it) } }
+    three.onChange { box.patch { copy(third=it) } }
+    return box
+}
+
+// NOTE: It is a good idea to rethink code layout if the results depend on more than three boxes
+
 /**
  * Combines changes from several boxes together
  * and invokes a consumer with the combined set
