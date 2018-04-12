@@ -15,7 +15,7 @@ internal class ItemAdapter<ItemType : Item>(
         private val itemViewBinders: Map<Enum<*>, ItemViewBinder<ItemType>>
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private var previousList: List<ItemType> = ArrayList()
+    private var previousList: List<ItemType> = listOf()
     private var recyclerView: RecyclerView? = null
 
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {

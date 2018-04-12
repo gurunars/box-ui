@@ -99,6 +99,7 @@ class ActivityMainTest {
         checkNotification("Menu Button Clicked")
     }
 
+    //TODO: flaky
     @Test
     fun togglingBackground_shouldLeaveFrameClickable() {
         toggleBg()

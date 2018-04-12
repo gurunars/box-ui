@@ -221,6 +221,7 @@ class ActivitySortableTest {
         validateSelection(3, "#4{WOLF @ 0}", false)
     }
 
+    // TODO: flaky
     @Test
     fun editingItem_shouldIncrementVersion() {
         atIndex(3).perform(longClick())
