@@ -1,13 +1,16 @@
 package com.gurunars.test_utils
 
+import android.app.Activity
 import android.content.pm.ActivityInfo
 import android.support.test.rule.ActivityTestRule
 import android.view.View
 import android.view.ViewGroup
-
+import com.squareup.spoon.SpoonRule
 import org.hamcrest.Description
+
 import org.hamcrest.Matcher
 import org.hamcrest.TypeSafeMatcher
+import org.junit.runners.model.Statement
 import java.lang.Thread.sleep
 
 fun ActivityTestRule<*>.rotate() {
@@ -36,4 +39,23 @@ object Helpers {
             }
         }
     }
+}
+
+class DebugActivityRule<T: Activity>(activityClass: Class<T>) : ActivityTestRule<T>(activityClass) {
+    val spoonRule = SpoonRule()
+
+    override fun apply(base: Statement?, description: org.junit.runner.Description?): Statement {
+        val spoonStmt = spoonRule.apply(base, description)
+        return super.apply(object : Statement() {
+            override fun evaluate() {
+                try {
+                    spoonStmt.evaluate()
+                } catch (exe: Throwable) {
+                    spoonRule.screenshot(activity, "screenshot-at-finish")
+                    throw exe
+                }
+            }
+        }, description)
+    }
+
 }

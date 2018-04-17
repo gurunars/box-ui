@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
+apply plugin: "com.jaredsburrows.spoon"
 
 apply from: '../../with-test-log.gradle'
 
@@ -50,18 +51,25 @@ android {
         disable 'UnusedResources'
     }
 
+    packagingOptions {
+        exclude 'LICENSE.txt'
+    }
+
     return void
 }
 
 dependencies {
-    androidTestImplementation junit
-    androidTestImplementation 'com.android.support.test:rules:1.0.1'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
-    androidTestImplementation project(':test-utils')
+    androidTestImplementation project(':example-test-utils')
     implementation supportV4
     implementation anko
     implementation kotlinStdLib
     implementation project(':android-utils')
     implementation project(':box')
     implementation project(':box-ui')
+}
+
+spoon {
+    debug = true
+    adbTimeout = 30
+    grantAll = true
 }

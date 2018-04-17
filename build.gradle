@@ -44,12 +44,14 @@ buildscript {
         jcenter()
         maven { url 'https://jitpack.io' }
         maven { url "https://plugins.gradle.org/m2/" }
+        maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
         google()
     }
 
     dependencies {
         classpath "com.android.tools.build:gradle:$androidGradleVersion"
         classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3'
+        classpath "com.jaredsburrows:gradle-spoon-plugin:1.4.0"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
     }
 }
@@ -61,6 +63,7 @@ allprojects {
         maven { url "https://clojars.org/repo/" }
         google()
         maven { url 'https://jitpack.io' }
+        maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
     }
 }
 

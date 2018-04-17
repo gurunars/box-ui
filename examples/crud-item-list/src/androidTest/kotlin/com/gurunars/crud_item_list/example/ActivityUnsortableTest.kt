@@ -14,6 +14,8 @@ import android.support.test.rule.ActivityTestRule
 import android.support.test.runner.AndroidJUnit4
 import android.view.View
 import com.gurunars.test_utils.Helpers.nthChildOf
+import com.gurunars.test_utils.SpoonErrorScreenshot
+import com.squareup.spoon.SpoonRule
 import org.hamcrest.core.IsNot.not
 import org.junit.After
 import org.junit.Before
@@ -40,6 +42,12 @@ class ActivityUnsortableTest {
     @get:Rule
     var mActivityRule = ActivityTestRule(
         ActivityMain::class.java)
+
+    @get:Rule
+    var spoonRule = SpoonRule()
+
+    @get:Rule
+    var screenshotRuls = SpoonErrorScreenshot(spoonRule, mActivityRule)
 
     @Before
     fun before() {

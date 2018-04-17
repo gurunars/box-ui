@@ -1,7 +1,6 @@
 include  \
     ':android-utils',
     ':item-list',
-    ':test-utils',
     ':box',
     ':box-ui',
     ':storybook',
@@ -9,6 +8,7 @@ include  \
     ':storybook-registry',
     ':floatmenu',
     ':crud-item-list',
+    ':example-test-utils',
     ':example-android-utils',
     ':example-animal-item',
     ':example-item-list',
@@ -16,6 +16,7 @@ include  \
     ':example-crud-item-list',
     ':example-floatmenu',
     ':example-storybook'
+project(":example-test-utils").projectDir = file("examples/test-utils")
 project(":example-storybook").projectDir = file("examples/storybook")
 project(":example-animal-item").projectDir = file("examples/animal-item")
 project(":example-item-list").projectDir = file("examples/item-list")
