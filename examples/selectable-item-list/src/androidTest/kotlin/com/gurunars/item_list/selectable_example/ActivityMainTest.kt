@@ -13,6 +13,7 @@ import android.support.test.runner.AndroidJUnit4
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.TextView
+import com.gurunars.test_utils.DebugActivityRule
 import com.gurunars.test_utils.Helpers.nthChildOf
 import org.junit.After
 import org.junit.Assert.assertEquals
@@ -26,7 +27,7 @@ import org.junit.runner.RunWith
 class ActivityMainTest {
 
     @get:Rule
-    var mActivityRule = ActivityTestRule(ActivityMain::class.java)
+    var mActivityRule = DebugActivityRule(ActivityMain::class.java)
 
     private fun clickMenu(text: String) {
         openActionBarOverflowOrOptionsMenu(getInstrumentation().targetContext)

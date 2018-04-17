@@ -7,13 +7,11 @@ import android.support.test.espresso.assertion.ViewAssertions.matches
 import android.support.test.espresso.matcher.ViewMatchers
 import android.support.test.espresso.matcher.ViewMatchers.*
 import android.support.test.filters.LargeTest
-import android.support.test.rule.ActivityTestRule
 import android.support.test.runner.AndroidJUnit4
 import android.view.View
+import com.gurunars.test_utils.DebugActivityRule
 import com.gurunars.test_utils.Helpers.nthChildOf
-import com.gurunars.test_utils.SpoonErrorScreenshot
 import com.gurunars.test_utils.rotate
-import com.squareup.spoon.SpoonRule
 import org.hamcrest.core.Is.`is`
 import org.hamcrest.core.IsNot.not
 import org.junit.After
@@ -31,14 +29,7 @@ class ActivitySortableTest {
     }
 
     @get:Rule
-    var mActivityRule = ActivityTestRule(
-        ActivityMain::class.java)
-
-    @get:Rule
-    var spoonRule = SpoonRule()
-
-    @get:Rule
-    var screenshotRuls = SpoonErrorScreenshot(spoonRule, mActivityRule)
+    var mActivityRule = DebugActivityRule(ActivityMain::class.java)
 
     private fun validateEnabled(id: Int) {
         onView(withId(id)).check(matches(isEnabled()))

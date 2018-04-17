@@ -8,12 +8,10 @@ import android.support.test.espresso.ViewInteraction
 import android.support.test.espresso.action.ViewActions.click
 import android.support.test.espresso.action.ViewActions.longClick
 import android.support.test.espresso.assertion.ViewAssertions.matches
-import android.support.test.espresso.matcher.ViewMatchers.withContentDescription
-import android.support.test.espresso.matcher.ViewMatchers.withId
-import android.support.test.espresso.matcher.ViewMatchers.withText
+import android.support.test.espresso.matcher.ViewMatchers.*
 import android.support.test.filters.LargeTest
-import android.support.test.rule.ActivityTestRule
 import android.support.test.runner.AndroidJUnit4
+import com.gurunars.test_utils.DebugActivityRule
 import com.gurunars.test_utils.rotate
 import org.junit.Before
 import org.junit.Rule
@@ -25,7 +23,7 @@ import org.junit.runner.RunWith
 class ActivityMainTest {
 
     @get:Rule
-    var mActivityRule = ActivityTestRule(ActivityMain::class.java)
+    var mActivityRule = DebugActivityRule(ActivityMain::class.java)
 
     private fun rotate() {
         mActivityRule.rotate()

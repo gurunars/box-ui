@@ -18,8 +18,7 @@ import org.junit.runner.RunWith
 @LargeTest
 class ActivityMainTest {
 
-    @Rule
-    @JvmField
+    @get:Rule
     var mActivityRule = DebugActivityRule(ActivityMain::class.java)
 
     private fun validateText(text: String) {

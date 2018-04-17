@@ -8,10 +8,10 @@ import android.support.test.espresso.assertion.ViewAssertions.matches
 import android.support.test.espresso.matcher.ViewMatchers.isDisplayed
 import android.support.test.espresso.matcher.ViewMatchers.withText
 import android.support.test.filters.LargeTest
-import android.support.test.rule.ActivityTestRule
 import android.support.test.runner.AndroidJUnit4
 import android.support.v7.widget.RecyclerView
 import android.widget.TextView
+import com.gurunars.test_utils.DebugActivityRule
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
@@ -23,8 +23,7 @@ import org.junit.runner.RunWith
 class ActivityMainTest {
 
     @get:Rule
-    var mActivityRule = ActivityTestRule(
-        ActivityMain::class.java)
+    var mActivityRule = DebugActivityRule(ActivityMain::class.java)
 
     private fun clickMenu(text: String) {
         openActionBarOverflowOrOptionsMenu(getInstrumentation().targetContext)

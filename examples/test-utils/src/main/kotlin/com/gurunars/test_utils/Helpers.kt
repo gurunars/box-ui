@@ -51,11 +51,15 @@ class DebugActivityRule<T: Activity>(activityClass: Class<T>) : ActivityTestRule
                 try {
                     spoonStmt.evaluate()
                 } catch (exe: Throwable) {
-                    spoonRule.screenshot(activity, "screenshot-at-finish")
+                    spoonRule.screenshot(activity, "screenshot-at-failure")
                     throw exe
                 }
             }
         }, description)
+    }
+
+    fun screenshot(tag: String) {
+        spoonRule.screenshot(activity, tag)
     }
 
 }

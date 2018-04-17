@@ -5,17 +5,12 @@ import android.support.test.espresso.ViewInteraction
 import android.support.test.espresso.action.ViewActions.click
 import android.support.test.espresso.action.ViewActions.longClick
 import android.support.test.espresso.assertion.ViewAssertions.matches
-import android.support.test.espresso.matcher.ViewMatchers.isDisplayed
-import android.support.test.espresso.matcher.ViewMatchers.isEnabled
-import android.support.test.espresso.matcher.ViewMatchers.withId
-import android.support.test.espresso.matcher.ViewMatchers.withText
+import android.support.test.espresso.matcher.ViewMatchers.*
 import android.support.test.filters.LargeTest
-import android.support.test.rule.ActivityTestRule
 import android.support.test.runner.AndroidJUnit4
 import android.view.View
+import com.gurunars.test_utils.DebugActivityRule
 import com.gurunars.test_utils.Helpers.nthChildOf
-import com.gurunars.test_utils.SpoonErrorScreenshot
-import com.squareup.spoon.SpoonRule
 import org.hamcrest.core.IsNot.not
 import org.junit.After
 import org.junit.Before
@@ -40,14 +35,7 @@ class ActivityUnsortableTest {
     }
 
     @get:Rule
-    var mActivityRule = ActivityTestRule(
-        ActivityMain::class.java)
-
-    @get:Rule
-    var spoonRule = SpoonRule()
-
-    @get:Rule
-    var screenshotRuls = SpoonErrorScreenshot(spoonRule, mActivityRule)
+    var mActivityRule = DebugActivityRule(ActivityMain::class.java)
 
     @Before
     fun before() {
