@@ -1,1 +1,1 @@
-./gradlew clean build test connectedAndroidTest --rerun-tasks
+./gradlew clean build test spoon --rerun-tasks
