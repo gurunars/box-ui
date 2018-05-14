@@ -246,6 +246,7 @@ class ActivitySortableTest {
         onView(withId(R.id.versionValue)).perform(typeText("4"))
         onView(withId(R.id.increment)).perform(click())
         rotate()
+        Thread.sleep(600)
         onView(withId(R.id.save)).perform(click())
         sleep()
         validateSelection(4, "#5{LION @ 5}", false)
