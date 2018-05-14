@@ -113,6 +113,7 @@ class ActivityMain : Activity() {
                 items = items,
                 itemTypeDescriptors = descriptors,
                 sortable = sortable,
+                addToTail = sortable,
                 actionIconColors = IconColorBundle(
                     fgColor = Color.YELLOW,
                     bgColor = Color.BLUE

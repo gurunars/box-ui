@@ -3,8 +3,8 @@
     <string name="reset">Reset</string>
     <string name="lock">Lock</string>
     <string name="unlock">Unlock</string>
-    <string name="sortable">Sortable</string>
-    <string name="unsortable">Unsortable</string>
+    <string name="sortable">Sortable and tail</string>
+    <string name="unsortable">Unsortable and head</string>
     <string name="leftHanded">Left handed</string>
     <string name="rightHanded">Right handed</string>
     <string name="monkey">Monkey</string>

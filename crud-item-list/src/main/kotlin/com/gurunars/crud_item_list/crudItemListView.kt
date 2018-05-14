@@ -33,11 +33,13 @@ import com.gurunars.floatmenu.R as floatR
  * @param items A collection of items shown and manipulated by the view.
  * @param itemInEdit item currently being edited. If not null - the form is opened. The form is
  *                   closed otherwise
+ * @param addToTail if false adds new items to the head of the list instead of the tail
  */
 fun <ItemType : Item> Context.crudItemListView(
     itemTypeDescriptors: List<ItemTypeDescriptor<ItemType>>,
     clipboardSerializer: ClipboardSerializer<ItemType>? = null,
     sortable: Boolean = true,
+    addToTail: Boolean = true,
     actionIconColors: IconColorBundle = IconColorBundle(),
     emptyViewBinder: EmptyViewBinder = this::defaultEmptyViewBinder,
     confirmationActionColors: IconColorBundle = IconColorBundle(),
@@ -62,7 +64,7 @@ fun <ItemType : Item> Context.crudItemListView(
                 itemInEdit.branch(item),
                 { it ->
                     isOpen.set(false)
-                    items.patch { processItemInEdit(this, it) }
+                    items.patch { processItemInEdit(addToTail, this, it) }
                 },
                 confirmationActionColors,
                 typeCache[item.type]!!
