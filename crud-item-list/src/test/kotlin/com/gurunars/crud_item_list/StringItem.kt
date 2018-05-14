@@ -2,9 +2,10 @@ package com.gurunars.crud_item_list
 
 import com.gurunars.item_list.Item
 
-data class StringItem(val text: String) : Item {
-    override val id = text.hashCode().toLong()
-}
+data class StringItem(
+    val text: String,
+    override val id: Long = text.hashCode().toLong()
+) : Item
 
 fun Set<String>.itemize() = map { StringItem(it) }.toSet()
 fun List<String>.itemize() = map { StringItem(it) }
