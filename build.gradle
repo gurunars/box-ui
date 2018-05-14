@@ -26,7 +26,7 @@ buildscript {
     ext.supportlibVersion = '27.1.1'
     ext.mockitoVersion = 'latest.release'
     ext.buildToolsVersion = '26.0.2'
-    ext.roomVersion = '1.0.0'
+    ext.roomVersion = '1.1.0'
     ext.androidGradleVersion = '3.1.2'
 
     ext.junit = "junit:junit:$junitVersion"
