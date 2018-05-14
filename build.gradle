@@ -27,7 +27,7 @@ buildscript {
     ext.mockitoVersion = 'latest.release'
     ext.buildToolsVersion = '26.0.2'
     ext.roomVersion = '1.0.0'
-    ext.androidGradleVersion = '3.0.1'
+    ext.androidGradleVersion = '3.1.2'
 
     ext.junit = "junit:junit:$junitVersion"
     ext.kotlinStdLib = "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
