@@ -1,0 +1,54 @@
+<html>
+ <head> 
+  <meta charset="UTF-8" /> 
+  <title>Optional - box</title> 
+  <link rel="stylesheet" href="../../../style.css" /> 
+ </head> 
+ <body>   
+  <h1>Optional</h1> 
+  <code><span class="keyword">sealed</span> <span class="keyword">class </span><span class="identifier">Optional</span><span class="symbol">&lt;</span><span class="keyword">out</span>&nbsp;<span class="identifier">T</span><span class="symbol">&gt;</span></code> 
+  <h3>Types</h3> 
+  <table> 
+   <tbody> 
+    <tr> 
+     <td> <p><a href="-none.html">None</a></p> </td> 
+     <td> <code><span class="keyword">object </span><span class="identifier">None</span>&nbsp;<span class="symbol">:</span>&nbsp;<span class="identifier">Optional</span><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-nothing/index.html"><span class="identifier">Nothing</span></a><span class="symbol">&gt;</span></code> <p>If there is no value</p> </td> 
+    </tr> 
+    <tr> 
+     <td> <p><a href="-some/index.html">Some</a></p> </td> 
+     <td> <code><span class="keyword">class </span><span class="identifier">Some</span><span class="symbol">&lt;</span><span class="keyword">out</span>&nbsp;<span class="identifier">T</span><span class="symbol">&gt;</span>&nbsp;<span class="symbol">:</span>&nbsp;<span class="identifier">Optional</span><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span></code> <p>If there is a value</p> </td> 
+    </tr> 
+   </tbody> 
+  </table> 
+  <h3>Extension Functions</h3> 
+  <table> 
+   <tbody> 
+    <tr> 
+     <td> <p><a href="../to-nullable.html">toNullable</a></p> </td> 
+     <td> <code><span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span> <span class="identifier">Optional</span><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span><span class="symbol">.</span><span class="identifier">toNullable</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><span class="identifier">T</span><span class="symbol">?</span></code> <p>Transforms an optional value into a nullable one</p> </td> 
+    </tr> 
+   </tbody> 
+  </table> 
+  <h3>Inheritors</h3> 
+  <table> 
+   <tbody> 
+    <tr> 
+     <td> <p><a href="-none.html">None</a></p> </td> 
+     <td> <code><span class="keyword">object </span><span class="identifier">None</span>&nbsp;<span class="symbol">:</span>&nbsp;<span class="identifier">Optional</span><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-nothing/index.html"><span class="identifier">Nothing</span></a><span class="symbol">&gt;</span></code> <p>If there is no value</p> </td> 
+    </tr> 
+    <tr> 
+     <td> <p><a href="-some/index.html">Some</a></p> </td> 
+     <td> <code><span class="keyword">class </span><span class="identifier">Some</span><span class="symbol">&lt;</span><span class="keyword">out</span>&nbsp;<span class="identifier">T</span><span class="symbol">&gt;</span>&nbsp;<span class="symbol">:</span>&nbsp;<span class="identifier">Optional</span><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span></code> <p>If there is a value</p> </td> 
+    </tr> 
+   </tbody> 
+  </table>   
+  <div class="breadcrumbs">
+    / 
+   <a href="/">index</a> / 
+   <a href="../../index.html">box</a> / 
+   <a href="../index.html">com.gurunars.box</a> / 
+   <a href=".">Optional</a>
+  </div>
+  <div class="parameters"></div>
+ </body>
+</html>

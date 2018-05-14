@@ -1,0 +1,4 @@
+$dokka.format:html
+$dokka.linkExtension:html
+$dokka.location:com.gurunars.floatmenu$floatMenu(android.content.Context, com.gurunars.box.IRoBox((com.gurunars.floatmenu.ContentPane)), com.gurunars.box.IRoBox((com.gurunars.floatmenu.MenuPane)), kotlin.Int, com.gurunars.box.IBox((kotlin.Boolean)))com.gurunars.floatmenu/android.content.-context/float-menu.html
+com.gurunars.floatmenu

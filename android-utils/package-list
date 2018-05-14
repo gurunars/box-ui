@@ -1,0 +1,6 @@
+$dokka.format:html
+$dokka.linkExtension:html
+$dokka.location:com.gurunars.android_utils$autoButton(android.content.Context, com.gurunars.box.IBox((kotlin.String)), com.gurunars.box.IBox((android.graphics.drawable.shapes.Shape)), com.gurunars.box.IBox((kotlin.Int)), com.gurunars.box.IBox((kotlin.Int)), com.gurunars.box.IBox((kotlin.Int)), com.gurunars.box.IBox((kotlin.Float)), com.gurunars.box.IBox((com.gurunars.box.ui.Style)))com.gurunars.android_utils/android.content.-context/auto-button.html
+$dokka.location:com.gurunars.android_utils$iconView(android.content.Context, com.gurunars.box.IRoBox((com.gurunars.android_utils.Icon)), com.gurunars.box.IRoBox((kotlin.Boolean)))com.gurunars.android_utils/android.content.-context/icon-view.html
+$dokka.location:com.gurunars.android_utils$setAutoBg(android.view.View, kotlin.Int)com.gurunars.android_utils/android.view.-view/set-auto-bg.html
+com.gurunars.android_utils

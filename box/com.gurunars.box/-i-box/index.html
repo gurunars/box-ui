@@ -1,0 +1,93 @@
+<html>
+ <head> 
+  <meta charset="UTF-8" /> 
+  <title>IBox - box</title> 
+  <link rel="stylesheet" href="../../../style.css" /> 
+ </head> 
+ <body>   
+  <h1>IBox</h1> 
+  <code><span class="keyword">interface </span><span class="identifier">IBox</span><span class="symbol">&lt;</span><span class="identifier">Type</span><span class="symbol">&gt;</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../-i-ro-box/index.html"><span class="identifier">IRoBox</span></a><span class="symbol">&lt;</span><span class="identifier">Type</span><span class="symbol">&gt;</span></code> 
+  <p>Mutable IRoBox.</p> 
+  <h3>Functions</h3> 
+  <table> 
+   <tbody> 
+    <tr> 
+     <td> <p><a href="set.html">set</a></p> </td> 
+     <td> <code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">set</span><span class="symbol">(</span><span class="identifier" id="com.gurunars.box.IBox$set(com.gurunars.box.IBox.Type)/value">value</span><span class="symbol">:</span>&nbsp;<span class="identifier">Type</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code> <p>Change fields content to a new value. The change is made only if current and new values actually differ content-wise.</p> </td> 
+    </tr> 
+   </tbody> 
+  </table> 
+  <h3>Inherited Functions</h3> 
+  <table> 
+   <tbody> 
+    <tr> 
+     <td> <p><a href="../-i-ro-box/broadcast.html">broadcast</a></p> </td> 
+     <td> <code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">broadcast</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code> <p>Notifies all the listeners about the current state of the value.</p> </td> 
+    </tr> 
+    <tr> 
+     <td> <p><a href="../-i-ro-box/get.html">get</a></p> </td> 
+     <td> <code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">get</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><span class="identifier">Type</span></code> <p>Fetches the current value.</p> </td> 
+    </tr> 
+   </tbody> 
+  </table> 
+  <h3>Extension Properties</h3> 
+  <table> 
+   <tbody> 
+    <tr> 
+     <td> <p><a href="../with-lifecycle.html">withLifecycle</a></p> </td> 
+     <td> <code><span class="keyword">val </span><span class="symbol">&lt;</span><span class="identifier">F</span><span class="symbol">&gt;</span> <span class="identifier">IBox</span><span class="symbol">&lt;</span><span class="identifier">F</span><span class="symbol">&gt;</span><span class="symbol">.</span><span class="identifier">withLifecycle</span><span class="symbol">: </span><a href="../-box-with-lifecycle/index.html"><span class="identifier">BoxWithLifecycle</span></a><span class="symbol">&lt;</span><span class="identifier">F</span><span class="symbol">&gt;</span></code> <p>A short way to wrap a IBox into a BoxWithLifecycle without parentheses</p> </td> 
+    </tr> 
+   </tbody> 
+  </table> 
+  <h3>Extension Functions</h3> 
+  <table> 
+   <tbody> 
+    <tr> 
+     <td> <p><a href="../bind.html">bind</a></p> </td> 
+     <td> <code><span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">Type</span><span class="symbol">&gt;</span> <span class="identifier">IBox</span><span class="symbol">&lt;</span><span class="identifier">Type</span><span class="symbol">&gt;</span><span class="symbol">.</span><span class="identifier">bind</span><span class="symbol">(</span><span class="identifier" id="com.gurunars.box$bind(com.gurunars.box.IBox((com.gurunars.box.bind.Type)), com.gurunars.box.IBox((com.gurunars.box.bind.Type)))/target">target</span><span class="symbol">:</span>&nbsp;<span class="identifier">IBox</span><span class="symbol">&lt;</span><span class="identifier">Type</span><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><span class="identifier">Disposable</span></code> <p>Creates a two-way binding between this and a target box. Whenever one changes another gets updated automatically.</p> <code><span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">Type</span><span class="symbol">&gt;</span> <a href="../-i-ro-box/index.html"><span class="identifier">IRoBox</span></a><span class="symbol">&lt;</span><span class="identifier">Type</span><span class="symbol">&gt;</span><span class="symbol">.</span><span class="identifier">bind</span><span class="symbol">(</span><span class="identifier" id="com.gurunars.box$bind(com.gurunars.box.IRoBox((com.gurunars.box.bind.Type)), com.gurunars.box.IBox((com.gurunars.box.bind.Type)))/target">target</span><span class="symbol">:</span>&nbsp;<span class="identifier">IBox</span><span class="symbol">&lt;</span><span class="identifier">Type</span><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><span class="identifier">Disposable</span></code> <p>Creates a one-way binding between this and a target box. Whenever this one changes another one gets updated.</p> </td> 
+    </tr> 
+    <tr> 
+     <td> <p><a href="../branch.html">branch</a></p> </td> 
+     <td> <code><span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">From</span><span class="symbol">, </span><span class="identifier">To</span><span class="symbol">&gt;</span> <span class="identifier">IBox</span><span class="symbol">&lt;</span><span class="identifier">From</span><span class="symbol">&gt;</span><span class="symbol">.</span><span class="identifier">branch</span><span class="symbol">(</span><span class="identifier" id="com.gurunars.box$branch(com.gurunars.box.IBox((com.gurunars.box.branch.From)), kotlin.Function1((com.gurunars.box.branch.From, com.gurunars.box.branch.To)), kotlin.Function2((com.gurunars.box.branch.From, com.gurunars.box.branch.To, )))/reduce">reduce</span><span class="symbol">:</span>&nbsp;<span class="identifier">From</span><span class="symbol">.</span><span class="symbol">(</span><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<span class="identifier">To</span><span class="symbol">, </span><span class="identifier" id="com.gurunars.box$branch(com.gurunars.box.IBox((com.gurunars.box.branch.From)), kotlin.Function1((com.gurunars.box.branch.From, com.gurunars.box.branch.To)), kotlin.Function2((com.gurunars.box.branch.From, com.gurunars.box.branch.To, )))/patchSource">patchSource</span><span class="symbol">:</span>&nbsp;<span class="identifier">From</span><span class="symbol">.</span><span class="symbol">(</span><span class="identifier">part</span><span class="symbol">:</span>&nbsp;<span class="identifier">To</span><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<span class="identifier">From</span><span class="symbol">)</span><span class="symbol">: </span><span class="identifier">IBox</span><span class="symbol">&lt;</span><span class="identifier">To</span><span class="symbol">&gt;</span></code> <p>Returns a box that has a two-way binding to this one. I.e. if this one changes another box gets changed and vice versa.</p> <code><span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">Type</span><span class="symbol">&gt;</span> <span class="identifier">IBox</span><span class="symbol">&lt;</span><a href="../-optional/index.html"><span class="identifier">Optional</span></a><span class="symbol">&lt;</span><span class="identifier">Type</span><span class="symbol">&gt;</span><span class="symbol">&gt;</span><span class="symbol">.</span><span class="identifier">branch</span><span class="symbol">(</span><span class="identifier" id="com.gurunars.box$branch(com.gurunars.box.IBox((com.gurunars.box.Optional((com.gurunars.box.branch.Type)))), com.gurunars.box.branch.Type)/initial">initial</span><span class="symbol">:</span>&nbsp;<span class="identifier">Type</span><span class="symbol">)</span><span class="symbol">: </span><span class="identifier">IBox</span><span class="symbol">&lt;</span><span class="identifier">Type</span><span class="symbol">&gt;</span></code> <p>Returns a special binding that propagates updates only for non null (Optional.Some) values.</p> </td> 
+    </tr> 
+    <tr> 
+     <td> <p><a href="../fork.html">fork</a></p> </td> 
+     <td> <code><span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">Type</span><span class="symbol">&gt;</span> <span class="identifier">IBox</span><span class="symbol">&lt;</span><span class="identifier">Type</span><span class="symbol">&gt;</span><span class="symbol">.</span><span class="identifier">fork</span><span class="symbol">(</span><span class="identifier" id="com.gurunars.box$fork(com.gurunars.box.IBox((com.gurunars.box.fork.Type)), kotlin.Function1((com.gurunars.box.fork.Type, )))/transform">transform</span><span class="symbol">:</span>&nbsp;<span class="identifier">Type</span><span class="symbol">.</span><span class="symbol">(</span><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<span class="identifier">Type</span><span class="symbol">)</span><span class="symbol">: </span><span class="identifier">IBox</span><span class="symbol">&lt;</span><span class="identifier">Type</span><span class="symbol">&gt;</span></code> <p>A special case of a two-way oneWayBranch function for the situation when a both this and another box are of the same type.</p> </td> 
+    </tr> 
+    <tr> 
+     <td> <p><a href="../one-way-branch.html">oneWayBranch</a></p> </td> 
+     <td> <code><span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">From</span><span class="symbol">, </span><span class="identifier">To</span><span class="symbol">&gt;</span> <a href="../-i-ro-box/index.html"><span class="identifier">IRoBox</span></a><span class="symbol">&lt;</span><span class="identifier">From</span><span class="symbol">&gt;</span><span class="symbol">.</span><span class="identifier">oneWayBranch</span><span class="symbol">(</span><span class="identifier" id="com.gurunars.box$oneWayBranch(com.gurunars.box.IRoBox((com.gurunars.box.oneWayBranch.From)), kotlin.Function1((com.gurunars.box.oneWayBranch.From, com.gurunars.box.oneWayBranch.To)))/reduce">reduce</span><span class="symbol">:</span>&nbsp;<span class="identifier">From</span><span class="symbol">.</span><span class="symbol">(</span><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<span class="identifier">To</span><span class="symbol">)</span><span class="symbol">: </span><a href="../-i-ro-box/index.html"><span class="identifier">IRoBox</span></a><span class="symbol">&lt;</span><span class="identifier">To</span><span class="symbol">&gt;</span></code> <p>Returns a box that has a one-way binding to this one. I.e. if this one changes another box gets changes as well. However if another box changes this one remains unchanged.</p> </td> 
+    </tr> 
+    <tr> 
+     <td> <p><a href="../patch.html">patch</a></p> </td> 
+     <td> <code><span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">ItemType</span><span class="symbol">&gt;</span> <span class="identifier">IBox</span><span class="symbol">&lt;</span><span class="identifier">ItemType</span><span class="symbol">&gt;</span><span class="symbol">.</span><span class="identifier">patch</span><span class="symbol">(</span><span class="identifier" id="com.gurunars.box$patch(com.gurunars.box.IBox((com.gurunars.box.patch.ItemType)), kotlin.Function1((com.gurunars.box.patch.ItemType, )))/patcher">patcher</span><span class="symbol">:</span>&nbsp;<span class="identifier">ItemType</span><span class="symbol">.</span><span class="symbol">(</span><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<span class="identifier">ItemType</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code> <p>Shortcut function that alters the value of the box.</p> </td> 
+    </tr> 
+    <tr> 
+     <td> <p><a href="../to-observable.html">toObservable</a></p> </td> 
+     <td> <code><span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span> <a href="../-i-ro-box/index.html"><span class="identifier">IRoBox</span></a><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span><span class="symbol">.</span><span class="identifier">toObservable</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><span class="identifier">Observable</span><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span></code> <p>Obtain an observable from a box</p> </td> 
+    </tr> 
+   </tbody> 
+  </table> 
+  <h3>Inheritors</h3> 
+  <table> 
+   <tbody> 
+    <tr> 
+     <td> <p><a href="../-box/index.html">Box</a></p> </td> 
+     <td> <code><span class="keyword">class </span><span class="identifier">Box</span><span class="symbol">&lt;</span><span class="identifier">Type</span><span class="symbol">&gt;</span>&nbsp;<span class="symbol">:</span>&nbsp;<span class="identifier">IBox</span><span class="symbol">&lt;</span><span class="identifier">Type</span><span class="symbol">&gt;</span></code> <p>An observable box capable to emit changes and listen to change events</p> </td> 
+    </tr> 
+    <tr> 
+     <td> <p><a href="../-box-with-lifecycle/index.html">BoxWithLifecycle</a></p> </td> 
+     <td> <code><span class="keyword">class </span><span class="identifier">BoxWithLifecycle</span><span class="symbol">&lt;</span><span class="identifier">Type</span><span class="symbol">&gt;</span>&nbsp;<span class="symbol">:</span>&nbsp;<span class="identifier">IBox</span><span class="symbol">&lt;</span><span class="identifier">Type</span><span class="symbol">&gt;</span><span class="symbol">, </span><a href="../-with-lifecycle/index.html"><span class="identifier">WithLifecycle</span></a></code></td> 
+    </tr> 
+   </tbody> 
+  </table>   
+  <div class="breadcrumbs">
+    / 
+   <a href="/">index</a> / 
+   <a href="../../index.html">box</a> / 
+   <a href="../index.html">com.gurunars.box</a> / 
+   <a href=".">IBox</a>
+  </div>
+  <div class="parameters"></div>
+ </body>
+</html>

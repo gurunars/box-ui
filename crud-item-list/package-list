@@ -1,0 +1,4 @@
+$dokka.format:html
+$dokka.linkExtension:html
+$dokka.location:com.gurunars.crud_item_list$crudItemListView(android.content.Context, kotlin.collections.List((com.gurunars.crud_item_list.ItemTypeDescriptor((com.gurunars.crud_item_list.crudItemListView.ItemType)))), com.gurunars.crud_item_list.ClipboardSerializer((com.gurunars.crud_item_list.crudItemListView.ItemType)), kotlin.Boolean, kotlin.Boolean, com.gurunars.crud_item_list.IconColorBundle, kotlin.Function0((android.view.View)), com.gurunars.crud_item_list.IconColorBundle, com.gurunars.crud_item_list.IconColorBundle, com.gurunars.crud_item_list.IconColorBundle, com.gurunars.box.IBox((kotlin.collections.List((com.gurunars.crud_item_list.crudItemListView.ItemType)))), com.gurunars.box.IBox((com.gurunars.box.Optional((com.gurunars.crud_item_list.crudItemListView.ItemType)))))com.gurunars.crud_item_list/android.content.-context/crud-item-list-view.html
+com.gurunars.crud_item_list

@@ -1,0 +1,61 @@
+<html>
+ <head> 
+  <meta charset="UTF-8" /> 
+  <title>com.gurunars.item_list - item-list</title> 
+  <link rel="stylesheet" href="../../style.css" /> 
+ </head> 
+ <body>   
+  <h2>Package com.gurunars.item_list</h2> 
+  <h3>Types</h3> 
+  <table> 
+   <tbody> 
+    <tr> 
+     <td> <p><a href="-item/index.html">Item</a></p> </td> 
+     <td> <code><span class="keyword">interface </span><span class="identifier">Item</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="https://developer.android.com/reference/java/io/Serializable.html"><span class="identifier">Serializable</span></a></code> <p>Abstraction of the entity that can be shown in the ItemListView.</p> </td> 
+    </tr> 
+    <tr> 
+     <td> <p><a href="-selectable-item/index.html">SelectableItem</a></p> </td> 
+     <td> <code><span class="keyword">data</span> <span class="keyword">class </span><span class="identifier">SelectableItem</span><span class="symbol">&lt;</span><span class="keyword">out</span>&nbsp;<span class="identifier">ItemType</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="-item/index.html"><span class="identifier">Item</span></a><span class="symbol">&gt;</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="-item/index.html"><span class="identifier">Item</span></a></code> <p>Wrapper around item item with an &quot;isSelected&quot; flag.</p> </td> 
+    </tr> 
+   </tbody> 
+  </table> 
+  <h3>Type Aliases</h3> 
+  <table> 
+   <tbody> 
+    <tr> 
+     <td> <p><a href="-empty-view-binder.html">EmptyViewBinder</a></p> </td> 
+     <td> <code><span class="keyword">typealias </span><span class="identifier">EmptyViewBinder</span>&nbsp;<span class="symbol">=</span>&nbsp;<span class="symbol">(</span><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a href="https://developer.android.com/reference/android/view/View.html"><span class="identifier">View</span></a></code> <p>View binder for the case when there are no item in the list.</p> </td> 
+    </tr> 
+    <tr> 
+     <td> <p><a href="-item-view-binder.html">ItemViewBinder</a></p> </td> 
+     <td> <code><span class="keyword">typealias </span><span class="identifier">ItemViewBinder</span><span class="symbol">&lt;</span><span class="identifier">ItemType</span><span class="symbol">&gt;</span>&nbsp;<span class="symbol">=</span>&nbsp;<span class="symbol">(</span><span class="identifier">field</span><span class="symbol">:</span>&nbsp;<a href="/box/com.gurunars.box/-i-ro-box/index.html"><span class="identifier">IRoBox</span></a><span class="symbol">&lt;</span><span class="identifier">ItemType</span><span class="symbol">&gt;</span><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a href="https://developer.android.com/reference/android/view/View.html"><span class="identifier">View</span></a></code></td> 
+    </tr> 
+   </tbody> 
+  </table> 
+  <h3>Extensions for External Classes</h3> 
+  <table> 
+   <tbody> 
+    <tr> 
+     <td> <p><a href="android.content.-context/index.html">android.content.Context</a></p> </td> 
+     <td> </td> 
+    </tr> 
+   </tbody> 
+  </table> 
+  <h3>Functions</h3> 
+  <table> 
+   <tbody> 
+    <tr> 
+     <td> <p><a href="colored-row-selection-decorator.html">coloredRowSelectionDecorator</a></p> </td> 
+     <td> <code><span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">ItemType</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="-item/index.html"><span class="identifier">Item</span></a><span class="symbol">&gt;</span> <span class="identifier">coloredRowSelectionDecorator</span><span class="symbol">(</span><span class="identifier" id="com.gurunars.item_list$coloredRowSelectionDecorator(com.gurunars.box.IRoBox((com.gurunars.item_list.SelectableItem((com.gurunars.item_list.coloredRowSelectionDecorator.ItemType)))), kotlin.Int, kotlin.Function1((com.gurunars.box.IRoBox((com.gurunars.item_list.coloredRowSelectionDecorator.ItemType)), android.view.View)))/field">field</span><span class="symbol">:</span>&nbsp;<a href="/box/com.gurunars.box/-i-ro-box/index.html"><span class="identifier">IRoBox</span></a><span class="symbol">&lt;</span><a href="-selectable-item/index.html"><span class="identifier">SelectableItem</span></a><span class="symbol">&lt;</span><span class="identifier">ItemType</span><span class="symbol">&gt;</span><span class="symbol">&gt;</span><span class="symbol">, </span><span class="identifier" id="com.gurunars.item_list$coloredRowSelectionDecorator(com.gurunars.box.IRoBox((com.gurunars.item_list.SelectableItem((com.gurunars.item_list.coloredRowSelectionDecorator.ItemType)))), kotlin.Int, kotlin.Function1((com.gurunars.box.IRoBox((com.gurunars.item_list.coloredRowSelectionDecorator.ItemType)), android.view.View)))/selectionColor">selectionColor</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a>&nbsp;<span class="symbol">=</span>&nbsp;Color.RED<span class="symbol">, </span><span class="identifier" id="com.gurunars.item_list$coloredRowSelectionDecorator(com.gurunars.box.IRoBox((com.gurunars.item_list.SelectableItem((com.gurunars.item_list.coloredRowSelectionDecorator.ItemType)))), kotlin.Int, kotlin.Function1((com.gurunars.box.IRoBox((com.gurunars.item_list.coloredRowSelectionDecorator.ItemType)), android.view.View)))/render">render</span><span class="symbol">:</span>&nbsp;<span class="symbol">(</span><span class="identifier">field</span><span class="symbol">:</span>&nbsp;<a href="/box/com.gurunars.box/-i-ro-box/index.html"><span class="identifier">IRoBox</span></a><span class="symbol">&lt;</span><span class="identifier">ItemType</span><span class="symbol">&gt;</span><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a href="https://developer.android.com/reference/android/view/View.html"><span class="identifier">View</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://developer.android.com/reference/android/view/View.html"><span class="identifier">View</span></a></code> <p>A decorator to add row coloring behavior to the list view items.</p> </td> 
+    </tr> 
+   </tbody> 
+  </table>   
+  <div class="breadcrumbs">
+    / 
+   <a href="/">index</a> / 
+   <a href="../index.html">item-list</a> / 
+   <a href=".">com.gurunars.item_list</a>
+  </div>
+  <div class="parameters"></div>
+ </body>
+</html>

@@ -1,0 +1,143 @@
+
+    <html>
+        <head>
+            <meta charset="UTF-8">
+            <title>box-ui (0.196.0)</title>
+            <link rel="stylesheet" href="style.css">
+        </head>
+        <body>
+            <div class="breadcrumbs">
+                / <a href="/">index</a>
+            </div>
+
+            <div class="section">
+                <p>
+                
+A collection of modules aiming to simplify creation of very specific simple
+CRUD apps for Android.
+
+                </p>
+
+                <p>
+                In order to fetch the modules as dependencies add the following to your
+                top level <b>build.gradle</b>:
+                </p>
+
+                <pre class="install-line">allprojects {
+    repositories {
+        ...
+        maven { url "http://dl.bintray.com/berezin/maven" }
+        ...
+    }
+}</pre>
+            </div>
+
+            
+        <div class="section">
+            <h3><a href="android-utils">android-utils</a></h3>
+            <p>
+A set of helpers for working with Android.
+</p>
+            <pre class="install-line">implementation ('com.gurunars.android_utils:android-utils:0.196.0@aar') {
+    transitive = true
+}</pre>
+        </div>
+        
+
+        <div class="section">
+            <h3><a href="box">box</a></h3>
+            <p>
+A library to facilitate data binding via observable data containers that can be entangled together,
+manipulated and monitored for changes.
+</p>
+            <pre class="install-line">implementation 'com.gurunars.box:box:0.196.0'</pre>
+        </div>
+        
+
+        <div class="section">
+            <h3><a href="box-ui">box-ui</a></h3>
+            <p>
+Android specific databinding functionality.
+</p>
+            <pre class="install-line">implementation ('com.gurunars.box.ui:box-ui:0.196.0@aar') {
+    transitive = true
+}</pre>
+        </div>
+        
+
+        <div class="section">
+            <h3><a href="crud-item-list">crud-item-list</a></h3>
+            <p>
+One more layer of abstraction above the item-list component. It contains the logic and UI controls to
+manipulate individual items in the list. I.e. the UI allows to select, move,
+edit, remove and create the items out of the box.
+</p>
+            <pre class="install-line">implementation ('com.gurunars.crud_item_list:crud-item-list:0.196.0@aar') {
+    transitive = true
+}</pre>
+        </div>
+        
+
+        <div class="section">
+            <h3><a href="floatmenu">floatmenu</a></h3>
+            <p>
+A component for creating FAB based menus
+to manipulate the app. In contrast with the toolbar it aims to simplify the
+way the app can be managed with left or right hand thumb on a large phone
+screen.
+</p>
+            <pre class="install-line">implementation ('com.gurunars.floatmenu:floatmenu:0.196.0@aar') {
+    transitive = true
+}</pre>
+        </div>
+        
+
+        <div class="section">
+            <h3><a href="item-list">item-list</a></h3>
+            <p>
+A component based on RecyclerView with a simplified interface capable of
+detecting payload changes in the collection items and triggering proper
+animations based on those changes.
+
+Apart from the animations the component handles custom empty pages and
+can optionally handle item selection.
+</p>
+            <pre class="install-line">implementation ('com.gurunars.item_list:item-list:0.196.0@aar') {
+    transitive = true
+}</pre>
+        </div>
+        
+
+        <div class="section">
+            <h3><a href="storybook">storybook</a></h3>
+            <p>
+A library to help developing custom box-ui components via a registry based storybook
+activity.
+</p>
+            <pre class="install-line">implementation ('com.gurunars.storybook:storybook:0.196.0@aar') {
+    transitive = true
+}</pre>
+        </div>
+        
+
+        <div class="section">
+            <h3><a href="storybook-annotations">storybook-annotations</a></h3>
+            <p>
+A StorybookComponent annotation to be used together with storybook and storybook-registry.
+</p>
+            <pre class="install-line">implementation 'com.gurunars.storybook_annotations:storybook-annotations:0.196.0</pre>
+        </div>
+        
+
+        <div class="section">
+            <h3><a href="storybook-registry">storybook-registry</a></h3>
+            <p>
+A storybook-registry annotation processor to be used together with storybook and 
+storybook-annotation.
+</p>
+            <pre class="install-line">kapt 'com.gurunars.storybook_registry:storybook-registry:0.196.0'</pre>
+        </div>
+        
+        </body>
+    </html>
+    

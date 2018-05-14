@@ -1,0 +1,50 @@
+<html>
+ <head> 
+  <meta charset="UTF-8" /> 
+  <title>WithLifecycle - box</title> 
+  <link rel="stylesheet" href="../../../style.css" /> 
+ </head> 
+ <body>   
+  <h1>WithLifecycle</h1> 
+  <code><span class="keyword">interface </span><span class="identifier">WithLifecycle</span></code> 
+  <p>Interface to manipulate lifecycle related behavior of the Box</p> 
+  <h3>Functions</h3> 
+  <table> 
+   <tbody> 
+    <tr> 
+     <td> <p><a href="dispose.html">dispose</a></p> </td> 
+     <td> <code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">dispose</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code> <p>Drops all the disposables of the IRoBox</p> </td> 
+    </tr> 
+    <tr> 
+     <td> <p><a href="start.html">start</a></p> </td> 
+     <td> <code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">start</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code> <p>Resumes value syncing</p> </td> 
+    </tr> 
+    <tr> 
+     <td> <p><a href="stop.html">stop</a></p> </td> 
+     <td> <code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">stop</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code> <p>Temporarily pauses value syncing</p> </td> 
+    </tr> 
+   </tbody> 
+  </table> 
+  <h3>Inheritors</h3> 
+  <table> 
+   <tbody> 
+    <tr> 
+     <td> <p><a href="../-box-with-lifecycle/index.html">BoxWithLifecycle</a></p> </td> 
+     <td> <code><span class="keyword">class </span><span class="identifier">BoxWithLifecycle</span><span class="symbol">&lt;</span><span class="identifier">Type</span><span class="symbol">&gt;</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../-i-box/index.html"><span class="identifier">IBox</span></a><span class="symbol">&lt;</span><span class="identifier">Type</span><span class="symbol">&gt;</span><span class="symbol">, </span><span class="identifier">WithLifecycle</span></code></td> 
+    </tr> 
+    <tr> 
+     <td> <p><a href="../-ro-box-with-lifecycle/index.html">RoBoxWithLifecycle</a></p> </td> 
+     <td> <code><span class="keyword">class </span><span class="identifier">RoBoxWithLifecycle</span><span class="symbol">&lt;</span><span class="identifier">Type</span><span class="symbol">&gt;</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../-i-ro-box/index.html"><span class="identifier">IRoBox</span></a><span class="symbol">&lt;</span><span class="identifier">Type</span><span class="symbol">&gt;</span><span class="symbol">, </span><span class="identifier">WithLifecycle</span></code></td> 
+    </tr> 
+   </tbody> 
+  </table>   
+  <div class="breadcrumbs">
+    / 
+   <a href="/">index</a> / 
+   <a href="../../index.html">box</a> / 
+   <a href="../index.html">com.gurunars.box</a> / 
+   <a href=".">WithLifecycle</a>
+  </div>
+  <div class="parameters"></div>
+ </body>
+</html>

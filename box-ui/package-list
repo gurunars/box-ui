@@ -1,0 +1,30 @@
+$dokka.format:html
+$dokka.linkExtension:html
+$dokka.location:com.gurunars.box.ui$alignInParent(android.widget.RelativeLayout.LayoutParams, com.gurunars.box.ui.HorizontalAlignment, com.gurunars.box.ui.VerticalAlignment)com.gurunars.box.ui/android.widget.-relative-layout.-layout-params/align-in-parent.html
+$dokka.location:com.gurunars.box.ui$alignWithRespectTo(android.widget.RelativeLayout.LayoutParams, kotlin.Int, com.gurunars.box.ui.HorizontalPosition, com.gurunars.box.ui.VerticalPosition)com.gurunars.box.ui/android.widget.-relative-layout.-layout-params/align-with-respect-to.html
+$dokka.location:com.gurunars.box.ui$asEmpty(android.view.View)com.gurunars.box.ui/android.view.-view/as-empty.html
+$dokka.location:com.gurunars.box.ui$asEmpty(android.view.ViewGroup.LayoutParams)com.gurunars.box.ui/android.view.-view-group.-layout-params/as-empty.html
+$dokka.location:com.gurunars.box.ui$asRow(android.view.View)com.gurunars.box.ui/android.view.-view/as-row.html
+$dokka.location:com.gurunars.box.ui$asRow(android.view.ViewGroup.LayoutParams)com.gurunars.box.ui/android.view.-view-group.-layout-params/as-row.html
+$dokka.location:com.gurunars.box.ui$backgroundColor(android.view.View, com.gurunars.box.IRoBox((kotlin.Int)))com.gurunars.box.ui/android.view.-view/background-color.html
+$dokka.location:com.gurunars.box.ui$backgroundImage(android.view.View, com.gurunars.box.IRoBox((android.graphics.drawable.Drawable)))com.gurunars.box.ui/android.view.-view/background-image.html
+$dokka.location:com.gurunars.box.ui$backgroundRes(android.view.View, com.gurunars.box.IRoBox((kotlin.Int)))com.gurunars.box.ui/android.view.-view/background-res.html
+$dokka.location:com.gurunars.box.ui$bindToLifecycle(com.gurunars.box.WithLifecycle, android.app.Activity)com.gurunars.box.ui/com.gurunars.box.-with-lifecycle/bind-to-lifecycle.html
+$dokka.location:com.gurunars.box.ui$closeKeyboard(android.content.Context)com.gurunars.box.ui/android.content.-context/close-keyboard.html
+$dokka.location:com.gurunars.box.ui$drawable(android.widget.ImageView, com.gurunars.box.IRoBox((android.graphics.drawable.Drawable)))com.gurunars.box.ui/android.widget.-image-view/drawable.html
+$dokka.location:com.gurunars.box.ui$fullSize(android.view.View)com.gurunars.box.ui/android.view.-view/full-size.html
+$dokka.location:com.gurunars.box.ui$fullSize(android.view.ViewGroup.LayoutParams)com.gurunars.box.ui/android.view.-view-group.-layout-params/full-size.html
+$dokka.location:com.gurunars.box.ui$isChecked(android.widget.CompoundButton, com.gurunars.box.IBox((kotlin.Boolean)))com.gurunars.box.ui/android.widget.-compound-button/is-checked.html
+$dokka.location:com.gurunars.box.ui$isVisible(android.view.View, com.gurunars.box.IRoBox((kotlin.Boolean)))com.gurunars.box.ui/android.view.-view/is-visible.html
+$dokka.location:com.gurunars.box.ui$onClick(android.view.View, kotlin.Function0((kotlin.Any)))com.gurunars.box.ui/android.view.-view/on-click.html
+$dokka.location:com.gurunars.box.ui$onLongClick(android.view.View, kotlin.Function0((kotlin.Any)))com.gurunars.box.ui/android.view.-view/on-long-click.html
+$dokka.location:com.gurunars.box.ui$resource(android.widget.ImageView, com.gurunars.box.IRoBox((kotlin.Int)))com.gurunars.box.ui/android.widget.-image-view/resource.html
+$dokka.location:com.gurunars.box.ui$setBorders(android.view.View, com.gurunars.box.ui.Spec, kotlin.Int)com.gurunars.box.ui/android.view.-view/set-borders.html
+$dokka.location:com.gurunars.box.ui$setIsVisible(android.view.View, kotlin.Boolean)com.gurunars.box.ui/android.view.-view/set-is-visible.html
+$dokka.location:com.gurunars.box.ui$statefulView(android.content.Context, kotlin.Int, kotlin.Array((com.gurunars.box.IBox((kotlin.Any)))), kotlin.Function1((com.gurunars.box.ui.StatefulView, kotlin.Unit)))com.gurunars.box.ui/android.content.-context/stateful-view.html
+$dokka.location:com.gurunars.box.ui$style(android.widget.TextView, com.gurunars.box.IRoBox((com.gurunars.box.ui.Style)))com.gurunars.box.ui/android.widget.-text-view/style.html
+$dokka.location:com.gurunars.box.ui$text(android.widget.EditText, com.gurunars.box.IBox((kotlin.String)))com.gurunars.box.ui/android.widget.-edit-text/text.html
+$dokka.location:com.gurunars.box.ui$text(android.widget.TextView, com.gurunars.box.IRoBox((kotlin.String)))com.gurunars.box.ui/android.widget.-text-view/text.html
+$dokka.location:com.gurunars.box.ui$textColor(android.widget.TextView, com.gurunars.box.IRoBox((kotlin.Int)))com.gurunars.box.ui/android.widget.-text-view/text-color.html
+$dokka.location:com.gurunars.box.ui$textSize(android.widget.TextView, com.gurunars.box.IRoBox((kotlin.Float)))com.gurunars.box.ui/android.widget.-text-view/text-size.html
+com.gurunars.box.ui

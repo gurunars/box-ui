@@ -1,0 +1,37 @@
+<html>
+ <head> 
+  <meta charset="UTF-8" /> 
+  <title>branch - box</title> 
+  <link rel="stylesheet" href="../../style.css" /> 
+ </head> 
+ <body>   
+  <h1>branch</h1> 
+  <a name="com.gurunars.box$branch(com.gurunars.box.IBox((com.gurunars.box.branch.From)), kotlin.Function1((com.gurunars.box.branch.From, com.gurunars.box.branch.To)), kotlin.Function2((com.gurunars.box.branch.From, com.gurunars.box.branch.To, )))"></a> 
+  <code><span class="keyword">inline</span> <span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">From</span><span class="symbol">, </span><span class="identifier">To</span><span class="symbol">&gt;</span> <a href="-i-box/index.html"><span class="identifier">IBox</span></a><span class="symbol">&lt;</span><span class="identifier">From</span><span class="symbol">&gt;</span><span class="symbol">.</span><span class="identifier">branch</span><span class="symbol">(</span><span class="keyword">crossinline</span> <span class="identifier" id="com.gurunars.box$branch(com.gurunars.box.IBox((com.gurunars.box.branch.From)), kotlin.Function1((com.gurunars.box.branch.From, com.gurunars.box.branch.To)), kotlin.Function2((com.gurunars.box.branch.From, com.gurunars.box.branch.To, )))/reduce">reduce</span><span class="symbol">:</span>&nbsp;<span class="identifier">From</span><span class="symbol">.</span><span class="symbol">(</span><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<span class="identifier">To</span><span class="symbol">, </span><span class="keyword">crossinline</span> <span class="identifier" id="com.gurunars.box$branch(com.gurunars.box.IBox((com.gurunars.box.branch.From)), kotlin.Function1((com.gurunars.box.branch.From, com.gurunars.box.branch.To)), kotlin.Function2((com.gurunars.box.branch.From, com.gurunars.box.branch.To, )))/patchSource">patchSource</span><span class="symbol">:</span>&nbsp;<span class="identifier">From</span><span class="symbol">.</span><span class="symbol">(</span><span class="identifier">part</span><span class="symbol">:</span>&nbsp;<span class="identifier">To</span><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<span class="identifier">From</span><span class="symbol">)</span><span class="symbol">: </span><a href="-i-box/index.html"><span class="identifier">IBox</span></a><span class="symbol">&lt;</span><span class="identifier">To</span><span class="symbol">&gt;</span></code> 
+  <p>Returns a box that has a two-way binding to this one. I.e. if this one changes another box gets changed and vice versa.</p> 
+  <h3>Parameters</h3> 
+  <p><a name="reduce"></a> <code>reduce</code> - a function to transform the payload of this box into the payload of the other box</p> 
+  <p><a name="patchSource"></a> <code>patchSource</code> - a function to transform the value of this box based on the value of the other box</p> 
+  <a name="com.gurunars.box$branch(com.gurunars.box.IBox((com.gurunars.box.Optional((com.gurunars.box.branch.Type)))), com.gurunars.box.branch.Type)" class="hidden"></a> 
+  <code class="hidden"><span class="keyword">inline</span> <span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">Type</span><span class="symbol">&gt;</span> <a href="-i-box/index.html"><span class="identifier">IBox</span></a><span class="symbol">&lt;</span><a href="-optional/index.html"><span class="identifier">Optional</span></a><span class="symbol">&lt;</span><span class="identifier">Type</span><span class="symbol">&gt;</span><span class="symbol">&gt;</span><span class="symbol">.</span><span class="identifier">branch</span><span class="symbol">(</span><span class="identifier" id="com.gurunars.box$branch(com.gurunars.box.IBox((com.gurunars.box.Optional((com.gurunars.box.branch.Type)))), com.gurunars.box.branch.Type)/initial">initial</span><span class="symbol">:</span>&nbsp;<span class="identifier">Type</span><span class="symbol">)</span><span class="symbol">: </span><a href="-i-box/index.html"><span class="identifier">IBox</span></a><span class="symbol">&lt;</span><span class="identifier">Type</span><span class="symbol">&gt;</span></code> 
+  <p>Returns a special binding that propagates updates only for non null (Optional.Some) values.</p> 
+  <h3>Parameters</h3> 
+  <p><a name="initial"></a> <code>initial</code> - the value that is set before any of the events are propagated</p> 
+  <p><strong>See Also</strong> </p>
+  <p>branch</p> 
+  <p></p>   
+  <div class="breadcrumbs">
+    / 
+   <a href="/">index</a> / 
+   <a href="../index.html">box</a> / 
+   <a href="index.html">com.gurunars.box</a> / 
+   <a href=".">branch</a>
+  </div>
+  <div class="parameters">
+   <div class="parameter">
+    <a name="com.gurunars.box$branch(com.gurunars.box.IBox((com.gurunars.box.Optional((com.gurunars.box.branch.Type)))), com.gurunars.box.branch.Type)"></a>
+    <code><span class="keyword">inline</span> <span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">Type</span><span class="symbol">&gt;</span> <a href="-i-box/index.html"><span class="identifier">IBox</span></a><span class="symbol">&lt;</span><a href="-optional/index.html"><span class="identifier">Optional</span></a><span class="symbol">&lt;</span><span class="identifier">Type</span><span class="symbol">&gt;</span><span class="symbol">&gt;</span><span class="symbol">.</span><span class="identifier">branch</span><span class="symbol">(</span><span class="identifier" id="com.gurunars.box$branch(com.gurunars.box.IBox((com.gurunars.box.Optional((com.gurunars.box.branch.Type)))), com.gurunars.box.branch.Type)/initial">initial</span><span class="symbol">:</span>&nbsp;<span class="identifier">Type</span><span class="symbol">)</span><span class="symbol">: </span><a href="-i-box/index.html"><span class="identifier">IBox</span></a><span class="symbol">&lt;</span><span class="identifier">Type</span><span class="symbol">&gt;</span></code>
+   </div>
+  </div>
+ </body>
+</html>

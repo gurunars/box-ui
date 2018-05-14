@@ -1,0 +1,30 @@
+<html>
+ <head> 
+  <meta charset="UTF-8" /> 
+  <title>setAutoBg - android-utils</title> 
+  <link rel="stylesheet" href="../../../style.css" /> 
+ </head> 
+ <body>   
+  <h1>setAutoBg</h1> 
+  <a name="com.gurunars.android_utils$setAutoBg(android.view.View, kotlin.Int)"></a> 
+  <code><span class="keyword">fun </span><a href="https://developer.android.com/reference/android/view/View.html"><span class="identifier">View</span></a><span class="symbol">.</span><span class="identifier">setAutoBg</span><span class="symbol">(</span><span class="identifier" id="com.gurunars.android_utils$setAutoBg(android.view.View, kotlin.Int)/shadowWidth">shadowWidth</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code> 
+  <p>Configure a view to have an automatic background with an optional shadow behind it.</p> 
+  <p>The background becomes shadier if the view gets disabled.</p> 
+  <p>The background gets slightly shadier if the view gets clicked.</p> 
+  <p>If <strong>shadowWidth</strong> is greater than 0 and drawable is a shape or color drawable it adds a shadow behind the view. Shadow is not applicable to other view types.</p> 
+  <p>If it is a color drawable it also transforms it to a RectShape drawable with a specified color. During the transformation any other attributes of a color drawable are lost.</p> 
+  <p>The reason why the actual drawable is is private is to prevent using the drawable a regular way.</p> 
+  <p>There is a bug (feature?) in Android that remove the view padding whenever you set the background.</p> 
+  <h3>Parameters</h3> 
+  <p><a name="shadowWidth"></a> <code>shadowWidth</code> - shadow textSize (can be 0)</p>   
+  <div class="breadcrumbs">
+    / 
+   <a href="/">index</a> / 
+   <a href="../../index.html">android-utils</a> / 
+   <a href="../index.html">com.gurunars.android_utils</a> / 
+   <a href="index.html">android.view.View</a> / 
+   <a href=".">setAutoBg</a>
+  </div>
+  <div class="parameters"></div>
+ </body>
+</html>

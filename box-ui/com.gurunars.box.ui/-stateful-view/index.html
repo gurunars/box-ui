@@ -1,0 +1,78 @@
+<html>
+ <head> 
+  <meta charset="UTF-8" /> 
+  <title>StatefulView - box-ui</title> 
+  <link rel="stylesheet" href="../../../style.css" /> 
+ </head> 
+ <body>   
+  <h1>StatefulView</h1> 
+  <code><span class="keyword">class </span><span class="identifier">StatefulView</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="https://developer.android.com/reference/android/widget/FrameLayout.html"><span class="identifier">FrameLayout</span></a></code> 
+  <p>A base component meant to develop custom stateful UI widgets using bindable fields</p> 
+  <h3>Functions</h3> 
+  <table> 
+   <tbody> 
+    <tr> 
+     <td> <p><a href="retain.html">retain</a></p> </td> 
+     <td> <code><span class="keyword">fun </span><span class="identifier">retain</span><span class="symbol">(</span><span class="keyword">vararg</span> <span class="identifier" id="com.gurunars.box.ui.StatefulView$retain(kotlin.Array((com.gurunars.box.IBox((kotlin.Any)))))/fields">fields</span><span class="symbol">:</span>&nbsp;<a href="/box/com.gurunars.box/-i-box/index.html"><span class="identifier">IBox</span></a><span class="symbol">&lt;</span><span class="identifier">*</span><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code> <p>Call with multiple fields to notify the component that the state of the fields should be persisted.</p> </td> 
+    </tr> 
+   </tbody> 
+  </table> 
+  <h3>Extension Functions</h3> 
+  <table> 
+   <tbody> 
+    <tr> 
+     <td> <p><a href="../android.view.-view/as-empty.html">asEmpty</a></p> </td> 
+     <td> <code><span class="keyword">fun </span><a href="https://developer.android.com/reference/android/view/View.html"><span class="identifier">View</span></a><span class="symbol">.</span><span class="identifier">asEmpty</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code> <p>width = 0 height = 0</p> </td> 
+    </tr> 
+    <tr> 
+     <td> <p><a href="../android.view.-view/as-row.html">asRow</a></p> </td> 
+     <td> <code><span class="keyword">fun </span><a href="https://developer.android.com/reference/android/view/View.html"><span class="identifier">View</span></a><span class="symbol">.</span><span class="identifier">asRow</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code> <p>width = MATCH_PARENT height = WRAP_CONTENT</p> </td> 
+    </tr> 
+    <tr> 
+     <td> <p><a href="../android.view.-view/background-color.html">backgroundColor</a></p> </td> 
+     <td> <code><span class="keyword">fun </span><a href="https://developer.android.com/reference/android/view/View.html"><span class="identifier">View</span></a><span class="symbol">.</span><span class="identifier">backgroundColor</span><span class="symbol">(</span><span class="identifier" id="com.gurunars.box.ui$backgroundColor(android.view.View, com.gurunars.box.IRoBox((kotlin.Int)))/field">field</span><span class="symbol">:</span>&nbsp;<a href="/box/com.gurunars.box/-i-ro-box/index.html"><span class="identifier">IRoBox</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><span class="identifier">Disposable</span></code> <p>Binds to a boxed color int.</p> </td> 
+    </tr> 
+    <tr> 
+     <td> <p><a href="../android.view.-view/background-image.html">backgroundImage</a></p> </td> 
+     <td> <code><span class="keyword">fun </span><a href="https://developer.android.com/reference/android/view/View.html"><span class="identifier">View</span></a><span class="symbol">.</span><span class="identifier">backgroundImage</span><span class="symbol">(</span><span class="identifier" id="com.gurunars.box.ui$backgroundImage(android.view.View, com.gurunars.box.IRoBox((android.graphics.drawable.Drawable)))/field">field</span><span class="symbol">:</span>&nbsp;<a href="/box/com.gurunars.box/-i-ro-box/index.html"><span class="identifier">IRoBox</span></a><span class="symbol">&lt;</span><a href="https://developer.android.com/reference/android/graphics/drawable/Drawable.html"><span class="identifier">Drawable</span></a><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><span class="identifier">Disposable</span></code> <p>Binds to a boxed drawable.</p> </td> 
+    </tr> 
+    <tr> 
+     <td> <p><a href="../android.view.-view/background-res.html">backgroundRes</a></p> </td> 
+     <td> <code><span class="keyword">fun </span><a href="https://developer.android.com/reference/android/view/View.html"><span class="identifier">View</span></a><span class="symbol">.</span><span class="identifier">backgroundRes</span><span class="symbol">(</span><span class="identifier" id="com.gurunars.box.ui$backgroundRes(android.view.View, com.gurunars.box.IRoBox((kotlin.Int)))/field">field</span><span class="symbol">:</span>&nbsp;<a href="/box/com.gurunars.box/-i-ro-box/index.html"><span class="identifier">IRoBox</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><span class="identifier">Disposable</span></code> <p>Binds to a boxed image resource int.</p> </td> 
+    </tr> 
+    <tr> 
+     <td> <p><a href="../android.view.-view/full-size.html">fullSize</a></p> </td> 
+     <td> <code><span class="keyword">fun </span><a href="https://developer.android.com/reference/android/view/View.html"><span class="identifier">View</span></a><span class="symbol">.</span><span class="identifier">fullSize</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code> <p>width = MATCH_PARENT height = MATCH_PARENT</p> </td> 
+    </tr> 
+    <tr> 
+     <td> <p><a href="../android.view.-view/is-visible.html">isVisible</a></p> </td> 
+     <td> <code><span class="keyword">fun </span><a href="https://developer.android.com/reference/android/view/View.html"><span class="identifier">View</span></a><span class="symbol">.</span><span class="identifier">isVisible</span><span class="symbol">(</span><span class="identifier" id="com.gurunars.box.ui$isVisible(android.view.View, com.gurunars.box.IRoBox((kotlin.Boolean)))/field">field</span><span class="symbol">:</span>&nbsp;<a href="/box/com.gurunars.box/-i-ro-box/index.html"><span class="identifier">IRoBox</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><span class="identifier">Disposable</span></code> <p>Binds View.VISIBLE and View.GONE to boxed true/false boolean values respectively.</p> </td> 
+    </tr> 
+    <tr> 
+     <td> <p><a href="../android.view.-view/on-click.html">onClick</a></p> </td> 
+     <td> <code><span class="keyword">fun </span><a href="https://developer.android.com/reference/android/view/View.html"><span class="identifier">View</span></a><span class="symbol">.</span><span class="identifier">onClick</span><span class="symbol">(</span><span class="identifier" id="com.gurunars.box.ui$onClick(android.view.View, kotlin.Function0((kotlin.Any)))/callback">callback</span><span class="symbol">:</span>&nbsp;<span class="symbol">(</span><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td> 
+    </tr> 
+    <tr> 
+     <td> <p><a href="../android.view.-view/on-long-click.html">onLongClick</a></p> </td> 
+     <td> <code><span class="keyword">fun </span><a href="https://developer.android.com/reference/android/view/View.html"><span class="identifier">View</span></a><span class="symbol">.</span><span class="identifier">onLongClick</span><span class="symbol">(</span><span class="identifier" id="com.gurunars.box.ui$onLongClick(android.view.View, kotlin.Function0((kotlin.Any)))/callback">callback</span><span class="symbol">:</span>&nbsp;<span class="symbol">(</span><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td> 
+    </tr> 
+    <tr> 
+     <td> <p><a href="../android.view.-view/set-borders.html">setBorders</a></p> </td> 
+     <td> <code><span class="keyword">fun </span><a href="https://developer.android.com/reference/android/view/View.html"><span class="identifier">View</span></a><span class="symbol">.</span><span class="identifier">setBorders</span><span class="symbol">(</span><span class="identifier" id="com.gurunars.box.ui$setBorders(android.view.View, com.gurunars.box.ui.Spec, kotlin.Int)/spec">spec</span><span class="symbol">:</span>&nbsp;<a href="../-spec/index.html"><span class="identifier">Spec</span></a><span class="symbol">, </span><span class="identifier" id="com.gurunars.box.ui$setBorders(android.view.View, com.gurunars.box.ui.Spec, kotlin.Int)/color">color</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a>&nbsp;<span class="symbol">=</span>&nbsp;Color.BLACK<span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td> 
+    </tr> 
+    <tr> 
+     <td> <p><a href="../android.view.-view/set-is-visible.html">setIsVisible</a></p> </td> 
+     <td> <code><span class="keyword">fun </span><a href="https://developer.android.com/reference/android/view/View.html"><span class="identifier">View</span></a><span class="symbol">.</span><span class="identifier">setIsVisible</span><span class="symbol">(</span><span class="identifier" id="com.gurunars.box.ui$setIsVisible(android.view.View, kotlin.Boolean)/isVisible">isVisible</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td> 
+    </tr> 
+   </tbody> 
+  </table>   
+  <div class="breadcrumbs">
+    / 
+   <a href="/">index</a> / 
+   <a href="../../index.html">box-ui</a> / 
+   <a href="../index.html">com.gurunars.box.ui</a> / 
+   <a href=".">StatefulView</a>
+  </div>
+  <div class="parameters"></div>
+ </body>
+</html>

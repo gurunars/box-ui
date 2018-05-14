@@ -1,0 +1,80 @@
+<html>
+ <head> 
+  <meta charset="UTF-8" /> 
+  <title>ItemTypeDescriptor - crud-item-list</title> 
+  <link rel="stylesheet" href="../../../style.css" /> 
+ </head> 
+ <body>   
+  <h1>ItemTypeDescriptor</h1> 
+  <code><span class="keyword">interface </span><span class="identifier">ItemTypeDescriptor</span><span class="symbol">&lt;</span><span class="identifier">ItemType</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="/item-list/com.gurunars.item_list/-item/index.html"><span class="identifier">Item</span></a><span class="symbol">&gt;</span></code> 
+  <p>Aggregation of attributes describing a specific item type in the context of showing the item list and editing individual items.</p> 
+  <h3>Types</h3> 
+  <table> 
+   <tbody> 
+    <tr> 
+     <td> <p><a href="-status/index.html">Status</a></p> </td> 
+     <td> <code><span class="keyword">data</span> <span class="keyword">class </span><span class="identifier">Status</span></code> <p>Represents validity status of form's payload.</p> </td> 
+    </tr> 
+   </tbody> 
+  </table> 
+  <h3>Properties</h3> 
+  <table> 
+   <tbody> 
+    <tr> 
+     <td> <p><a href="icon.html">icon</a></p> </td> 
+     <td> <code><span class="keyword">abstract</span> <span class="keyword">val </span><span class="identifier">icon</span><span class="symbol">: </span><a href="/android-utils/com.gurunars.android_utils/-icon/index.html"><span class="identifier">Icon</span></a></code> <p>Item icon for the creation menu.</p> </td> 
+    </tr> 
+    <tr> 
+     <td> <p><a href="title.html">title</a></p> </td> 
+     <td> <code><span class="keyword">abstract</span> <span class="keyword">val </span><span class="identifier">title</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code> <p>Value shown as a hint for the icon and as a title of the creation form</p> </td> 
+    </tr> 
+    <tr> 
+     <td> <p><a href="type.html">type</a></p> </td> 
+     <td> <code><span class="keyword">open</span> <span class="keyword">val </span><span class="identifier">type</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-enum/index.html"><span class="identifier">Enum</span></a><span class="symbol">&lt;</span><span class="identifier">*</span><span class="symbol">&gt;</span></code> <p>Type of the item the descriptor to be associated to.</p> </td> 
+    </tr> 
+   </tbody> 
+  </table> 
+  <h3>Functions</h3> 
+  <table> 
+   <tbody> 
+    <tr> 
+     <td> <p><a href="bind-form.html">bindForm</a></p> </td> 
+     <td> <code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">bindForm</span><span class="symbol">(</span><span class="identifier" id="com.gurunars.crud_item_list.ItemTypeDescriptor$bindForm(com.gurunars.box.IBox((com.gurunars.crud_item_list.ItemTypeDescriptor.ItemType)))/field">field</span><span class="symbol">:</span>&nbsp;<a href="/box/com.gurunars.box/-i-box/index.html"><span class="identifier">IBox</span></a><span class="symbol">&lt;</span><span class="identifier">ItemType</span><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://developer.android.com/reference/android/view/View.html"><span class="identifier">View</span></a></code></td> 
+    </tr> 
+    <tr> 
+     <td> <p><a href="bind-row.html">bindRow</a></p> </td> 
+     <td> <code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">bindRow</span><span class="symbol">(</span><span class="identifier" id="com.gurunars.crud_item_list.ItemTypeDescriptor$bindRow(com.gurunars.box.IRoBox((com.gurunars.item_list.SelectableItem((com.gurunars.crud_item_list.ItemTypeDescriptor.ItemType)))))/field">field</span><span class="symbol">:</span>&nbsp;<a href="/box/com.gurunars.box/-i-ro-box/index.html"><span class="identifier">IRoBox</span></a><span class="symbol">&lt;</span><a href="/item-list/com.gurunars.item_list/-selectable-item/index.html"><span class="identifier">SelectableItem</span></a><span class="symbol">&lt;</span><span class="identifier">ItemType</span><span class="symbol">&gt;</span><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://developer.android.com/reference/android/view/View.html"><span class="identifier">View</span></a></code> <p>Return a rendered row view for a specific item</p> </td> 
+    </tr> 
+    <tr> 
+     <td> <p><a href="create-new-item.html">createNewItem</a></p> </td> 
+     <td> <code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">createNewItem</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><span class="identifier">ItemType</span></code> <p>Returns a newly created item of a specific type without saving it.</p> </td> 
+    </tr> 
+    <tr> 
+     <td> <p><a href="get-item-title.html">getItemTitle</a></p> </td> 
+     <td> <code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">getItemTitle</span><span class="symbol">(</span><span class="identifier" id="com.gurunars.crud_item_list.ItemTypeDescriptor$getItemTitle(com.gurunars.box.IRoBox((com.gurunars.crud_item_list.ItemTypeDescriptor.ItemType)))/item">item</span><span class="symbol">:</span>&nbsp;<a href="/box/com.gurunars.box/-i-ro-box/index.html"><span class="identifier">IRoBox</span></a><span class="symbol">&lt;</span><span class="identifier">ItemType</span><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="/box/com.gurunars.box/-i-ro-box/index.html"><span class="identifier">IRoBox</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">&gt;</span></code> <p>Return an observable of the title that is a specific for each individual item</p> </td> 
+    </tr> 
+    <tr> 
+     <td> <p><a href="validate.html">validate</a></p> </td> 
+     <td> <code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">validate</span><span class="symbol">(</span><span class="identifier" id="com.gurunars.crud_item_list.ItemTypeDescriptor$validate(com.gurunars.crud_item_list.ItemTypeDescriptor.ItemType)/item">item</span><span class="symbol">:</span>&nbsp;<span class="identifier">ItemType</span><span class="symbol">)</span><span class="symbol">: </span><a href="-status/index.html"><span class="identifier">Status</span></a></code> <p>Returns status of the payload: OK, error, warning</p> </td> 
+    </tr> 
+   </tbody> 
+  </table> 
+  <h3>Extension Functions</h3> 
+  <table> 
+   <tbody> 
+    <tr> 
+     <td> <p><a href="../one-of.html">oneOf</a></p> </td> 
+     <td> <code><span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">ItemType</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="/item-list/com.gurunars.item_list/-item/index.html"><span class="identifier">Item</span></a><span class="symbol">&gt;</span> <span class="identifier">ItemTypeDescriptor</span><span class="symbol">&lt;</span><span class="identifier">ItemType</span><span class="symbol">&gt;</span><span class="symbol">.</span><span class="identifier">oneOf</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><span class="identifier">ItemTypeDescriptor</span><span class="symbol">&lt;</span><span class="identifier">ItemType</span><span class="symbol">&gt;</span><span class="symbol">&gt;</span></code> <p>A shortcut function to wrap a single descriptor into a list of lists.</p> </td> 
+    </tr> 
+   </tbody> 
+  </table>   
+  <div class="breadcrumbs">
+    / 
+   <a href="/">index</a> / 
+   <a href="../../index.html">crud-item-list</a> / 
+   <a href="../index.html">com.gurunars.crud_item_list</a> / 
+   <a href=".">ItemTypeDescriptor</a>
+  </div>
+  <div class="parameters"></div>
+ </body>
+</html>

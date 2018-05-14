@@ -1,0 +1,486 @@
+<html>
+ <head> 
+  <meta charset="UTF-8" /> 
+  <title>Module Contents</title> 
+  <link rel="stylesheet" href="../style.css" /> 
+ </head> 
+ <body>  
+  <ul>   
+   <meta charset="UTF-8" /> 
+   <title>Module Contents</title> 
+   <link rel="stylesheet" href="../style.css" />   
+   <a href="/home/antonb/personal/box-ui/html-docs/item-list/index"></a>
+   <a href="alltypes/index.html"><span class="identifier">alltypes</span></a> 
+   <ul>   
+    <meta charset="UTF-8" /> 
+    <title>Module Contents</title> 
+    <link rel="stylesheet" href="../style.css" />   
+    <a href="/home/antonb/personal/box-ui/html-docs/item-list/index"></a>
+    <a href="com.gurunars.item_list/-empty-view-binder.html"><span class="keyword">typealias </span><span class="identifier">EmptyViewBinder</span>&nbsp;<span class="symbol">=</span>&nbsp;<span class="symbol">(</span><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;</a>
+    <a href="https://developer.android.com/reference/android/view/View.html"><span class="identifier">View</span></a> 
+    <a href="/home/antonb/personal/box-ui/html-docs/item-list/index"></a>
+    <a href="com.gurunars.item_list/-item/index.html"><span class="keyword">interface </span><span class="identifier">Item</span>&nbsp;<span class="symbol">:</span>&nbsp;</a>
+    <a href="https://developer.android.com/reference/java/io/Serializable.html"><span class="identifier">Serializable</span></a> 
+    <ul>   
+     <meta charset="UTF-8" /> 
+     <title>Module Contents</title> 
+     <link rel="stylesheet" href="../style.css" />   
+     <a href="/home/antonb/personal/box-ui/html-docs/item-list/index"></a>
+     <a href="com.gurunars.item_list/-item/-default/index.html"><span class="keyword">enum</span> <span class="keyword">class </span><span class="identifier">Default</span></a> 
+     <ul>   
+      <meta charset="UTF-8" /> 
+      <title>Module Contents</title> 
+      <link rel="stylesheet" href="../style.css" />   
+      <a href="/home/antonb/personal/box-ui/html-docs/item-list/index"></a>
+      <a href="com.gurunars.item_list/-item/-default/-o-n-l-y.html"><span class="identifier">ONLY</span></a>   
+     </ul> 
+     <a href="/home/antonb/personal/box-ui/html-docs/item-list/index"></a>
+     <a href="com.gurunars.item_list/-item/id.html"><span class="keyword">abstract</span> <span class="keyword">val </span><span class="identifier">id</span><span class="symbol">: </span></a>
+     <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a> 
+     <a href="/home/antonb/personal/box-ui/html-docs/item-list/index"></a>
+     <a href="com.gurunars.item_list/-item/type.html"><span class="keyword">open</span> <span class="keyword">val </span><span class="identifier">type</span><span class="symbol">: </span></a>
+     <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-enum/index.html"><span class="identifier">Enum</span></a>
+     <span class="symbol">&lt;</span>
+     <span class="identifier">*</span>
+     <span class="symbol">&gt;</span>   
+    </ul> 
+    <a href="/home/antonb/personal/box-ui/html-docs/item-list/index"></a>
+    <a href="com.gurunars.item_list/-item-view-binder.html"><span class="keyword">typealias </span><span class="identifier">ItemViewBinder</span><span class="symbol">&lt;</span><span class="identifier">ItemType</span><span class="symbol">&gt;</span>&nbsp;<span class="symbol">=</span>&nbsp;<span class="symbol">(</span><span class="identifier">field</span><span class="symbol">:</span>&nbsp;</a>
+    <a href="/box/com.gurunars.box/-i-ro-box/index.html"><span class="identifier">IRoBox</span></a>
+    <span class="symbol">&lt;</span>
+    <span class="identifier">ItemType</span>
+    <span class="symbol">&gt;</span>
+    <span class="symbol">)</span>&nbsp;
+    <span class="symbol">-&gt;</span>&nbsp;
+    <a href="https://developer.android.com/reference/android/view/View.html"><span class="identifier">View</span></a> 
+    <a href="/home/antonb/personal/box-ui/html-docs/item-list/index"></a>
+    <a href="com.gurunars.item_list/-selectable-item/index.html"><span class="keyword">data</span> <span class="keyword">class </span><span class="identifier">SelectableItem</span><span class="symbol">&lt;</span><span class="keyword">out</span>&nbsp;<span class="identifier">ItemType</span>&nbsp;<span class="symbol">:</span>&nbsp;</a>
+    <a href="com.gurunars.item_list/-item/index.html"><span class="identifier">Item</span></a>
+    <span class="symbol">&gt;</span>&nbsp;
+    <span class="symbol">:</span>&nbsp;
+    <a href="com.gurunars.item_list/-item/index.html"><span class="identifier">Item</span></a> 
+    <ul>   
+     <meta charset="UTF-8" /> 
+     <title>Module Contents</title> 
+     <link rel="stylesheet" href="../style.css" />   
+     <a href="/home/antonb/personal/box-ui/html-docs/item-list/index"></a>
+     <a href="com.gurunars.item_list/-selectable-item/id.html"><span class="keyword">val </span><span class="identifier">id</span><span class="symbol">: </span></a>
+     <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a> 
+     <a href="/home/antonb/personal/box-ui/html-docs/item-list/index"></a>
+     <a href="com.gurunars.item_list/-selectable-item/is-selected.html"><span class="keyword">val </span><span class="identifier">isSelected</span><span class="symbol">: </span></a>
+     <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a> 
+     <a href="/home/antonb/personal/box-ui/html-docs/item-list/index"></a>
+     <a href="com.gurunars.item_list/-selectable-item/item.html"><span class="keyword">val </span><span class="identifier">item</span><span class="symbol">: </span><span class="identifier">ItemType</span></a> 
+     <a href="/home/antonb/personal/box-ui/html-docs/item-list/index"></a>
+     <a href="com.gurunars.item_list/-selectable-item/type.html"><span class="keyword">val </span><span class="identifier">type</span><span class="symbol">: </span></a>
+     <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-enum/index.html"><span class="identifier">Enum</span></a>
+     <span class="symbol">&lt;</span>
+     <span class="identifier">*</span>
+     <span class="symbol">&gt;</span>   
+    </ul> 
+    <a href="/home/antonb/personal/box-ui/html-docs/item-list/index"></a>
+    <a href="com.gurunars.item_list/android.content.-context/index.html"><span class="identifier">android.content.Context</span></a> 
+    <ul>   
+     <meta charset="UTF-8" /> 
+     <title>Module Contents</title> 
+     <link rel="stylesheet" href="../style.css" />   
+     <a href="/home/antonb/personal/box-ui/html-docs/item-list/index"></a>
+     <a href="com.gurunars.item_list/android.content.-context/default-empty-view-binder.html"><span class="keyword">fun </span></a>
+     <a href="https://developer.android.com/reference/android/content/Context.html"><span class="identifier">Context</span></a>
+     <span class="symbol">.</span>
+     <span class="identifier">defaultEmptyViewBinder</span>
+     <span class="symbol">(</span>
+     <span class="symbol">)</span>
+     <span class="symbol">: </span>
+     <a href="https://developer.android.com/reference/android/widget/TextView.html"><span class="identifier">TextView</span></a> 
+     <a href="/home/antonb/personal/box-ui/html-docs/item-list/index"></a>
+     <a href="com.gurunars.item_list/android.content.-context/default-item-view-binder.html"><span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">ItemType</span>&nbsp;<span class="symbol">:</span>&nbsp;</a>
+     <a href="com.gurunars.item_list/-item/index.html"><span class="identifier">Item</span></a>
+     <span class="symbol">&gt;</span> 
+     <a href="https://developer.android.com/reference/android/content/Context.html"><span class="identifier">Context</span></a>
+     <span class="symbol">.</span>
+     <span class="identifier">defaultItemViewBinder</span>
+     <span class="symbol">(</span>
+     <span class="identifier" id="com.gurunars.item_list$defaultItemViewBinder(android.content.Context, com.gurunars.box.IRoBox((com.gurunars.item_list.defaultItemViewBinder.ItemType)))/field">field</span>
+     <span class="symbol">:</span>&nbsp;
+     <a href="/box/com.gurunars.box/-i-ro-box/index.html"><span class="identifier">IRoBox</span></a>
+     <span class="symbol">&lt;</span>
+     <span class="identifier">ItemType</span>
+     <span class="symbol">&gt;</span>
+     <span class="symbol">)</span>
+     <span class="symbol">: </span>
+     <a href="https://developer.android.com/reference/android/widget/TextView.html"><span class="identifier">TextView</span></a> 
+     <a href="/home/antonb/personal/box-ui/html-docs/item-list/index"></a>
+     <a href="com.gurunars.item_list/android.content.-context/item-list-view.html"><span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">ItemType</span>&nbsp;<span class="symbol">:</span>&nbsp;</a>
+     <a href="com.gurunars.item_list/-item/index.html"><span class="identifier">Item</span></a>
+     <span class="symbol">&gt;</span> 
+     <a href="https://developer.android.com/reference/android/content/Context.html"><span class="identifier">Context</span></a>
+     <span class="symbol">.</span>
+     <span class="identifier">itemListView</span>
+     <span class="symbol">(</span>
+     <span class="identifier" id="com.gurunars.item_list$itemListView(android.content.Context, com.gurunars.box.IRoBox((kotlin.collections.List((com.gurunars.item_list.itemListView.ItemType)))), kotlin.collections.Map((kotlin.Enum(()), kotlin.Function1((com.gurunars.box.IRoBox((com.gurunars.item_list.itemListView.ItemType)), android.view.View)))), kotlin.Function0((android.view.View)), com.gurunars.box.IRoBox((kotlin.Boolean)))/items">items</span>
+     <span class="symbol">:</span>&nbsp;
+     <a href="/box/com.gurunars.box/-i-ro-box/index.html"><span class="identifier">IRoBox</span></a>
+     <span class="symbol">&lt;</span>
+     <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a>
+     <span class="symbol">&lt;</span>
+     <span class="identifier">ItemType</span>
+     <span class="symbol">&gt;</span>
+     <span class="symbol">&gt;</span>
+     <span class="symbol">, </span>
+     <span class="identifier" id="com.gurunars.item_list$itemListView(android.content.Context, com.gurunars.box.IRoBox((kotlin.collections.List((com.gurunars.item_list.itemListView.ItemType)))), kotlin.collections.Map((kotlin.Enum(()), kotlin.Function1((com.gurunars.box.IRoBox((com.gurunars.item_list.itemListView.ItemType)), android.view.View)))), kotlin.Function0((android.view.View)), com.gurunars.box.IRoBox((kotlin.Boolean)))/itemViewBinders">itemViewBinders</span>
+     <span class="symbol">:</span>&nbsp;
+     <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-map/index.html"><span class="identifier">Map</span></a>
+     <span class="symbol">&lt;</span>
+     <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-enum/index.html"><span class="identifier">Enum</span></a>
+     <span class="symbol">&lt;</span>
+     <span class="identifier">*</span>
+     <span class="symbol">&gt;</span>
+     <span class="symbol">,</span>&nbsp;
+     <a href="com.gurunars.item_list/-item-view-binder.html"><span class="identifier">ItemViewBinder</span></a>
+     <span class="symbol">&lt;</span>
+     <span class="identifier">ItemType</span>
+     <span class="symbol">&gt;</span>
+     <span class="symbol">&gt;</span>&nbsp;
+     <span class="symbol">=</span>&nbsp;mapOf()
+     <span class="symbol">, </span>
+     <span class="identifier" id="com.gurunars.item_list$itemListView(android.content.Context, com.gurunars.box.IRoBox((kotlin.collections.List((com.gurunars.item_list.itemListView.ItemType)))), kotlin.collections.Map((kotlin.Enum(()), kotlin.Function1((com.gurunars.box.IRoBox((com.gurunars.item_list.itemListView.ItemType)), android.view.View)))), kotlin.Function0((android.view.View)), com.gurunars.box.IRoBox((kotlin.Boolean)))/emptyViewBinder">emptyViewBinder</span>
+     <span class="symbol">:</span>&nbsp;
+     <a href="com.gurunars.item_list/-empty-view-binder.html"><span class="identifier">EmptyViewBinder</span></a>&nbsp;
+     <span class="symbol">=</span>&nbsp;this::defaultEmptyViewBinder
+     <span class="symbol">, </span>
+     <span class="identifier" id="com.gurunars.item_list$itemListView(android.content.Context, com.gurunars.box.IRoBox((kotlin.collections.List((com.gurunars.item_list.itemListView.ItemType)))), kotlin.collections.Map((kotlin.Enum(()), kotlin.Function1((com.gurunars.box.IRoBox((com.gurunars.item_list.itemListView.ItemType)), android.view.View)))), kotlin.Function0((android.view.View)), com.gurunars.box.IRoBox((kotlin.Boolean)))/reverseLayout">reverseLayout</span>
+     <span class="symbol">:</span>&nbsp;
+     <a href="/box/com.gurunars.box/-i-ro-box/index.html"><span class="identifier">IRoBox</span></a>
+     <span class="symbol">&lt;</span>
+     <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a>
+     <span class="symbol">&gt;</span>&nbsp;
+     <span class="symbol">=</span>&nbsp;false.box
+     <span class="symbol">)</span>
+     <span class="symbol">: </span>
+     <a href="https://developer.android.com/reference/android/view/View.html"><span class="identifier">View</span></a> 
+     <a href="/home/antonb/personal/box-ui/html-docs/item-list/index"></a>
+     <a href="com.gurunars.item_list/android.content.-context/selectable-item-list-view.html"><span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">ItemType</span>&nbsp;<span class="symbol">:</span>&nbsp;</a>
+     <a href="com.gurunars.item_list/-item/index.html"><span class="identifier">Item</span></a>
+     <span class="symbol">&gt;</span> 
+     <a href="https://developer.android.com/reference/android/content/Context.html"><span class="identifier">Context</span></a>
+     <span class="symbol">.</span>
+     <span class="identifier">selectableItemListView</span>
+     <span class="symbol">(</span>
+     <span class="identifier" id="com.gurunars.item_list$selectableItemListView(android.content.Context, com.gurunars.box.IRoBox((kotlin.collections.List((com.gurunars.item_list.selectableItemListView.ItemType)))), com.gurunars.box.IBox((kotlin.collections.Set((com.gurunars.item_list.selectableItemListView.ItemType)))), kotlin.collections.Map((kotlin.Enum(()), kotlin.Function1((com.gurunars.box.IRoBox((com.gurunars.item_list.SelectableItem((com.gurunars.item_list.selectableItemListView.ItemType)))), android.view.View)))), kotlin.Function0((android.view.View)), com.gurunars.box.IRoBox((kotlin.Boolean)))/items">items</span>
+     <span class="symbol">:</span>&nbsp;
+     <a href="/box/com.gurunars.box/-i-ro-box/index.html"><span class="identifier">IRoBox</span></a>
+     <span class="symbol">&lt;</span>
+     <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a>
+     <span class="symbol">&lt;</span>
+     <span class="identifier">ItemType</span>
+     <span class="symbol">&gt;</span>
+     <span class="symbol">&gt;</span>
+     <span class="symbol">, </span>
+     <span class="identifier" id="com.gurunars.item_list$selectableItemListView(android.content.Context, com.gurunars.box.IRoBox((kotlin.collections.List((com.gurunars.item_list.selectableItemListView.ItemType)))), com.gurunars.box.IBox((kotlin.collections.Set((com.gurunars.item_list.selectableItemListView.ItemType)))), kotlin.collections.Map((kotlin.Enum(()), kotlin.Function1((com.gurunars.box.IRoBox((com.gurunars.item_list.SelectableItem((com.gurunars.item_list.selectableItemListView.ItemType)))), android.view.View)))), kotlin.Function0((android.view.View)), com.gurunars.box.IRoBox((kotlin.Boolean)))/selectedItems">selectedItems</span>
+     <span class="symbol">:</span>&nbsp;
+     <a href="/box/com.gurunars.box/-i-box/index.html"><span class="identifier">IBox</span></a>
+     <span class="symbol">&lt;</span>
+     <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-set/index.html"><span class="identifier">Set</span></a>
+     <span class="symbol">&lt;</span>
+     <span class="identifier">ItemType</span>
+     <span class="symbol">&gt;</span>
+     <span class="symbol">&gt;</span>&nbsp;
+     <span class="symbol">=</span>&nbsp;Box(setOf())
+     <span class="symbol">, </span>
+     <span class="identifier" id="com.gurunars.item_list$selectableItemListView(android.content.Context, com.gurunars.box.IRoBox((kotlin.collections.List((com.gurunars.item_list.selectableItemListView.ItemType)))), com.gurunars.box.IBox((kotlin.collections.Set((com.gurunars.item_list.selectableItemListView.ItemType)))), kotlin.collections.Map((kotlin.Enum(()), kotlin.Function1((com.gurunars.box.IRoBox((com.gurunars.item_list.SelectableItem((com.gurunars.item_list.selectableItemListView.ItemType)))), android.view.View)))), kotlin.Function0((android.view.View)), com.gurunars.box.IRoBox((kotlin.Boolean)))/itemViewBinders">itemViewBinders</span>
+     <span class="symbol">:</span>&nbsp;
+     <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-map/index.html"><span class="identifier">Map</span></a>
+     <span class="symbol">&lt;</span>
+     <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-enum/index.html"><span class="identifier">Enum</span></a>
+     <span class="symbol">&lt;</span>
+     <span class="identifier">*</span>
+     <span class="symbol">&gt;</span>
+     <span class="symbol">,</span>&nbsp;
+     <a href="com.gurunars.item_list/-item-view-binder.html"><span class="identifier">ItemViewBinder</span></a>
+     <span class="symbol">&lt;</span>
+     <a href="com.gurunars.item_list/-selectable-item/index.html"><span class="identifier">SelectableItem</span></a>
+     <span class="symbol">&lt;</span>
+     <span class="identifier">ItemType</span>
+     <span class="symbol">&gt;</span>
+     <span class="symbol">&gt;</span>
+     <span class="symbol">&gt;</span>&nbsp;
+     <span class="symbol">=</span>&nbsp;mapOf()
+     <span class="symbol">, </span>
+     <span class="identifier" id="com.gurunars.item_list$selectableItemListView(android.content.Context, com.gurunars.box.IRoBox((kotlin.collections.List((com.gurunars.item_list.selectableItemListView.ItemType)))), com.gurunars.box.IBox((kotlin.collections.Set((com.gurunars.item_list.selectableItemListView.ItemType)))), kotlin.collections.Map((kotlin.Enum(()), kotlin.Function1((com.gurunars.box.IRoBox((com.gurunars.item_list.SelectableItem((com.gurunars.item_list.selectableItemListView.ItemType)))), android.view.View)))), kotlin.Function0((android.view.View)), com.gurunars.box.IRoBox((kotlin.Boolean)))/emptyViewBinder">emptyViewBinder</span>
+     <span class="symbol">:</span>&nbsp;
+     <a href="com.gurunars.item_list/-empty-view-binder.html"><span class="identifier">EmptyViewBinder</span></a>&nbsp;
+     <span class="symbol">=</span>&nbsp;this::defaultEmptyViewBinder
+     <span class="symbol">, </span>
+     <span class="identifier" id="com.gurunars.item_list$selectableItemListView(android.content.Context, com.gurunars.box.IRoBox((kotlin.collections.List((com.gurunars.item_list.selectableItemListView.ItemType)))), com.gurunars.box.IBox((kotlin.collections.Set((com.gurunars.item_list.selectableItemListView.ItemType)))), kotlin.collections.Map((kotlin.Enum(()), kotlin.Function1((com.gurunars.box.IRoBox((com.gurunars.item_list.SelectableItem((com.gurunars.item_list.selectableItemListView.ItemType)))), android.view.View)))), kotlin.Function0((android.view.View)), com.gurunars.box.IRoBox((kotlin.Boolean)))/explicitSelectionMode">explicitSelectionMode</span>
+     <span class="symbol">:</span>&nbsp;
+     <a href="/box/com.gurunars.box/-i-ro-box/index.html"><span class="identifier">IRoBox</span></a>
+     <span class="symbol">&lt;</span>
+     <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a>
+     <span class="symbol">&gt;</span>&nbsp;
+     <span class="symbol">=</span>&nbsp;false.box
+     <span class="symbol">)</span>
+     <span class="symbol">: </span>
+     <a href="https://developer.android.com/reference/android/view/View.html"><span class="identifier">View</span></a>   
+    </ul>   
+   </ul> 
+   <a href="/home/antonb/personal/box-ui/html-docs/item-list/index"></a>
+   <a href="com.gurunars.item_list/index.html"><span class="keyword">package</span> <span class="identifier">com.gurunars.item_list</span></a> 
+   <ul>   
+    <meta charset="UTF-8" /> 
+    <title>Module Contents</title> 
+    <link rel="stylesheet" href="../style.css" />   
+    <a href="/home/antonb/personal/box-ui/html-docs/item-list/index"></a>
+    <a href="com.gurunars.item_list/-empty-view-binder.html"><span class="keyword">typealias </span><span class="identifier">EmptyViewBinder</span>&nbsp;<span class="symbol">=</span>&nbsp;<span class="symbol">(</span><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;</a>
+    <a href="https://developer.android.com/reference/android/view/View.html"><span class="identifier">View</span></a> 
+    <a href="/home/antonb/personal/box-ui/html-docs/item-list/index"></a>
+    <a href="com.gurunars.item_list/-item/index.html"><span class="keyword">interface </span><span class="identifier">Item</span>&nbsp;<span class="symbol">:</span>&nbsp;</a>
+    <a href="https://developer.android.com/reference/java/io/Serializable.html"><span class="identifier">Serializable</span></a> 
+    <ul>   
+     <meta charset="UTF-8" /> 
+     <title>Module Contents</title> 
+     <link rel="stylesheet" href="../style.css" />   
+     <a href="/home/antonb/personal/box-ui/html-docs/item-list/index"></a>
+     <a href="com.gurunars.item_list/-item/-default/index.html"><span class="keyword">enum</span> <span class="keyword">class </span><span class="identifier">Default</span></a> 
+     <ul>   
+      <meta charset="UTF-8" /> 
+      <title>Module Contents</title> 
+      <link rel="stylesheet" href="../style.css" />   
+      <a href="/home/antonb/personal/box-ui/html-docs/item-list/index"></a>
+      <a href="com.gurunars.item_list/-item/-default/-o-n-l-y.html"><span class="identifier">ONLY</span></a>   
+     </ul> 
+     <a href="/home/antonb/personal/box-ui/html-docs/item-list/index"></a>
+     <a href="com.gurunars.item_list/-item/id.html"><span class="keyword">abstract</span> <span class="keyword">val </span><span class="identifier">id</span><span class="symbol">: </span></a>
+     <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a> 
+     <a href="/home/antonb/personal/box-ui/html-docs/item-list/index"></a>
+     <a href="com.gurunars.item_list/-item/type.html"><span class="keyword">open</span> <span class="keyword">val </span><span class="identifier">type</span><span class="symbol">: </span></a>
+     <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-enum/index.html"><span class="identifier">Enum</span></a>
+     <span class="symbol">&lt;</span>
+     <span class="identifier">*</span>
+     <span class="symbol">&gt;</span>   
+    </ul> 
+    <a href="/home/antonb/personal/box-ui/html-docs/item-list/index"></a>
+    <a href="com.gurunars.item_list/-item-view-binder.html"><span class="keyword">typealias </span><span class="identifier">ItemViewBinder</span><span class="symbol">&lt;</span><span class="identifier">ItemType</span><span class="symbol">&gt;</span>&nbsp;<span class="symbol">=</span>&nbsp;<span class="symbol">(</span><span class="identifier">field</span><span class="symbol">:</span>&nbsp;</a>
+    <a href="/box/com.gurunars.box/-i-ro-box/index.html"><span class="identifier">IRoBox</span></a>
+    <span class="symbol">&lt;</span>
+    <span class="identifier">ItemType</span>
+    <span class="symbol">&gt;</span>
+    <span class="symbol">)</span>&nbsp;
+    <span class="symbol">-&gt;</span>&nbsp;
+    <a href="https://developer.android.com/reference/android/view/View.html"><span class="identifier">View</span></a> 
+    <a href="/home/antonb/personal/box-ui/html-docs/item-list/index"></a>
+    <a href="com.gurunars.item_list/-selectable-item/index.html"><span class="keyword">data</span> <span class="keyword">class </span><span class="identifier">SelectableItem</span><span class="symbol">&lt;</span><span class="keyword">out</span>&nbsp;<span class="identifier">ItemType</span>&nbsp;<span class="symbol">:</span>&nbsp;</a>
+    <a href="com.gurunars.item_list/-item/index.html"><span class="identifier">Item</span></a>
+    <span class="symbol">&gt;</span>&nbsp;
+    <span class="symbol">:</span>&nbsp;
+    <a href="com.gurunars.item_list/-item/index.html"><span class="identifier">Item</span></a> 
+    <ul>   
+     <meta charset="UTF-8" /> 
+     <title>Module Contents</title> 
+     <link rel="stylesheet" href="../style.css" />   
+     <a href="/home/antonb/personal/box-ui/html-docs/item-list/index"></a>
+     <a href="com.gurunars.item_list/-selectable-item/id.html"><span class="keyword">val </span><span class="identifier">id</span><span class="symbol">: </span></a>
+     <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a> 
+     <a href="/home/antonb/personal/box-ui/html-docs/item-list/index"></a>
+     <a href="com.gurunars.item_list/-selectable-item/is-selected.html"><span class="keyword">val </span><span class="identifier">isSelected</span><span class="symbol">: </span></a>
+     <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a> 
+     <a href="/home/antonb/personal/box-ui/html-docs/item-list/index"></a>
+     <a href="com.gurunars.item_list/-selectable-item/item.html"><span class="keyword">val </span><span class="identifier">item</span><span class="symbol">: </span><span class="identifier">ItemType</span></a> 
+     <a href="/home/antonb/personal/box-ui/html-docs/item-list/index"></a>
+     <a href="com.gurunars.item_list/-selectable-item/type.html"><span class="keyword">val </span><span class="identifier">type</span><span class="symbol">: </span></a>
+     <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-enum/index.html"><span class="identifier">Enum</span></a>
+     <span class="symbol">&lt;</span>
+     <span class="identifier">*</span>
+     <span class="symbol">&gt;</span>   
+    </ul> 
+    <a href="/home/antonb/personal/box-ui/html-docs/item-list/index"></a>
+    <a href="com.gurunars.item_list/android.content.-context/index.html"><span class="identifier">android.content.Context</span></a> 
+    <ul>   
+     <meta charset="UTF-8" /> 
+     <title>Module Contents</title> 
+     <link rel="stylesheet" href="../style.css" />   
+     <a href="/home/antonb/personal/box-ui/html-docs/item-list/index"></a>
+     <a href="com.gurunars.item_list/android.content.-context/default-empty-view-binder.html"><span class="keyword">fun </span></a>
+     <a href="https://developer.android.com/reference/android/content/Context.html"><span class="identifier">Context</span></a>
+     <span class="symbol">.</span>
+     <span class="identifier">defaultEmptyViewBinder</span>
+     <span class="symbol">(</span>
+     <span class="symbol">)</span>
+     <span class="symbol">: </span>
+     <a href="https://developer.android.com/reference/android/widget/TextView.html"><span class="identifier">TextView</span></a> 
+     <a href="/home/antonb/personal/box-ui/html-docs/item-list/index"></a>
+     <a href="com.gurunars.item_list/android.content.-context/default-item-view-binder.html"><span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">ItemType</span>&nbsp;<span class="symbol">:</span>&nbsp;</a>
+     <a href="com.gurunars.item_list/-item/index.html"><span class="identifier">Item</span></a>
+     <span class="symbol">&gt;</span> 
+     <a href="https://developer.android.com/reference/android/content/Context.html"><span class="identifier">Context</span></a>
+     <span class="symbol">.</span>
+     <span class="identifier">defaultItemViewBinder</span>
+     <span class="symbol">(</span>
+     <span class="identifier" id="com.gurunars.item_list$defaultItemViewBinder(android.content.Context, com.gurunars.box.IRoBox((com.gurunars.item_list.defaultItemViewBinder.ItemType)))/field">field</span>
+     <span class="symbol">:</span>&nbsp;
+     <a href="/box/com.gurunars.box/-i-ro-box/index.html"><span class="identifier">IRoBox</span></a>
+     <span class="symbol">&lt;</span>
+     <span class="identifier">ItemType</span>
+     <span class="symbol">&gt;</span>
+     <span class="symbol">)</span>
+     <span class="symbol">: </span>
+     <a href="https://developer.android.com/reference/android/widget/TextView.html"><span class="identifier">TextView</span></a> 
+     <a href="/home/antonb/personal/box-ui/html-docs/item-list/index"></a>
+     <a href="com.gurunars.item_list/android.content.-context/item-list-view.html"><span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">ItemType</span>&nbsp;<span class="symbol">:</span>&nbsp;</a>
+     <a href="com.gurunars.item_list/-item/index.html"><span class="identifier">Item</span></a>
+     <span class="symbol">&gt;</span> 
+     <a href="https://developer.android.com/reference/android/content/Context.html"><span class="identifier">Context</span></a>
+     <span class="symbol">.</span>
+     <span class="identifier">itemListView</span>
+     <span class="symbol">(</span>
+     <span class="identifier" id="com.gurunars.item_list$itemListView(android.content.Context, com.gurunars.box.IRoBox((kotlin.collections.List((com.gurunars.item_list.itemListView.ItemType)))), kotlin.collections.Map((kotlin.Enum(()), kotlin.Function1((com.gurunars.box.IRoBox((com.gurunars.item_list.itemListView.ItemType)), android.view.View)))), kotlin.Function0((android.view.View)), com.gurunars.box.IRoBox((kotlin.Boolean)))/items">items</span>
+     <span class="symbol">:</span>&nbsp;
+     <a href="/box/com.gurunars.box/-i-ro-box/index.html"><span class="identifier">IRoBox</span></a>
+     <span class="symbol">&lt;</span>
+     <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a>
+     <span class="symbol">&lt;</span>
+     <span class="identifier">ItemType</span>
+     <span class="symbol">&gt;</span>
+     <span class="symbol">&gt;</span>
+     <span class="symbol">, </span>
+     <span class="identifier" id="com.gurunars.item_list$itemListView(android.content.Context, com.gurunars.box.IRoBox((kotlin.collections.List((com.gurunars.item_list.itemListView.ItemType)))), kotlin.collections.Map((kotlin.Enum(()), kotlin.Function1((com.gurunars.box.IRoBox((com.gurunars.item_list.itemListView.ItemType)), android.view.View)))), kotlin.Function0((android.view.View)), com.gurunars.box.IRoBox((kotlin.Boolean)))/itemViewBinders">itemViewBinders</span>
+     <span class="symbol">:</span>&nbsp;
+     <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-map/index.html"><span class="identifier">Map</span></a>
+     <span class="symbol">&lt;</span>
+     <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-enum/index.html"><span class="identifier">Enum</span></a>
+     <span class="symbol">&lt;</span>
+     <span class="identifier">*</span>
+     <span class="symbol">&gt;</span>
+     <span class="symbol">,</span>&nbsp;
+     <a href="com.gurunars.item_list/-item-view-binder.html"><span class="identifier">ItemViewBinder</span></a>
+     <span class="symbol">&lt;</span>
+     <span class="identifier">ItemType</span>
+     <span class="symbol">&gt;</span>
+     <span class="symbol">&gt;</span>&nbsp;
+     <span class="symbol">=</span>&nbsp;mapOf()
+     <span class="symbol">, </span>
+     <span class="identifier" id="com.gurunars.item_list$itemListView(android.content.Context, com.gurunars.box.IRoBox((kotlin.collections.List((com.gurunars.item_list.itemListView.ItemType)))), kotlin.collections.Map((kotlin.Enum(()), kotlin.Function1((com.gurunars.box.IRoBox((com.gurunars.item_list.itemListView.ItemType)), android.view.View)))), kotlin.Function0((android.view.View)), com.gurunars.box.IRoBox((kotlin.Boolean)))/emptyViewBinder">emptyViewBinder</span>
+     <span class="symbol">:</span>&nbsp;
+     <a href="com.gurunars.item_list/-empty-view-binder.html"><span class="identifier">EmptyViewBinder</span></a>&nbsp;
+     <span class="symbol">=</span>&nbsp;this::defaultEmptyViewBinder
+     <span class="symbol">, </span>
+     <span class="identifier" id="com.gurunars.item_list$itemListView(android.content.Context, com.gurunars.box.IRoBox((kotlin.collections.List((com.gurunars.item_list.itemListView.ItemType)))), kotlin.collections.Map((kotlin.Enum(()), kotlin.Function1((com.gurunars.box.IRoBox((com.gurunars.item_list.itemListView.ItemType)), android.view.View)))), kotlin.Function0((android.view.View)), com.gurunars.box.IRoBox((kotlin.Boolean)))/reverseLayout">reverseLayout</span>
+     <span class="symbol">:</span>&nbsp;
+     <a href="/box/com.gurunars.box/-i-ro-box/index.html"><span class="identifier">IRoBox</span></a>
+     <span class="symbol">&lt;</span>
+     <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a>
+     <span class="symbol">&gt;</span>&nbsp;
+     <span class="symbol">=</span>&nbsp;false.box
+     <span class="symbol">)</span>
+     <span class="symbol">: </span>
+     <a href="https://developer.android.com/reference/android/view/View.html"><span class="identifier">View</span></a> 
+     <a href="/home/antonb/personal/box-ui/html-docs/item-list/index"></a>
+     <a href="com.gurunars.item_list/android.content.-context/selectable-item-list-view.html"><span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">ItemType</span>&nbsp;<span class="symbol">:</span>&nbsp;</a>
+     <a href="com.gurunars.item_list/-item/index.html"><span class="identifier">Item</span></a>
+     <span class="symbol">&gt;</span> 
+     <a href="https://developer.android.com/reference/android/content/Context.html"><span class="identifier">Context</span></a>
+     <span class="symbol">.</span>
+     <span class="identifier">selectableItemListView</span>
+     <span class="symbol">(</span>
+     <span class="identifier" id="com.gurunars.item_list$selectableItemListView(android.content.Context, com.gurunars.box.IRoBox((kotlin.collections.List((com.gurunars.item_list.selectableItemListView.ItemType)))), com.gurunars.box.IBox((kotlin.collections.Set((com.gurunars.item_list.selectableItemListView.ItemType)))), kotlin.collections.Map((kotlin.Enum(()), kotlin.Function1((com.gurunars.box.IRoBox((com.gurunars.item_list.SelectableItem((com.gurunars.item_list.selectableItemListView.ItemType)))), android.view.View)))), kotlin.Function0((android.view.View)), com.gurunars.box.IRoBox((kotlin.Boolean)))/items">items</span>
+     <span class="symbol">:</span>&nbsp;
+     <a href="/box/com.gurunars.box/-i-ro-box/index.html"><span class="identifier">IRoBox</span></a>
+     <span class="symbol">&lt;</span>
+     <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a>
+     <span class="symbol">&lt;</span>
+     <span class="identifier">ItemType</span>
+     <span class="symbol">&gt;</span>
+     <span class="symbol">&gt;</span>
+     <span class="symbol">, </span>
+     <span class="identifier" id="com.gurunars.item_list$selectableItemListView(android.content.Context, com.gurunars.box.IRoBox((kotlin.collections.List((com.gurunars.item_list.selectableItemListView.ItemType)))), com.gurunars.box.IBox((kotlin.collections.Set((com.gurunars.item_list.selectableItemListView.ItemType)))), kotlin.collections.Map((kotlin.Enum(()), kotlin.Function1((com.gurunars.box.IRoBox((com.gurunars.item_list.SelectableItem((com.gurunars.item_list.selectableItemListView.ItemType)))), android.view.View)))), kotlin.Function0((android.view.View)), com.gurunars.box.IRoBox((kotlin.Boolean)))/selectedItems">selectedItems</span>
+     <span class="symbol">:</span>&nbsp;
+     <a href="/box/com.gurunars.box/-i-box/index.html"><span class="identifier">IBox</span></a>
+     <span class="symbol">&lt;</span>
+     <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-set/index.html"><span class="identifier">Set</span></a>
+     <span class="symbol">&lt;</span>
+     <span class="identifier">ItemType</span>
+     <span class="symbol">&gt;</span>
+     <span class="symbol">&gt;</span>&nbsp;
+     <span class="symbol">=</span>&nbsp;Box(setOf())
+     <span class="symbol">, </span>
+     <span class="identifier" id="com.gurunars.item_list$selectableItemListView(android.content.Context, com.gurunars.box.IRoBox((kotlin.collections.List((com.gurunars.item_list.selectableItemListView.ItemType)))), com.gurunars.box.IBox((kotlin.collections.Set((com.gurunars.item_list.selectableItemListView.ItemType)))), kotlin.collections.Map((kotlin.Enum(()), kotlin.Function1((com.gurunars.box.IRoBox((com.gurunars.item_list.SelectableItem((com.gurunars.item_list.selectableItemListView.ItemType)))), android.view.View)))), kotlin.Function0((android.view.View)), com.gurunars.box.IRoBox((kotlin.Boolean)))/itemViewBinders">itemViewBinders</span>
+     <span class="symbol">:</span>&nbsp;
+     <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-map/index.html"><span class="identifier">Map</span></a>
+     <span class="symbol">&lt;</span>
+     <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-enum/index.html"><span class="identifier">Enum</span></a>
+     <span class="symbol">&lt;</span>
+     <span class="identifier">*</span>
+     <span class="symbol">&gt;</span>
+     <span class="symbol">,</span>&nbsp;
+     <a href="com.gurunars.item_list/-item-view-binder.html"><span class="identifier">ItemViewBinder</span></a>
+     <span class="symbol">&lt;</span>
+     <a href="com.gurunars.item_list/-selectable-item/index.html"><span class="identifier">SelectableItem</span></a>
+     <span class="symbol">&lt;</span>
+     <span class="identifier">ItemType</span>
+     <span class="symbol">&gt;</span>
+     <span class="symbol">&gt;</span>
+     <span class="symbol">&gt;</span>&nbsp;
+     <span class="symbol">=</span>&nbsp;mapOf()
+     <span class="symbol">, </span>
+     <span class="identifier" id="com.gurunars.item_list$selectableItemListView(android.content.Context, com.gurunars.box.IRoBox((kotlin.collections.List((com.gurunars.item_list.selectableItemListView.ItemType)))), com.gurunars.box.IBox((kotlin.collections.Set((com.gurunars.item_list.selectableItemListView.ItemType)))), kotlin.collections.Map((kotlin.Enum(()), kotlin.Function1((com.gurunars.box.IRoBox((com.gurunars.item_list.SelectableItem((com.gurunars.item_list.selectableItemListView.ItemType)))), android.view.View)))), kotlin.Function0((android.view.View)), com.gurunars.box.IRoBox((kotlin.Boolean)))/emptyViewBinder">emptyViewBinder</span>
+     <span class="symbol">:</span>&nbsp;
+     <a href="com.gurunars.item_list/-empty-view-binder.html"><span class="identifier">EmptyViewBinder</span></a>&nbsp;
+     <span class="symbol">=</span>&nbsp;this::defaultEmptyViewBinder
+     <span class="symbol">, </span>
+     <span class="identifier" id="com.gurunars.item_list$selectableItemListView(android.content.Context, com.gurunars.box.IRoBox((kotlin.collections.List((com.gurunars.item_list.selectableItemListView.ItemType)))), com.gurunars.box.IBox((kotlin.collections.Set((com.gurunars.item_list.selectableItemListView.ItemType)))), kotlin.collections.Map((kotlin.Enum(()), kotlin.Function1((com.gurunars.box.IRoBox((com.gurunars.item_list.SelectableItem((com.gurunars.item_list.selectableItemListView.ItemType)))), android.view.View)))), kotlin.Function0((android.view.View)), com.gurunars.box.IRoBox((kotlin.Boolean)))/explicitSelectionMode">explicitSelectionMode</span>
+     <span class="symbol">:</span>&nbsp;
+     <a href="/box/com.gurunars.box/-i-ro-box/index.html"><span class="identifier">IRoBox</span></a>
+     <span class="symbol">&lt;</span>
+     <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a>
+     <span class="symbol">&gt;</span>&nbsp;
+     <span class="symbol">=</span>&nbsp;false.box
+     <span class="symbol">)</span>
+     <span class="symbol">: </span>
+     <a href="https://developer.android.com/reference/android/view/View.html"><span class="identifier">View</span></a>   
+    </ul> 
+    <a href="/home/antonb/personal/box-ui/html-docs/item-list/index"></a>
+    <a href="com.gurunars.item_list/colored-row-selection-decorator.html"><span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">ItemType</span>&nbsp;<span class="symbol">:</span>&nbsp;</a>
+    <a href="com.gurunars.item_list/-item/index.html"><span class="identifier">Item</span></a>
+    <span class="symbol">&gt;</span> 
+    <span class="identifier">coloredRowSelectionDecorator</span>
+    <span class="symbol">(</span>
+    <span class="identifier" id="com.gurunars.item_list$coloredRowSelectionDecorator(com.gurunars.box.IRoBox((com.gurunars.item_list.SelectableItem((com.gurunars.item_list.coloredRowSelectionDecorator.ItemType)))), kotlin.Int, kotlin.Function1((com.gurunars.box.IRoBox((com.gurunars.item_list.coloredRowSelectionDecorator.ItemType)), android.view.View)))/field">field</span>
+    <span class="symbol">:</span>&nbsp;
+    <a href="/box/com.gurunars.box/-i-ro-box/index.html"><span class="identifier">IRoBox</span></a>
+    <span class="symbol">&lt;</span>
+    <a href="com.gurunars.item_list/-selectable-item/index.html"><span class="identifier">SelectableItem</span></a>
+    <span class="symbol">&lt;</span>
+    <span class="identifier">ItemType</span>
+    <span class="symbol">&gt;</span>
+    <span class="symbol">&gt;</span>
+    <span class="symbol">, </span>
+    <span class="identifier" id="com.gurunars.item_list$coloredRowSelectionDecorator(com.gurunars.box.IRoBox((com.gurunars.item_list.SelectableItem((com.gurunars.item_list.coloredRowSelectionDecorator.ItemType)))), kotlin.Int, kotlin.Function1((com.gurunars.box.IRoBox((com.gurunars.item_list.coloredRowSelectionDecorator.ItemType)), android.view.View)))/selectionColor">selectionColor</span>
+    <span class="symbol">:</span>&nbsp;
+    <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a>&nbsp;
+    <span class="symbol">=</span>&nbsp;Color.RED
+    <span class="symbol">, </span>
+    <span class="identifier" id="com.gurunars.item_list$coloredRowSelectionDecorator(com.gurunars.box.IRoBox((com.gurunars.item_list.SelectableItem((com.gurunars.item_list.coloredRowSelectionDecorator.ItemType)))), kotlin.Int, kotlin.Function1((com.gurunars.box.IRoBox((com.gurunars.item_list.coloredRowSelectionDecorator.ItemType)), android.view.View)))/render">render</span>
+    <span class="symbol">:</span>&nbsp;
+    <span class="symbol">(</span>
+    <span class="identifier">field</span>
+    <span class="symbol">:</span>&nbsp;
+    <a href="/box/com.gurunars.box/-i-ro-box/index.html"><span class="identifier">IRoBox</span></a>
+    <span class="symbol">&lt;</span>
+    <span class="identifier">ItemType</span>
+    <span class="symbol">&gt;</span>
+    <span class="symbol">)</span>&nbsp;
+    <span class="symbol">-&gt;</span>&nbsp;
+    <a href="https://developer.android.com/reference/android/view/View.html"><span class="identifier">View</span></a>
+    <span class="symbol">)</span>
+    <span class="symbol">: </span>
+    <a href="https://developer.android.com/reference/android/view/View.html"><span class="identifier">View</span></a>   
+   </ul>   
+  </ul>   
+  <div class="breadcrumbs">
+    / 
+   <a href="/">index</a> / 
+   <a href="/home/antonb/personal/box-ui/html-docs/item-list/index"><span class="identifier">item-list</span></a>
+  </div>
+  <div class="parameters"></div>
+ </body>
+</html>
