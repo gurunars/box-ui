@@ -25,7 +25,7 @@ fun <ItemType : Item> Context.selectableItemListView(
     itemViewBinders: Map<Enum<*>, ItemViewBinder<SelectableItem<ItemType>>> = mapOf(),
     emptyViewBinder: EmptyViewBinder = this::defaultEmptyViewBinder,
     explicitSelectionMode: IRoBox<Boolean> = false.box
-): View = statefulView(R.id.selectableItemListView, "SELECTABLE ITEM LIST") {
+): View = statefulView(R.id.selectableItemListView) {
 
     val kryo = getKryo()
 

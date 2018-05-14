@@ -47,7 +47,7 @@ fun <ItemType : Item> Context.crudItemListView(
     openIconColors: IconColorBundle = IconColorBundle(),
     items: IBox<List<ItemType>>,
     itemInEdit: IBox<Optional<ItemType>> = Optional.None.box
-): View = statefulView(R.id.crudItemListView, "CRUD ITEM LIST") {
+): View = statefulView(R.id.crudItemListView) {
 
     val typeCache = itemTypeDescriptors.map { Pair(it.type, it) }.toMap()
 

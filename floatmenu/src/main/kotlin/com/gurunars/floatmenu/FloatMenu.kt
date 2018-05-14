@@ -53,7 +53,7 @@ fun Context.floatMenu(
     menuPane: IRoBox<MenuPane>,
     animationDuration: Int = 400,
     isOpen: IBox<Boolean> = Box(false)
-) = statefulView(R.id.floatMenu, "FLOAT MENU") {
+) = statefulView(R.id.floatMenu) {
     retain(isOpen)
 
     relativeLayout {

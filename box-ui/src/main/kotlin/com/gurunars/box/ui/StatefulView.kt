@@ -57,12 +57,10 @@ class StatefulView internal constructor(context: Context) : FrameLayout(context)
 /** @see StatefulView */
 fun Context.statefulView(
     id: Int,
-    tag: String = "DEFAULT",
     vararg fields: IBox<*>,
     init: StatefulView.() -> Unit = {}
 ): StatefulView =
     StatefulView(this).apply {
         this.id = id
-        this.tag = tag
         retain(*fields)
     }.apply { init() }
