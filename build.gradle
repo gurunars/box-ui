@@ -21,7 +21,7 @@ buildscript {
 
     ext.javaVersion = JavaVersion.VERSION_1_8
     ext.junitVersion = '4.12'
-    ext.kotlinVersion = '1.2.10'
+    ext.kotlinVersion = '1.2.30'
     ext.ankoVersion = '0.10.1'
     ext.supportlibVersion = '27.1.1'
     ext.mockitoVersion = 'latest.release'
