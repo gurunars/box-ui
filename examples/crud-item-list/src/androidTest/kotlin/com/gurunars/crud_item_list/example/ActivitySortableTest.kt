@@ -26,6 +26,7 @@ class ActivitySortableTest {
 
     private fun rotate() {
         mActivityRule.rotate()
+        Thread.sleep(300)
     }
 
     @get:Rule
@@ -145,6 +146,7 @@ class ActivitySortableTest {
         validateEnabled(R.id.selectAll)
     }
 
+    // TODO: flaky
     @Test
     fun movingSelectionToTop_shouldDisableMoveUp() {
         atIndex(1).perform(longClick())
@@ -158,6 +160,7 @@ class ActivitySortableTest {
         validateEnabled(R.id.selectAll)
     }
 
+    // TODO: flaky
     @Test
     fun movingSelectionToBottom_shouldDisableMoveDown() {
         atIndex(2).perform(longClick())
@@ -234,6 +237,7 @@ class ActivitySortableTest {
         validateSelection(3, "#4{WOLF @ 1}", false)
     }
 
+    // TODO: flaky
     @Test
     fun creatingItem_shouldIncrementItemListSize() {
         onView(withId(R.id.openFab)).perform(click())
