@@ -49,18 +49,20 @@ class DataSource<Type> private constructor(
 
     init {
         box.toObservable()
-            .skip(1)
             .filter { _ready.get() }
+            .skip(1)
             .debounce(timeout, TimeUnit.MILLISECONDS)
             .observeOn(AndroidSchedulers.mainThread())
-            .map {
-                _ready.set(false)
-                it
-            }
+            .doOnNext { _ready.set(false) }
             .observeOn(Schedulers.io())
             .map {
-                setF(it)
-                preprocess(getF())
+                val original = getF()
+                if (original == it) {
+                    return@map original
+                } else {
+                    setF(it)
+                    preprocess(getF())
+                }
             }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(this::setV, { throw it })

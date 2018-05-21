@@ -8,19 +8,19 @@ import java.util.*
  * An observable box capable to emit changes and listen to change events
  *
  * @param Type type of the value the box is meant to hold
- * @param value initial value of the box
+ * @param initial default value of the box
  */
-class Box<Type>(initial: Type) : IBox<Type> {
+class Box<Type>(private val initial: Type) : IBox<Type> {
 
     override fun broadcast() {
-        subject.onNext(subject.value)
+        subject.onNext(subject.value ?: initial)
     }
 
     internal val subject = BehaviorSubject.createDefault<Type>(initial)
 
     override fun onChange(listener: (value: Type) -> Unit): Disposable {
         return subject.subscribe {
-            listener(subject.value)
+            listener(subject.value ?: initial)
         }
     }
 
@@ -34,5 +34,5 @@ class Box<Type>(initial: Type) : IBox<Type> {
         return false
     }
 
-    override fun get(): Type = this.subject.value
+    override fun get(): Type = this.subject.value ?: initial
 }

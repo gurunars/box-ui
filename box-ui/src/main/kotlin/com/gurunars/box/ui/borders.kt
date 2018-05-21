@@ -4,10 +4,7 @@ import android.graphics.*
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.LayerDrawable
-import android.graphics.drawable.ShapeDrawable
-import android.graphics.drawable.shapes.RectShape
 import android.support.annotation.ColorInt
-import android.view.Gravity
 import android.view.View
 
 /**
@@ -24,15 +21,21 @@ data class Spec(
 ) {
     /** Padding for all dimensions */
     constructor(all: Int = 0) : this(all, all, all, all)
+
     /** Padding for horizontal and vertical dimensions */
-    constructor(horizontal: Int = 0, vertical: Int = 0) : this(horizontal, horizontal, vertical, vertical)
+    constructor(horizontal: Int = 0, vertical: Int = 0) : this(
+        horizontal,
+        horizontal,
+        vertical,
+        vertical
+    )
 }
 
 
 private class BorderDrawable(
     private val spec: Spec,
     private @ColorInt val borderColor: Int = Color.BLACK
-): Drawable() {
+) : Drawable() {
     private val paint = Paint().apply {
         color = borderColor
     }
@@ -71,10 +74,12 @@ fun View.setBorders(
     spec: Spec,
     @ColorInt color: Int = Color.BLACK
 ) {
-    background = LayerDrawable(listOf(
-        BorderDrawable(spec, color),
-        background ?: ColorDrawable(Color.TRANSPARENT)
-    ).toTypedArray()).apply {
+    background = LayerDrawable(
+        listOf(
+            BorderDrawable(spec, color),
+            background ?: ColorDrawable(Color.TRANSPARENT)
+        ).toTypedArray()
+    ).apply {
         setLayerInset(1, spec.left, spec.top, spec.right, spec.bottom)
     }
 }
