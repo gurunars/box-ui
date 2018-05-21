@@ -1,10 +1,9 @@
 package com.gurunars.box.ui
 
 import com.gurunars.box.*
+import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import org.jetbrains.anko.doAsync
-import org.jetbrains.anko.uiThread
 import java.util.concurrent.TimeUnit
 
 /**
@@ -79,10 +78,10 @@ class DataSource<Type> private constructor(
     /** Triggers data source refetch */
     fun reload() {
         _ready.set(false)
-        doAsync {
-            val init = preprocess(getF())
-            uiThread { _ -> this@DataSource.setV(init) }
-        }
+        Single.fromCallable { preprocess(getF()) }
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { it -> this@DataSource.setV(it) }
     }
 
     /** @see Box.set */
