@@ -1,0 +1,108 @@
+ext.appId="com.gurunars.example"
+
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: "com.jaredsburrows.spoon"
+
+import org.gradle.api.tasks.testing.logging.TestExceptionFormat
+import org.gradle.api.tasks.testing.logging.TestLogEvent
+
+tasks.withType(Test) {
+    testLogging {
+        // set options for log level LIFECYCLE
+        events TestLogEvent.FAILED,
+                TestLogEvent.PASSED,
+                TestLogEvent.SKIPPED,
+                TestLogEvent.STANDARD_OUT
+        exceptionFormat TestExceptionFormat.FULL
+        showExceptions true
+        showCauses true
+        showStackTraces true
+
+        // set options for log level DEBUG and INFO
+        debug {
+            events TestLogEvent.STARTED,
+                    TestLogEvent.FAILED,
+                    TestLogEvent.PASSED,
+                    TestLogEvent.SKIPPED,
+                    TestLogEvent.STANDARD_ERROR,
+                    TestLogEvent.STANDARD_OUT
+            exceptionFormat TestExceptionFormat.FULL
+        }
+        info.events = debug.events
+        info.exceptionFormat = debug.exceptionFormat
+    }
+}
+
+android {
+    compileSdkVersion sdkVersionTarget
+    buildToolsVersion buildToolsVersion
+
+    lintOptions.abortOnError false
+
+    defaultConfig {
+        testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
+        applicationId appId
+        minSdkVersion sdkVersionMin
+        targetSdkVersion sdkVersionTarget
+        versionCode 1
+        versionName "1.0"
+    }
+
+    sourceSets {
+        main.java.srcDirs += 'build/generated/source/kaptKotlin/main'
+        main.java.srcDirs += 'src/main/kotlin'
+        test.java.srcDirs += 'src/test/kotlin'
+        androidTest.java.srcDirs += 'src/androidTest/kotlin'
+        main.jni.srcDirs = []
+    }
+
+    buildTypes {
+        debug {
+            debuggable true
+            minifyEnabled false
+            shrinkResources false
+        }
+        release {
+            debuggable false
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), '../proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility rootProject.ext.javaVersion
+        targetCompatibility rootProject.ext.javaVersion
+    }
+
+    lintOptions {
+        disable 'UnusedResources'
+    }
+
+    packagingOptions {
+        exclude 'LICENSE.txt'
+    }
+
+    return void
+}
+
+dependencies {
+    implementation("android.arch.core:runtime:1.1.1") {
+        force = true
+    }
+    implementation "androidx.appcompat:appcompat:1.2.0"
+    implementation "com.google.android.material:material:1.2.1"
+    implementation kotlinStdLib
+    implementation project(':box-ui')
+}
+
+spoon {
+    debug = true
+    adbTimeout = 30
+    grantAll = true
+}
+
+dependencies {
+    implementation project(':box-ui')
+}

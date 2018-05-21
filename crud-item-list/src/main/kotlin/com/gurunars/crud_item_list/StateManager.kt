@@ -1,10 +1,11 @@
 package com.gurunars.crud_item_list
 
-import com.gurunars.box.IBox
-import com.gurunars.box.box
-import com.gurunars.box.branch
-import com.gurunars.box.patch
-import com.gurunars.item_list.Item
+import android.util.Log
+import com.gurunars.box.Box
+import com.gurunars.box.core.IBox
+import io.reactivex.Single
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import java.io.Serializable
 
 internal enum class ViewMode(val hasOverlay: Boolean = true) {
@@ -15,11 +16,11 @@ internal enum class ViewMode(val hasOverlay: Boolean = true) {
     LOADING
 }
 
-internal data class State<out ItemType : Item>(
+internal data class State<ItemType : Any>(
     val isCreationMode: Boolean = false,
     val explicitContextual: Boolean = false,
-    val itemTypeInLoad: Enum<*>? = null,
-    val selectedItems: Set<ItemType> = setOf(),
+    val itemTypeInLoad: Any? = null,
+    val selectedItems: Set<Long> = setOf(),
     val itemInEdit: ItemType? = null
 ) : Serializable {
 
@@ -44,25 +45,20 @@ internal data class State<out ItemType : Item>(
 
 internal class StateMachine<ItemType : Item>(
     private val openForm: (item: ItemType) -> Unit,
-    private val itemTypes: Map<Enum<*>, ItemTypeDescriptor<ItemType>>,
-    private val asyncWrapper: (
-        supplier: () -> ItemType,
-        consumer: (item: ItemType) -> Unit
-    ) -> Unit = { supplier, consumer ->
-        0.asyncChain(supplier, consumer)
-    }
+    private val itemTypes: Map<Any, ItemTypeDescriptor<ItemType>>
+
 ) {
 
-    val state = State<ItemType>().box
+    val state = Box(State<ItemType>())
 
     private var previousState: State<ItemType> = State()
 
-    val isOpen = false.box
+    val isOpen = Box(false)
 
-    val viewMode = ViewMode.EMPTY.box
+    val viewMode = Box(ViewMode.EMPTY)
 
-    val selectedItems: IBox<Set<ItemType>> =
-        state.branch({ selectedItems }, { copy(selectedItems = it) })
+    val selectedItems: IBox<Set<Long>> =
+        state.bind({ selectedItems }, { copy(selectedItems = it) })
 
     private fun openWithState(value: State<ItemType>) {
         if (state.get().viewMode == ViewMode.EMPTY) {
@@ -73,10 +69,12 @@ internal class StateMachine<ItemType : Item>(
     init {
         state.onChange { value ->
             if (value.itemTypeInLoad != null) {
-                asyncWrapper(
-                    { itemTypes[value.itemTypeInLoad]!!.createNewItem() },
-                    { this.loadItem(it) }
-                )
+                Single.fromCallable {
+                    itemTypes[value.itemTypeInLoad]!!.createNewItem()
+                }
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe { item -> loadItem(item) }
             }
             if (previousState.itemInEdit == null && value.itemInEdit != null) {
                 openForm(value.itemInEdit)
@@ -105,7 +103,7 @@ internal class StateMachine<ItemType : Item>(
     fun loadItem(item: ItemType?) =
         state.patch { State(itemInEdit = item) }
 
-    fun loadType(itemType: Enum<*>) =
+    fun loadType(itemType: Any) =
         state.patch { State(itemTypeInLoad = itemType) }
 
     fun openExplicitContextualMenu() =

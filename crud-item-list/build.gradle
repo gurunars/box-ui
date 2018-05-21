@@ -10,13 +10,10 @@ edit, remove and create the items out of the box.
 """
 
 dependencies {
-    api anko
     testImplementation junit
     testImplementation mockito
-    api project(':android-utils')
     api project(':item-list')
     api project(':floatmenu')
-    api project(':box')
     api project(':box-ui')
 }
 

@@ -1,0 +1,37 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.gurunars.example">
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <application
+        android:allowBackup="false"
+        android:fullBackupContent="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/appName"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme"
+        tools:ignore="GoogleAppIndexingWarning">
+
+        <activity android:name=".ActivityFloatMenu" android:label="FloatMenu" />
+        <activity android:name=".ActivityListView" android:label="ListView" />
+        <activity android:name=".ActivitySelectableListView" android:label="SelectableListView" />
+        <activity android:name=".ActivityEditPinCode" android:label="EditPinCode" />
+        <activity android:name=".ActivityPagedView" android:label="PagedView" />
+        <activity android:name=".ActivityClicks" android:label="onClick" />
+        <activity android:name=".ActivityListController" android:label="listController" />
+
+        <activity
+            android:name=".ActivityMain"
+            android:label="@string/appName">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+        </activity>
+
+    </application>
+
+</manifest>

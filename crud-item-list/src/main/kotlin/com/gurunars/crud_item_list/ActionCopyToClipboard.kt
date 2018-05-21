@@ -4,13 +4,15 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.widget.Toast
-import com.gurunars.item_list.Item
-import org.jetbrains.anko.doAsync
-import org.jetbrains.anko.uiThread
+import com.gurunars.box.core.IRoBox
+import com.gurunars.box.core.bind
+import io.reactivex.Single
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 
 internal class ActionCopyToClipboard<ItemType : Item>(
-    private val context: Context,
-    private val serializer: ClipboardSerializer<ItemType>
+    context: Context,
+    private val serializer: ClipboardSerializer<ItemType>?
 ) : Action<ItemType> {
 
     private val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
@@ -23,27 +25,20 @@ internal class ActionCopyToClipboard<ItemType : Item>(
     }
 
     override fun perform(
-        all: List<ItemType>,
-        selectedItems: Set<ItemType>,
-        consumer: ItemSetChange<ItemType>
-    ) {
-        doAsync {
-            val clip = serializer.toString(
-                all.filter
-                { item -> selectedItems.find { item.id == it.id } != null }
-            )
-            uiThread {
-                writeToClipboard(
-                    serializer.serializationLabel,
-                    clip
-                )
-            }
+        state: ListState<ItemType>
+    ): Single<ListState<ItemType>> {
+        serializer ?: return Single.just(state)
+        return Single.fromCallable {
+            serializer.toString(state.all.filter { state.selected.contains(it.id) })
         }
+        .subscribeOn(Schedulers.computation())
+        .observeOn(AndroidSchedulers.mainThread())
+        .doOnSuccess { writeToClipboard(serializer.serializationLabel, it) }
+        .map { state }
     }
 
     override fun canPerform(
-        all: List<ItemType>,
-        selectedItems: Set<ItemType>,
-        consumer: CanDo
-    ) = consumer(selectedItems.isNotEmpty())
+        state: IRoBox<ListState<ItemType>>
+    ): IRoBox<Boolean> = state.bind { selected.isNotEmpty() }
+
 }

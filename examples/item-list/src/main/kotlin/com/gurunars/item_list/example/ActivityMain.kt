@@ -7,18 +7,17 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import com.gurunars.animal_item.AnimalItem
-import com.gurunars.animal_item.Service
 import com.gurunars.animal_item.Service.Companion.getRealService
 import com.gurunars.animal_item.bindAnimal
-import com.gurunars.box.IBox
-import com.gurunars.box.IRoBox
-import com.gurunars.box.ui.setAsOne
-import com.gurunars.item_list.itemListView
+import com.gurunars.box.core.IBox
+import com.gurunars.box.ui.layoutAsOne
+import com.gurunars.item_list.itemView
+import com.gurunars.item_list.listView
 
 class ActivityMain : Activity() {
 
-    lateinit var srv: Service
-    lateinit var items: IBox<List<AnimalItem>>
+    private lateinit var srv: Service
+    private lateinit var items: IBox<List<AnimalItem>>
 
     private fun add(type: AnimalItem.Type) {
         val values = items.get()
@@ -30,12 +29,11 @@ class ActivityMain : Activity() {
         srv = getRealService()
         items = srv.items
 
-        itemListView(
-            items = items,
-            itemViewBinders = AnimalItem.Type.values().map {
-                Pair(it as Enum<*>, { value: IRoBox<AnimalItem> -> this.bindAnimal(value) })
-            }.toMap()
-        ).setAsOne(this)
+        listView(
+            items = items
+        ){
+            itemView { bindAnimal(it) }
+        }.layoutAsOne(this)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -75,9 +73,9 @@ class ActivityMain : Activity() {
     }
 
     @StringRes private fun delete(): Int {
-        this.items.set(this.items.get().filterIndexed({ index, _ ->
+        this.items.set(this.items.get().filterIndexed { index, _ ->
             index % 2 == 0
-        }))
+        })
         return R.string.did_delete
     }
 

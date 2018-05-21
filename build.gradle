@@ -21,22 +21,20 @@ buildscript {
 
     ext.javaVersion = JavaVersion.VERSION_1_8
     ext.junitVersion = '4.12'
-    ext.kotlinVersion = '1.2.30'
+    ext.kotlinVersion = '1.3.72'
     ext.ankoVersion = '0.10.1'
-    ext.supportlibVersion = '27.1.1'
     ext.mockitoVersion = 'latest.release'
     ext.buildToolsVersion = '26.0.2'
     ext.roomVersion = '1.1.0'
-    ext.androidGradleVersion = '3.1.2'
+    ext.androidGradleVersion = '7.0.0-alpha15'
 
     ext.junit = "junit:junit:$junitVersion"
     ext.kotlinStdLib = "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
     ext.anko = "org.jetbrains.anko:anko:$ankoVersion"
     ext.mockito = "org.mockito:mockito-core:$mockitoVersion"
-    ext.supportV4 = "com.android.support:support-v4:$supportlibVersion"
 
-    ext.sdkVersionTarget = 26
-    ext.sdkVersionMin = 23
+    ext.sdkVersionTarget = 28
+    ext.sdkVersionMin = 24
 
     repositories {
         mavenCentral()
@@ -66,5 +64,3 @@ allprojects {
         maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
     }
 }
-
-apply plugin: "styled-android-dokka"

@@ -7,22 +7,23 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import com.gurunars.animal_item.AnimalItem
-import com.gurunars.animal_item.Service
 import com.gurunars.animal_item.Service.Companion.getRealService
 import com.gurunars.animal_item.bindAnimal
-import com.gurunars.box.*
-import com.gurunars.box.ui.setAsOne
+import com.gurunars.box.core.IBox
+import com.gurunars.box.core.bind
+import com.gurunars.box.core.patch
+import com.gurunars.box.ui.layoutAsOne
 import com.gurunars.box.ui.statefulView
-import com.gurunars.item_list.SelectableItem
 import com.gurunars.item_list.coloredRowSelectionDecorator
-import com.gurunars.item_list.selectableItemListView
+import com.gurunars.item_list.selectableItemView
+import com.gurunars.item_list.selectableListView
 
 class ActivityMain : Activity() {
 
-    lateinit var srv: Service
-    lateinit var items: IBox<List<AnimalItem>>
+    private lateinit var srv: Service
+    private lateinit var items: IBox<List<AnimalItem>>
 
-    private val selectedItems = Box<Set<AnimalItem>>(setOf())
+    private val selectedItems = Box<Set<Long>>(setOf())
     private val explicitSelectionMode = false.box
 
     private fun add(type: AnimalItem.Type) {
@@ -36,36 +37,34 @@ class ActivityMain : Activity() {
 
         statefulView(R.id.main) {
             retain(selectedItems, explicitSelectionMode)
-            selectableItemListView(
-                explicitSelectionMode = explicitSelectionMode,
+            selectableListView(
                 items = items,
                 selectedItems = selectedItems,
-                itemViewBinders = AnimalItem.Type.values().map {
-                    Pair(it as Enum<*>, { item: IRoBox<SelectableItem<AnimalItem>> ->
-                        coloredRowSelectionDecorator(item) { bindAnimal(it) }
-                    })
-                }.toMap()
-            ).setAsOne(this)
-        }.setAsOne(this)
+                getId = { it.id },
+                itemRenderers = {
+                    selectableItemView {
+                        bindAnimal(it.bind { item }).coloredRowSelectionDecorator(it.bind { isSelected })
+                    }
+                }
+            ).layoutAsOne(this)
+        }.layoutAsOne(this)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        val inflater = menuInflater
-        inflater.inflate(R.menu.activity_main, menu)
+        menuInflater.inflate(R.menu.activity_main, menu)
         return true
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean =
         when (item.itemId) {
-            R.id.clear_selection -> return showToast(clearSelection())
-            R.id.create -> return showToast(create())
-            R.id.delete_selected -> return showToast(deleteSelected())
-            R.id.update_selected -> return showToast(updateSelected())
-            R.id.reset -> return showToast(reset())
-            R.id.enable_explicit_selection -> return showToast(enableExplicitSelection())
+            R.id.clear_selection -> showToast(clearSelection())
+            R.id.create -> showToast(create())
+            R.id.delete_selected -> showToast(deleteSelected())
+            R.id.update_selected -> showToast(updateSelected())
+            R.id.reset -> showToast(reset())
+            R.id.enable_explicit_selection -> showToast(enableExplicitSelection())
+            else -> super.onOptionsItemSelected(item)
         }
-        return super.onOptionsItemSelected(item)
-    }
 
     private fun enableExplicitSelection(): Int {
         explicitSelectionMode.set(true)
@@ -75,19 +74,21 @@ class ActivityMain : Activity() {
     private fun updateSelected(): Int {
         val selected = selectedItems.get()
         items.patch {
-            this.map {
-                if (selected.any { (id) -> it.id == id })
+            map {
+                if (selected.any { id -> it.id == id }) {
                     it.copy(version = it.version + 1)
-                else it
+                } else {
+                    it
+                }
             }
         }
         return R.string.did_update_selected
     }
 
     private fun deleteSelected(): Int {
-        items.set(items.get().filterNot { item: AnimalItem ->
-            selectedItems.get().any { (id) -> item.id == id }
-        })
+        items.patch { filterNot { item: AnimalItem ->
+            selectedItems.get().any { id -> item.id == id }
+        } }
         return R.string.did_delete_selected
     }
 

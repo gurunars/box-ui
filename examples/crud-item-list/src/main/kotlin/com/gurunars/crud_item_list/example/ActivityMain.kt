@@ -9,17 +9,15 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import com.gurunars.animal_item.AnimalItem
-import com.gurunars.animal_item.Service
 import com.gurunars.animal_item.Service.Companion.getRealService
-import com.gurunars.box.IBox
-import com.gurunars.box.box
-import com.gurunars.box.patch
-import com.gurunars.box.ui.setAsOne
+import com.gurunars.box.Box
+import com.gurunars.box.core.IBox
+import com.gurunars.box.core.patch
+import com.gurunars.box.ui.layoutAsOne
 import com.gurunars.box.ui.statefulView
 import com.gurunars.crud_item_list.IconColorBundle
 import com.gurunars.crud_item_list.ItemTypeDescriptor
 import com.gurunars.crud_item_list.crudItemListView
-import com.gurunars.crud_item_list.oneOf
 import org.jetbrains.anko.backgroundColor
 
 class ActivityMain : Activity() {
@@ -27,7 +25,7 @@ class ActivityMain : Activity() {
     private lateinit var srv: Service
     private lateinit var items: IBox<List<AnimalItem>>
 
-    private val isSortable = true.box
+    private val isSortable = Box(true)
 
     private fun getType(i: Int): AnimalItem.Type {
         return if (isSortable.get()) {
@@ -88,10 +86,10 @@ class ActivityMain : Activity() {
                     AnimalItem.Type.WOLF)
             )
         } else {
-            descriptors = Descriptor(
+            descriptors = listOf(Descriptor(
                 this,
                 R.drawable.ic_menu_monkey,
-                AnimalItem.Type.MONKEY).oneOf()
+                AnimalItem.Type.MONKEY))
         }
 
         statefulView(R.id.main) {
@@ -110,17 +108,17 @@ class ActivityMain : Activity() {
                     bgColor = Color.GREEN,
                     fgColor = Color.YELLOW
                 ),
+                getType = { it.type },
                 items = items,
                 itemTypeDescriptors = descriptors,
                 sortable = sortable,
-                addToTail = sortable,
                 actionIconColors = IconColorBundle(
                     fgColor = Color.YELLOW,
                     bgColor = Color.BLUE
                 ),
                 clipboardSerializer = Serializer()
-            ).setAsOne(this)
-        }.setAsOne(this)
+            ).layoutAsOne(this)
+        }.layoutAsOne(this)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

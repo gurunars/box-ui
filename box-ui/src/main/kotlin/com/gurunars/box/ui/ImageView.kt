@@ -1,13 +1,13 @@
 package com.gurunars.box.ui
 
+import android.content.Context
 import android.graphics.drawable.Drawable
 import android.widget.ImageView
-import com.gurunars.box.IRoBox
 
-/** Binds to boxed image resource int. */
-fun ImageView.resource(field: IRoBox<Int>) =
-    field.onChange(listener = this::setImageResource)
+fun Context.imageView(init: ImageView.() -> Unit) = ImageView(this).apply {
+    init()
+}
 
-/** Binds to boxed drawable. */
-fun ImageView.drawable(field: IRoBox<Drawable>) =
-    field.onChange(listener = this::setImageDrawable)
+var ImageView.src by PlainConsumerField<ImageView, Drawable?> { setImageDrawable(it)  }
+
+var ImageView.src_ by ConsumerField<ImageView, Drawable> { setImageDrawable(it)  }

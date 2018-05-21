@@ -1,29 +1,25 @@
 package com.gurunars.crud_item_list
 
-import com.gurunars.item_list.Item
-import org.jetbrains.anko.doAsync
-import org.jetbrains.anko.uiThread
+import com.gurunars.box.core.IRoBox
+import com.gurunars.box.core.bind
+import io.reactivex.Single
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 
 internal class ActionEdit<ItemType : Item>(
-    private val itemConsumer: (item: ItemType) -> Unit
+    private val openForEdit: (item: ItemType) -> Unit
 ) : Action<ItemType> {
 
-    override fun perform(
-        all: List<ItemType>,
-        selectedItems: Set<ItemType>,
-        consumer: ItemSetChange<ItemType>
-    ) {
-        doAsync {
-            val first = all.first { item -> selectedItems.indexOfFirst { it.id == item.id } != -1 }
-            uiThread {
-                itemConsumer(first)
-            }
-        }
-    }
-
     override fun canPerform(
-        all: List<ItemType>,
-        selectedItems: Set<ItemType>,
-        consumer: CanDo
-    ) = consumer(selectedItems.size == 1)
+        state: IRoBox<ListState<ItemType>>
+    ): IRoBox<Boolean> = state.bind { selected.size == 1 }
+
+    override fun perform(
+        state: ListState<ItemType>
+    ): Single<ListState<ItemType>> = Single.fromCallable { state.all.first { state.selected.contains(it.id) } }
+        .subscribeOn(Schedulers.computation())
+        .observeOn(AndroidSchedulers.mainThread())
+        .doOnSuccess { openForEdit(it) }
+        .map { state }
+
 }

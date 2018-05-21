@@ -2,11 +2,10 @@ package com.gurunars.crud_item_list
 
 import android.view.View
 import com.gurunars.android_utils.Icon
-import com.gurunars.box.IBox
-import com.gurunars.box.IRoBox
-import com.gurunars.box.box
-import com.gurunars.item_list.Item
-import com.gurunars.item_list.SelectableItem
+import com.gurunars.box.Box
+import com.gurunars.box.core.IBox
+import com.gurunars.box.core.IRoBox
+import com.gurunars.item_list.WithSelection
 
 /**
  * Aggregation of attributes describing a specific item type in the context of showing the item
@@ -16,17 +15,16 @@ import com.gurunars.item_list.SelectableItem
  * @property type Type of the item the descriptor to be associated to.
  * @property title Value shown as a hint for the icon and as a title of the creation form
  */
-interface ItemTypeDescriptor<ItemType : Item> {
+interface ItemTypeDescriptor<ItemType: Item> {
     val icon: Icon
-    val type: Enum<*>
-        get() = Item.Default.ONLY
+    val type: Any
 
     /**
      * Return an observable of the title that is a specific for
      * each individual item
      */
     fun getItemTitle(item: IRoBox<ItemType>): IRoBox<String> =
-        title.box
+        Box(title)
 
     val title: String
 
@@ -39,7 +37,7 @@ interface ItemTypeDescriptor<ItemType : Item> {
     data class Status(
         val type: Type,
         val message: String
-    ) {
+        ) {
         /***/
         enum class Type(internal val isBlocking: Boolean) {
             /***/
@@ -67,7 +65,7 @@ interface ItemTypeDescriptor<ItemType : Item> {
      *
      * @param field - payload to be rendered
      */
-    fun bindRow(field: IRoBox<SelectableItem<ItemType>>): View
+    fun bindRow(field: IRoBox<WithSelection<ItemType>>): View
 
     /** Returns status of the payload: OK, error, warning */
     fun validate(item: ItemType): Status

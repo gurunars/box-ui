@@ -8,7 +8,7 @@ import android.arch.persistence.room.PrimaryKey
 data class AnimalItem @Ignore constructor(
     @PrimaryKey(autoGenerate = true)
     override var id: Long = 0,
-    override var type: AnimalItem.Type = Type.EMPTY,
+    var type: AnimalItem.Type = Type.EMPTY,
     override var position: Int = 0,
     var version: Int = 0
 ) : ItemWithPosition {
@@ -18,7 +18,7 @@ data class AnimalItem @Ignore constructor(
     enum class Type(val resourceId: Int) {
         MONKEY(R.drawable.ic_menu_monkey), TIGER(R.drawable.ic_menu_tiger),
         WOLF(R.drawable.ic_menu_wolf), LION(R.drawable.ic_menu_lion),
-        EMPTY(R.drawable.ic_plus)
+        EMPTY(R.drawable.ic_menu_empty)
     }
 
     override fun toString(): String {

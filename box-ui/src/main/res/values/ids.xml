@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="menuPane" type="id" />
+    <item name="contentPane" type="id" />
+    <item name="openFab" type="id" />
+    <item name="iconView" type="id" />
+    <item name="floatMenu" type="id" />
+    <item name="contextualMenu" type="id" />
+    <item name="itemListView" type="id" />
+    <item name="rawItemList" type="id" />
+    <item name="floatingMenu" type="id" />
+    <item name="creationMenu" type="id" />
+    <item name="menuContainer" type="id" />
+    <item name="moveUp" type="id" />
+    <item name="moveDown" type="id" />
+    <item name="delete" type="id" />
+    <item name="selectAll" type="id" />
+    <item name="action" type="id" />
+    <item name="knobView" type="id" />
+    <item name="knobMenu" type="id" />
+    <item name="itemForm" type="id" />
+    <item name="cancel" type="id" />
+    <item name="save" type="id" />
+    <item name="confirm" type="id" />
+    <item name="hint" type="id" />
+    <item name="crudItemListView" type="id" />
+    <item name="formContent" type="id" />
+    <item name="copy" type="id" />
+    <item name="paste" type="id" />
+</resources>

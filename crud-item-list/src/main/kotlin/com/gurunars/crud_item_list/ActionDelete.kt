@@ -1,21 +1,23 @@
 package com.gurunars.crud_item_list
 
-import com.gurunars.item_list.Item
+import com.gurunars.box.core.IRoBox
+import com.gurunars.box.core.bind
+import io.reactivex.Single
+import io.reactivex.schedulers.Schedulers
 
 internal class ActionDelete<ItemType : Item> : Action<ItemType> {
 
-    override fun perform(
-        all: List<ItemType>,
-        selectedItems: Set<ItemType>,
-        consumer: ItemSetChange<ItemType>
-    ) = consumer(
-        all.filter { item -> selectedItems.indexOfFirst { it.id == item.id } == -1 },
-        setOf()
-    )
-
     override fun canPerform(
-        all: List<ItemType>,
-        selectedItems: Set<ItemType>,
-        consumer: CanDo
-    ) = consumer(selectedItems.isNotEmpty())
+        state: IRoBox<ListState<ItemType>>
+    ): IRoBox<Boolean> = state.bind { selected.isNotEmpty() }
+
+    override fun perform(
+        state: ListState<ItemType>
+    ): Single<ListState<ItemType>> = Single.fromCallable {
+        ListState(
+            state.all.filter { !state.selected.contains(it.id) },
+            setOf()
+        )
+    }
+    .subscribeOn(Schedulers.computation())
 }

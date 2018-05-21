@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<lint>
-    <issue id="UnusedResources">
-        <ignore path="src/main/res/anim/slide_in_right.xml" />
-        <ignore path="src/main/res/anim/slide_out_left.xml" />
-        <ignore path="src/main/res/values/strings.xml" />
-    </issue>
-
-</lint>

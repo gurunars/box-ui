@@ -9,13 +9,13 @@ import com.gurunars.android_utils.Icon
 import com.gurunars.animal_item.AnimalItem
 import com.gurunars.animal_item.bindAnimal
 import com.gurunars.crud_item_list.ItemTypeDescriptor
-import com.gurunars.box.IBox
-import com.gurunars.box.IRoBox
-import com.gurunars.box.branch
-import com.gurunars.box.oneWayBranch
+import com.gurunars.box.core.IBox
+import com.gurunars.box.core.IRoBox
+import com.gurunars.box.core.bind
+import com.gurunars.box.core.patch
 import com.gurunars.box.ui.fullSize
 import com.gurunars.box.ui.text
-import com.gurunars.item_list.SelectableItem
+import com.gurunars.item_list.WithSelection
 import com.gurunars.item_list.coloredRowSelectionDecorator
 import org.jetbrains.anko.backgroundColor
 import org.jetbrains.anko.button
@@ -25,12 +25,12 @@ import org.jetbrains.anko.verticalLayout
 
 internal class Descriptor(
     private val context: Context,
-    private val iconId: Int,
+    iconId: Int,
     override val type: AnimalItem.Type
 ) : ItemTypeDescriptor<AnimalItem> {
 
     override fun getItemTitle(item: IRoBox<AnimalItem>) =
-        item.oneWayBranch { "${type.name} ${version}" }
+        item.bind { "${type.name} $version" }
 
     override val title = type.name
 
@@ -48,8 +48,8 @@ internal class Descriptor(
                 ItemTypeDescriptor.Status.ok()
         }
 
-    override fun bindRow(field: IRoBox<SelectableItem<AnimalItem>>): View =
-        coloredRowSelectionDecorator(field) { context.bindAnimal(it ) }
+    override fun bindRow(field: IRoBox<WithSelection<AnimalItem>>): View =
+        context.bindAnimal(field.bind { item }).coloredRowSelectionDecorator( field.bind { isSelected })
 
     override val icon = Icon(icon = iconId)
     override fun createNewItem() = AnimalItem(
@@ -67,7 +67,7 @@ internal class Descriptor(
         editText {
             id = R.id.versionValue
             inputType = InputType.TYPE_CLASS_NUMBER
-            text(field.branch(
+            text(field.bind(
                 { version.toString() },
                 { copy(version = if (it.isEmpty()) 0 else it.toInt()) }
             ))
@@ -76,8 +76,8 @@ internal class Descriptor(
             id = R.id.increment
             text = context.getString(R.string.increment)
             setOnClickListener {
-                field.apply {
-                    set(get().copy(version = get().version + 1))
+                field.patch {
+                    copy(version = version+1)
                 }
             }
         }
