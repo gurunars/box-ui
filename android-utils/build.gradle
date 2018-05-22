@@ -9,7 +9,6 @@ A set of helpers for working with Android.
 
 dependencies {
     api supportV4
-    api anko
     api project(':box')
     api project(':box-ui')
 }

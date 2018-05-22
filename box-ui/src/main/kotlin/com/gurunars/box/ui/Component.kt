@@ -6,37 +6,37 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
+import android.view.ViewGroup.LayoutParams.MATCH_PARENT
+import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 
 interface Component {
     fun Context.render(): View
 }
 
+/** Base function to layout a component within a view group */
 fun <Layout: ViewGroup, LayoutParams: ViewGroup.LayoutParams> Component.layout(
     container: Layout,
     config: LayoutParams.() -> Unit,
     defaultConfig: LayoutParams
 ) = with(container.context) {
-    container.addView(render().apply {
-        layoutParams = defaultConfig.apply {
-            config()
-        }
-    })
+    render().layout(container, config, defaultConfig)
 }
 
-private const val MATCH_PARENT = ViewGroup.LayoutParams.MATCH_PARENT
-private const val WRAP_CONTENT = ViewGroup.LayoutParams.WRAP_CONTENT
-
+/** For FrameLayout */
 fun Component.layout(
     frameLayout: FrameLayout,
     config: FrameLayout.LayoutParams.() -> Unit
 ) = layout(frameLayout, config, FrameLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT))
 
+/** For LinearLayout */
 fun Component.layout(
     linearLayout: LinearLayout,
     config: LinearLayout.LayoutParams.() -> Unit
 ) = layout(linearLayout, config, LinearLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT))
 
+/** For RelativeLayout */
 fun Component.layout(
     relativeLayout: RelativeLayout,
     config: RelativeLayout.LayoutParams.() -> Unit
 ) = layout(relativeLayout, config, RelativeLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT))
+

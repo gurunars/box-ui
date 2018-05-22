@@ -3,7 +3,7 @@ package com.gurunars.item_list
 import android.content.Context
 import android.view.View
 import com.gurunars.box.*
-import com.gurunars.box.ui.setAsOne
+import com.gurunars.box.ui.layoutAsOne
 import com.gurunars.box.ui.statefulView
 
 /**
@@ -60,5 +60,5 @@ fun <ItemType : Item> Context.selectableItemListView(
                 })
             }.toMap(),
         emptyViewBinder = emptyViewBinder
-    ).setAsOne(this)
+    ).layoutAsOne(this)
 }

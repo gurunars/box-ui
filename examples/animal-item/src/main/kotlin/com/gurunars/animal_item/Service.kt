@@ -22,7 +22,7 @@ class Service(
         },
         initial = listOf(),
         /*
-        NOTE: small timeout for debounce is the source of the UI glitches
+        NOTE: small timeout for debounce is the source with the UI glitches
         But in this sample it is a necessary evil to make the tests work fast.
         */
         timeout = 100

@@ -48,9 +48,7 @@ internal class StateMachine<ItemType : Item>(
     private val asyncWrapper: (
         supplier: () -> ItemType,
         consumer: (item: ItemType) -> Unit
-    ) -> Unit = { supplier, consumer ->
-        0.asyncChain(supplier, consumer)
-    }
+    ) -> Unit = { supplier, consumer -> from(supplier).to(consumer) }
 ) {
 
     val state = State<ItemType>().box

@@ -6,8 +6,6 @@ import android.view.View
 import android.widget.TextView
 import com.gurunars.box.IRoBox
 import com.gurunars.box.ui.asRow
-import org.jetbrains.anko.backgroundColor
-import org.jetbrains.anko.textColor
 
 /**
  * @param box box representing item's payload
@@ -17,8 +15,8 @@ typealias ItemViewBinder<ItemType> = (field: IRoBox<ItemType>) -> View
 
 /***/
 fun <ItemType : Item> Context.defaultItemViewBinder(field: IRoBox<ItemType>) = TextView(this).apply {
-    backgroundColor = Color.YELLOW
-    textColor = Color.RED
+    setBackgroundColor(Color.YELLOW)
+    setTextColor(Color.RED)
     field.onChange { value ->
         text = with(value.toString()) {
             substring(0, minOf(42, length))

@@ -10,7 +10,6 @@ import com.gurunars.box.Box
 import com.gurunars.box.IBox
 import com.gurunars.box.merge
 import com.gurunars.box.ui.*
-import org.jetbrains.anko.*
 
 /** Button with automatic background tint. */
 fun Context.autoButton(
@@ -24,10 +23,10 @@ fun Context.autoButton(
 ): View = TextView(this).apply {
     isClickable = true
     isFocusable = true
-    leftPadding = dip(20)
-    rightPadding = dip(20)
-    topPadding = dip(15)
-    bottomPadding = dip(15)
+    padding = Bounds(
+        horizontal = dip(20),
+        vertical = dip(15)
+    )
     textColor(textColor)
     style(textStyle)
     textSize(textSize)

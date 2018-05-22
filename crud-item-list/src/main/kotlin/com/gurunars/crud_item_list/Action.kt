@@ -1,11 +1,12 @@
 package com.gurunars.crud_item_list
 
+import com.gurunars.box.IRoBox
 import com.gurunars.item_list.Item
 
-internal typealias ItemSetChange<ItemType> =
-    (newAll: List<ItemType>, newSelectedItems: Set<ItemType>) -> Unit
-
-internal typealias CanDo = (canDo: Boolean) -> Unit
+internal typealias ItemSetChange<ItemType> = (
+    newAll: List<ItemType>,
+    newSelectedItems: Set<ItemType>
+) -> Unit
 
 internal interface Action<ItemType : Item> {
     fun perform(
@@ -14,8 +15,7 @@ internal interface Action<ItemType : Item> {
         consumer: ItemSetChange<ItemType>
     )
     fun canPerform(
-        all: List<ItemType>,
-        selectedItems: Set<ItemType>,
-        consumer: CanDo
-    )
+        all: IRoBox<List<ItemType>>,
+        selectedItems: IRoBox<Set<ItemType>>
+    ): IRoBox<Boolean>
 }

@@ -7,33 +7,9 @@ import android.graphics.drawable.LayerDrawable
 import android.support.annotation.ColorInt
 import android.view.View
 
-/**
- * @property left
- * @property right
- * @property top
- * @property bottom
- */
-data class Spec(
-    val left: Int = 0,
-    val right: Int = 0,
-    val top: Int = 0,
-    val bottom: Int = 0
-) {
-    /** Padding for all dimensions */
-    constructor(all: Int = 0) : this(all, all, all, all)
-
-    /** Padding for horizontal and vertical dimensions */
-    constructor(horizontal: Int = 0, vertical: Int = 0) : this(
-        horizontal,
-        horizontal,
-        vertical,
-        vertical
-    )
-}
-
 
 private class BorderDrawable(
-    private val spec: Spec,
+    private val borderBounds: Bounds,
     private @ColorInt val borderColor: Int = Color.BLACK
 ) : Drawable() {
     private val paint = Paint().apply {
@@ -46,13 +22,15 @@ private class BorderDrawable(
 
         //left, top is 0,0
         //left, top, right, bottom
-        val topBorder = RectF(0.0f, 0.0f, width, spec.top.toFloat())
-        val bottomBorder = RectF(0.0f, height - spec.bottom.toFloat(), width, height)
-        val leftBorder = RectF(0.0f, 0.0f, spec.left.toFloat(), height)
-        val rightBorder = RectF(width - spec.right.toFloat(), 0.0f, width, height)
-
-        listOf(topBorder, bottomBorder, leftBorder, rightBorder).forEach {
-            canvas.drawRect(it, paint)
+        with(borderBounds) {
+            listOf(
+                RectF(0.0f, 0.0f, width, top.toFloat()),
+                RectF(0.0f, height - bottom.toFloat(), width, height),
+                RectF(0.0f, 0.0f, left.toFloat(), height),
+                RectF(width - right.toFloat(), 0.0f, width, height)
+            ).forEach {
+                canvas.drawRect(it, paint)
+            }
         }
     }
 
@@ -71,15 +49,15 @@ private class BorderDrawable(
 
 /***/
 fun View.setBorders(
-    spec: Spec,
+    bounds: Bounds,
     @ColorInt color: Int = Color.BLACK
 ) {
     background = LayerDrawable(
         listOf(
-            BorderDrawable(spec, color),
+            BorderDrawable(bounds, color),
             background ?: ColorDrawable(Color.TRANSPARENT)
         ).toTypedArray()
     ).apply {
-        setLayerInset(1, spec.left, spec.top, spec.right, spec.bottom)
+        setLayerInset(1, bounds.left, bounds.top, bounds.right, bounds.bottom)
     }
 }

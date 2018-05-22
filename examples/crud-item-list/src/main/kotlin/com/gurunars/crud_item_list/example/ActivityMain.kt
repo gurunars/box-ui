@@ -14,12 +14,11 @@ import com.gurunars.animal_item.Service.Companion.getRealService
 import com.gurunars.box.IBox
 import com.gurunars.box.box
 import com.gurunars.box.patch
-import com.gurunars.box.ui.setAsOne
+import com.gurunars.box.ui.layoutAsOne
 import com.gurunars.box.ui.statefulView
 import com.gurunars.crud_item_list.IconColorBundle
 import com.gurunars.crud_item_list.ItemTypeDescriptor
 import com.gurunars.crud_item_list.crudItemListView
-import com.gurunars.crud_item_list.oneOf
 import org.jetbrains.anko.backgroundColor
 
 class ActivityMain : Activity() {
@@ -88,10 +87,10 @@ class ActivityMain : Activity() {
                     AnimalItem.Type.WOLF)
             )
         } else {
-            descriptors = Descriptor(
+            descriptors = listOf(Descriptor(
                 this,
                 R.drawable.ic_menu_monkey,
-                AnimalItem.Type.MONKEY).oneOf()
+                AnimalItem.Type.MONKEY))
         }
 
         statefulView(R.id.main) {
@@ -119,8 +118,8 @@ class ActivityMain : Activity() {
                     bgColor = Color.BLUE
                 ),
                 clipboardSerializer = Serializer()
-            ).setAsOne(this)
-        }.setAsOne(this)
+            ).layoutAsOne(this)
+        }.layoutAsOne(this)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

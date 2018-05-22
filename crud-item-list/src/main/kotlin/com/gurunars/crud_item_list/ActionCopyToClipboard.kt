@@ -4,13 +4,13 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.widget.Toast
+import com.gurunars.box.IRoBox
+import com.gurunars.box.oneWayBranch
 import com.gurunars.item_list.Item
-import org.jetbrains.anko.doAsync
-import org.jetbrains.anko.uiThread
 
 internal class ActionCopyToClipboard<ItemType : Item>(
-    private val context: Context,
-    private val serializer: ClipboardSerializer<ItemType>
+    context: Context,
+    private val serializer: ClipboardSerializer<ItemType>?
 ) : Action<ItemType> {
 
     private val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
@@ -27,23 +27,20 @@ internal class ActionCopyToClipboard<ItemType : Item>(
         selectedItems: Set<ItemType>,
         consumer: ItemSetChange<ItemType>
     ) {
-        doAsync {
-            val clip = serializer.toString(
-                all.filter
-                { item -> selectedItems.find { item.id == it.id } != null }
-            )
-            uiThread {
-                writeToClipboard(
-                    serializer.serializationLabel,
-                    clip
+        serializer?.let {
+            from {
+                it.toString(
+                    all.filter { item -> selectedItems.find { item.id == it.id } != null }
                 )
+            }.to { clip ->
+                writeToClipboard(it.serializationLabel, clip)
             }
         }
     }
 
     override fun canPerform(
-        all: List<ItemType>,
-        selectedItems: Set<ItemType>,
-        consumer: CanDo
-    ) = consumer(selectedItems.isNotEmpty())
+        all: IRoBox<List<ItemType>>,
+        selectedItems: IRoBox<Set<ItemType>>
+    ): IRoBox<Boolean> = selectedItems.oneWayBranch { isNotEmpty() }
+
 }

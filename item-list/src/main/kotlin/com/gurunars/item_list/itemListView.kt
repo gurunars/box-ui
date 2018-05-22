@@ -7,9 +7,10 @@ import android.view.View
 import com.gurunars.box.IRoBox
 import com.gurunars.box.box
 import com.gurunars.box.oneWayBranch
+import com.gurunars.box.ui.Bounds
+import com.gurunars.box.ui.dip
 import com.gurunars.box.ui.fullSize
-import org.jetbrains.anko.bottomPadding
-import org.jetbrains.anko.dip
+import com.gurunars.box.ui.padding
 
 /**
  * @param ItemType type of the item to be shown in the list
@@ -27,7 +28,7 @@ fun <ItemType : Item> Context.itemListView(
     id = R.id.recyclerView
     fullSize()
     clipToPadding = false
-    bottomPadding = dip(60)
+    padding = Bounds(bottom=dip(60))
     isSaveEnabled = false
     adapter = ItemAdapter(
         items.oneWayBranch { kryo.copy(distinctBy { it.id }) },
