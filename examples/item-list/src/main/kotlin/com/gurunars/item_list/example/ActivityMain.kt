@@ -12,7 +12,7 @@ import com.gurunars.animal_item.Service.Companion.getRealService
 import com.gurunars.animal_item.bindAnimal
 import com.gurunars.box.IBox
 import com.gurunars.box.IRoBox
-import com.gurunars.box.ui.setAsOne
+import com.gurunars.box.ui.layoutAsOne
 import com.gurunars.item_list.itemListView
 
 class ActivityMain : Activity() {
@@ -35,7 +35,7 @@ class ActivityMain : Activity() {
             itemViewBinders = AnimalItem.Type.values().map {
                 Pair(it as Enum<*>, { value: IRoBox<AnimalItem> -> this.bindAnimal(value) })
             }.toMap()
-        ).setAsOne(this)
+        ).layoutAsOne(this)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

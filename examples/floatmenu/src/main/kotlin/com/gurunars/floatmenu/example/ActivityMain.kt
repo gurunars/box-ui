@@ -11,7 +11,7 @@ import com.gurunars.android_utils.Icon
 import com.gurunars.box.*
 import com.gurunars.box.ui.asRow
 import com.gurunars.box.ui.fullSize
-import com.gurunars.box.ui.setAsOne
+import com.gurunars.box.ui.layoutAsOne
 import com.gurunars.box.ui.statefulView
 import com.gurunars.floatmenu.ContentPane
 import com.gurunars.floatmenu.MenuPane
@@ -133,8 +133,8 @@ class ActivityMain : Activity() {
                 contentArea,
                 hasOverlay.oneWayBranch { MenuArea(this) },
                 isOpen = isOpen
-            ).setAsOne(this)
-        }.setAsOne(this)
+            ).layoutAsOne(this)
+        }.layoutAsOne(this)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

@@ -11,7 +11,7 @@ import com.gurunars.animal_item.Service
 import com.gurunars.animal_item.Service.Companion.getRealService
 import com.gurunars.animal_item.bindAnimal
 import com.gurunars.box.*
-import com.gurunars.box.ui.setAsOne
+import com.gurunars.box.ui.layoutAsOne
 import com.gurunars.box.ui.statefulView
 import com.gurunars.item_list.SelectableItem
 import com.gurunars.item_list.coloredRowSelectionDecorator
@@ -45,8 +45,8 @@ class ActivityMain : Activity() {
                         coloredRowSelectionDecorator(item) { bindAnimal(it) }
                     })
                 }.toMap()
-            ).setAsOne(this)
-        }.setAsOne(this)
+            ).layoutAsOne(this)
+        }.layoutAsOne(this)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
