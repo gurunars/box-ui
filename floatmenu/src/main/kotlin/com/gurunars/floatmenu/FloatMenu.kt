@@ -7,7 +7,6 @@ import android.widget.RelativeLayout
 import com.gurunars.android_utils.Icon
 import com.gurunars.box.*
 import com.gurunars.box.ui.*
-import org.jetbrains.anko.dip
 
 /**
  * An aggregation with view an an icon that controls its visibility in the menu.
