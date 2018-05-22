@@ -82,7 +82,7 @@ fun Context.floatMenu(
         ).apply {
             id = R.id.openFab
         }.layout(this) {
-            margin = dip(16)
+            margin = Bounds(dip(16))
             width = dip(60)
             height = dip(60)
             alignInParent()

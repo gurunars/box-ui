@@ -38,6 +38,33 @@ fun ViewGroup.LayoutParams.asRow() {
 }
 
 /**
+ * width = MATCH_PARENT
+ * height = MATCH_PARENT
+ */
+fun View.fullSize() {
+    layoutParams = layoutParams ?: ViewGroup.LayoutParams(MATCH_PARENT, MATCH_PARENT)
+    layoutParams.fullSize()
+}
+
+/**
+ * width = MATCH_PARENT
+ * height = WRAP_CONTENT
+ */
+fun View.asRow() {
+    layoutParams = layoutParams ?: ViewGroup.LayoutParams(MATCH_PARENT, WRAP_CONTENT)
+    layoutParams.asRow()
+}
+
+/**
+ * width = 0
+ * height = 0
+ */
+fun View.asEmpty() {
+    layoutParams = layoutParams ?: ViewGroup.LayoutParams(0, 0)
+    layoutParams.asEmpty()
+}
+
+/**
  * width = 0
  * height = 0
  */
