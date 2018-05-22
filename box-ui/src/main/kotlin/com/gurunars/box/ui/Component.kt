@@ -40,5 +40,7 @@ fun Component.layout(
     config: RelativeLayout.LayoutParams.() -> Unit
 ) = layout(relativeLayout, config, RelativeLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT))
 
-inline fun <reified T: View> Context.of(viewClass: Class<T>): T =
-    viewClass.getConstructor(Context::class.java).newInstance(this)
+inline fun <reified T: View> Context.with(init: T.() -> Unit = {}): T =
+    T::class.java.getConstructor(Context::class.java).newInstance(this).apply {
+        init()
+    }

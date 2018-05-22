@@ -17,7 +17,7 @@ private const val WRAP_CONTENT = ViewGroup.LayoutParams.WRAP_CONTENT
 fun <T : View> T.set(parent: ViewGroup, id: Int, init: T.() -> Unit = {}): T {
     val view = parent.findViewById<View>(id)
     if (view != null) parent.removeView(view)
-    return add(parent, init).apply {
+    return layout(parent, init).apply {
         this.id = id
     }
 }
@@ -89,7 +89,7 @@ fun View.asEmpty() {
 }
 
 /** Removes all the views and adds this view as the only full screen child */
-fun <T : View> T.setAsOne(parent: FrameLayout, init: T.() -> Unit = {}): T {
+fun <T : View> T.layoutAsOne(parent: FrameLayout, init: T.() -> Unit = {}): T {
     fullSize()
     parent.removeAllViews()
     parent.addView(this)
@@ -98,7 +98,7 @@ fun <T : View> T.setAsOne(parent: FrameLayout, init: T.() -> Unit = {}): T {
 }
 
 /** Removes all the views and adds this view as the only full screen child */
-fun <T : View> T.setAsOne(parent: Activity, init: T.() -> Unit = {}): T {
+fun <T : View> T.layoutAsOne(parent: Activity, init: T.() -> Unit = {}): T {
     fullSize()
     parent.setContentView(this)
     this.init()
@@ -106,7 +106,7 @@ fun <T : View> T.setAsOne(parent: Activity, init: T.() -> Unit = {}): T {
 }
 
 /** Add a view to parent */
-fun <T : View> T.add(parent: ViewGroup, init: T.() -> Unit = {}): T {
+fun <T : View> T.layout(parent: ViewGroup, init: T.() -> Unit = {}): T {
     parent.addView(this)
     this.init()
     return this
@@ -183,9 +183,9 @@ enum class HorizontalPosition(internal val alignment: Int) {
  * @property SAME current value remains unchanged
  */
 enum class VerticalPosition(internal val alignment: Int) {
-    /** current value remains unchanged */
+    /** above another item */
     ABOVE(RelativeLayout.ABOVE),
-    /** current value remains unchanged */
+    /** below another item */
     BELOW(RelativeLayout.BELOW),
     /** current value remains unchanged */
     SAME(-42)
