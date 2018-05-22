@@ -2,22 +2,15 @@ package com.gurunars.floatmenu
 
 import android.content.Context
 import android.view.View
+import android.widget.FrameLayout
+import android.widget.RelativeLayout
 import com.gurunars.android_utils.Icon
 import com.gurunars.box.*
-import com.gurunars.box.ui.HorizontalAlignment
-import com.gurunars.box.ui.add
-import com.gurunars.box.ui.alignInParent
-import com.gurunars.box.ui.fullSize
-import com.gurunars.box.ui.setAsOne
-import com.gurunars.box.ui.statefulView
-import org.jetbrains.anko.alignParentBottom
+import com.gurunars.box.ui.*
 import org.jetbrains.anko.dip
-import org.jetbrains.anko.frameLayout
-import org.jetbrains.anko.margin
-import org.jetbrains.anko.relativeLayout
 
 /**
- * An aggregation of view an an icon that controls its visibility in the menu.
+ * An aggregation with view an an icon that controls its visibility in the menu.
  *
  * @property icon FAB icon to be shown when the view is visible
  */
@@ -41,12 +34,12 @@ interface MenuPane : ContentPane {
  * Floating menu available via a
  * [FAB](https://material.google.com/components/buttons-floating-action-button.html)
  *
- * @param contentPane View shown in the background layer of the widget. Semantically it
+ * @param contentPane View shown in the background layer with the widget. Semantically it
  * represents the data manipulated by the menu.
- * @param menuPane View shown in the foreground layer of the widget when the menu is open.
+ * @param menuPane View shown in the foreground layer with the widget when the menu is open.
  * Is supposed to contain menu's controls.
  * @param animationDuration Time it takes to perform all the animated UI transitions.
- * @param isOpen flag indicating visibility of the menu pane on the screen
+ * @param isOpen flag indicating visibility with the menu pane on the screen
  */
 fun Context.floatMenu(
     contentPane: IRoBox<ContentPane>,
@@ -56,28 +49,30 @@ fun Context.floatMenu(
 ) = statefulView(R.id.floatMenu) {
     retain(isOpen)
 
-    relativeLayout {
+    with<RelativeLayout> {
         fullSize()
-        frameLayout {
+        fl@ with<FrameLayout> {
             id = R.id.contentPane
             contentPane.onChange { value ->
                 value.apply {
-                    render().setAsOne(this@frameLayout)
+                    render().layoutAsOne(this@fl)
                 }
             }
-        }.fullSize()
+        }.layout(this) {
+
+        }
 
         MenuHolder(context,
             menuPane.oneWayBranch { hasOverlay },
             isOpen,
             animationDuration
-        ).add(this) {
+        ).layout(this) {
             id = R.id.menuPane
             fullSize()
             isClickable = true
             menuPane.onChange { value ->
                 value.apply {
-                    render().setAsOne(this@add)
+                    render().layoutAsOne(this@layout)
                 }
             }
         }
@@ -85,9 +80,8 @@ fun Context.floatMenu(
             contentPane.oneWayBranch { icon },
             menuPane.oneWayBranch { icon },
             isOpen
-        ).add(this) {
+        ).layout(this) {
             id = R.id.openFab
-        }.lparams {
             margin = dip(16)
             width = dip(60)
             height = dip(60)

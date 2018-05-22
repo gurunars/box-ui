@@ -5,30 +5,31 @@ import android.animation.FloatEvaluator
 import android.animation.ValueAnimator
 import android.content.Context
 import android.view.View
+import android.widget.FrameLayout
 import com.gurunars.android_utils.Icon
 import com.gurunars.android_utils.iconView
 import com.gurunars.box.Box
 import com.gurunars.box.IBox
 import com.gurunars.box.IRoBox
 import com.gurunars.box.box
-import com.gurunars.box.ui.add
+import com.gurunars.box.ui.layout
 import com.gurunars.box.ui.fullSize
+import com.gurunars.box.ui.with
 import com.gurunars.box.ui.onClick
-import org.jetbrains.anko.frameLayout
 
 internal fun Context.fab(
     rotationDuration: Int,
     openIcon: IRoBox<Icon>,
     closeIcon: IRoBox<Icon>,
     isActivated: IBox<Boolean>
-): View = frameLayout {
+): View = with<FrameLayout> {
     val argbEvaluator = ArgbEvaluator()
     val floatEvaluator = FloatEvaluator()
     val animatedValueCache = Box(1f)
 
     val icon = openIcon.get().box
 
-    val actualImageView = iconView(icon = icon).add(this) {
+    val actualImageView = iconView(icon = icon).layout(this) {
         id = R.id.iconView
         fullSize()
     }
@@ -38,18 +39,23 @@ internal fun Context.fab(
     fun updateIcon(sourceIcon: Icon, targetIcon: Icon, animatedValue: Float) {
         animatedValueCache.set(animatedValue)
         isClickable = animatedValue == 1f
-        icon.set(Icon(
-            bgColor = argbEvaluator.evaluate(
-                animatedValue,
-                sourceIcon.bgColor,
-                targetIcon.bgColor) as Int,
-            fgColor = argbEvaluator.evaluate(
-                animatedValue,
-                sourceIcon.fgColor,
-                targetIcon.fgColor) as Int,
-            icon = if (animatedValue < 0.5f) sourceIcon.icon else targetIcon.icon
-        ))
-        actualImageView.rotation = floatEvaluator.evaluate(animatedValue,
+        icon.set(
+            Icon(
+                bgColor = argbEvaluator.evaluate(
+                    animatedValue,
+                    sourceIcon.bgColor,
+                    targetIcon.bgColor
+                ) as Int,
+                fgColor = argbEvaluator.evaluate(
+                    animatedValue,
+                    sourceIcon.fgColor,
+                    targetIcon.fgColor
+                ) as Int,
+                icon = if (animatedValue < 0.5f) sourceIcon.icon else targetIcon.icon
+            )
+        )
+        actualImageView.rotation = floatEvaluator.evaluate(
+            animatedValue,
             if (isActivated.get()) 0f else 360f,
             if (isActivated.get()) 360f else 0f
         )
