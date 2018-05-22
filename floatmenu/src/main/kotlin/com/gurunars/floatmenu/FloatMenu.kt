@@ -50,43 +50,43 @@ fun Context.floatMenu(
     retain(isOpen)
 
     with<RelativeLayout> {
-        fullSize()
-        fl@ with<FrameLayout> {
+        with<FrameLayout> {
             id = R.id.contentPane
+            val frameLayout = this
             contentPane.onChange { value ->
                 value.apply {
-                    render().layoutAsOne(this@fl)
+                    render().layoutAsOne(frameLayout)
                 }
             }
-        }.layout(this) {
-
-        }
+        }.layout(this) { fullSize() }
 
         MenuHolder(context,
             menuPane.oneWayBranch { hasOverlay },
             isOpen,
             animationDuration
-        ).layout(this) {
+        ).apply {
             id = R.id.menuPane
-            fullSize()
             isClickable = true
+            val menu = this
             menuPane.onChange { value ->
                 value.apply {
-                    render().layoutAsOne(this@layout)
+                    render().layoutAsOne(menu)
                 }
             }
-        }
+        }.layout(this) { fullSize() }
+
         fab(animationDuration,
             contentPane.oneWayBranch { icon },
             menuPane.oneWayBranch { icon },
             isOpen
-        ).layout(this) {
+        ).apply {
             id = R.id.openFab
+        }.layout(this) {
             margin = dip(16)
             width = dip(60)
             height = dip(60)
-            alignParentBottom()
-            alignInParent(HorizontalAlignment.RIGHT)
+            alignInParent()
+            alignInParent(HorizontalAlignment.RIGHT, VerticalAlignment.BOTTOM)
         }
     }
 }

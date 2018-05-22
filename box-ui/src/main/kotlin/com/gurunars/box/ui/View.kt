@@ -23,3 +23,8 @@ inline fun View.isVisible(field: IRoBox<Boolean>) =
     field.onChange { status ->
         visibility = if (status) View.VISIBLE else View.GONE
     }
+
+/** @param isVisible if true - marks view as VISIBLE, otherwise marks it as GONE */
+inline fun View.setIsVisible(isVisible: Boolean) {
+    visibility = if (isVisible) View.VISIBLE else View.GONE
+}

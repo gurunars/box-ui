@@ -23,5 +23,5 @@ fun Context.bindAnimal(field: IRoBox<AnimalItem>): View = linearLayout {
         padding = context.dip(5)
         text(field.oneWayBranch { toString() })
     }
-    setBorders(Spec(bottom=1))
+    setBorders(Bounds(bottom=1))
 }

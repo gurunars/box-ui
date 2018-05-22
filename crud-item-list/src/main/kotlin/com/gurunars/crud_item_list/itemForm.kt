@@ -63,7 +63,7 @@ internal fun <ItemType : Item> Context.itemForm(
 
         val canSave = false.box
 
-        context.iconView(
+        iconView(
             icon = confirmIconColors.icon(R.drawable.ic_check).box,
             enabled = canSave
         ).layout(this) {
