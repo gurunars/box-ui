@@ -6,10 +6,10 @@ import android.graphics.drawable.shapes.OvalShape
 import android.os.Bundle
 import android.view.Gravity
 import com.gurunars.android_utils.autoButton
-import com.gurunars.box.ui.add
+import com.gurunars.box.ui.layout
 import com.gurunars.box.ui.fullSize
 import com.gurunars.box.ui.onClick
-import com.gurunars.box.ui.setAsOne
+import com.gurunars.box.ui.layoutAsOne
 import com.gurunars.box.ui.statefulView
 import com.gurunars.box.ui.text
 import com.gurunars.box.box
@@ -52,7 +52,7 @@ class ActivityMain : Activity() {
                     autoButton(
                         text = getString(R.string.disabled).box,
                         bgColor = getColor(android.R.color.holo_blue_light).box
-                    ).add(this) {
+                    ).layout(this) {
                         id = R.id.disabled
                         isEnabled = false
                     }
@@ -61,7 +61,7 @@ class ActivityMain : Activity() {
                         text = getString(R.string.set).box,
                         bgColor = Color.YELLOW.box,
                         shape = OvalShape().box
-                    ).add(this) {
+                    ).layout(this) {
                         id = R.id.set
                         onClick { title.set("Configured") }
                     }
@@ -69,7 +69,7 @@ class ActivityMain : Activity() {
                     autoButton(
                         text = getString(R.string.clear).box,
                         bgColor = getColor(android.R.color.holo_green_light).box
-                    ).add(this) {
+                    ).layout(this) {
                         id = R.id.clear
                         onClick { title.set("Empty") }
                     }
@@ -77,7 +77,7 @@ class ActivityMain : Activity() {
                     width = matchParent
                     below(R.id.payloadView)
                 }
-            }.setAsOne(this)
-        }.setAsOne(this)
+            }.layoutAsOne(this)
+        }.layoutAsOne(this)
     }
 }
