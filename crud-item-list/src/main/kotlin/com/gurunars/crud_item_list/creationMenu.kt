@@ -40,7 +40,7 @@ internal fun <ItemType : Item> Context.creationMenu(
                 rightMargin = dip(10)
             }
 
-            iconView(icon = descriptor.icon.box).add(this) {
+            iconView(icon = descriptor.icon.box).layout(this) {
                 tag = descriptor.type.name
                 onClick {
                     onEditItemType(descriptor.type)
