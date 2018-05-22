@@ -6,6 +6,8 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
+import android.view.ViewGroup.LayoutParams.MATCH_PARENT
+import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 
 interface Component {
     fun Context.render(): View
@@ -23,9 +25,6 @@ fun <Layout: ViewGroup, LayoutParams: ViewGroup.LayoutParams> Component.layout(
     })
 }
 
-private const val MATCH_PARENT = ViewGroup.LayoutParams.MATCH_PARENT
-private const val WRAP_CONTENT = ViewGroup.LayoutParams.WRAP_CONTENT
-
 fun Component.layout(
     frameLayout: FrameLayout,
     config: FrameLayout.LayoutParams.() -> Unit
@@ -40,3 +39,6 @@ fun Component.layout(
     relativeLayout: RelativeLayout,
     config: RelativeLayout.LayoutParams.() -> Unit
 ) = layout(relativeLayout, config, RelativeLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT))
+
+inline fun <reified T: View> Context.of(viewClass: Class<T>): T =
+    viewClass.getConstructor(Context::class.java).newInstance(this)
