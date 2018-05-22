@@ -28,3 +28,21 @@ var View.margin: Bounds
             rightMargin = value.right
         }
     }
+
+var View.padding: Bounds
+    get() {
+        return Bounds(
+            left = paddingLeft,
+            right = paddingRight,
+            top = paddingTop,
+            bottom = paddingBottom
+        )
+    }
+    set(value) {
+        setPadding(
+            value.left,
+            value.top,
+            value.right,
+            value.bottom
+        )
+    }
