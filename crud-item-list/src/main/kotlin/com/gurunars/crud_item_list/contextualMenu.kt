@@ -28,7 +28,7 @@ internal fun <ItemType : Item> Context.contextualMenu(
     fun configureIcon(icon: Int, init: View.() -> Unit): IBox<Boolean> {
         val enabled = true.box
         val iconView = iconView(actionIcon.icon(icon).box, enabled)
-        iconView.add(this@relativeLayout)
+        iconView.layout(this@relativeLayout)
         iconView.init()
         iconView.apply {
             (layoutParams as RelativeLayout.LayoutParams).apply {
