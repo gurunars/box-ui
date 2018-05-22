@@ -48,7 +48,7 @@ internal fun <ItemType : Item> Context.itemForm(
                 padding = dip(5)
             }
 
-            bound.add(this) {
+            bound.layout(this) {
                 padding = dip(10)
             }.lparams {
                 fullSize()
@@ -66,7 +66,7 @@ internal fun <ItemType : Item> Context.itemForm(
         context.iconView(
             icon = confirmIconColors.icon(R.drawable.ic_check).box,
             enabled = canSave
-        ).add(this) {
+        ).layout(this) {
             id = R.id.confirm
             id = R.id.save
             itemBox.onChange { it ->
@@ -92,7 +92,7 @@ internal fun <ItemType : Item> Context.itemForm(
 
         context.iconView(
                 icon = statusIcon
-        ).add(this) {
+        ).layout(this) {
             id = R.id.hint
             itemBox.onChange { it ->
                 asyncChain(
