@@ -5,8 +5,6 @@ import android.content.Context
 import android.util.Log
 import android.widget.Toast
 import com.gurunars.item_list.Item
-import org.jetbrains.anko.doAsync
-import org.jetbrains.anko.uiThread
 
 internal class ActionPasteFromClipboard<ItemType : Item>(
     context: Context,
@@ -37,30 +35,27 @@ internal class ActionPasteFromClipboard<ItemType : Item>(
         all: List<ItemType>,
         selectedItems: Set<ItemType>,
         consumer: ItemSetChange<ItemType>
-    ) {
-        doAsync {
-            val toPaste = getPasteCandidates()
-            uiThread {
-                if (toPaste.isNotEmpty()) {
-                    okToast
-                } else {
-                    nokToast
-                }.show()
-                consumer(insertAfterLastSelected(all, selectedItems, toPaste), selectedItems)
-            }
+    ) =
+        consume<List<ItemType>> { toPaste ->
+            if (toPaste.isNotEmpty()) {
+                okToast
+            } else {
+                nokToast
+            }.show()
+            consumer(insertAfterLastSelected(all, selectedItems, toPaste), selectedItems)
+        }.from {
+            getPasteCandidates()
         }
-    }
 
     override fun canPerform(
         all: List<ItemType>,
         selectedItems: Set<ItemType>,
         consumer: CanDo
-    ) {
-        doAsync {
-            val canDo = getPasteCandidates().isNotEmpty()
-            uiThread {
-                consumer(canDo)
-            }
+    ) =
+        consume<Boolean> { canDo ->
+            consumer(canDo)
+        }.from {
+            getPasteCandidates().isNotEmpty()
         }
-    }
+
 }
