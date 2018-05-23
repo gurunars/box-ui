@@ -11,6 +11,7 @@ import com.gurunars.box.merge
 import com.gurunars.box.ui.*
 import com.gurunars.item_list.Item
 
+
 internal fun <ItemType : Item> Context.contextualMenu(
     openForm: (item: ItemType) -> Unit,
     sortable: Boolean,
@@ -26,12 +27,13 @@ internal fun <ItemType : Item> Context.contextualMenu(
         icon: Int,
         id: Int,
         action: Action<ItemType>,
-        init: View.() -> Unit
+        init: RelativeLayout.LayoutParams.() -> Unit
     ): IBox<Boolean> {
         val enabled = true.box
         val iconView = iconView(actionIcon.icon(icon).box, enabled)
-        iconView.layout(this@with)
-        iconView.init()
+        iconView.layout(this@with) {
+            init()
+        }
         iconView.apply {
             this.id = id
             (layoutParams as RelativeLayout.LayoutParams).apply {
@@ -53,44 +55,39 @@ internal fun <ItemType : Item> Context.contextualMenu(
         return enabled
     }
 
-    configureIcon(
-        R.drawable.ic_move_up,
-        R.id.moveUp,
-        ActionMoveUp()
-    ) {
-        setIsVisible(sortable)
+    if (sortable) {
 
-        layout(this@with) {
+        configureIcon(
+            R.drawable.ic_move_up,
+            R.id.moveUp,
+            ActionMoveUp()
+        ) {
             alignInParent(HorizontalAlignment.RIGHT)
             alignWithRespectTo(
                 R.id.moveDown,
                 verticalPosition = VerticalPosition.ABOVE
             )
-            margin=Bounds(
-                bottom=dip(5),
-                left=dip(23),
-                right=dip(23)
+            margin = Bounds(
+                bottom = dip(5),
+                left = dip(23),
+                right = dip(23)
             )
         }
-    }
 
-    configureIcon(
-        R.drawable.ic_move_down,
-        R.id.moveDown,
-        ActionMoveDown()
-    ) {
-        setIsVisible(sortable)
-
-        layout(this@with) {
+        configureIcon(
+            R.drawable.ic_move_down,
+            R.id.moveDown,
+            ActionMoveDown()
+        ) {
             alignInParent(
-                horizontalAlignment=HorizontalAlignment.RIGHT,
+                horizontalAlignment = HorizontalAlignment.RIGHT,
                 verticalAlignment = VerticalAlignment.BOTTOM
             )
-            margin=Bounds(
-                top=dip(5),
-                bottom=dip(85),
-                left=dip(23),
-                right=dip(23)
+            margin = Bounds(
+                top = dip(5),
+                bottom = dip(85),
+                left = dip(23),
+                right = dip(23)
             )
         }
     }
@@ -100,17 +97,15 @@ internal fun <ItemType : Item> Context.contextualMenu(
         R.id.edit,
         ActionEdit(openForm)
     ) {
-        layout(this@with) {
-            alignInParent(
-                verticalAlignment = VerticalAlignment.BOTTOM
-            )
-            alignWithRespectTo(R.id.delete, HorizontalPosition.LEFT_OF)
-            margin=Bounds(
-                bottom=dip(23),
-                left=dip(5),
-                right=dip(5)
-            )
-        }
+        alignInParent(
+            verticalAlignment = VerticalAlignment.BOTTOM
+        )
+        alignWithRespectTo(R.id.delete, HorizontalPosition.LEFT_OF)
+        margin=Bounds(
+            bottom=dip(23),
+            left=dip(5),
+            right=dip(5)
+        )
     }
 
     configureIcon(
@@ -118,17 +113,15 @@ internal fun <ItemType : Item> Context.contextualMenu(
         R.id.delete,
         ActionDelete()
     ) {
-        layout(this@with) {
-            alignInParent(
-                verticalAlignment = VerticalAlignment.BOTTOM
-            )
-            alignWithRespectTo(R.id.selectAll, HorizontalPosition.LEFT_OF)
-            margin=Bounds(
-                bottom=dip(23),
-                left=dip(5),
-                right=dip(5)
-            )
-        }
+        alignInParent(
+            verticalAlignment = VerticalAlignment.BOTTOM
+        )
+        alignWithRespectTo(R.id.selectAll, HorizontalPosition.LEFT_OF)
+        margin=Bounds(
+            bottom=dip(23),
+            left=dip(5),
+            right=dip(5)
+        )
     }
 
     configureIcon(
@@ -136,17 +129,15 @@ internal fun <ItemType : Item> Context.contextualMenu(
         R.id.selectAll,
         ActionSelectAll()
     ) {
-        layout(this@with) {
-            alignInParent(
-                horizontalAlignment = HorizontalAlignment.RIGHT,
-                verticalAlignment = VerticalAlignment.BOTTOM
-            )
-            margin=Bounds(
-                bottom=dip(23),
-                left=dip(5),
-                right=dip(85)
-            )
-        }
+        alignInParent(
+            horizontalAlignment = HorizontalAlignment.RIGHT,
+            verticalAlignment = VerticalAlignment.BOTTOM
+        )
+        margin=Bounds(
+            bottom=dip(23),
+            left=dip(5),
+            right=dip(85)
+        )
     }
 
     if (serializer == null) {
@@ -158,16 +149,14 @@ internal fun <ItemType : Item> Context.contextualMenu(
         R.id.copy,
         ActionCopyToClipboard(context, serializer)
     ) {
-        layout(this@with) {
-            alignInParent(
-                horizontalAlignment = HorizontalAlignment.RIGHT,
-                verticalAlignment = VerticalAlignment.BOTTOM
-            )
-            margin=Bounds(
-                bottom=dip(75),
-                right=dip(75)
-            )
-        }
+        alignInParent(
+            horizontalAlignment = HorizontalAlignment.RIGHT,
+            verticalAlignment = VerticalAlignment.BOTTOM
+        )
+        margin=Bounds(
+            bottom=dip(75),
+            right=dip(75)
+        )
     }
 
     val pasteAction = ActionPasteFromClipboard(context, serializer)
@@ -176,13 +165,15 @@ internal fun <ItemType : Item> Context.contextualMenu(
         R.id.paste,
         pasteAction
     ) {
-        layout(this@with) {
-            alignWithRespectTo(R.id.copy, HorizontalPosition.LEFT_OF, VerticalPosition.ABOVE)
-            margin=Bounds(
-                bottom=dip(-7),
-                right=dip(-7)
-            )
-        }
+        alignWithRespectTo(
+            R.id.copy,
+            HorizontalPosition.LEFT_OF,
+            VerticalPosition.ABOVE
+        )
+        margin=Bounds(
+            bottom=dip(-7),
+            right=dip(-7)
+        )
     }
 
     val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
