@@ -16,7 +16,6 @@ dependencies {
     api 'org.objenesis:objenesis:2.6'
     api 'com.esotericsoftware:kryo:4.0.1'
     api "com.android.support:recyclerview-v7:$supportlibVersion"
-    api project(':android-utils')
     api project(':box')
     api project(':box-ui')
 }
