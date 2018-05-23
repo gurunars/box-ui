@@ -10,9 +10,6 @@ import com.gurunars.box.box
 import com.gurunars.box.merge
 import com.gurunars.box.ui.*
 import com.gurunars.item_list.Item
-import org.jetbrains.anko.above
-import org.jetbrains.anko.dip
-import org.jetbrains.anko.relativeLayout
 
 internal fun <ItemType : Item> Context.contextualMenu(
     openForm: (item: ItemType) -> Unit,
@@ -21,14 +18,14 @@ internal fun <ItemType : Item> Context.contextualMenu(
     items: IBox<List<ItemType>>,
     selectedItems: IBox<Set<ItemType>>,
     serializer: ClipboardSerializer<ItemType>?
-) = relativeLayout {
+) = with<RelativeLayout> {
     fullSize()
     id = R.id.contextualMenu
 
     fun configureIcon(icon: Int, init: View.() -> Unit): IBox<Boolean> {
         val enabled = true.box
         val iconView = iconView(actionIcon.icon(icon).box, enabled)
-        iconView.layout(this@relativeLayout)
+        iconView.layout(this@with)
         iconView.init()
         iconView.apply {
             (layoutParams as RelativeLayout.LayoutParams).apply {
@@ -56,12 +53,18 @@ internal fun <ItemType : Item> Context.contextualMenu(
         id = R.id.moveUp
         setTag(R.id.action, ActionMoveUp<ItemType>())
         setIsVisible(sortable)
-        lparams {
+
+        layout(this@with) {
             alignInParent(HorizontalAlignment.RIGHT)
-            above(R.id.moveDown)
-            bottomMargin = dip(5)
-            leftMargin = dip(23)
-            rightMargin = dip(23)
+            alignWithRespectTo(
+                R.id.moveDown,
+                verticalPosition = VerticalPosition.ABOVE
+            )
+            margin=Bounds(
+                bottom=dip(5),
+                left=dip(23),
+                right=dip(23)
+            )
         }
     }
 
@@ -69,70 +72,87 @@ internal fun <ItemType : Item> Context.contextualMenu(
         id = R.id.moveDown
         setTag(R.id.action, ActionMoveDown<ItemType>())
         setIsVisible(sortable)
-        lparams {
+
+        layout(this@with) {
             alignInParent(
-                horizontalAlignment = HorizontalAlignment.RIGHT,
+                horizontalAlignment=HorizontalAlignment.RIGHT,
                 verticalAlignment = VerticalAlignment.BOTTOM
             )
-            topMargin = dip(5)
-            bottomMargin = dip(85)
-            leftMargin = dip(23)
-            rightMargin = dip(23)
+            margin=Bounds(
+                top=dip(5),
+                bottom=dip(85),
+                left=dip(23),
+                right=dip(23)
+            )
         }
     }
 
     configureIcon(R.drawable.ic_edit) {
         id = R.id.edit
         setTag(R.id.action, ActionEdit(openForm))
-        lparams {
-            alignInParent(verticalAlignment = VerticalAlignment.BOTTOM)
+
+        layout(this@with) {
+            alignInParent(
+                verticalAlignment = VerticalAlignment.BOTTOM
+            )
             alignWithRespectTo(R.id.delete, HorizontalPosition.LEFT_OF)
-            bottomMargin = dip(23)
-            leftMargin = dip(5)
-            rightMargin = dip(5)
+            margin=Bounds(
+                bottom=dip(23),
+                left=dip(5),
+                right=dip(5)
+            )
         }
     }
 
     configureIcon(R.drawable.ic_delete) {
         id = R.id.delete
         setTag(R.id.action, ActionDelete<ItemType>())
-        lparams {
-            alignInParent(verticalAlignment = VerticalAlignment.BOTTOM)
+
+        layout(this@with) {
+            alignInParent(
+                verticalAlignment = VerticalAlignment.BOTTOM
+            )
             alignWithRespectTo(R.id.selectAll, HorizontalPosition.LEFT_OF)
-            bottomMargin = dip(23)
-            leftMargin = dip(5)
-            rightMargin = dip(5)
+            margin=Bounds(
+                bottom=dip(23),
+                left=dip(5),
+                right=dip(5)
+            )
         }
     }
 
     configureIcon(R.drawable.ic_select_all) {
         id = R.id.selectAll
         setTag(R.id.action, ActionSelectAll<ItemType>())
-        lparams {
+        layout(this@with) {
             alignInParent(
                 horizontalAlignment = HorizontalAlignment.RIGHT,
                 verticalAlignment = VerticalAlignment.BOTTOM
             )
-            leftMargin = dip(5)
-            rightMargin = dip(85)
-            bottomMargin = dip(23)
+            margin=Bounds(
+                bottom=dip(23),
+                left=dip(5),
+                right=dip(85)
+            )
         }
     }
 
     if (serializer == null) {
-        return@relativeLayout
+        return@with
     }
 
     configureIcon(R.drawable.ic_copy) {
         id = R.id.copy
         setTag(R.id.action, ActionCopyToClipboard(context, serializer))
-        lparams {
+        layout(this@with) {
             alignInParent(
                 horizontalAlignment = HorizontalAlignment.RIGHT,
                 verticalAlignment = VerticalAlignment.BOTTOM
             )
-            rightMargin = dip(75)
-            bottomMargin = dip(75)
+            margin=Bounds(
+                bottom=dip(75),
+                right=dip(75)
+            )
         }
     }
 
@@ -140,11 +160,12 @@ internal fun <ItemType : Item> Context.contextualMenu(
     val canPaste = configureIcon(R.drawable.ic_paste) {
         id = R.id.paste
         setTag(R.id.action, pasteAction)
-
-        lparams {
-            rightMargin = dip(-7)
-            bottomMargin = dip(-7)
+        layout(this@with) {
             alignWithRespectTo(R.id.copy, HorizontalPosition.LEFT_OF, VerticalPosition.ABOVE)
+            margin=Bounds(
+                bottom=dip(-7),
+                right=dip(-7)
+            )
         }
     }
 
