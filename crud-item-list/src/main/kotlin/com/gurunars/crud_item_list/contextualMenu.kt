@@ -22,19 +22,23 @@ internal fun <ItemType : Item> Context.contextualMenu(
     fullSize()
     id = R.id.contextualMenu
 
-    fun configureIcon(icon: Int, init: View.() -> Unit): IBox<Boolean> {
+    fun configureIcon(
+        icon: Int,
+        id: Int,
+        action: Action<ItemType>,
+        init: View.() -> Unit
+    ): IBox<Boolean> {
         val enabled = true.box
         val iconView = iconView(actionIcon.icon(icon).box, enabled)
         iconView.layout(this@with)
         iconView.init()
         iconView.apply {
+            this.id = id
             (layoutParams as RelativeLayout.LayoutParams).apply {
                 width = dip(45)
                 height = dip(45)
             }
             @Suppress("UNCHECKED_CAST")
-            val action = getTag(R.id.action) as Action<ItemType>
-
             merge(items, selectedItems).onChange {
                 action.canPerform(it.first, it.second, { enabled.set(it) })
             }
@@ -49,9 +53,11 @@ internal fun <ItemType : Item> Context.contextualMenu(
         return enabled
     }
 
-    configureIcon(R.drawable.ic_move_up) {
-        id = R.id.moveUp
-        setTag(R.id.action, ActionMoveUp<ItemType>())
+    configureIcon(
+        R.drawable.ic_move_up,
+        R.id.moveUp,
+        ActionMoveUp()
+    ) {
         setIsVisible(sortable)
 
         layout(this@with) {
@@ -68,9 +74,11 @@ internal fun <ItemType : Item> Context.contextualMenu(
         }
     }
 
-    configureIcon(R.drawable.ic_move_down) {
-        id = R.id.moveDown
-        setTag(R.id.action, ActionMoveDown<ItemType>())
+    configureIcon(
+        R.drawable.ic_move_down,
+        R.id.moveDown,
+        ActionMoveDown()
+    ) {
         setIsVisible(sortable)
 
         layout(this@with) {
@@ -87,10 +95,11 @@ internal fun <ItemType : Item> Context.contextualMenu(
         }
     }
 
-    configureIcon(R.drawable.ic_edit) {
-        id = R.id.edit
-        setTag(R.id.action, ActionEdit(openForm))
-
+    configureIcon(
+        R.drawable.ic_edit,
+        R.id.edit,
+        ActionEdit(openForm)
+    ) {
         layout(this@with) {
             alignInParent(
                 verticalAlignment = VerticalAlignment.BOTTOM
@@ -104,10 +113,11 @@ internal fun <ItemType : Item> Context.contextualMenu(
         }
     }
 
-    configureIcon(R.drawable.ic_delete) {
-        id = R.id.delete
-        setTag(R.id.action, ActionDelete<ItemType>())
-
+    configureIcon(
+        R.drawable.ic_delete,
+        R.id.delete,
+        ActionDelete()
+    ) {
         layout(this@with) {
             alignInParent(
                 verticalAlignment = VerticalAlignment.BOTTOM
@@ -121,9 +131,11 @@ internal fun <ItemType : Item> Context.contextualMenu(
         }
     }
 
-    configureIcon(R.drawable.ic_select_all) {
-        id = R.id.selectAll
-        setTag(R.id.action, ActionSelectAll<ItemType>())
+    configureIcon(
+        R.drawable.ic_select_all,
+        R.id.selectAll,
+        ActionSelectAll()
+    ) {
         layout(this@with) {
             alignInParent(
                 horizontalAlignment = HorizontalAlignment.RIGHT,
@@ -141,9 +153,11 @@ internal fun <ItemType : Item> Context.contextualMenu(
         return@with
     }
 
-    configureIcon(R.drawable.ic_copy) {
-        id = R.id.copy
-        setTag(R.id.action, ActionCopyToClipboard(context, serializer))
+    configureIcon(
+        R.drawable.ic_copy,
+        R.id.copy,
+        ActionCopyToClipboard(context, serializer)
+    ) {
         layout(this@with) {
             alignInParent(
                 horizontalAlignment = HorizontalAlignment.RIGHT,
@@ -157,9 +171,11 @@ internal fun <ItemType : Item> Context.contextualMenu(
     }
 
     val pasteAction = ActionPasteFromClipboard(context, serializer)
-    val canPaste = configureIcon(R.drawable.ic_paste) {
-        id = R.id.paste
-        setTag(R.id.action, pasteAction)
+    val canPaste = configureIcon(
+        R.drawable.ic_paste,
+        R.id.paste,
+        pasteAction
+    ) {
         layout(this@with) {
             alignWithRespectTo(R.id.copy, HorizontalPosition.LEFT_OF, VerticalPosition.ABOVE)
             margin=Bounds(
