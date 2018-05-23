@@ -9,7 +9,7 @@ import android.view.View
 
 
 private class BorderDrawable(
-    private val bounds: Bounds,
+    private val borderBounds: Bounds,
     private @ColorInt val borderColor: Int = Color.BLACK
 ) : Drawable() {
     private val paint = Paint().apply {
@@ -22,13 +22,15 @@ private class BorderDrawable(
 
         //left, top is 0,0
         //left, top, right, bottom
-        val topBorder = RectF(0.0f, 0.0f, width, bounds.top.toFloat())
-        val bottomBorder = RectF(0.0f, height - bounds.bottom.toFloat(), width, height)
-        val leftBorder = RectF(0.0f, 0.0f, bounds.left.toFloat(), height)
-        val rightBorder = RectF(width - bounds.right.toFloat(), 0.0f, width, height)
-
-        listOf(topBorder, bottomBorder, leftBorder, rightBorder).forEach {
-            canvas.drawRect(it, paint)
+        with(borderBounds) {
+            listOf(
+                RectF(0.0f, 0.0f, width, top.toFloat()),
+                RectF(0.0f, height - bottom.toFloat(), width, height),
+                RectF(0.0f, 0.0f, left.toFloat(), height),
+                RectF(width - right.toFloat(), 0.0f, width, height)
+            ).forEach {
+                canvas.drawRect(it, paint)
+            }
         }
     }
 
