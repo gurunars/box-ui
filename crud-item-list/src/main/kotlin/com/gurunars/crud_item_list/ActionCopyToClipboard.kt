@@ -5,8 +5,9 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.widget.Toast
 import com.gurunars.item_list.Item
-import org.jetbrains.anko.doAsync
-import org.jetbrains.anko.uiThread
+import io.reactivex.Single
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 
 internal class ActionCopyToClipboard<ItemType : Item>(
     private val context: Context,
@@ -27,18 +28,21 @@ internal class ActionCopyToClipboard<ItemType : Item>(
         selectedItems: Set<ItemType>,
         consumer: ItemSetChange<ItemType>
     ) {
-        doAsync {
-            val clip = serializer.toString(
+        Single.create<String> {
+            serializer.toString(
                 all.filter
                 { item -> selectedItems.find { item.id == it.id } != null }
             )
-            uiThread {
+        }
+            .subscribeOn(Schedulers.computation())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { clip ->
                 writeToClipboard(
                     serializer.serializationLabel,
                     clip
                 )
             }
-        }
+
     }
 
     override fun canPerform(
