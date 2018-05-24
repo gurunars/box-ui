@@ -28,8 +28,8 @@ internal fun <ItemType : Item> Context.contextualMenu(
         id: Int,
         action: Action<ItemType>,
         init: RelativeLayout.LayoutParams.() -> Unit
-    ): IBox<Boolean> {
-        val enabled = true.box
+    ) {
+        val enabled = action.canPerform(items, selectedItems)
         val iconView = iconView(actionIcon.icon(icon).box, enabled)
         iconView.layout(this@with) {
             init()
@@ -40,11 +40,6 @@ internal fun <ItemType : Item> Context.contextualMenu(
                 width = dip(45)
                 height = dip(45)
             }
-            @Suppress("UNCHECKED_CAST")
-            merge(items, selectedItems).onChange {
-                action.canPerform(it.first, it.second, { enabled.set(it) })
-            }
-
             onClick {
                 action.perform(items.get(), selectedItems.get(), { first, second ->
                     items.set(first)
@@ -52,7 +47,6 @@ internal fun <ItemType : Item> Context.contextualMenu(
                 })
             }
         }
-        return enabled
     }
 
     if (sortable) {
@@ -159,11 +153,10 @@ internal fun <ItemType : Item> Context.contextualMenu(
         )
     }
 
-    val pasteAction = ActionPasteFromClipboard(context, serializer)
-    val canPaste = configureIcon(
+    configureIcon(
         R.drawable.ic_paste,
         R.id.paste,
-        pasteAction
+        ActionPasteFromClipboard(this, context, serializer)
     ) {
         alignWithRespectTo(
             R.id.copy,
@@ -176,19 +169,4 @@ internal fun <ItemType : Item> Context.contextualMenu(
         )
     }
 
-    val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-
-    val onClipChange = {
-        pasteAction.canPerform(items.get(), selectedItems.get(), { canPaste.set(it) })
-    }
-
-    addOnAttachStateChangeListener(object : View.OnAttachStateChangeListener {
-        override fun onViewDetachedFromWindow(v: View?) {
-            clipboard.removePrimaryClipChangedListener(onClipChange)
-        }
-
-        override fun onViewAttachedToWindow(v: View?) {
-            clipboard.addPrimaryClipChangedListener(onClipChange)
-        }
-    })
 }

@@ -3,10 +3,14 @@ package com.gurunars.crud_item_list
 import android.content.ClipboardManager
 import android.content.Context
 import android.util.Log
+import android.view.View
 import android.widget.Toast
+import com.gurunars.box.Box
+import com.gurunars.box.IRoBox
 import com.gurunars.item_list.Item
 
 internal class ActionPasteFromClipboard<ItemType : Item>(
+    private val view: View,
     context: Context,
     private val serializer: ClipboardSerializer<ItemType>
 ) : Action<ItemType> {
@@ -48,14 +52,26 @@ internal class ActionPasteFromClipboard<ItemType : Item>(
         }
 
     override fun canPerform(
-        all: List<ItemType>,
-        selectedItems: Set<ItemType>,
-        consumer: CanDo
-    ) =
-        consume<Boolean> { canDo ->
-            consumer(canDo)
-        }.from {
-            getPasteCandidates().isNotEmpty()
+        all: IRoBox<List<ItemType>>,
+        selectedItems: IRoBox<Set<ItemType>>
+    ): IRoBox<Boolean> {
+        val can = Box(false)
+
+        fun onClipChange() {
+            can.set(getPasteCandidates().isNotEmpty())
         }
+
+        view.addOnAttachStateChangeListener(object : View.OnAttachStateChangeListener {
+            override fun onViewDetachedFromWindow(v: View?) {
+                clipboard.removePrimaryClipChangedListener(::onClipChange)
+            }
+
+            override fun onViewAttachedToWindow(v: View?) {
+                clipboard.addPrimaryClipChangedListener(::onClipChange)
+            }
+        })
+
+        return can
+    }
 
 }
