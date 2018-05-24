@@ -7,7 +7,6 @@ import android.widget.RelativeLayout
 import com.gurunars.android_utils.iconView
 import com.gurunars.box.IBox
 import com.gurunars.box.box
-import com.gurunars.box.merge
 import com.gurunars.box.ui.*
 import com.gurunars.item_list.Item
 
