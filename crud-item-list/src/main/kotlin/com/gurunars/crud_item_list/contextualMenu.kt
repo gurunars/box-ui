@@ -1,8 +1,6 @@
 package com.gurunars.crud_item_list
 
-import android.content.ClipboardManager
 import android.content.Context
-import android.view.View
 import android.widget.RelativeLayout
 import com.gurunars.android_utils.iconView
 import com.gurunars.box.IBox
@@ -94,10 +92,10 @@ internal fun <ItemType : Item> Context.contextualMenu(
             verticalAlignment = VerticalAlignment.BOTTOM
         )
         alignWithRespectTo(R.id.delete, HorizontalPosition.LEFT_OF)
-        margin=Bounds(
-            bottom=dip(23),
-            left=dip(5),
-            right=dip(5)
+        margin = Bounds(
+            bottom = dip(23),
+            left = dip(5),
+            right = dip(5)
         )
     }
 
@@ -110,10 +108,10 @@ internal fun <ItemType : Item> Context.contextualMenu(
             verticalAlignment = VerticalAlignment.BOTTOM
         )
         alignWithRespectTo(R.id.selectAll, HorizontalPosition.LEFT_OF)
-        margin=Bounds(
-            bottom=dip(23),
-            left=dip(5),
-            right=dip(5)
+        margin = Bounds(
+            bottom = dip(23),
+            left = dip(5),
+            right = dip(5)
         )
     }
 
@@ -126,10 +124,10 @@ internal fun <ItemType : Item> Context.contextualMenu(
             horizontalAlignment = HorizontalAlignment.RIGHT,
             verticalAlignment = VerticalAlignment.BOTTOM
         )
-        margin=Bounds(
-            bottom=dip(23),
-            left=dip(5),
-            right=dip(85)
+        margin = Bounds(
+            bottom = dip(23),
+            left = dip(5),
+            right = dip(85)
         )
     }
 
@@ -146,9 +144,9 @@ internal fun <ItemType : Item> Context.contextualMenu(
             horizontalAlignment = HorizontalAlignment.RIGHT,
             verticalAlignment = VerticalAlignment.BOTTOM
         )
-        margin=Bounds(
-            bottom=dip(75),
-            right=dip(75)
+        margin = Bounds(
+            bottom = dip(75),
+            right = dip(75)
         )
     }
 
@@ -162,9 +160,9 @@ internal fun <ItemType : Item> Context.contextualMenu(
             HorizontalPosition.LEFT_OF,
             VerticalPosition.ABOVE
         )
-        margin=Bounds(
-            bottom=dip(-7),
-            right=dip(-7)
+        margin = Bounds(
+            bottom = dip(-7),
+            right = dip(-7)
         )
     }
 
