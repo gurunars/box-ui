@@ -4,10 +4,12 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.widget.Toast
+import com.gurunars.box.IRoBox
+import com.gurunars.box.oneWayBranch
 import com.gurunars.item_list.Item
 
 internal class ActionCopyToClipboard<ItemType : Item>(
-    private val context: Context,
+    context: Context,
     private val serializer: ClipboardSerializer<ItemType>
 ) : Action<ItemType> {
 
@@ -38,8 +40,8 @@ internal class ActionCopyToClipboard<ItemType : Item>(
         }
 
     override fun canPerform(
-        all: List<ItemType>,
-        selectedItems: Set<ItemType>,
-        consumer: CanDo
-    ) = consumer(selectedItems.isNotEmpty())
+        all: IRoBox<List<ItemType>>,
+        selectedItems: IRoBox<Set<ItemType>>
+    ): IRoBox<Boolean> = selectedItems.oneWayBranch { isNotEmpty() }
+
 }
