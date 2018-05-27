@@ -7,8 +7,7 @@ import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 
 var View.margin: Bounds
     get() {
-        val params = layoutParams
-        params as ViewGroup.MarginLayoutParams
+        val params = layoutParams as? ViewGroup.MarginLayoutParams ?: return Bounds()
         return Bounds(
             left = params.leftMargin,
             right = params.rightMargin,
@@ -17,15 +16,11 @@ var View.margin: Bounds
         )
     }
     set(value) {
-        val params = layoutParams ?: ViewGroup.MarginLayoutParams(
+        val params = (layoutParams ?: ViewGroup.MarginLayoutParams(
             WRAP_CONTENT,
             WRAP_CONTENT
-        )
-        layoutParams = params
-        Log.e("CLS", "" + params.javaClass)
-        if (params !is ViewGroup.MarginLayoutParams) return
-        Log.e("CLS", "DO")
-        params.apply {
+        )) as? ViewGroup.MarginLayoutParams ?: return
+        layoutParams = params.apply {
             bottomMargin = value.bottom
             topMargin = value.top
             leftMargin = value.left
