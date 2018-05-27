@@ -33,7 +33,7 @@ var View.margin: Bounds
         }
     }
 
-var View.padding: Bo0unds
+var View.padding: Bounds
     get() {
         return Bounds(
             left = paddingLeft,
