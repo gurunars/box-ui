@@ -19,7 +19,6 @@ import com.gurunars.box.ui.statefulView
 import com.gurunars.crud_item_list.IconColorBundle
 import com.gurunars.crud_item_list.ItemTypeDescriptor
 import com.gurunars.crud_item_list.crudItemListView
-import com.gurunars.crud_item_list.oneOf
 import org.jetbrains.anko.backgroundColor
 
 class ActivityMain : Activity() {
@@ -88,10 +87,10 @@ class ActivityMain : Activity() {
                     AnimalItem.Type.WOLF)
             )
         } else {
-            descriptors = Descriptor(
+            descriptors = listOf(Descriptor(
                 this,
                 R.drawable.ic_menu_monkey,
-                AnimalItem.Type.MONKEY).oneOf()
+                AnimalItem.Type.MONKEY))
         }
 
         statefulView(R.id.main) {
