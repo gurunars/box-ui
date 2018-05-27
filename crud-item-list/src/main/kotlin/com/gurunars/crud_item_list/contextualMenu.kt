@@ -36,10 +36,6 @@ internal fun <ItemType : Item> Context.contextualMenu(
             action.canPerform(items, selectedItems)
         ).apply {
             this.id = id
-            (layoutParams as RelativeLayout.LayoutParams).apply {
-                width = dip(45)
-                height = dip(45)
-            }
             onClick {
                 action.perform(items.get(), selectedItems.get(), { first, second ->
                     items.set(first)
@@ -47,6 +43,8 @@ internal fun <ItemType : Item> Context.contextualMenu(
                 })
             }
             layout(this@with) {
+                width = dip(45)
+                height = dip(45)
                 init()
             }
         }
