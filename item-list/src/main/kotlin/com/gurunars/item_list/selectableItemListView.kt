@@ -27,11 +27,7 @@ fun <ItemType : Item> Context.selectableItemListView(
     explicitSelectionMode: IRoBox<Boolean> = false.box
 ): View = statefulView(R.id.selectableItemListView) {
 
-    val kryo = getKryo()
-
-    retain(
-        selectedItems.fork { kryo.copy(HashSet(this)) }
-    )
+    retain(selectedItems)
 
     // The flag is require to prevent selection cleanup during the initialization
     var initialized = false

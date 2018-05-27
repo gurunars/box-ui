@@ -6,7 +6,6 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import com.gurunars.box.IRoBox
 import com.gurunars.box.box
-import com.gurunars.box.oneWayBranch
 import com.gurunars.box.ui.Bounds
 import com.gurunars.box.ui.dip
 import com.gurunars.box.ui.fullSize
@@ -24,14 +23,13 @@ fun <ItemType : Item> Context.itemListView(
     emptyViewBinder: EmptyViewBinder = this::defaultEmptyViewBinder,
     reverseLayout: IRoBox<Boolean> = false.box
 ): View = RecyclerView(this).apply {
-    val kryo = getKryo()
     id = R.id.recyclerView
     fullSize()
     clipToPadding = false
     padding = Bounds(bottom=dip(60))
     isSaveEnabled = false
     adapter = ItemAdapter(
-        items.oneWayBranch { kryo.copy(distinctBy { it.id }) },
+        items,
         emptyViewBinder,
         itemViewBinders
     )

@@ -10,51 +10,51 @@ import com.gurunars.box.ui.asRow
 import com.gurunars.box.ui.fullSize
 
 internal class ItemAdapter<ItemType : Item>(
-        private val items: IRoBox<List<ItemType>>,
-        private val emptyViewBinder: EmptyViewBinder,
-        private val itemViewBinders: Map<Enum<*>, ItemViewBinder<ItemType>>
+    private val items: IRoBox<List<ItemType>>,
+    private val emptyViewBinder: EmptyViewBinder,
+    private val itemViewBinders: Map<Enum<*>, ItemViewBinder<ItemType>>
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private var previousList: List<ItemType> = listOf()
+    private var previousList: List<Pair<Long, Int>> = listOf()
     private var recyclerView: RecyclerView? = null
 
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
         this.recyclerView = recyclerView
     }
 
-    private class ItemCallback<out ItemType : Item>(
-            val previousList: List<ItemType>,
-            val currentList: List<ItemType>) : DiffUtil.Callback() {
+    private class ItemCallback(
+            val previousList: List<Pair<Long, Int>>,
+            val currentList: List<Pair<Long, Int>>) : DiffUtil.Callback() {
 
         override fun getOldListSize() = Math.max(1, previousList.size)
 
         override fun getNewListSize() = Math.max(1, currentList.size)
 
         override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
-                previousList.getOrNull(oldItemPosition) == currentList.getOrNull(newItemPosition)
+                previousList.getOrNull(oldItemPosition)?.second == currentList.getOrNull(newItemPosition)?.second
 
         override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
-                previousList.getOrNull(oldItemPosition)?.id == currentList.getOrNull(newItemPosition)?.id
+                previousList.getOrNull(oldItemPosition)?.first == currentList.getOrNull(newItemPosition)?.first
     }
-
-    private val kryo = getKryo()
 
     init {
         items.onChange { list ->
             if (previousList.isEmpty() || list.isEmpty()) {
                 notifyDataSetChanged()
             } else try {
-                DiffUtil.calculateDiff(ItemCallback(previousList, list)).dispatchUpdatesTo(this)
+                DiffUtil.calculateDiff(
+                    ItemCallback(previousList, list.shrink())
+                ).dispatchUpdatesTo(this)
             } catch (exe: IndexOutOfBoundsException) {
                 // In case of a drastic failure - just reset the adapter
                 val recycler = recyclerView ?: return@onChange
                 recycler.recycledViewPool.clear()
                 recycler.swapAdapter(
-                        ItemAdapter(items, emptyViewBinder, itemViewBinders),
-                        false
+                    ItemAdapter(items, emptyViewBinder, itemViewBinders),
+                    false
                 )
             }
-            previousList = kryo.copy(ArrayList(list))
+            previousList = list.shrink()
         }
     }
 

@@ -14,11 +14,3 @@
 # These duplicates can't be avoided
 -dontnote android.net.http.**
 -dontnote org.apache.http.**
-
--keep,allowshrinking,includedescriptorclasses class com.esotericsoftware.** {
-   <fields>;
-   <methods>;
-}
--keep,allowshrinking class com.esotericsoftware.kryo.** { *; }
--keep,allowshrinking class com.esotericsoftware.kryo.io.** { *; }
--keep,allowshrinking class org.objenesis.** { *; }

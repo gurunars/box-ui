@@ -8,3 +8,6 @@ internal fun <ItemType : Item> Set<ItemType>.exclude(item: ItemType) =
 
 internal fun <ItemType : Item> Set<ItemType>.include(item: ItemType) =
     this + item
+
+internal fun <ItemType : Item> List<ItemType>.shrink() =
+    map { Pair(it.id, it.hashCode()) }
