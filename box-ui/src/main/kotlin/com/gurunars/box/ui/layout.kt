@@ -107,9 +107,8 @@ fun View.layout(
 
 /** Removes all the views and adds this view as the only full screen child */
 fun <T : View> T.layoutAsOne(parent: FrameLayout): T {
-    layout(parent) { fullSize() }
     parent.removeAllViews()
-    parent.addView(this)
+    layout(parent) { fullSize() }
     return this
 }
 
