@@ -12,13 +12,7 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.FrameLayout
 import com.gurunars.box.*
-import com.gurunars.box.ui.add
-import com.gurunars.box.ui.asRow
-import com.gurunars.box.ui.closeKeyboard
-import com.gurunars.box.ui.fullSize
-import com.gurunars.box.ui.onClick
-import com.gurunars.box.ui.setAsOne
-import com.gurunars.box.ui.text
+import com.gurunars.box.ui.*
 import com.gurunars.item_list.Item
 import com.gurunars.item_list.itemListView
 import org.jetbrains.anko.backgroundColor
@@ -129,7 +123,7 @@ abstract class AbstractActivityStorybook : Activity() {
                         views.keys.mapIndexed { index, s -> PackageName(index.toLong(), s) }
                             .filter { it.fullName.contains(this) }
                     }
-                ).add(this).lparams {
+                ).layout(this) {
                     width = matchParent
                     weight = 1f
                 }
@@ -142,7 +136,7 @@ abstract class AbstractActivityStorybook : Activity() {
 
         activeSection.onChange {
             val renderer = views[it] ?: return@onChange
-            renderer(this@AbstractActivityStorybook).setAsOne(root)
+            renderer(this@AbstractActivityStorybook).layoutAsOne(root)
             title = it.split(".").last()
             drawerLayout.closeDrawer(Gravity.LEFT)
         }
