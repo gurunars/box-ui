@@ -87,5 +87,5 @@ fun Context.floatMenu(
             alignInParent()
             alignInParent(HorizontalAlignment.RIGHT, VerticalAlignment.BOTTOM)
         }
-    }.layout(this)
+    }.layoutAsOne(this)
 }
