@@ -13,7 +13,7 @@ data class Bounds(
     val bottom: Int = 0
 ) {
     /** Padding for all dimensions */
-    constructor(all: Int = 0) : this(all, all, all, all)
+    constructor(all: Int = 0) : this(all, all)
 
     /** Padding for horizontal and vertical dimensions */
     constructor(horizontal: Int = 0, vertical: Int = 0) : this(

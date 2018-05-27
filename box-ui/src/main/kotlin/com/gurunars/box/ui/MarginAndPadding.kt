@@ -1,5 +1,6 @@
 package com.gurunars.box.ui
 
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
@@ -21,7 +22,9 @@ var View.margin: Bounds
             WRAP_CONTENT
         )
         layoutParams = params
+        Log.e("CLS", "" + params.javaClass)
         if (params !is ViewGroup.MarginLayoutParams) return
+        Log.e("CLS", "DO")
         params.apply {
             bottomMargin = value.bottom
             topMargin = value.top
@@ -30,7 +33,7 @@ var View.margin: Bounds
         }
     }
 
-var View.padding: Bounds
+var View.padding: Bo0unds
     get() {
         return Bounds(
             left = paddingLeft,
