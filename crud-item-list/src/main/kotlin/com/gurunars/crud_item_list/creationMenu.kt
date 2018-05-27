@@ -19,7 +19,7 @@ internal fun <ItemType : Item> Context.creationMenu(
 ) = with<LinearLayout> {
     orientation=LinearLayout.VERTICAL
     fullSize()
-    padding= Bounds(bottom=85, right=23)
+    padding= Bounds(bottom=dip(85), right=dip(23))
     gravity = Gravity.BOTTOM
     groupedItemTypeDescriptors.forEach { descriptor ->
         with<LinearLayout> {
