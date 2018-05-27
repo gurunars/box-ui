@@ -20,7 +20,8 @@ var View.margin: Bounds
             WRAP_CONTENT,
             WRAP_CONTENT
         )
-        params as ViewGroup.MarginLayoutParams
+        layoutParams = params
+        if (params !is ViewGroup.MarginLayoutParams) return
         params.apply {
             bottomMargin = value.bottom
             topMargin = value.top
