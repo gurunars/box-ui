@@ -10,7 +10,6 @@ edit, remove and create the items out of the box.
 """
 
 dependencies {
-    api anko
     testImplementation junit
     testImplementation mockito
     api project(':android-utils')

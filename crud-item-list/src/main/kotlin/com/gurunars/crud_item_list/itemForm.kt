@@ -12,7 +12,6 @@ import com.gurunars.box.ui.*
 import com.gurunars.crud_item_list.ItemTypeDescriptor.Status.Type.ERROR
 import com.gurunars.crud_item_list.ItemTypeDescriptor.Status.Type.WARNING
 import com.gurunars.item_list.Item
-import org.jetbrains.anko.*
 
 internal fun <ItemType : Item> Context.itemForm(
     itemBox: IBox<ItemType>,

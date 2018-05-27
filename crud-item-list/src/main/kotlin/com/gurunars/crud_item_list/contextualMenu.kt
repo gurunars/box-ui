@@ -20,7 +20,7 @@ internal fun <ItemType : Item> Context.contextualMenu(
     fullSize()
     id = R.id.contextualMenu
 
-    fun configureIcon(
+    fun actionIcon(
         icon: Int,
         id: Int,
         action: Action<ItemType>,
@@ -52,7 +52,7 @@ internal fun <ItemType : Item> Context.contextualMenu(
         }
     }
 
-    configureIcon(
+    actionIcon(
         R.drawable.ic_move_up,
         R.id.moveUp,
         ActionMoveUp(),
@@ -70,7 +70,7 @@ internal fun <ItemType : Item> Context.contextualMenu(
         )
     }
 
-    configureIcon(
+    actionIcon(
         R.drawable.ic_move_down,
         R.id.moveDown,
         ActionMoveDown(),
@@ -88,7 +88,7 @@ internal fun <ItemType : Item> Context.contextualMenu(
         )
     }
 
-    configureIcon(
+    actionIcon(
         R.drawable.ic_edit,
         R.id.edit,
         ActionEdit(openForm)
@@ -104,7 +104,7 @@ internal fun <ItemType : Item> Context.contextualMenu(
         )
     }
 
-    configureIcon(
+    actionIcon(
         R.drawable.ic_delete,
         R.id.delete,
         ActionDelete()
@@ -120,7 +120,7 @@ internal fun <ItemType : Item> Context.contextualMenu(
         )
     }
 
-    configureIcon(
+    actionIcon(
         R.drawable.ic_select_all,
         R.id.selectAll,
         ActionSelectAll()
@@ -136,7 +136,7 @@ internal fun <ItemType : Item> Context.contextualMenu(
         )
     }
 
-    configureIcon(
+    actionIcon(
         R.drawable.ic_copy,
         R.id.copy,
         ActionCopyToClipboard(context, serializer),
@@ -152,7 +152,7 @@ internal fun <ItemType : Item> Context.contextualMenu(
         )
     }
 
-    configureIcon(
+    actionIcon(
         R.drawable.ic_paste,
         R.id.paste,
         ActionPasteFromClipboard(this, context, serializer),
