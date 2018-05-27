@@ -5,23 +5,12 @@ import android.graphics.Color
 import android.graphics.drawable.shapes.OvalShape
 import android.os.Bundle
 import android.view.Gravity
+import android.widget.LinearLayout
+import android.widget.RelativeLayout
+import android.widget.TextView
 import com.gurunars.android_utils.autoButton
-import com.gurunars.box.ui.layout
-import com.gurunars.box.ui.fullSize
-import com.gurunars.box.ui.onClick
-import com.gurunars.box.ui.layoutAsOne
-import com.gurunars.box.ui.statefulView
-import com.gurunars.box.ui.text
 import com.gurunars.box.box
-import org.jetbrains.anko.backgroundColor
-import org.jetbrains.anko.below
-import org.jetbrains.anko.dip
-import org.jetbrains.anko.linearLayout
-import org.jetbrains.anko.margin
-import org.jetbrains.anko.matchParent
-import org.jetbrains.anko.padding
-import org.jetbrains.anko.relativeLayout
-import org.jetbrains.anko.textView
+import com.gurunars.box.ui.*
 
 class ActivityMain : Activity() {
 
@@ -32,50 +21,50 @@ class ActivityMain : Activity() {
 
         statefulView(R.id.main) {
             retain(title)
-            relativeLayout {
+            with<RelativeLayout> {
                 gravity = Gravity.CENTER
                 fullSize()
-                textView {
+                with<TextView> {
                     id = R.id.payloadView
-                    padding = dip(15)
+                    padding = Bounds(dip(15))
                     gravity = Gravity.CENTER
-                    backgroundColor = Color.parseColor("#FFFFAA")
+                    setBackgroundColor(Color.parseColor("#FFFFAA"))
                     text(title)
-                }.lparams {
-                    width = matchParent
-                    margin = dip(10)
+                }.layout(this) {
+                    asRow()
+                    margin = Bounds(dip(10))
                 }
 
-                linearLayout {
+                with<LinearLayout> {
                     gravity = Gravity.CENTER
 
                     autoButton(
                         text = getString(R.string.disabled).box,
                         bgColor = getColor(android.R.color.holo_blue_light).box
-                    ).layout(this) {
+                    ).apply {
                         id = R.id.disabled
                         isEnabled = false
-                    }
+                    }.layout(this)
 
                     autoButton(
                         text = getString(R.string.set).box,
                         bgColor = Color.YELLOW.box,
                         shape = OvalShape().box
-                    ).layout(this) {
+                    ).apply {
                         id = R.id.set
                         onClick { title.set("Configured") }
-                    }
+                    }.layout(this)
 
                     autoButton(
                         text = getString(R.string.clear).box,
                         bgColor = getColor(android.R.color.holo_green_light).box
-                    ).layout(this) {
+                    ).apply {
                         id = R.id.clear
                         onClick { title.set("Empty") }
-                    }
-                }.lparams {
-                    width = matchParent
-                    below(R.id.payloadView)
+                    }.layout(this)
+                }.layout(this) {
+                    asRow()
+                    alignWithRespectTo(R.id.payloadView, verticalPosition = VerticalPosition.BELOW)
                 }
             }.layoutAsOne(this)
         }.layoutAsOne(this)
