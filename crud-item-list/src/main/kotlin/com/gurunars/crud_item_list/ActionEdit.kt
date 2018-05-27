@@ -17,10 +17,8 @@ internal class ActionEdit<ItemType : Item>(
         all: List<ItemType>,
         selectedItems: Set<ItemType>,
         consumer: ItemSetChange<ItemType>
-    ) = consume<ItemType> {
-        itemConsumer(it)
-    }.from {
+    ) = from {
         all.first { item -> selectedItems.indexOfFirst { it.id == item.id } != -1 }
-    }
+    }.to { itemConsumer(it) }
 
 }

@@ -3,6 +3,8 @@ package com.gurunars.crud_item_list
 import android.content.Context
 import android.view.Gravity
 import android.view.View
+import android.widget.FrameLayout
+import android.widget.ProgressBar
 import com.gurunars.android_utils.Icon
 import com.gurunars.box.*
 import com.gurunars.box.ui.*
@@ -13,9 +15,6 @@ import com.gurunars.item_list.EmptyViewBinder
 import com.gurunars.item_list.Item
 import com.gurunars.item_list.defaultEmptyViewBinder
 import com.gurunars.item_list.selectableItemListView
-import org.jetbrains.anko.dip
-import org.jetbrains.anko.frameLayout
-import org.jetbrains.anko.progressBar
 import com.gurunars.floatmenu.R as floatR
 
 /**
@@ -51,7 +50,7 @@ fun <ItemType : Item> Context.crudItemListView(
 
     val typeCache = itemTypeDescriptors.map { Pair(it.type, it) }.toMap()
 
-    val itemForm = context.frameLayout {
+    val itemForm = with<FrameLayout> {
         fullSize()
         id = R.id.itemForm
     }
@@ -90,8 +89,8 @@ fun <ItemType : Item> Context.crudItemListView(
         clipboardSerializer
     )
 
-    val loading = context.frameLayout {
-        progressBar().lparams {
+    val loading = with<FrameLayout> {
+        with<ProgressBar>().layout(this) {
             width = dip(80)
             height = dip(80)
             gravity = Gravity.CENTER

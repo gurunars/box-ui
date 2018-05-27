@@ -3,10 +3,7 @@ package com.gurunars.crud_item_list
 import android.content.Context
 import android.graphics.Color
 import android.graphics.PorterDuff
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.RelativeLayout
-import android.widget.TextView
+import android.widget.*
 import com.gurunars.android_utils.Icon
 import com.gurunars.android_utils.iconView
 import com.gurunars.box.IBox
@@ -71,13 +68,13 @@ internal fun <ItemType : Item> Context.itemForm(
             icon = confirmIconColors.icon(R.drawable.ic_check).box,
             enabled = canSave
         ).layout(this) {
-            id = R.id.confirm
             id = R.id.save
             itemBox.onChange { it ->
-                asyncChain(
-                    { formBinder.validate(it).type.isBlocking },
-                    { canSave.set(!it) }
-                )
+                from {
+                    formBinder.validate(it).type.isBlocking
+                }.to {
+                    canSave.set(!it)
+                }
             }
             setOnClickListener { confirmationHandler(itemBox.get()) }
             width = dip(60)
@@ -92,26 +89,23 @@ internal fun <ItemType : Item> Context.itemForm(
             icon = R.drawable.ic_warning_sign
         ).box
 
-        context.iconView(
-                icon = statusIcon
+        iconView(
+            icon = statusIcon
         ).layout(this) {
             id = R.id.hint
             itemBox.onChange { it ->
-                asyncChain(
-                    {
-                        val status = formBinder.validate(it)
-                        onClick { context.longToast(status.message) }
-                        status
-                    },
-                    {
-                        when (it.type) {
-                            ERROR -> statusIcon.patch { copy(bgColor = Color.RED) }
-                            WARNING -> statusIcon.patch { copy(bgColor = Color.YELLOW) }
-                            else -> statusIcon.patch { copy(bgColor = Color.LTGRAY) }
-                        }
-                        setIsVisible(it.type.isBlocking || it.message.isNotEmpty())
+                from {
+                    val status = formBinder.validate(it)
+                    onClick { Toast.makeText(context, status.message, Toast.LENGTH_LONG).show() }
+                    status
+                }.to {
+                    when (it.type) {
+                        ERROR -> statusIcon.patch { copy(bgColor = Color.RED) }
+                        WARNING -> statusIcon.patch { copy(bgColor = Color.YELLOW) }
+                        else -> statusIcon.patch { copy(bgColor = Color.LTGRAY) }
                     }
-                )
+                    setIsVisible(it.type.isBlocking || it.message.isNotEmpty())
+                }
             }
             width = dip(35)
             height = dip(35)

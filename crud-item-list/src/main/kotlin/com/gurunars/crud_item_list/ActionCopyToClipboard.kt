@@ -28,12 +28,12 @@ internal class ActionCopyToClipboard<ItemType : Item>(
         consumer: ItemSetChange<ItemType>
     ) {
         serializer?.let {
-            consume<String> { clip ->
-                writeToClipboard(it.serializationLabel, clip)
-            }.from {
+            from {
                 it.toString(
                     all.filter { item -> selectedItems.find { item.id == it.id } != null }
                 )
+            }.to { clip ->
+                writeToClipboard(it.serializationLabel, clip)
             }
         }
     }

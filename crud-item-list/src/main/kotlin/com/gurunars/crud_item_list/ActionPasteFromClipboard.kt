@@ -40,15 +40,15 @@ internal class ActionPasteFromClipboard<ItemType : Item>(
         selectedItems: Set<ItemType>,
         consumer: ItemSetChange<ItemType>
     ) =
-        consume<List<ItemType>> { toPaste ->
+        from {
+            getPasteCandidates()
+        }.to {  toPaste ->
             if (toPaste.isNotEmpty()) {
                 okToast
             } else {
                 nokToast
             }.show()
             consumer(insertAfterLastSelected(all, selectedItems, toPaste), selectedItems)
-        }.from {
-            getPasteCandidates()
         }
 
     override fun canPerform(

@@ -4,9 +4,9 @@ import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
-class Source<T>(private val consumer: (value: T) -> Unit) {
+class Source<T>(private val supplier: () -> T) {
 
-    fun from(supplier: () -> T) {
+    fun to(consumer: (value: T) -> Unit) {
         Single.create<T> {
             supplier()
         }
@@ -17,6 +17,7 @@ class Source<T>(private val consumer: (value: T) -> Unit) {
 
 }
 
-fun<T> consume(consumer: (value: T) -> Unit) =
-    Source(consumer)
+
+fun<T> from(supplier: () -> T) =
+    Source(supplier)
 
