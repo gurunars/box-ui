@@ -3,6 +3,10 @@ package com.gurunars.crud_item_list
 import android.content.Context
 import android.graphics.Color
 import android.graphics.PorterDuff
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.RelativeLayout
+import android.widget.TextView
 import com.gurunars.android_utils.Icon
 import com.gurunars.android_utils.iconView
 import com.gurunars.box.IBox
@@ -18,46 +22,47 @@ internal fun <ItemType : Item> Context.itemForm(
     confirmationHandler: (item: ItemType) -> Unit,
     confirmIconColors: IconColorBundle,
     formBinder: ItemTypeDescriptor<ItemType>
-) = relativeLayout {
+) = with<RelativeLayout> {
         val bound = formBinder.bindForm(itemBox)
 
-        verticalLayout {
+        with<LinearLayout> {
+            orientation = LinearLayout.VERTICAL
 
-            linearLayout {
-                imageView {
+            with<LinearLayout> {
+                with<ImageView> {
                     setImageDrawable(
                         context.getDrawable(formBinder.icon.icon)!!.apply {
                             mutate()
                             setColorFilter(formBinder.icon.fgColor, PorterDuff.Mode.SRC_IN)
                         }
                     )
-                    padding = dip(1)
-                }.lparams {
+                    padding = Bounds(dip(1))
+                }.layout(this) {
                     width = dip(25)
                     height = dip(25)
-                    rightMargin = dip(6)
+                    margin = Bounds(right=dip(6))
                 }
-                textView {
+                with<TextView> {
                     text(formBinder.getItemTitle(itemBox))
-                    textColor = formBinder.icon.fgColor
+                    setTextColor(formBinder.icon.fgColor)
                     textSize = 20f
                 }
+                setBackgroundColor(formBinder.icon.bgColor)
+                padding = Bounds(dip(5))
+            }.layout(this) {
                 asRow()
-                backgroundColor = formBinder.icon.bgColor
-                padding = dip(5)
             }
 
             bound.layout(this) {
-                padding = dip(10)
-            }.lparams {
+                padding = Bounds(dip(10))
+            }.layout(this) {
                 fullSize()
             }
-        }.lparams {
+        }.layout(this) {
             fullSize()
-            leftMargin = dip(12)
-            rightMargin = dip(12)
-            topMargin = dip(12)
-            bottomMargin = dip(90)
+            margin=Bounds(dip(12)).copy(
+                bottom = dip(90)
+            )
         }
 
         val canSave = false.box
@@ -75,12 +80,10 @@ internal fun <ItemType : Item> Context.itemForm(
                 )
             }
             setOnClickListener { confirmationHandler(itemBox.get()) }
-            layoutParams = relativeLayoutParams {
-                width = dip(60)
-                height = dip(60)
-                margin = dip(16)
-                alignInParent(HorizontalAlignment.LEFT, VerticalAlignment.BOTTOM)
-            }
+            width = dip(60)
+            height = dip(60)
+            margin = Bounds(dip(16))
+            alignInParent(HorizontalAlignment.LEFT, VerticalAlignment.BOTTOM)
         }
 
         val statusIcon = Icon(
@@ -110,13 +113,10 @@ internal fun <ItemType : Item> Context.itemForm(
                     }
                 )
             }
-            layoutParams = relativeLayoutParams {
-                width = dip(35)
-                height = dip(35)
-                leftMargin = dip(100)
-                bottomMargin = dip(30)
-                alignInParent(HorizontalAlignment.LEFT, VerticalAlignment.BOTTOM)
-                rightOf(R.id.confirm)
-            }
+            width = dip(35)
+            height = dip(35)
+            margin = Bounds(left=dip(100), bottom=dip(30))
+            alignInParent(HorizontalAlignment.LEFT, VerticalAlignment.BOTTOM)
+            alignWithRespectTo(R.id.confirm, horizontalPosition = HorizontalPosition.RIGHT_OF)
         }
     }
