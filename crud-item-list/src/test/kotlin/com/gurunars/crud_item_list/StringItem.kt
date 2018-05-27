@@ -1,5 +1,6 @@
 package com.gurunars.crud_item_list
 
+import com.gurunars.box.box
 import com.gurunars.item_list.Item
 
 data class StringItem(
@@ -10,8 +11,8 @@ data class StringItem(
 fun Set<String>.itemize() = map { StringItem(it) }.toSet()
 fun List<String>.itemize() = map { StringItem(it) }
 
-internal fun Action<StringItem>.canPerform(items: List<String>, selectedItems: Set<String>, consumer: CanDo) =
-    canPerform(items.itemize(), selectedItems.itemize(), consumer)
+internal fun Action<StringItem>.canPerform(items: List<String>, selectedItems: Set<String>, consumer: (flag: Boolean) -> Unit) =
+    canPerform(items.itemize().box, selectedItems.itemize().box).onChange { consumer(it) }
 
 internal fun Action<StringItem>.perform(
     items: List<String>,
