@@ -10,7 +10,7 @@ import com.gurunars.item_list.Item
 
 internal class ActionCopyToClipboard<ItemType : Item>(
     context: Context,
-    private val serializer: ClipboardSerializer<ItemType>
+    private val serializer: ClipboardSerializer<ItemType>?
 ) : Action<ItemType> {
 
     private val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
@@ -26,18 +26,17 @@ internal class ActionCopyToClipboard<ItemType : Item>(
         all: List<ItemType>,
         selectedItems: Set<ItemType>,
         consumer: ItemSetChange<ItemType>
-    ) =
-        consume<String> { clip ->
-            writeToClipboard(
-                serializer.serializationLabel,
-                clip
-            )
-        }.from {
-            serializer.toString(
-                all.filter
-                { item -> selectedItems.find { item.id == it.id } != null }
-            )
+    ) {
+        serializer?.let {
+            consume<String> { clip ->
+                writeToClipboard(it.serializationLabel, clip)
+            }.from {
+                it.toString(
+                    all.filter { item -> selectedItems.find { item.id == it.id } != null }
+                )
+            }
         }
+    }
 
     override fun canPerform(
         all: IRoBox<List<ItemType>>,

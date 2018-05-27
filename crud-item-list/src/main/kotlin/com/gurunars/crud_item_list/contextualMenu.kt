@@ -24,14 +24,17 @@ internal fun <ItemType : Item> Context.contextualMenu(
         icon: Int,
         id: Int,
         action: Action<ItemType>,
+        visible: Boolean = true,
         init: RelativeLayout.LayoutParams.() -> Unit
     ) {
-        val enabled = action.canPerform(items, selectedItems)
-        val iconView = iconView(actionIcon.icon(icon).box, enabled)
-        iconView.layout(this@with) {
-            init()
+        if (!visible) {
+            return
         }
-        iconView.apply {
+
+        iconView(
+            actionIcon.icon(icon).box,
+            action.canPerform(items, selectedItems)
+        ).apply {
             this.id = id
             (layoutParams as RelativeLayout.LayoutParams).apply {
                 width = dip(45)
@@ -43,44 +46,46 @@ internal fun <ItemType : Item> Context.contextualMenu(
                     selectedItems.set(second)
                 })
             }
+            layout(this@with) {
+                init()
+            }
         }
     }
 
-    if (sortable) {
-
-        configureIcon(
-            R.drawable.ic_move_up,
-            R.id.moveUp,
-            ActionMoveUp()
-        ) {
-            alignInParent(HorizontalAlignment.RIGHT)
-            alignWithRespectTo(
-                R.id.moveDown,
-                verticalPosition = VerticalPosition.ABOVE
-            )
-            margin = Bounds(
-                bottom = dip(5),
-                left = dip(23),
-                right = dip(23)
-            )
-        }
-
-        configureIcon(
-            R.drawable.ic_move_down,
+    configureIcon(
+        R.drawable.ic_move_up,
+        R.id.moveUp,
+        ActionMoveUp(),
+        sortable
+    ) {
+        alignInParent(HorizontalAlignment.RIGHT)
+        alignWithRespectTo(
             R.id.moveDown,
-            ActionMoveDown()
-        ) {
-            alignInParent(
-                horizontalAlignment = HorizontalAlignment.RIGHT,
-                verticalAlignment = VerticalAlignment.BOTTOM
-            )
-            margin = Bounds(
-                top = dip(5),
-                bottom = dip(85),
-                left = dip(23),
-                right = dip(23)
-            )
-        }
+            verticalPosition = VerticalPosition.ABOVE
+        )
+        margin = Bounds(
+            bottom = dip(5),
+            left = dip(23),
+            right = dip(23)
+        )
+    }
+
+    configureIcon(
+        R.drawable.ic_move_down,
+        R.id.moveDown,
+        ActionMoveDown(),
+        sortable
+    ) {
+        alignInParent(
+            horizontalAlignment = HorizontalAlignment.RIGHT,
+            verticalAlignment = VerticalAlignment.BOTTOM
+        )
+        margin = Bounds(
+            top = dip(5),
+            bottom = dip(85),
+            left = dip(23),
+            right = dip(23)
+        )
     }
 
     configureIcon(
@@ -131,14 +136,11 @@ internal fun <ItemType : Item> Context.contextualMenu(
         )
     }
 
-    if (serializer == null) {
-        return@with
-    }
-
     configureIcon(
         R.drawable.ic_copy,
         R.id.copy,
-        ActionCopyToClipboard(context, serializer)
+        ActionCopyToClipboard(context, serializer),
+        serializer != null
     ) {
         alignInParent(
             horizontalAlignment = HorizontalAlignment.RIGHT,
@@ -153,7 +155,8 @@ internal fun <ItemType : Item> Context.contextualMenu(
     configureIcon(
         R.drawable.ic_paste,
         R.id.paste,
-        ActionPasteFromClipboard(this, context, serializer)
+        ActionPasteFromClipboard(this, context, serializer),
+        serializer != null
     ) {
         alignWithRespectTo(
             R.id.copy,

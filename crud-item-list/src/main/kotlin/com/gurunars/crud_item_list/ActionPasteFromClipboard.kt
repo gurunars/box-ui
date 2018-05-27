@@ -12,7 +12,7 @@ import com.gurunars.item_list.Item
 internal class ActionPasteFromClipboard<ItemType : Item>(
     private val view: View,
     context: Context,
-    private val serializer: ClipboardSerializer<ItemType>
+    private val serializer: ClipboardSerializer<ItemType>?
 ) : Action<ItemType> {
 
     private val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
@@ -28,7 +28,7 @@ internal class ActionPasteFromClipboard<ItemType : Item>(
             return listOf()
         }
         return try {
-            serializer.fromString(clip.getItemAt(0).text.toString())
+            serializer?.fromString(clip.getItemAt(0).text.toString()) ?: listOf()
         } catch (exe: Exception) {
             Log.d("crud-item-list", "Can't paste", exe.cause)
             listOf()
