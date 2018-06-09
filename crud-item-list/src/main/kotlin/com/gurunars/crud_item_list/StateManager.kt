@@ -72,7 +72,7 @@ internal class StateMachine<ItemType : Item>(
         state.onChange { value ->
             if (value.itemTypeInLoad != null) {
                 asyncWrapper(
-                    { itemTypes[value.itemTypeInLoad]!!.createNewItem() },
+                    { itemTypes[value.itemTypeInLoad]!!.prepareNewItem() },
                     { this.loadItem(it) }
                 )
             }

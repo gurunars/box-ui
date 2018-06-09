@@ -5,6 +5,7 @@ import android.arch.persistence.room.Delete
 import android.arch.persistence.room.Insert
 import android.arch.persistence.room.Query
 import android.arch.persistence.room.Update
+import com.gurunars.item_list.persistence.PlainDao
 
 @Dao
 interface AnimalItemDao : PlainDao<AnimalItem> {
@@ -19,9 +20,6 @@ interface AnimalItemDao : PlainDao<AnimalItem> {
 
     @Query("SELECT * FROM AnimalItem ORDER BY position, id")
     override fun all(): List<AnimalItem>
-
-    @Query("UPDATE main.sqlite_sequence SET SEQ=0 WHERE NAME='AnimalItem'")
-    fun resetCount()
 
     @Query("DELETE FROM AnimalItem")
     fun truncate()

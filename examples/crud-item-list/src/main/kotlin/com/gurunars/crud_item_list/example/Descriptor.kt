@@ -8,29 +8,24 @@ import android.view.View
 import com.gurunars.android_utils.Icon
 import com.gurunars.animal_item.AnimalItem
 import com.gurunars.animal_item.bindAnimal
-import com.gurunars.crud_item_list.ItemTypeDescriptor
 import com.gurunars.box.IBox
 import com.gurunars.box.IRoBox
 import com.gurunars.box.branch
 import com.gurunars.box.oneWayBranch
 import com.gurunars.box.ui.fullSize
 import com.gurunars.box.ui.text
-import com.gurunars.item_list.SelectableItem
-import com.gurunars.item_list.coloredRowSelectionDecorator
-import org.jetbrains.anko.backgroundColor
-import org.jetbrains.anko.button
-import org.jetbrains.anko.editText
-import org.jetbrains.anko.textView
-import org.jetbrains.anko.verticalLayout
+import com.gurunars.crud_item_list.ItemTypeDescriptor
+import org.jetbrains.anko.*
 
 internal class Descriptor(
+    private val items: IRoBox<List<AnimalItem>>,
     private val context: Context,
-    private val iconId: Int,
+    iconId: Int,
     override val type: AnimalItem.Type
 ) : ItemTypeDescriptor<AnimalItem> {
 
     override fun getItemTitle(item: IRoBox<AnimalItem>) =
-        item.oneWayBranch { "${type.name} ${version}" }
+        item.oneWayBranch { "${type.name} $version" }
 
     override val title = type.name
 
@@ -48,14 +43,16 @@ internal class Descriptor(
                 ItemTypeDescriptor.Status.ok()
         }
 
-    override fun bindRow(field: IRoBox<SelectableItem<AnimalItem>>): View =
-        coloredRowSelectionDecorator(field) { context.bindAnimal(it ) }
+    override fun bindRow(field: IRoBox<AnimalItem>): View =
+        context.bindAnimal(field)
 
     override val icon = Icon(icon = iconId)
-    override fun createNewItem() = AnimalItem(
-        id = 0L,
-        version = 0,
-        type = type)
+    override fun prepareNewItem() =
+        AnimalItem(
+            id = (items.get().map { it.id }.sorted().lastOrNull() ?: 0) + 1,
+            version = 0,
+            type = type
+        )
 
     override fun bindForm(
         field: IBox<AnimalItem>

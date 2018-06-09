@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.support.annotation.StringRes
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.Toast
 import com.gurunars.animal_item.AnimalItem
 import com.gurunars.animal_item.Service
 import com.gurunars.animal_item.Service.Companion.getRealService
@@ -13,6 +12,7 @@ import com.gurunars.animal_item.bindAnimal
 import com.gurunars.box.IBox
 import com.gurunars.box.IRoBox
 import com.gurunars.box.ui.layoutAsOne
+import com.gurunars.box.ui.shortToast
 import com.gurunars.item_list.itemListView
 
 class ActivityMain : Activity() {
@@ -43,23 +43,22 @@ class ActivityMain : Activity() {
         return true
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.clear -> return showToast(clear())
-            R.id.create -> return showToast(create())
-            R.id.delete -> return showToast(delete())
-            R.id.update -> return showToast(update())
-            R.id.moveDown -> return showToast(moveTopToBottom())
-            R.id.moveUp -> return showToast(moveBottomToTop())
-            R.id.reset -> return showToast(reset())
-        }
-        return super.onOptionsItemSelected(item)
-    }
+    private val actions = mapOf(
+        R.id.clear to ::clear,
+        R.id.create to ::create,
+        R.id.delete to ::delete,
+        R.id.update to ::update,
+        R.id.reset to ::reset,
+        R.id.moveDown to ::moveTopToBottom,
+        R.id.moveUp to ::moveBottomToTop,
+        R.id.reset to ::reset
+    )
 
-    private fun showToast(@StringRes text: Int): Boolean {
-        Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
-        return true
-    }
+    override fun onOptionsItemSelected(item: MenuItem): Boolean =
+        actions.get(item.itemId)?.let {
+            shortToast(getString(it()))
+            true
+        } ?: super.onOptionsItemSelected(item)
 
     @StringRes private fun clear(): Int {
         srv.clear()

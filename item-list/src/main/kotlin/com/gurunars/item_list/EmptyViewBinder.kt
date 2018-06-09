@@ -11,7 +11,6 @@ typealias EmptyViewBinder = () -> View
 
 /***/
 fun Context.defaultEmptyViewBinder() = TextView(this).apply {
-    id = R.id.noItemsLabel
     fullSize()
     text = getString(R.string.empty)
     gravity = Gravity.CENTER

@@ -11,10 +11,7 @@ import com.gurunars.box.ui.*
 import com.gurunars.floatmenu.ContentPane
 import com.gurunars.floatmenu.MenuPane
 import com.gurunars.floatmenu.floatMenu
-import com.gurunars.item_list.EmptyViewBinder
-import com.gurunars.item_list.Item
-import com.gurunars.item_list.defaultEmptyViewBinder
-import com.gurunars.item_list.selectableItemListView
+import com.gurunars.item_list.*
 import com.gurunars.floatmenu.R as floatR
 
 /**
@@ -101,12 +98,14 @@ fun <ItemType : Item> Context.crudItemListView(
     itemInEdit.onChange { stateMachine.loadItem(it.toNullable()) }
     stateMachine.state.onChange { itemInEdit.set(it.itemInEdit.toOptional()) }
 
-    val itemListView = selectableItemListView(
+    val itemListView = itemListView(
         items = items,
-        selectedItems = stateMachine.selectedItems,
-        itemViewBinders = itemTypeDescriptors.map { Pair(it.type, it::bindRow) }.toMap(),
-        emptyViewBinder = emptyViewBinder,
-        explicitSelectionMode = stateMachine.state.oneWayBranch { explicitContextual }
+        itemViewBinders = itemTypeDescriptors.map { Pair(it.type, it::bindRow) }.toMap()
+            .withSelection(
+                selectedItems = stateMachine.selectedItems,
+                explicitSelectionMode = stateMachine.state.oneWayBranch { explicitContextual }
+            ),
+        emptyViewBinder = emptyViewBinder
     )
 
     val contentArea = object : ContentPane {

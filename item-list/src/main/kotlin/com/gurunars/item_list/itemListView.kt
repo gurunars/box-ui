@@ -3,13 +3,8 @@ package com.gurunars.item_list
 import android.content.Context
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.view.View
 import com.gurunars.box.IRoBox
-import com.gurunars.box.box
-import com.gurunars.box.ui.Bounds
-import com.gurunars.box.ui.dip
-import com.gurunars.box.ui.fullSize
-import com.gurunars.box.ui.padding
+import com.gurunars.box.ui.*
 
 /**
  * @param ItemType type of the item to be shown in the list
@@ -20,21 +15,14 @@ import com.gurunars.box.ui.padding
 fun <ItemType : Item> Context.itemListView(
     items: IRoBox<List<ItemType>>,
     itemViewBinders: Map<Enum<*>, ItemViewBinder<ItemType>> = mapOf(),
-    emptyViewBinder: EmptyViewBinder = this::defaultEmptyViewBinder,
-    reverseLayout: IRoBox<Boolean> = false.box
-): View = RecyclerView(this).apply {
-    id = R.id.recyclerView
+    emptyViewBinder: EmptyViewBinder = this::defaultEmptyViewBinder
+): RecyclerView = with {
     fullSize()
     clipToPadding = false
-    padding = Bounds(bottom=dip(60))
+    padding = Bounds(bottom = dip(90))
     isSaveEnabled = false
-    adapter = ItemAdapter(
-        items,
-        emptyViewBinder,
-        itemViewBinders
-    )
+    adapter = ItemAdapter(items, emptyViewBinder, itemViewBinders)
     layoutManager = LinearLayoutManager(context).apply {
         orientation = LinearLayoutManager.VERTICAL
-        reverseLayout.onChange { this.reverseLayout = it }
     }
 }

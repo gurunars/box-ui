@@ -2,7 +2,7 @@ package com.gurunars.animal_item
 
 import android.app.Activity
 import android.arch.persistence.room.Room
-import com.gurunars.box.ui.DataSource
+import com.gurunars.item_list.persistence.DataSource
 import com.gurunars.box.ui.bindToLifecycle
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
@@ -12,20 +12,11 @@ class Service(
     private val db: Db) {
 
     val items = DataSource(
-        db.animalItemDao::all,
-        {
-            persistOrderedList(
-                db::runInTransaction,
-                db.animalItemDao,
-                it
-            )
-        },
-        initial = listOf(),
-        /*
-        NOTE: small timeout for debounce is the source with the UI glitches
-        But in this sample it is a necessary evil to make the tests work fast.
-        */
-        timeout = 100
+        dao = db.animalItemDao,
+        preprocess = {
+            it.forEachIndexed { index, animalItem -> animalItem.position = index }
+            it
+        }
     ).apply {
         bindToLifecycle(activity)
     }
@@ -34,7 +25,6 @@ class Service(
         doAsync {
             try {
                 db.animalItemDao.truncate()
-                db.animalItemDao.resetCount()
             } catch (exe: Exception) {
                 uiThread {
                     throw exe

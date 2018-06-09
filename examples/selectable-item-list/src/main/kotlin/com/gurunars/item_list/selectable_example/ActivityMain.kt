@@ -5,17 +5,16 @@ import android.os.Bundle
 import android.support.annotation.StringRes
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.Toast
 import com.gurunars.animal_item.AnimalItem
 import com.gurunars.animal_item.Service
 import com.gurunars.animal_item.Service.Companion.getRealService
 import com.gurunars.animal_item.bindAnimal
 import com.gurunars.box.*
 import com.gurunars.box.ui.layoutAsOne
+import com.gurunars.box.ui.shortToast
 import com.gurunars.box.ui.statefulView
-import com.gurunars.item_list.SelectableItem
-import com.gurunars.item_list.coloredRowSelectionDecorator
-import com.gurunars.item_list.selectableItemListView
+import com.gurunars.item_list.itemListView
+import com.gurunars.item_list.withSelection
 
 class ActivityMain : Activity() {
 
@@ -25,9 +24,8 @@ class ActivityMain : Activity() {
     private val selectedItems = Box<Set<AnimalItem>>(setOf())
     private val explicitSelectionMode = false.box
 
-    private fun add(type: AnimalItem.Type) {
+    private fun add(type: AnimalItem.Type) =
         items.patch { this + AnimalItem(-this.size.toLong(), type, 0) }
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,43 +34,42 @@ class ActivityMain : Activity() {
 
         statefulView(R.id.main) {
             retain(selectedItems, explicitSelectionMode)
-            selectableItemListView(
-                explicitSelectionMode = explicitSelectionMode,
+            itemListView(
                 items = items,
-                selectedItems = selectedItems,
                 itemViewBinders = AnimalItem.Type.values().map {
-                    Pair(it as Enum<*>, { item: IRoBox<SelectableItem<AnimalItem>> ->
-                        coloredRowSelectionDecorator(item) { bindAnimal(it) }
-                    })
-                }.toMap()
+                    Pair(it as Enum<*>, { field: IRoBox<AnimalItem> -> context.bindAnimal(field) })
+                }.toMap().withSelection(selectedItems, explicitSelectionMode)
             ).layoutAsOne(this)
         }.layoutAsOne(this)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        val inflater = menuInflater
-        inflater.inflate(R.menu.activity_main, menu)
+        menuInflater.inflate(R.menu.activity_main, menu)
         return true
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.clear_selection -> return showToast(clearSelection())
-            R.id.create -> return showToast(create())
-            R.id.delete_selected -> return showToast(deleteSelected())
-            R.id.update_selected -> return showToast(updateSelected())
-            R.id.reset -> return showToast(reset())
-            R.id.enable_explicit_selection -> return showToast(enableExplicitSelection())
-        }
-        return super.onOptionsItemSelected(item)
-    }
+    private val actions = mapOf(
+        R.id.clear_selection to ::clearSelection,
+        R.id.create to ::create,
+        R.id.delete_selected to ::deleteSelected,
+        R.id.update_selected to ::updateSelected,
+        R.id.reset to ::reset,
+        R.id.enable_explicit_selection to ::enableExplicitSelection
+    )
 
-    private fun enableExplicitSelection(): Int {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean =
+        actions.get(item.itemId)?.let {
+            shortToast(getString(it()))
+            true
+        } ?: super.onOptionsItemSelected(item)
+
+
+    @StringRes private fun enableExplicitSelection(): Int {
         explicitSelectionMode.set(true)
         return R.string.explicit_selection_enabled
     }
 
-    private fun updateSelected(): Int {
+    @StringRes private fun updateSelected(): Int {
         val selected = selectedItems.get()
         items.patch {
             this.map {
@@ -84,16 +81,11 @@ class ActivityMain : Activity() {
         return R.string.did_update_selected
     }
 
-    private fun deleteSelected(): Int {
+    @StringRes private fun deleteSelected(): Int {
         items.set(items.get().filterNot { item: AnimalItem ->
             selectedItems.get().any { (id) -> item.id == id }
         })
         return R.string.did_delete_selected
-    }
-
-    private fun showToast(@StringRes text: Int): Boolean {
-        Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
-        return true
     }
 
     @StringRes private fun clearSelection(): Int {

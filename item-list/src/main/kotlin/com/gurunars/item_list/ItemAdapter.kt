@@ -23,27 +23,29 @@ internal class ItemAdapter<ItemType : Item>(
     }
 
     private class ItemCallback(
-            val previousList: List<Pair<Long, Int>>,
-            val currentList: List<Pair<Long, Int>>) : DiffUtil.Callback() {
+        val previousList: List<Pair<Long, Int>>,
+        val currentList: List<Pair<Long, Int>>
+    ) : DiffUtil.Callback() {
 
         override fun getOldListSize() = Math.max(1, previousList.size)
 
         override fun getNewListSize() = Math.max(1, currentList.size)
 
         override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
-                previousList.getOrNull(oldItemPosition)?.second == currentList.getOrNull(newItemPosition)?.second
+            previousList.getOrNull(oldItemPosition)?.second == currentList.getOrNull(newItemPosition)?.second
 
         override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
-                previousList.getOrNull(oldItemPosition)?.first == currentList.getOrNull(newItemPosition)?.first
+            previousList.getOrNull(oldItemPosition)?.first == currentList.getOrNull(newItemPosition)?.first
     }
 
     init {
         items.onChange { list ->
+            val shrinked = list.map { Pair(it.id, it.hashCode()) }
             if (previousList.isEmpty() || list.isEmpty()) {
                 notifyDataSetChanged()
             } else try {
                 DiffUtil.calculateDiff(
-                    ItemCallback(previousList, list.shrink())
+                    ItemCallback(previousList, shrinked)
                 ).dispatchUpdatesTo(this)
             } catch (exe: IndexOutOfBoundsException) {
                 // In case of a drastic failure - just reset the adapter
@@ -54,7 +56,7 @@ internal class ItemAdapter<ItemType : Item>(
                     false
                 )
             }
-            previousList = list.shrink()
+            previousList = shrinked
         }
     }
 
@@ -77,12 +79,13 @@ internal class ItemAdapter<ItemType : Item>(
             // If enums are from different classes - they have same ordinals
             val initialPayload = items.get().first { getItemTypeInt(it) == viewType }
             val field = Box(initialPayload)
-            val binder = itemViewBinders[initialPayload.type] ?: parent.context::defaultItemViewBinder
+            val binder =
+                itemViewBinders[initialPayload.type] ?: parent.context::defaultItemViewBinder
             return object : RecyclerView.ViewHolder(
-                    binder(field).apply {
-                        asRow()
-                        setTag(R.id.payloadTag, field)
-                    }) {}
+                binder(field).apply {
+                    asRow()
+                    setTag(R.id.payloadTag, field)
+                }) {}
         }
     }
 
@@ -96,27 +99,27 @@ internal class ItemAdapter<ItemType : Item>(
     }
 
     override fun getItemId(position: Int) =
-            if (!hasStableIds()) {
-                RecyclerView.NO_ID
+        if (!hasStableIds()) {
+            RecyclerView.NO_ID
+        } else {
+            val itemList = items.get()
+            if (itemList.isNotEmpty()) {
+                items.get()[position].id
             } else {
-                val itemList = items.get()
-                if (itemList.isNotEmpty()) {
-                    items.get()[position].id
-                } else {
-                    RecyclerView.NO_ID
-                }
+                RecyclerView.NO_ID
             }
+        }
 
     private fun getItemTypeInt(item: ItemType) = itemViewBinders.keys.indexOf(item.type)
 
     override fun getItemViewType(position: Int) =
-            if (items.get().isEmpty())
-                EMPTY_TYPE
-            else getItemTypeInt(items.get()[position])
+        if (items.get().isEmpty())
+            EMPTY_TYPE
+        else getItemTypeInt(items.get()[position])
 
     override fun getItemCount() = Math.max(1, items.get().size)
 
     companion object {
-        val EMPTY_TYPE = -404
+        const val EMPTY_TYPE = -404
     }
 }

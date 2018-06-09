@@ -6,7 +6,7 @@ import com.gurunars.box.IBox
 import com.gurunars.box.IRoBox
 import com.gurunars.box.box
 import com.gurunars.item_list.Item
-import com.gurunars.item_list.SelectableItem
+import io.reactivex.Single
 
 /**
  * Aggregation of attributes describing a specific item type in the context of showing the item
@@ -67,13 +67,13 @@ interface ItemTypeDescriptor<ItemType : Item> {
      *
      * @param field - payload to be rendered
      */
-    fun bindRow(field: IRoBox<SelectableItem<ItemType>>): View
+    fun bindRow(field: IRoBox<ItemType>): View
 
     /** Returns status of the payload: OK, error, warning */
     fun validate(item: ItemType): Status
 
     /** Returns a newly created item of a specific type without saving it. */
-    fun createNewItem(): ItemType
+    fun prepareNewItem(): ItemType
 
     /**
      * @param field - observable of the payload to be edited in the form

@@ -11,7 +11,6 @@ import android.view.MenuItem
 import com.gurunars.animal_item.AnimalItem
 import com.gurunars.animal_item.Service
 import com.gurunars.animal_item.Service.Companion.getRealService
-import com.gurunars.box.IBox
 import com.gurunars.box.box
 import com.gurunars.box.patch
 import com.gurunars.box.ui.layoutAsOne
@@ -19,12 +18,10 @@ import com.gurunars.box.ui.statefulView
 import com.gurunars.crud_item_list.IconColorBundle
 import com.gurunars.crud_item_list.ItemTypeDescriptor
 import com.gurunars.crud_item_list.crudItemListView
-import org.jetbrains.anko.backgroundColor
 
 class ActivityMain : Activity() {
 
     private lateinit var srv: Service
-    private lateinit var items: IBox<List<AnimalItem>>
 
     private val isSortable = true.box
 
@@ -44,10 +41,11 @@ class ActivityMain : Activity() {
     private fun addItems(
         count: Int
     ) {
-        items.patch {
+        srv.items.patch {
+            val id = (this.map { it.id }.lastOrNull() ?: 0) + 1
             this + (0 until count).map {
                 AnimalItem(
-                    id = -(this.size.toLong() + it.toLong()),
+                    id = id + it,
                     type = getType(it),
                     version = 0
                 )
@@ -69,32 +67,29 @@ class ActivityMain : Activity() {
 
         if (sortable) {
             descriptors = listOf(
+                R.drawable.ic_menu_monkey to AnimalItem.Type.MONKEY,
+                R.drawable.ic_menu_lion to AnimalItem.Type.LION,
+                R.drawable.ic_menu_tiger to AnimalItem.Type.TIGER,
+                R.drawable.ic_menu_wolf to AnimalItem.Type.WOLF
+            ).map {
                 Descriptor(
+                    srv.items,
                     this,
-                    R.drawable.ic_menu_monkey,
-                    AnimalItem.Type.MONKEY),
-                Descriptor(
-                    this,
-                    R.drawable.ic_menu_lion,
-                    AnimalItem.Type.LION),
-                Descriptor(
-                    this,
-                    R.drawable.ic_menu_tiger,
-                    AnimalItem.Type.TIGER),
-                Descriptor(
-                    this,
-                    R.drawable.ic_menu_wolf,
-                    AnimalItem.Type.WOLF)
-            )
+                    it.first,
+                    it.second
+                )
+            }
         } else {
             descriptors = listOf(Descriptor(
+                srv.items,
                 this,
                 R.drawable.ic_menu_monkey,
-                AnimalItem.Type.MONKEY))
+                AnimalItem.Type.MONKEY)
+            )
         }
 
         statefulView(R.id.main) {
-            backgroundColor = Color.WHITE
+            setBackgroundColor(Color.WHITE)
             retain(isSortable)
             crudItemListView(
                 confirmationActionColors = IconColorBundle(
@@ -109,7 +104,7 @@ class ActivityMain : Activity() {
                     bgColor = Color.GREEN,
                     fgColor = Color.YELLOW
                 ),
-                items = items,
+                items = srv.items,
                 itemTypeDescriptors = descriptors,
                 sortable = sortable,
                 addToTail = sortable,
@@ -125,7 +120,6 @@ class ActivityMain : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         srv = getRealService()
-        items = srv.items
         isSortable.onChange(listener = this::initView)
     }
 

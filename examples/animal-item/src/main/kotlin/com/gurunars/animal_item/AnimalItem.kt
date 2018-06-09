@@ -3,15 +3,17 @@ package com.gurunars.animal_item
 import android.arch.persistence.room.Entity
 import android.arch.persistence.room.Ignore
 import android.arch.persistence.room.PrimaryKey
+import com.gurunars.item_list.Item
 
 @Entity
 data class AnimalItem @Ignore constructor(
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey
     override var id: Long = 0,
     override var type: AnimalItem.Type = Type.EMPTY,
-    override var position: Int = 0,
     var version: Int = 0
-) : ItemWithPosition {
+) : Item {
+
+    var position: Int = 0
 
     constructor(): this(0)
 
