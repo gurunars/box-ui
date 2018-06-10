@@ -10,20 +10,15 @@ import android.support.v7.app.ActionBarDrawerToggle
 import android.view.Gravity
 import android.view.MenuItem
 import android.view.View
+import android.view.ViewGroup.LayoutParams.MATCH_PARENT
+import android.widget.EditText
 import android.widget.FrameLayout
+import android.widget.LinearLayout
+import android.widget.TextView
 import com.gurunars.box.*
 import com.gurunars.box.ui.*
 import com.gurunars.item_list.Item
 import com.gurunars.item_list.itemListView
-import org.jetbrains.anko.backgroundColor
-import org.jetbrains.anko.dip
-import org.jetbrains.anko.editText
-import org.jetbrains.anko.frameLayout
-import org.jetbrains.anko.matchParent
-import org.jetbrains.anko.padding
-import org.jetbrains.anko.support.v4.drawerLayout
-import org.jetbrains.anko.textView
-import org.jetbrains.anko.verticalLayout
 
 private fun DrawerLayout.getToggle(activity: Activity) = ActionBarDrawerToggle(
     activity,
@@ -42,28 +37,31 @@ private data class PackageName(
 private fun Context.bindPackageName(
     field: IRoBox<PackageName>,
     activeSection: IBox<String>
-) = verticalLayout {
+) = with<LinearLayout> {
     asRow()
     onClick {
         activeSection.set(field.get().fullName)
     }
     merge(activeSection, field).onChange {
-        backgroundColor = if (it.second.fullName == it.first) {
-            Color.RED
-        } else {
-            Color.WHITE
-        }
+        setBackgroundColor(
+            if (it.second.fullName == it.first)
+                Color.RED
+            else
+                Color.WHITE
+        )
     }
     isClickable = true
-    padding = dip(6)
-    textView {
+    padding = Bounds(dip(6))
+    with<TextView> {
         text(field.oneWayBranch { fullName.split(".").last() })
         textSize = 20f
+    }.layout(this) {
         asRow()
     }
-    textView {
+    with<TextView> {
         text(field.oneWayBranch { fullName })
         textSize = 10f
+    }.layout(this) {
         asRow()
     }
 }
@@ -90,28 +88,28 @@ abstract class AbstractActivityStorybook : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        drawerLayout = drawerLayout {
-            fullSize()
+        drawerLayout = with<DrawerLayout> {
             id = R.id.drawer_layout
 
-            root = frameLayout {
+            root = with<FrameLayout> {
                 id = R.id.placeholder
-                fullSize()
 
-                if (views.isEmpty()) return@frameLayout
+                if (views.isEmpty()) return
                 if (activeSection.get().isEmpty()) {
                     activeSection.set(views.keys.first())
                 }
+            }.layout(this) {
+                fullSize()
             }
 
-            verticalLayout {
-                backgroundColor = Color.WHITE
-                editText {
+            with<LinearLayout> {
+                setBackgroundColor(Color.WHITE)
+                with<EditText> {
                     hint = getString(R.string.storyName)
                     text(searchPattern)
-                }.lparams {
+                }.layout(this) {
                     asRow()
-                    bottomMargin = dip(10)
+                    margin = Bounds(bottom=dip(10))
                 }
                 itemListView(
                     itemViewBinders = mapOf(
@@ -124,15 +122,14 @@ abstract class AbstractActivityStorybook : Activity() {
                             .filter { it.fullName.contains(this) }
                     }
                 ).layout(this) {
-                    width = matchParent
+                    width = MATCH_PARENT
                     weight = 1f
                 }
-            }.lparams {
-                width = matchParent
-                height = matchParent
+            }.layout(this) {
+                fullSize()
                 gravity = Gravity.START
             }
-        }
+        }.layoutAsOne(this)
 
         activeSection.onChange {
             val renderer = views[it] ?: return@onChange
@@ -147,8 +144,10 @@ abstract class AbstractActivityStorybook : Activity() {
     private fun configureSideMenu() {
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
         drawerToggle = drawerLayout.getToggle(this)
-        actionBar?.setDisplayHomeAsUpEnabled(true)
-        actionBar?.setHomeButtonEnabled(true)
+        actionBar?.apply {
+            setDisplayHomeAsUpEnabled(true)
+            setHomeButtonEnabled(true)
+        }
         drawerToggle.syncState()
     }
 

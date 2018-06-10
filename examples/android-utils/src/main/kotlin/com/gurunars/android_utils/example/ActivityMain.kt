@@ -11,6 +11,7 @@ import android.widget.TextView
 import com.gurunars.android_utils.autoButton
 import com.gurunars.box.box
 import com.gurunars.box.ui.*
+import com.gurunars.box.ui.decorators.statefulLayer
 
 class ActivityMain : Activity() {
 
@@ -19,7 +20,7 @@ class ActivityMain : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        statefulView(R.id.main) {
+        statefulLayer(R.id.main) {
             retain(title)
             with<RelativeLayout> {
                 gravity = Gravity.CENTER

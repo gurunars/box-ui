@@ -7,9 +7,7 @@ import io.reactivex.schedulers.Schedulers
 class Source<T>(private val supplier: () -> T) {
 
     fun to(consumer: (value: T) -> Unit) {
-        Single.create<T> {
-            supplier()
-        }
+        Single.create<T> { supplier() }
             .subscribeOn(Schedulers.computation())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { it -> consumer(it) }

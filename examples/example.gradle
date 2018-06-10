@@ -64,7 +64,6 @@ dependencies {
         force = true
     }
     implementation supportV4
-    implementation anko
     implementation kotlinStdLib
     implementation project(':android-utils')
     implementation project(':box')

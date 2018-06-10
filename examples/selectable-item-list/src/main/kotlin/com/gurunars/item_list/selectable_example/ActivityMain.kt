@@ -8,11 +8,10 @@ import android.view.MenuItem
 import com.gurunars.animal_item.AnimalItem
 import com.gurunars.animal_item.Service
 import com.gurunars.animal_item.Service.Companion.getRealService
-import com.gurunars.animal_item.bindAnimal
 import com.gurunars.box.*
 import com.gurunars.box.ui.layoutAsOne
 import com.gurunars.box.ui.shortToast
-import com.gurunars.box.ui.statefulView
+import com.gurunars.box.ui.decorators.statefulLayer
 import com.gurunars.item_list.itemListView
 import com.gurunars.item_list.withSelection
 
@@ -32,7 +31,7 @@ class ActivityMain : Activity() {
         srv = getRealService()
         items = srv.items
 
-        statefulView(R.id.main) {
+        statefulLayer(R.id.main) {
             retain(selectedItems, explicitSelectionMode)
             itemListView(
                 items = items,

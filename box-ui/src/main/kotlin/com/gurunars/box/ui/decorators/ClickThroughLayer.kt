@@ -1,60 +1,22 @@
-package com.gurunars.floatmenu
+package com.gurunars.box.ui.decorators
 
-import android.animation.FloatEvaluator
 import android.animation.LayoutTransition
-import android.animation.ValueAnimator
 import android.annotation.SuppressLint
 import android.content.Context
-import android.graphics.Color
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
-import com.gurunars.box.Box
-import com.gurunars.box.IRoBox
-import com.gurunars.box.ui.setIsVisible
+import com.gurunars.box.ui.layoutAsOne
 
 @SuppressLint("ViewConstructor")
-internal class MenuHolder constructor(
-    context: Context,
-    hasOverlay: IRoBox<Boolean>,
-    isVisible: IRoBox<Boolean>,
-    animationDuration: Int
+private class ClickThroughLayer constructor(
+    context: Context
 ) : FrameLayout(context) {
 
     init {
-
         layoutTransition = LayoutTransition().apply {
             setDuration(500)
-        }
-
-        val floatEvaluator = FloatEvaluator()
-        val animatedValue = Box(1f)
-
-        hasOverlay.onChange { value ->
-            setBackgroundColor(if (value) Color.parseColor("#99000000") else Color.TRANSPARENT)
-            isClickable = value
-        }
-        isVisible.onChange { _ ->
-            if (isAttachedToWindow) {
-                ValueAnimator.ofFloat(0f, 1f).apply {
-                    startDelay = 0
-                    duration = animationDuration.toLong()
-                    addUpdateListener { animatedValue.set(it.animatedValue as Float) }
-                    start()
-                }
-            } else {
-                animatedValue.set(1f)
-                animatedValue.broadcast()
-            }
-        }
-        animatedValue.onChange { value ->
-            val visible = isVisible.get()
-            alpha = floatEvaluator.evaluate(value,
-                if (visible) 0f else 1f,
-                if (visible) 1f else 0f
-            )
-            setIsVisible(visible || value != 1f)
         }
     }
 
@@ -89,7 +51,16 @@ internal class MenuHolder constructor(
         return false
     }
 
-    /* Intercept touch on the view group but not on the icons */
     override fun onInterceptTouchEvent(ev: MotionEvent): Boolean =
         !isClickable && !touchBelongsTo(this, ev)
 }
+
+/**
+ * Creates a view layer that has the ability to pass clicks to the view(s)
+ * behind it.
+ *
+ * @param viewSupplier a function that should return a view that will
+ * be set as a full size content area of the layer
+ */
+fun Context.clickThroughLayer(viewSupplier: () -> View): View =
+    ClickThroughLayer(this).apply { viewSupplier().layoutAsOne(this) }

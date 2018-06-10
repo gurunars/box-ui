@@ -9,7 +9,6 @@ activity.
 """
 
 dependencies {
-    api anko
     api "com.android.support:appcompat-v7:$supportlibVersion"
     api project(':android-utils')
     api project(':item-list')

@@ -14,7 +14,7 @@ import com.gurunars.animal_item.Service.Companion.getRealService
 import com.gurunars.box.box
 import com.gurunars.box.patch
 import com.gurunars.box.ui.layoutAsOne
-import com.gurunars.box.ui.statefulView
+import com.gurunars.box.ui.decorators.statefulLayer
 import com.gurunars.crud_item_list.IconColorBundle
 import com.gurunars.crud_item_list.ItemTypeDescriptor
 import com.gurunars.crud_item_list.crudItemListView
@@ -54,8 +54,9 @@ class ActivityMain : Activity() {
     }
 
     private fun reset() {
-        srv.clear()
-        addItems(4)
+        srv.clear().subscribe {
+            addItems(4)
+        }
         val mngr = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
         mngr.primaryClip = ClipData.newPlainText("", "")
     }
@@ -88,7 +89,7 @@ class ActivityMain : Activity() {
             )
         }
 
-        statefulView(R.id.main) {
+        statefulLayer(R.id.main) {
             setBackgroundColor(Color.WHITE)
             retain(isSortable)
             crudItemListView(

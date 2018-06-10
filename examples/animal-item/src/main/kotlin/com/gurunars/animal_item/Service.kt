@@ -4,8 +4,9 @@ import android.app.Activity
 import android.arch.persistence.room.Room
 import com.gurunars.item_list.persistence.DataSource
 import com.gurunars.box.ui.bindToLifecycle
-import org.jetbrains.anko.doAsync
-import org.jetbrains.anko.uiThread
+import io.reactivex.Completable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 
 class Service(
     private val activity: Activity,
@@ -21,18 +22,13 @@ class Service(
         bindToLifecycle(activity)
     }
 
-    fun clear() {
-        doAsync {
-            try {
-                db.animalItemDao.truncate()
-            } catch (exe: Exception) {
-                uiThread {
-                    throw exe
-                }
-            }
-        }
-        items.set(listOf())
-    }
+    fun clear() =
+        Completable
+            .fromCallable { db.animalItemDao.truncate() }
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .doOnComplete { items.set(listOf()) }
+            .doOnError { throw it }
 
     companion object {
 

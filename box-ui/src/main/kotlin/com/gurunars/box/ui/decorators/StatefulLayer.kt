@@ -1,21 +1,29 @@
-package com.gurunars.box.ui
+package com.gurunars.box.ui.decorators
 
 import android.content.Context
 import android.os.Bundle
 import android.os.Parcelable
+import android.view.View
 import android.widget.FrameLayout
 import com.gurunars.box.IBox
+import com.gurunars.box.ui.layoutAsOne
 
-/** A base component meant to develop custom stateful UI widgets using bindable fields */
-class StatefulView internal constructor(context: Context) : FrameLayout(context) {
-
-    private val fields: MutableList<IBox<*>> = mutableListOf()
-
+interface Retainer {
     /**
      * Call with multiple fields to notify the component that the state of the fields should
      * be persisted.
      */
-    fun retain(vararg fields: IBox<*>) = this.fields.addAll(fields)
+    fun retain(vararg fields: IBox<*>)
+}
+
+private class StatefulView internal constructor(context: Context) : FrameLayout(context),
+    Retainer {
+
+    private val fields: MutableList<IBox<*>> = mutableListOf()
+
+    override fun retain(vararg fields: IBox<*>) {
+        this.fields.addAll(fields)
+    }
 
     companion object {
 
@@ -30,8 +38,8 @@ class StatefulView internal constructor(context: Context) : FrameLayout(context)
     override fun onSaveInstanceState() = Bundle().apply {
         putParcelable("superState", super.onSaveInstanceState())
         val payload = hashMapOf<Int, Any?>()
-        fields.forEachIndexed { index, bindableField ->
-            payload.put(index, bindableField.get())
+        fields.forEachIndexed { index, field ->
+            payload[index] = field.get()
         }
         putSerializable("payload", payload)
     }
@@ -44,8 +52,8 @@ class StatefulView internal constructor(context: Context) : FrameLayout(context)
                 val payload = getSerializable("payload") ?: return
                 @Suppress("UNCHECKED_CAST")
                 payload as HashMap<Int, Any?>
-                fields.forEachIndexed { index, bindableField ->
-                    bindableField.read(payload, index)
+                fields.forEachIndexed { index, field ->
+                    field.read(payload, index)
                 }
             }
         } else {
@@ -54,13 +62,18 @@ class StatefulView internal constructor(context: Context) : FrameLayout(context)
     }
 }
 
-/** @see StatefulView */
-fun Context.statefulView(
+/**
+ * UI component capable of retaining the state of observable fields
+ * through application state changes.
+ *
+ * In order to mark the field as retainable just call a **retain** method
+ * on it.
+ */
+fun Context.statefulLayer(
     id: Int,
-    vararg fields: IBox<*>,
-    init: StatefulView.() -> Unit = {}
-): StatefulView =
+    viewSupplier: Retainer.() -> View
+): View =
     StatefulView(this).apply {
         this.id = id
-        retain(*fields)
-    }.apply { init() }
+        viewSupplier().layoutAsOne(this)
+    }

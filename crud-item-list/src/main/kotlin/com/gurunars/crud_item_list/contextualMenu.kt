@@ -10,7 +10,6 @@ import com.gurunars.item_list.Item
 
 
 internal fun <ItemType : Item> Context.contextualMenu(
-    openForm: (item: ItemType) -> Unit,
     sortable: Boolean,
     actionIcon: IconColorBundle,
     items: IBox<List<ItemType>>,
@@ -83,22 +82,6 @@ internal fun <ItemType : Item> Context.contextualMenu(
             bottom = dip(85),
             left = dip(23),
             right = dip(23)
-        )
-    }
-
-    actionIcon(
-        R.drawable.ic_edit,
-        R.id.edit,
-        ActionEdit(openForm)
-    ) {
-        alignInParent(
-            verticalAlignment = VerticalAlignment.BOTTOM
-        )
-        alignWithRespectTo(R.id.delete, HorizontalPosition.LEFT_OF)
-        margin = Bounds(
-            bottom = dip(23),
-            left = dip(5),
-            right = dip(5)
         )
     }
 

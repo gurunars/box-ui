@@ -1,16 +1,9 @@
 package com.gurunars.crud_item_list
 
 import android.content.Context
-import android.view.Gravity
 import android.view.View
-import android.widget.FrameLayout
-import android.widget.ProgressBar
-import com.gurunars.android_utils.Icon
 import com.gurunars.box.*
-import com.gurunars.box.ui.*
-import com.gurunars.floatmenu.ContentPane
-import com.gurunars.floatmenu.MenuPane
-import com.gurunars.floatmenu.floatMenu
+import com.gurunars.box.ui.decorators.statefulLayer
 import com.gurunars.item_list.*
 import com.gurunars.floatmenu.R as floatR
 
@@ -32,68 +25,34 @@ import com.gurunars.floatmenu.R as floatR
  * @param addToTail if false adds new items to the head of the list instead of the tail
  */
 fun <ItemType : Item> Context.crudItemListView(
-    itemTypeDescriptors: List<ItemTypeDescriptor<ItemType>>,
     clipboardSerializer: ClipboardSerializer<ItemType>? = null,
     sortable: Boolean = true,
     addToTail: Boolean = true,
     actionIconColors: IconColorBundle = IconColorBundle(),
-    emptyViewBinder: EmptyViewBinder = this::defaultEmptyViewBinder,
     confirmationActionColors: IconColorBundle = IconColorBundle(),
     cancelActionColors: IconColorBundle = IconColorBundle(),
     openIconColors: IconColorBundle = IconColorBundle(),
+    // MORE
     items: IBox<List<ItemType>>,
-    itemInEdit: IBox<Optional<ItemType>> = Optional.None.box
-): View = statefulView(R.id.crudItemListView) {
-
-    val typeCache = itemTypeDescriptors.map { Pair(it.type, it) }.toMap()
-
-    val itemForm = with<FrameLayout> {
-        fullSize()
-        id = R.id.itemForm
-    }
-
+    selectedItems: IBox<Set<ItemType>>,
+    explicitContextual: IBox<Boolean>
+): View = statefulLayer(R.id.crudItemListView) {
     val isOpen = false.box
-
-    val stateMachine = StateMachine(
-        openForm = { item ->
-            itemForm(
-                itemInEdit.branch(item),
-                { it ->
-                    isOpen.set(false)
-                    items.patch { processItemInEdit(addToTail, this, it) }
-                },
-                confirmationActionColors,
-                typeCache[item.type]!!
-            ).set(itemForm, R.id.formContent)
-        },
-        itemTypes = typeCache
-    ).apply {
-        this.isOpen.bind(isOpen)
-        // Items should be retains as a state to prevent the selection being dropped because
-        // of async operations done in a wrong order
-        // retain(items)
-        retain(state)
-    }
-
-    isOpen.onChange { it -> if (!it) closeKeyboard() }
-
-    val contextualMenu = contextualMenu(
-        { stateMachine.loadItem(it) },
-        sortable,
-        actionIconColors,
-        items,
-        stateMachine.selectedItems,
-        clipboardSerializer
-    )
-
-    val loading = with<FrameLayout> {
-        with<ProgressBar>().layout(this) {
-            width = dip(80)
-            height = dip(80)
-            gravity = Gravity.CENTER
+    isOpen.onChange {
+        if (!it) {
+            selectedItems.set(setOf())
+            explicitContextual.set(false)
         }
     }
 
+    val contextualMenu = contextualMenu(
+        sortable,
+        actionIconColors,
+        items,
+        selectedItems,
+        clipboardSerializer
+    )
+/*
     val creationMenu = creationMenu(itemTypeDescriptors, { stateMachine.loadType(it) })
     itemInEdit.onChange { stateMachine.loadItem(it.toNullable()) }
     stateMachine.state.onChange { itemInEdit.set(it.itemInEdit.toOptional()) }
@@ -138,4 +97,5 @@ fun <ItemType : Item> Context.crudItemListView(
             stateMachine.openExplicitContextualMenu()
         }
     }
+    */
 }

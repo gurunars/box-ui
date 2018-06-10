@@ -22,7 +22,7 @@ class TestDescriptor : ItemTypeDescriptor<StringItem> {
     override fun validate(item: StringItem) =
         TODO("NOT NEEDED FOR TESTS")
 
-    override fun prepareNewItem() =
+    override fun createNewItem() =
         StringItem("NEW")
 
     override fun bindForm(field: IBox<StringItem>) =
