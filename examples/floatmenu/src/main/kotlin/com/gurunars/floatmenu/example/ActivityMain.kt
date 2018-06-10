@@ -7,29 +7,13 @@ import android.os.Bundle
 import android.view.Gravity
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.*
 import com.gurunars.android_utils.Icon
 import com.gurunars.box.*
-import com.gurunars.box.ui.asRow
-import com.gurunars.box.ui.fullSize
-import com.gurunars.box.ui.layoutAsOne
-import com.gurunars.box.ui.statefulView
+import com.gurunars.box.ui.*
 import com.gurunars.floatmenu.ContentPane
 import com.gurunars.floatmenu.MenuPane
 import com.gurunars.floatmenu.floatMenu
-import org.jetbrains.anko.UI
-import org.jetbrains.anko.alignParentTop
-import org.jetbrains.anko.backgroundColor
-import org.jetbrains.anko.below
-import org.jetbrains.anko.button
-import org.jetbrains.anko.centerHorizontally
-import org.jetbrains.anko.centerVertically
-import org.jetbrains.anko.dip
-import org.jetbrains.anko.frameLayout
-import org.jetbrains.anko.padding
-import org.jetbrains.anko.relativeLayout
-import org.jetbrains.anko.scrollView
-import org.jetbrains.anko.textView
-import org.jetbrains.anko.verticalLayout
 
 class ActivityMain : Activity() {
     private val hasOverlay = true.box
@@ -39,75 +23,71 @@ class ActivityMain : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val menuView = UI(false) {
-            scrollView {
-                fullSize()
-                verticalLayout {
-                    gravity = Gravity.CENTER_HORIZONTAL
-                    button {
-                        id = R.id.button
-                        setOnClickListener { notification.set("Menu Button Clicked") }
-                        text = getString(R.string.click_me)
-                        padding = dip(10)
-                    }.lparams {
-                        topMargin = dip(50)
-                    }
-                    frameLayout {
-                        id = R.id.buttonFrame
-                        setOnClickListener { notification.set("Menu Button Frame Clicked") }
-                        isClickable = true
-                        backgroundColor = Color.MAGENTA
-                        padding = dip(30)
-                    }.lparams {
-                        topMargin = dip(10)
-                    }
-                }.asRow()
-            }
-        }.view
-
-        val contentView = UI(false) {
-            relativeLayout {
-                fullSize()
-
-                textView {
-                    id = R.id.notificationView
-                    padding = dip(15)
-                    gravity = Gravity.CENTER
-                    backgroundColor = Color.parseColor("#FFFFAA")
-
-                    notification.onChange { it -> text = it }
-
-                    setOnLongClickListener {
-                        text = ""
-                        true
-                    }
-                }.lparams {
-                    asRow()
-                    centerHorizontally()
-                    alignParentTop()
+        val menuView = with<ScrollView> {
+            fullSize()
+            with<LinearLayout> {
+                orientation = LinearLayout.VERTICAL
+                gravity = Gravity.CENTER_HORIZONTAL
+                with<Button> {
+                    id = R.id.button
+                    setOnClickListener { notification.set("Menu Button Clicked") }
+                    text = getString(R.string.click_me)
+                    padding = Bounds(dip(10))
+                }.layout(this) {
+                    margin = Bounds(top=dip(50))
                 }
-
-                textView {
-                    id = R.id.textView
-                    text = getString(R.string.appName)
+                with<FrameLayout> {
+                    id = R.id.buttonFrame
+                    setOnClickListener { notification.set("Menu Button Frame Clicked") }
                     isClickable = true
-                    setOnClickListener { notification.set("Content Text Clicked") }
-                }.lparams {
-                    bottomMargin = dip(50)
-                    centerHorizontally()
-                    centerVertically()
+                    setBackgroundColor(Color.MAGENTA)
+                    padding = Bounds(dip(10))
+                }.layout(this) {
+                    margin = Bounds(top=10)
                 }
-
-                textView {
-                    isOpen.onChange { it -> setText(if (it) R.string.menuOpen else R.string.menuClosed) }
-                    isClickable = true
-                }.lparams {
-                    below(R.id.textView)
-                    centerHorizontally()
-                    centerVertically()
-                }
+            }.layout(this) {
+                asRow()
             }
-        }.view
+        }
+
+        val contentView = with<RelativeLayout> {
+            fullSize()
+
+            with<TextView> {
+                id = R.id.notificationView
+                padding = Bounds(dip(15))
+                gravity = Gravity.CENTER
+                setBackgroundColor(Color.parseColor("#FFFFAA"))
+
+                notification.onChange { it -> text = it }
+
+                setOnLongClickListener {
+                    text = ""
+                    true
+                }
+            }.layout(this) {
+                asRow()
+                alignInParent(HorizontalAlignment.CENTER, VerticalAlignment.TOP)
+            }
+
+            with<TextView> {
+                id = R.id.textView
+                text = getString(R.string.appName)
+                isClickable = true
+                setOnClickListener { notification.set("Content Text Clicked") }
+            }.layout(this) {
+                margin = Bounds(dip(50))
+                alignInParent(HorizontalAlignment.CENTER, VerticalAlignment.CENTER)
+            }
+
+            with<TextView> {
+                isOpen.onChange { it -> setText(if (it) R.string.menuOpen else R.string.menuClosed) }
+                isClickable = true
+            }.layout(this) {
+                alignWithRespectTo(R.id.textView, verticalPosition = VerticalPosition.BELOW)
+                alignInParent(HorizontalAlignment.CENTER, VerticalAlignment.CENTER)
+            }
+        }
 
         val contentArea: IBox<ContentPane> = object : ContentPane {
             override fun Context.render() = contentView
