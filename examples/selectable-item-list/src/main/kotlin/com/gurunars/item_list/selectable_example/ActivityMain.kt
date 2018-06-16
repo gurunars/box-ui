@@ -11,7 +11,7 @@ import com.gurunars.animal_item.Service.Companion.getRealService
 import com.gurunars.box.*
 import com.gurunars.box.ui.layoutAsOne
 import com.gurunars.box.ui.shortToast
-import com.gurunars.box.ui.decorators.statefulLayer
+import com.gurunars.box.ui.layers.statefulLayer
 import com.gurunars.item_list.itemListView
 import com.gurunars.item_list.withSelection
 

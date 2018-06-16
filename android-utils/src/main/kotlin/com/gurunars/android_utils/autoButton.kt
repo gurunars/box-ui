@@ -23,7 +23,7 @@ fun Context.autoButton(
 ): View = TextView(this).apply {
     isClickable = true
     isFocusable = true
-    padding = Bounds(
+    padding = OldBounds(
         horizontal = dip(20),
         vertical = dip(15)
     )

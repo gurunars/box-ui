@@ -3,7 +3,7 @@ package com.gurunars.crud_item_list
 import android.content.Context
 import android.view.View
 import com.gurunars.box.*
-import com.gurunars.box.ui.decorators.statefulLayer
+import com.gurunars.box.ui.layers.statefulLayer
 import com.gurunars.item_list.*
 import com.gurunars.floatmenu.R as floatR
 

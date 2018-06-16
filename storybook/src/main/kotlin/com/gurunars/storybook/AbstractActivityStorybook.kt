@@ -51,7 +51,7 @@ private fun Context.bindPackageName(
         )
     }
     isClickable = true
-    padding = Bounds(dip(6))
+    padding = OldBounds(dip(6))
     with<TextView> {
         text(field.oneWayBranch { fullName.split(".").last() })
         textSize = 20f
@@ -109,7 +109,7 @@ abstract class AbstractActivityStorybook : Activity() {
                     text(searchPattern)
                 }.layout(this) {
                     asRow()
-                    margin = Bounds(bottom=dip(10))
+                    margin = OldBounds(bottom=dip(10))
                 }
                 itemListView(
                     itemViewBinders = mapOf(

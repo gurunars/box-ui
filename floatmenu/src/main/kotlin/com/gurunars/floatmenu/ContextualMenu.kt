@@ -1,9 +1,9 @@
 package com.gurunars.floatmenu
 
-import android.animation.ArgbEvaluator
 import android.animation.FloatEvaluator
 import android.animation.ValueAnimator
 import android.content.Context
+import android.view.Gravity
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.RelativeLayout
@@ -17,70 +17,64 @@ import com.gurunars.box.ui.layers.statefulLayer
 
 private fun Context.fab(
     rotationDuration: Int,
-    openIcon: Icon,
-    closeIcon: Icon,
+    closeIconColors: Icon.Colors,
     isActivated: IBox<Boolean>
 ): View = with<FrameLayout> {
-    val argbEvaluator = ArgbEvaluator()
     val floatEvaluator = FloatEvaluator()
     val animatedValueCache = Box(1f)
 
-    val icon = openIcon.box
-
-    val actualImageView = iconView(icon = icon).layout(this) {
+    val actualImageView = iconView(
+        icon = closeIconColors.icon(R.drawable.ic_check).box
+    ).layout(this) {
         id = R.id.iconView
-        fullSize()
+        gravity = Gravity.CENTER
+        width = dip(0)
+        height = dip(0)
+    }
+
+    fun setSize(percentageOfMax: Float) {
+        val parentWidth = width
+        val parentHeight = height
+        actualImageView.layoutParams.apply {
+            width = (parentWidth * percentageOfMax).toInt()
+            height = (parentHeight * percentageOfMax).toInt()
+        }
     }
 
     onClick { isActivated.set(!isActivated.get()) }
 
-    fun updateIcon(sourceIcon: Icon, targetIcon: Icon, animatedValue: Float) {
+    fun updateIcon(animatedValue: Float) {
         animatedValueCache.set(animatedValue)
-        isClickable = animatedValue == 1f
-        icon.set(
-            Icon(
-                bgColor = argbEvaluator.evaluate(
-                    animatedValue,
-                    sourceIcon.bgColor,
-                    targetIcon.bgColor
-                ) as Int,
-                fgColor = argbEvaluator.evaluate(
-                    animatedValue,
-                    sourceIcon.fgColor,
-                    targetIcon.fgColor
-                ) as Int,
-                icon = if (animatedValue < 0.5f) sourceIcon.icon else targetIcon.icon
-            )
-        )
+        //isClickable = animatedValue == 1f
+        setSize(animatedValue)
         actualImageView.rotation = floatEvaluator.evaluate(
             animatedValue,
-            if (isActivated.get()) 0f else 360f,
-            if (isActivated.get()) 360f else 0f
+            0f,
+            360f
         )
     }
 
-    fun triggerAnimation(sourceIcon: Icon, targetIcon: Icon) {
-        ValueAnimator.ofFloat(0f, 1f).apply {
+    fun triggerAnimation() {
+        val active = isActivated.get()
+        ValueAnimator.ofFloat(
+            if(active) 0f else 1f,
+            if(active) 1f else 0f
+        ).apply {
             startDelay = 0
             duration = rotationDuration.toLong()
-            addUpdateListener { updateIcon(sourceIcon, targetIcon, it.animatedValue as Float) }
+            addUpdateListener { updateIcon(it.animatedValue as Float) }
             start()
         }
     }
 
-    fun getSourceIcon() = if (isActivated.get()) openIcon else closeIcon
-    fun getTargetIcon() = if (isActivated.get()) closeIcon else openIcon
-
     fun updateIconInstantly() =
         updateIcon(
-            sourceIcon = getSourceIcon(),
-            targetIcon = getTargetIcon(),
             animatedValue = animatedValueCache.get()
         )
 
     isActivated.onChange {
         if (isAttachedToWindow) {
-            triggerAnimation(sourceIcon = getSourceIcon(), targetIcon = getTargetIcon())
+            triggerAnimation()
         } else {
             updateIconInstantly()
         }
@@ -93,14 +87,12 @@ private fun Context.fab(
  * [FAB](https://material.google.com/components/buttons-floating-action-button.html)
  *
  * @param animationDuration Time it takes to perform all the animated UI transitions.
- * @param openIcon icon visible when the menu is closed
- * @param closeIcon icon visible when the menu is open
+ * @param closeIconColors icon visible when the menu is open
  * @param isOpen flag indicating visibility with the menu pane on the screen
  */
-fun Context.floatMenu(
+fun Context.contextualMenu(
     animationDuration: Int = 400,
-    openIcon: Icon,
-    closeIcon: Icon,
+    closeIconColors: Icon.Colors = Icon.Colors(),
     isOpen: IBox<Boolean> = Box(false),
     menuSupplier: () -> View
 ) = statefulLayer(R.id.floatMenu) {
@@ -141,8 +133,7 @@ fun Context.floatMenu(
 
         fab(
             animationDuration,
-            openIcon,
-            closeIcon,
+            closeIconColors,
             isOpen
         ).apply {
             id = R.id.openFab

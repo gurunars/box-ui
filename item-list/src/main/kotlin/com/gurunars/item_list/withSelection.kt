@@ -4,7 +4,6 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.LayerDrawable
 import android.support.annotation.ColorInt
-import android.util.Log
 import com.gurunars.box.*
 import com.gurunars.box.ui.asRow
 import com.gurunars.box.ui.onClick

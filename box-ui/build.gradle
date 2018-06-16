@@ -12,4 +12,5 @@ dependencies {
     api "com.android.support:support-annotations:$supportlibVersion"
     api project(':box')
     testImplementation junit
+    testImplementation "com.nhaarman:mockito-kotlin:1.5.0"
 }

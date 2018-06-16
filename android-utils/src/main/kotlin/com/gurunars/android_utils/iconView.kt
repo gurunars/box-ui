@@ -30,7 +30,26 @@ data class Icon(
     val fgColor: Int = Color.WHITE,
     val icon: Int,
     val shape: Shape = OvalShape()
-)
+) {
+
+    /**
+     * Icon color settings
+     *
+     * @property bgColor background color
+     * @property fgColor foreground color
+     */
+    data class Colors(
+        val bgColor: Int = Color.RED,
+        val fgColor: Int = Color.WHITE
+    ) {
+        fun icon(iconRes: Int) = Icon(
+            icon = iconRes,
+            bgColor = bgColor,
+            fgColor = fgColor
+        )
+    }
+
+}
 
 private class IconView(context: Context) : ImageView(context) {
 

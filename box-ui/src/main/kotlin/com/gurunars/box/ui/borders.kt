@@ -9,7 +9,7 @@ import android.view.View
 
 
 private class BorderDrawable(
-    private val borderBounds: Bounds,
+    private val borderBounds: OldBounds,
     private @ColorInt val borderColor: Int = Color.BLACK
 ) : Drawable() {
     private val paint = Paint().apply {
@@ -49,7 +49,7 @@ private class BorderDrawable(
 
 /***/
 fun View.setBorders(
-    bounds: Bounds,
+    bounds: OldBounds,
     @ColorInt color: Int = Color.BLACK
 ) {
     background = LayerDrawable(

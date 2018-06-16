@@ -14,7 +14,7 @@ fun Context.bindAnimal(field: IRoBox<AnimalItem>): View = with<LinearLayout> {
     gravity = Gravity.CENTER_VERTICAL
     with<ImageView> {
         resource(field.oneWayBranch { type.resourceId })
-        padding = Bounds(dip(5))
+        padding = OldBounds(dip(5))
     }.layout(this) {
         width = dip(25)
         height = dip(25)
@@ -22,8 +22,8 @@ fun Context.bindAnimal(field: IRoBox<AnimalItem>): View = with<LinearLayout> {
     with<TextView> {
         id=R.id.title
         asRow()
-        padding = Bounds(dip(5))
+        padding = OldBounds(dip(5))
         text(field.oneWayBranch { toString() })
     }.layout(this)
-    setBorders(Bounds(bottom=1))
+    setBorders(OldBounds(bottom=1))
 }

@@ -105,14 +105,14 @@ fun View.layout(
     config: RelativeLayout.LayoutParams.() -> Unit
 ) = layout(relativeLayout, config, RelativeLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT))
 
-/** Removes all the views and adds this view as the only full screen child */
+/** Removes all the views and adds this view as the only full screen childComponent */
 fun <T : View> T.layoutAsOne(parent: FrameLayout): T {
     parent.removeAllViews()
     layout(parent) { fullSize() }
     return this
 }
 
-/** Removes all the views and adds this view as the only full screen child */
+/** Removes all the views and adds this view as the only full screen childComponent */
 fun <T : View> T.layoutAsOne(parent: Activity): T {
     layoutParams = ViewGroup.LayoutParams(MATCH_PARENT, MATCH_PARENT)
     parent.setContentView(this)

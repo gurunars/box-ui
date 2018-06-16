@@ -19,7 +19,7 @@ fun <ItemType : Item> Context.itemListView(
 ): RecyclerView = with {
     fullSize()
     clipToPadding = false
-    padding = Bounds(bottom = dip(90))
+    padding = OldBounds(bottom = dip(90))
     isSaveEnabled = false
     adapter = ItemAdapter(items, emptyViewBinder, itemViewBinders)
     layoutManager = LinearLayoutManager(context).apply {

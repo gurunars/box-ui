@@ -10,7 +10,9 @@ import android.widget.*
 import com.gurunars.android_utils.Icon
 import com.gurunars.box.*
 import com.gurunars.box.ui.*
-import com.gurunars.box.ui.decorators.statefulLayer
+import com.gurunars.box.ui.layers.layerStack
+import com.gurunars.box.ui.layers.statefulLayer
+import com.gurunars.floatmenu.contextualMenu
 import com.gurunars.floatmenu.floatMenu
 import com.gurunars.floatmenu.hasOverlay
 
@@ -18,6 +20,7 @@ class ActivityMain : Activity() {
     private val withOverlay = true.box
     private val isOpen = false.box
     private val notification = "".box
+    private val isContextualMenuOpen = false.box
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,7 +31,7 @@ class ActivityMain : Activity() {
 
                 with<TextView> {
                     id = R.id.notificationView
-                    padding = Bounds(dip(15))
+                    padding = OldBounds(dip(15))
                     gravity = Gravity.CENTER
                     setBackgroundColor(Color.parseColor("#FFFFAA"))
 
@@ -49,7 +52,7 @@ class ActivityMain : Activity() {
                     isClickable = true
                     setOnClickListener { notification.set("Content Text Clicked") }
                 }.layout(this) {
-                    margin = Bounds(dip(50))
+                    margin = OldBounds(dip(50))
                     alignInParent(HorizontalAlignment.CENTER, VerticalAlignment.CENTER)
                 }
 
@@ -64,49 +67,55 @@ class ActivityMain : Activity() {
 
             statefulLayer(R.id.main) {
                 retain(withOverlay, isOpen, notification)
-                floatMenu(
-                    closeIcon = Icon(
-                        bgColor = Color.WHITE,
-                        fgColor = Color.BLACK,
-                        icon = R.drawable.ic_menu_close
-                    ),
-                    openIcon = Icon(
-                        bgColor = Color.YELLOW,
-                        fgColor = Color.BLACK,
-                        icon = R.drawable.ic_menu
-                    ),
-                    isOpen = isOpen
-                ){
-                    with<ScrollView> {
-                        fullSize()
-                        hasOverlay = withOverlay
-                        with<LinearLayout> {
-                            orientation = LinearLayout.VERTICAL
-                            gravity = Gravity.CENTER_HORIZONTAL
-                            with<Button> {
-                                id = R.id.button
-                                setOnClickListener { notification.set("Menu Button Clicked") }
-                                text = getString(R.string.click_me)
-                                padding = Bounds(dip(10))
+                layerStack(
+                    floatMenu(
+                        closeIcon = Icon(
+                            bgColor = Color.WHITE,
+                            fgColor = Color.BLACK,
+                            icon = R.drawable.ic_menu_close
+                        ),
+                        openIcon = Icon(
+                            bgColor = Color.YELLOW,
+                            fgColor = Color.BLACK,
+                            icon = R.drawable.ic_menu
+                        ),
+                        isOpen = isOpen
+                    ){
+                        with<ScrollView> {
+                            hasOverlay = withOverlay
+                            with<LinearLayout> {
+                                orientation = LinearLayout.VERTICAL
+                                gravity = Gravity.CENTER_HORIZONTAL
+                                with<Button> {
+                                    id = R.id.button
+                                    setOnClickListener { notification.set("Menu Button Clicked") }
+                                    text = getString(R.string.click_me)
+                                    padding = OldBounds(dip(10))
+                                }.layout(this) {
+                                    margin = OldBounds(top=dip(50))
+                                }
+                                with<FrameLayout> {
+                                    id = R.id.buttonFrame
+                                    setOnClickListener { notification.set("Menu Button Frame Clicked") }
+                                    isClickable = true
+                                    setBackgroundColor(Color.MAGENTA)
+                                    padding = OldBounds(dip(10))
+                                }.layout(this) {
+                                    width = dip(100)
+                                    height = dip(30)
+                                    margin = OldBounds(top=10)
+                                }
                             }.layout(this) {
-                                margin = Bounds(top=dip(50))
+                                asRow()
                             }
-                            with<FrameLayout> {
-                                id = R.id.buttonFrame
-                                setOnClickListener { notification.set("Menu Button Frame Clicked") }
-                                isClickable = true
-                                setBackgroundColor(Color.MAGENTA)
-                                padding = Bounds(dip(10))
-                            }.layout(this) {
-                                width = dip(100)
-                                height = dip(30)
-                                margin = Bounds(top=10)
-                            }
-                        }.layout(this) {
-                            asRow()
+                        }
+                    },
+                    contextualMenu(isOpen=isContextualMenuOpen) {
+                        with<ScrollView> {
+
                         }
                     }
-                }
+                )
             }.layout(this) { fullSize() }
 
         }.layoutAsOne(this)

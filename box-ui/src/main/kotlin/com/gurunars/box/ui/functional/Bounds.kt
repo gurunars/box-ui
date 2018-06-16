@@ -1,4 +1,4 @@
-package com.gurunars.box.ui
+package com.gurunars.box.ui.functional
 
 /**
  * @property left
@@ -7,16 +7,16 @@ package com.gurunars.box.ui
  * @property bottom
  */
 data class Bounds(
-    val left: Int = 0,
-    val right: Int = 0,
-    val top: Int = 0,
-    val bottom: Int = 0
+    val left: Size = dp(0),
+    val right: Size = dp(0),
+    val top: Size = dp(0),
+    val bottom: Size = dp(0)
 ) {
     /** Padding for all dimensions */
-    constructor(all: Int = 0) : this(all, all)
+    constructor(all: Size = dp(0)) : this(all, all)
 
     /** Padding for horizontal and vertical dimensions */
-    constructor(horizontal: Int = 0, vertical: Int = 0) : this(
+    constructor(horizontal: Size = dp(0), vertical: Size = dp(0)) : this(
         horizontal,
         horizontal,
         vertical,

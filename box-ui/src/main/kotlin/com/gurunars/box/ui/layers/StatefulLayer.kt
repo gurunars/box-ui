@@ -1,4 +1,4 @@
-package com.gurunars.box.ui.decorators
+package com.gurunars.box.ui.layers
 
 import android.content.Context
 import android.os.Bundle

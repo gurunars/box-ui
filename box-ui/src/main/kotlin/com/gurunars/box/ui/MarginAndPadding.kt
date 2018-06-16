@@ -3,8 +3,8 @@ package com.gurunars.box.ui
 import android.view.View
 import android.view.ViewGroup
 
-var ViewGroup.MarginLayoutParams.margin: Bounds
-    get() = Bounds(
+var ViewGroup.MarginLayoutParams.margin: OldBounds
+    get() = OldBounds(
         left = leftMargin,
         right = rightMargin,
         top = topMargin,
@@ -17,9 +17,9 @@ var ViewGroup.MarginLayoutParams.margin: Bounds
         rightMargin = value.right
     }
 
-var View.padding: Bounds
+var View.padding: OldBounds
     get() {
-        return Bounds(
+        return OldBounds(
             left = paddingLeft,
             right = paddingRight,
             top = paddingTop,

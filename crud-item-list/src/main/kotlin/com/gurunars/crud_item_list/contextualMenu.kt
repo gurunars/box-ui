@@ -60,7 +60,7 @@ internal fun <ItemType : Item> Context.contextualMenu(
             R.id.moveDown,
             verticalPosition = VerticalPosition.ABOVE
         )
-        margin = Bounds(
+        margin = OldBounds(
             bottom = dip(5),
             left = dip(23),
             right = dip(23)
@@ -77,7 +77,7 @@ internal fun <ItemType : Item> Context.contextualMenu(
             horizontalAlignment = HorizontalAlignment.RIGHT,
             verticalAlignment = VerticalAlignment.BOTTOM
         )
-        margin = Bounds(
+        margin = OldBounds(
             top = dip(5),
             bottom = dip(85),
             left = dip(23),
@@ -94,7 +94,7 @@ internal fun <ItemType : Item> Context.contextualMenu(
             verticalAlignment = VerticalAlignment.BOTTOM
         )
         alignWithRespectTo(R.id.selectAll, HorizontalPosition.LEFT_OF)
-        margin = Bounds(
+        margin = OldBounds(
             bottom = dip(23),
             left = dip(5),
             right = dip(5)
@@ -110,7 +110,7 @@ internal fun <ItemType : Item> Context.contextualMenu(
             horizontalAlignment = HorizontalAlignment.RIGHT,
             verticalAlignment = VerticalAlignment.BOTTOM
         )
-        margin = Bounds(
+        margin = OldBounds(
             bottom = dip(23),
             left = dip(5),
             right = dip(85)
@@ -127,7 +127,7 @@ internal fun <ItemType : Item> Context.contextualMenu(
             horizontalAlignment = HorizontalAlignment.RIGHT,
             verticalAlignment = VerticalAlignment.BOTTOM
         )
-        margin = Bounds(
+        margin = OldBounds(
             bottom = dip(75),
             right = dip(75)
         )
@@ -144,7 +144,7 @@ internal fun <ItemType : Item> Context.contextualMenu(
             HorizontalPosition.LEFT_OF,
             VerticalPosition.ABOVE
         )
-        margin = Bounds(
+        margin = OldBounds(
             bottom = dip(-7),
             right = dip(-7)
         )

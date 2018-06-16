@@ -14,7 +14,7 @@ import com.gurunars.animal_item.Service.Companion.getRealService
 import com.gurunars.box.box
 import com.gurunars.box.patch
 import com.gurunars.box.ui.layoutAsOne
-import com.gurunars.box.ui.decorators.statefulLayer
+import com.gurunars.box.ui.layers.statefulLayer
 import com.gurunars.crud_item_list.IconColorBundle
 import com.gurunars.crud_item_list.ItemTypeDescriptor
 import com.gurunars.crud_item_list.crudItemListView
