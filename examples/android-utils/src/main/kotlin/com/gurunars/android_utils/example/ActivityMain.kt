@@ -4,7 +4,7 @@ import android.app.Activity
 import android.os.Bundle
 import com.gurunars.box.box
 import com.gurunars.box.patch
-import com.gurunars.box.ui.functional.*
+import com.gurunars.box.ui.component.*
 
 
 data class SampleState(

@@ -1,4 +1,4 @@
-package com.gurunars.box.ui.functional
+package com.gurunars.box.ui.component
 
 import android.content.Context
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT

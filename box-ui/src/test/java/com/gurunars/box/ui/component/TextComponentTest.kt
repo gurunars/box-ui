@@ -1,4 +1,4 @@
-package com.gurunars.box.ui.functional
+package com.gurunars.box.ui.component
 
 import android.widget.TextView
 import com.nhaarman.mockito_kotlin.any
