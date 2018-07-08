@@ -30,16 +30,16 @@ fun getCollectionDiff(
     old: List<Slot>,
     new: List<Slot>
 ): List<Mutation> {
-    val olds = old.group()
-    val news = new.group()
+    val gOld = old.group()
+    val gNew = new.group()
 
-    val retained = olds.keys.intersect(news.keys)
+    val retained = gOld.keys.intersect(gNew.keys)
 
-    val typeChanged = retained.filterNot { sameClass(news[it], olds[it]) }
-    val updated = retained.filterNot { news[it] == olds[it] } - typeChanged
+    val typeChanged = retained.filterNot { sameClass(gNew[it], gOld[it]) }
+    val updated = retained.filterNot { gNew[it] == gOld[it] } - typeChanged
 
-    val added = news.keys - olds.keys + typeChanged
-    val removed = olds.keys - news.keys + typeChanged
+    val added = gNew.keys - gOld.keys + typeChanged
+    val removed = gOld.keys - gNew.keys + typeChanged
 
     // The cache is to prevent wasting time with findViewById calls
     val viewCache = mutableMapOf<Int, View>()
@@ -49,7 +49,7 @@ fun getCollectionDiff(
             (view as ViewGroup).removeView(view.findViewById(it))
         } } +
         added.flatMap { uid ->
-            val newItem = news[uid]
+            val newItem = gNew[uid]
             val component = Registry.getElement(newItem)
             listOf(
                 { view: View ->
@@ -67,8 +67,8 @@ fun getCollectionDiff(
             }
         } +
         updated.flatMap {
-            val newItem = news[it]
-            val oldItem = olds[it]
+            val newItem = gNew[it]
+            val oldItem = gOld[it]
             val component = Registry.getElement(newItem)
             component.diff(
                 oldItem as Any, newItem as Any
