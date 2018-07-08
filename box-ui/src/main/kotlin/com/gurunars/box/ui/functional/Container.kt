@@ -3,8 +3,8 @@ package com.gurunars.box.ui.functional
 import android.view.View
 import android.view.ViewGroup
 
-interface Container {
-    val children: List<Slot>
+interface Container<SlotType: Slot> {
+    val children: List<SlotType>
 }
 
 /**

@@ -59,7 +59,7 @@ class LinearSlotComponent(
 data class LinearContainer(
     val orientation: Orientation = Orientation.HORIZONTAL,
     override val children: List<LinearSlot> = listOf()
-): Container {
+): Container<LinearSlot> {
 
     enum class Orientation {
         VERTICAL, HORIZONTAL
