@@ -1,6 +1,8 @@
 package com.gurunars.box.ui.component
 
 import android.widget.TextView
+import com.gurunars.box.ui.component.text.Text
+import com.gurunars.box.ui.component.text.TextComponent
 import com.nhaarman.mockito_kotlin.any
 import org.junit.Test
 
@@ -12,7 +14,8 @@ class TextComponentTest {
     @Test
     fun testDiffAgainstBlankValueAndClick() {
         component.diff(
-            Label(), Label("Test", {})
+            Text(),
+            Text("Test", {})
         ).assertMutations<TextView> {
             text = "Test"
             setOnClickListener(any())
@@ -22,7 +25,8 @@ class TextComponentTest {
     @Test
     fun testDiffAgainstOtherValueAndClick() {
         component.diff(
-            Label("One", {}), Label("Two", {})
+            Text("One", {}),
+            Text("Two", {})
         ).assertMutations<TextView> {
             text = "Two"
             setOnClickListener(any())

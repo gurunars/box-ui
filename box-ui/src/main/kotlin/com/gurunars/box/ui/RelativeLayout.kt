@@ -8,7 +8,7 @@ enum class HorizontalAlignment(internal val alignment: Int) {
     LEFT(RelativeLayout.ALIGN_PARENT_LEFT),
     /** on the right side */
     RIGHT(RelativeLayout.ALIGN_PARENT_RIGHT),
-    /** current text remains unchanged */
+    /** current value remains unchanged */
     SAME(-42),
     /** in the middle */
     CENTER(RelativeLayout.CENTER_HORIZONTAL)
@@ -20,7 +20,7 @@ enum class VerticalAlignment(internal val alignment: Int) {
     TOP(RelativeLayout.ALIGN_PARENT_TOP),
     /** in the bottom */
     BOTTOM(RelativeLayout.ALIGN_PARENT_BOTTOM),
-    /** current text remains unchanged */
+    /** current value remains unchanged */
     SAME(-42),
     /** in the middle */
     CENTER(RelativeLayout.CENTER_VERTICAL)
@@ -56,7 +56,7 @@ enum class HorizontalPosition(internal val alignment: Int) {
     LEFT_OF(RelativeLayout.LEFT_OF),
     /** right of another item */
     RIGHT_OF(RelativeLayout.RIGHT_OF),
-    /** current text remains unchanged */
+    /** current value remains unchanged */
     SAME(-42)
 }
 
@@ -65,14 +65,14 @@ enum class HorizontalPosition(internal val alignment: Int) {
  *
  * @property ABOVE above another item
  * @property BELOW below another item
- * @property SAME current text remains unchanged
+ * @property SAME current value remains unchanged
  */
 enum class VerticalPosition(internal val alignment: Int) {
     /** above another item */
     ABOVE(RelativeLayout.ABOVE),
     /** below another item */
     BELOW(RelativeLayout.BELOW),
-    /** current text remains unchanged */
+    /** current value remains unchanged */
     SAME(-42)
 }
 

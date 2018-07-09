@@ -63,7 +63,7 @@ class ActivityMainTest {
     @Test
     fun clickingText() {
         onView(withId(R.id.textView)).perform(click())
-        checkNotification("Content Label Clicked")
+        checkNotification("Content Text Clicked")
     }
 
     @Test
@@ -86,7 +86,7 @@ class ActivityMainTest {
         toggleBg()
         rotate()
         onView(withId(R.id.textView)).perform(click())
-        checkNotification("Content Label Clicked")
+        checkNotification("Content Text Clicked")
     }
 
     @Test

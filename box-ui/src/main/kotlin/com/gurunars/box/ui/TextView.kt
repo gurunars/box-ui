@@ -25,7 +25,7 @@ enum class Style(val value: Int) {
     BOLD_ITALIC(Typeface.BOLD_ITALIC)
 }
 
-/** Binds to a boxed text color int. */
+/** Binds to a boxed value color int. */
 inline fun TextView.textColor(field: IRoBox<Int>) =
     field.onChange {
         setTextColor(it)
@@ -37,7 +37,7 @@ inline fun TextView.style(field: IRoBox<Style>) =
         setTypeface(typeface, it.value)
     }
 
-/** Creates a one way binding from a boxed string text to field's text text. */
+/** Creates a one way binding from a boxed string value to field's value value. */
 inline fun TextView.text(field: IRoBox<String>) =
     field.onChange { txt ->
         if (text.toString() != txt) {
@@ -45,13 +45,13 @@ inline fun TextView.text(field: IRoBox<String>) =
         }
     }
 
-/** Binds to a boxed float based text textSize. */
+/** Binds to a boxed float based value textSize. */
 inline fun TextView.textSize(field: IRoBox<Float>) =
     field.onChange {
         setTextSize(it)
     }
 
-/** Creates a two way binding between a boxed string text to field's text text. */
+/** Creates a two way binding between a boxed string value to field's value value. */
 inline fun EditText.text(field: IBox<String>) {
     field.onChange { txt ->
         if (text.toString() != txt) {

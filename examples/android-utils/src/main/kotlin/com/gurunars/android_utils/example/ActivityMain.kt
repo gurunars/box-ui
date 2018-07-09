@@ -5,6 +5,7 @@ import android.os.Bundle
 import com.gurunars.box.box
 import com.gurunars.box.patch
 import com.gurunars.box.ui.component.*
+import com.gurunars.box.ui.component.text.Text
 
 
 data class SampleState(
@@ -31,8 +32,8 @@ class ActivityMain : Activity() {
                                 LinearSlot(
                                     width = MatchParent,
                                     key=index,
-                                    child=Label(
-                                        text=i
+                                    child= Text(
+                                        value = i
                                     )
                                 )
                             }
@@ -40,8 +41,8 @@ class ActivityMain : Activity() {
                     ),
                     LinearSlot(
                         width = MatchParent,
-                        child = Label(
-                            text = "Add more stuff ${children.size}",
+                        child = Text(
+                            value = "Add more stuff ${children.size}",
                             onClick = {
                                 state.patch {
                                     copy(

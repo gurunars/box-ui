@@ -1,5 +1,7 @@
 package com.gurunars.box.ui.component
 
+import com.gurunars.box.ui.component.text.Text
+import com.gurunars.box.ui.component.text.TextComponent
 import org.junit.Assert.*
 import org.junit.Test
 
@@ -21,7 +23,7 @@ class LinearSlotComponentTest {
                     top = 3.dp,
                     bottom = 4.dp
                 ),
-                child = Label(text="Not So Empty")
+                child = Text(value = "Not So Empty")
             )
         )
         assertEquals(

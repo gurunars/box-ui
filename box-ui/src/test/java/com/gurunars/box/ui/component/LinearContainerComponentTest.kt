@@ -1,6 +1,7 @@
 package com.gurunars.box.ui.component
 
 import android.widget.LinearLayout
+import com.gurunars.box.ui.component.text.Text
 import org.junit.Test
 
 class LinearContainerComponentTest {
@@ -15,7 +16,7 @@ class LinearContainerComponentTest {
                 orientation = LinearContainer.Orientation.VERTICAL,
                 children = listOf(
                     LinearSlot(
-                        child = Label(text = "Not So Empty")
+                        child = Text(value = "Not So Empty")
                     )
                 )
             )

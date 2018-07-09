@@ -38,7 +38,7 @@ class DataSource<ItemType : Item> private constructor(
     init {
         reload()
         box.toObservable()
-            .skip(1)  // skip the initial text
+            .skip(1)  // skip the initial value
             .observeOn(Schedulers.io())
             .subscribe { persistList(dao, it) }
     }
