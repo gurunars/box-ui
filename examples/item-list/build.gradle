@@ -1,8 +1,0 @@
-ext.appId="com.gurunars.item_list.example"
-
-apply from: '../example.gradle'
-
-dependencies {
-    implementation project(':item-list')
-    implementation project(':example-animal-item')
-}

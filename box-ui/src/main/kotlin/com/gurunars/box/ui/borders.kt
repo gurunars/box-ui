@@ -6,10 +6,11 @@ import android.graphics.drawable.Drawable
 import android.graphics.drawable.LayerDrawable
 import android.support.annotation.ColorInt
 import android.view.View
+import com.gurunars.box.ui.component.Bounds
 
 
 private class BorderDrawable(
-    private val borderBounds: OldBounds,
+    private val borderBounds: Bounds,
     private @ColorInt val borderColor: Int = Color.BLACK
 ) : Drawable() {
     private val paint = Paint().apply {
