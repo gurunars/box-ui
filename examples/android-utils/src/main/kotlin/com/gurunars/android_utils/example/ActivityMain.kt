@@ -31,8 +31,8 @@ class ActivityMain : Activity() {
                                 LinearSlot(
                                     width = MatchParent,
                                     key=index,
-                                    child=Text(
-                                        value=i
+                                    child=Label(
+                                        text=i
                                     )
                                 )
                             }
@@ -40,8 +40,8 @@ class ActivityMain : Activity() {
                     ),
                     LinearSlot(
                         width = MatchParent,
-                        child = Text(
-                            value = "Add more stuff ${children.size}",
+                        child = Label(
+                            text = "Add more stuff ${children.size}",
                             onClick = {
                                 state.patch {
                                     copy(

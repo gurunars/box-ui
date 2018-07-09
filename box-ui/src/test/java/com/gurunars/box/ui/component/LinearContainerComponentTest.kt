@@ -15,7 +15,7 @@ class LinearContainerComponentTest {
                 orientation = LinearContainer.Orientation.VERTICAL,
                 children = listOf(
                     LinearSlot(
-                        child = Text(value = "Not So Empty")
+                        child = Label(text = "Not So Empty")
                     )
                 )
             )

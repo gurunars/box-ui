@@ -6,7 +6,7 @@ object Registry {
 
     fun<T> getElement(props: T): Component =
         when(props) {
-            is Text -> TextComponent()
+            is Label -> TextComponent()
             is LinearSlot -> LinearSlotComponent(
                 getElement(props.child)
             )

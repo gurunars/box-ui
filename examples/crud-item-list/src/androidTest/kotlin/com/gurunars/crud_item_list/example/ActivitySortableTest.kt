@@ -231,7 +231,7 @@ class ActivitySortableTest {
         onView(withId(R.id.increment)).perform(click())
         rotate()
         onView(withId(R.id.save)).perform(click())
-        // Save operation updates the value asynchronously - we need to wait
+        // Save operation updates the text asynchronously - we need to wait
         sleep()
         rotate()
         validateSelection(3, "#4{WOLF @ 1}", false)

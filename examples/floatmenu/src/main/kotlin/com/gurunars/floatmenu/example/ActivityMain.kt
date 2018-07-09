@@ -50,7 +50,7 @@ class ActivityMain : Activity() {
                     id = R.id.textView
                     text = getString(R.string.appName)
                     isClickable = true
-                    setOnClickListener { notification.set("Content Text Clicked") }
+                    setOnClickListener { notification.set("Content Label Clicked") }
                 }.layout(this) {
                     margin = OldBounds(dip(50))
                     alignInParent(HorizontalAlignment.CENTER, VerticalAlignment.CENTER)

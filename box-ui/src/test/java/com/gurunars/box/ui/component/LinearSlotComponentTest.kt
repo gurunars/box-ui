@@ -21,7 +21,7 @@ class LinearSlotComponentTest {
                     top = 3.dp,
                     bottom = 4.dp
                 ),
-                child = Text(value="Not So Empty")
+                child = Label(text="Not So Empty")
             )
         )
         assertEquals(

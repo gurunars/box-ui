@@ -12,7 +12,7 @@ class TextComponentTest {
     @Test
     fun testDiffAgainstBlankValueAndClick() {
         component.diff(
-            Text(), Text("Test", {})
+            Label(), Label("Test", {})
         ).assertMutations<TextView> {
             text = "Test"
             setOnClickListener(any())
@@ -22,7 +22,7 @@ class TextComponentTest {
     @Test
     fun testDiffAgainstOtherValueAndClick() {
         component.diff(
-            Text("One", {}), Text("Two", {})
+            Label("One", {}), Label("Two", {})
         ).assertMutations<TextView> {
             text = "Two"
             setOnClickListener(any())

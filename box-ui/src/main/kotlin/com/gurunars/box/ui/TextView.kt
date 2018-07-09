@@ -37,7 +37,7 @@ inline fun TextView.style(field: IRoBox<Style>) =
         setTypeface(typeface, it.value)
     }
 
-/** Creates a one way binding from a boxed string value to field's text value. */
+/** Creates a one way binding from a boxed string text to field's text text. */
 inline fun TextView.text(field: IRoBox<String>) =
     field.onChange { txt ->
         if (text.toString() != txt) {
@@ -51,7 +51,7 @@ inline fun TextView.textSize(field: IRoBox<Float>) =
         setTextSize(it)
     }
 
-/** Creates a two way binding between a boxed string value to field's text value. */
+/** Creates a two way binding between a boxed string text to field's text text. */
 inline fun EditText.text(field: IBox<String>) {
     field.onChange { txt ->
         if (text.toString() != txt) {
