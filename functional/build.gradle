@@ -1,0 +1,15 @@
+ext.moduleName="functional"
+ext.moduleGroup="com.gurunars.functional"
+
+apply from: '../android-module.gradle'
+
+description = """
+React like functional components.
+"""
+
+dependencies {
+    api 'io.reactivex.rxjava2:rxandroid:2.0.2'
+    api "com.android.support:support-annotations:$supportlibVersion"
+    api project(':box')
+    testImplementation junit
+}
