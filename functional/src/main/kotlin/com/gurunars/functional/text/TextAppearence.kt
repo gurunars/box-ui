@@ -1,4 +1,4 @@
-package com.gurunars.box.ui.component.text
+package com.gurunars.functional.text
 
 import android.graphics.Paint
 import android.graphics.Typeface

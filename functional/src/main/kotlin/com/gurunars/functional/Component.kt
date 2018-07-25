@@ -68,7 +68,7 @@ fun <StateType, ComponentType> Activity.ui(
             }
             currentState = newState
         }
-        view.layoutAsOne(this)
+        this.setContentView(view)
     }
 }
 
