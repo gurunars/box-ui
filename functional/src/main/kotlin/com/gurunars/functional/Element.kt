@@ -1,5 +1,5 @@
 package com.gurunars.functional
 
-data class View(
+data class Element(
     val padding: Bounds? = null
 )

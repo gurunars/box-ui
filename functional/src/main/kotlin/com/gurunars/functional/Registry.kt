@@ -11,7 +11,7 @@ object Registry {
         when(props) {
             is Text -> TextComponent()
             /*
-            is View -> LinearSlotComponent(
+            is Element -> LinearSlotComponent(
                 getElement(props.child)
             )
             is LinearContainer -> LinearContainerComponent()

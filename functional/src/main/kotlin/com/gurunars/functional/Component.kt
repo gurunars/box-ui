@@ -5,6 +5,7 @@ import android.content.Context
 import android.view.View
 import com.gurunars.box.IRoBox
 import java.util.*
+import kotlin.reflect.KClass
 
 
 typealias Mutation = (view: View) -> Unit
@@ -40,6 +41,7 @@ infix fun <PropsType, PropType, ViewType> ValueGetter<PropsType, PropType>.rende
 
 interface Component {
     val empty: Any
+    val viewType: KClass<View>
     fun getEmptyView(context: Context): View
     fun diff(old: Any, new: Any): List<Mutation>
 }
