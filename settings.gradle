@@ -16,7 +16,8 @@ include  \
     ':example-selectable-item-list',
     ':example-crud-item-list',
     ':example-floatmenu',
-    ':example-storybook'
+    ':example-storybook',
+    ':example-functional'
 project(":example-test-utils").projectDir = file("examples/test-utils")
 project(":example-storybook").projectDir = file("examples/storybook")
 project(":example-animal-item").projectDir = file("examples/animal-item")
@@ -25,3 +26,4 @@ project(":example-selectable-item-list").projectDir = file("examples/selectable-
 project(":example-crud-item-list").projectDir = file("examples/crud-item-list")
 project(":example-android-utils").projectDir = file("examples/android-utils")
 project(":example-floatmenu").projectDir = file("examples/floatmenu")
+project(":example-functional").projectDir = file("examples/functional")

@@ -41,7 +41,7 @@ class Recycler {
                     it.second?.removeView(it.first)
                 }?.first ?: component.getEmptyView(parent.context).also {
                     if (viewCache.containsKey(component.viewType)) {
-                        viewCache.get(component.viewType).add(
+                        viewCache.get(component.viewType)?.add(
                             Pair(it, parent as ViewGroup?)
                         )
                     } else {

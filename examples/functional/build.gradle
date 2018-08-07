@@ -1,0 +1,8 @@
+ext.appId="com.gurunars.functional.example"
+
+apply from: '../example.gradle'
+
+
+dependencies {
+    implementation project(':functional')
+}
