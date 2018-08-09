@@ -8,6 +8,7 @@ import android.view.MenuItem
 import com.gurunars.animal_item.AnimalItem
 import com.gurunars.animal_item.Service
 import com.gurunars.animal_item.Service.Companion.getRealService
+import com.gurunars.animal_item.bindAnimal
 import com.gurunars.box.*
 import com.gurunars.box.ui.layoutAsOne
 import com.gurunars.box.ui.shortToast
@@ -36,9 +37,9 @@ class ActivityMain : Activity() {
             itemListView(
                 items = items,
                 itemViewBinders = AnimalItem.Type.values().map {
-                    Pair(it as Enum<*>, { field: IRoBox<AnimalItem> -> context.bindAnimal(field) })
+                    Pair(it as Enum<*>, { field: IRoBox<AnimalItem> -> bindAnimal(field) })
                 }.toMap().withSelection(selectedItems, explicitSelectionMode)
-            ).layoutAsOne(this)
+            )
         }.layoutAsOne(this)
     }
 

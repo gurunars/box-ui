@@ -37,6 +37,8 @@ fun <ItemType : Item> Context.crudItemListView(
     selectedItems: IBox<Set<ItemType>>,
     explicitContextual: IBox<Boolean>
 ): View = statefulLayer(R.id.crudItemListView) {
+    View(this@crudItemListView)
+    /*
     val isOpen = false.box
     isOpen.onChange {
         if (!it) {
@@ -52,7 +54,6 @@ fun <ItemType : Item> Context.crudItemListView(
         selectedItems,
         clipboardSerializer
     )
-/*
     val creationMenu = creationMenu(itemTypeDescriptors, { stateMachine.loadType(it) })
     itemInEdit.onChange { stateMachine.loadItem(it.toNullable()) }
     stateMachine.state.onChange { itemInEdit.set(it.itemInEdit.toOptional()) }
