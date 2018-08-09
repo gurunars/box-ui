@@ -5,7 +5,6 @@ import android.content.Context
 import android.view.View
 import com.gurunars.box.IRoBox
 import java.util.*
-import kotlin.reflect.KClass
 
 
 typealias Mutation = (view: View) -> Unit
@@ -38,12 +37,13 @@ infix fun <PropsType, PropType, ViewType> ValueGetter<PropsType, PropType>.rende
         this,
         { old: PropType, new: PropType -> mutator(this, new) })
 
+// marker interface for the items that can be used for layout composition
+interface Element
 
 interface Component {
-    val empty: Any
-    val viewType: KClass<View>
+    val empty: Element
     fun getEmptyView(context: Context): View
-    fun diff(old: Any, new: Any): List<Mutation>
+    fun diff(old: Element, new: Element): List<Mutation>
 }
 
 
@@ -59,13 +59,13 @@ fun <StateType, ComponentType> Activity.ui(
     var currentState = state.get().init()
     Registry.getElement(currentState).let {
         val view = it.getEmptyView(this@ui).apply {
-            it.diff(it.empty, currentState as Any).forEach {
+            it.diff(it.empty, currentState as Element).forEach {
                 it(this)
             }
         }
         state.onChange { new ->
             val newState = new.init()
-            it.diff(currentState as Any, newState as Any).forEach {
+            it.diff(currentState as Element, newState as Element).forEach {
                 it(view)
             }
             currentState = newState

@@ -3,10 +3,6 @@ package com.gurunars.functional
 import android.view.View
 import android.view.ViewGroup
 
-interface Container<SlotType: Slot> {
-    val children: List<SlotType>
-}
-
 /**
  * A decorator for the component with layout parameters for a specific layout types
  */

@@ -1,8 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <item name="payloadView" type="id" />
-    <item name="clear" type="id" />
-    <item name="disabled" type="id" />
-    <item name="set" type="id" />
     <item name="main" type="id" />
 </resources>

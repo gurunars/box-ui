@@ -5,4 +5,5 @@ apply from: '../example.gradle'
 
 dependencies {
     implementation project(':functional')
+    implementation 'com.facebook.yoga.android:yoga-layout:1.2.0'
 }
