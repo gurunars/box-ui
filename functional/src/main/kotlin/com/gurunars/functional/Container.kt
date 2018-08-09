@@ -58,7 +58,7 @@ fun getCollectionDiff(
                         viewCache[uid] = child
                     }
                 }
-            ) + component.diff(component.empty, newItem as Any).map { item ->
+            ) + component.diff(component.empty, newItem).map { item ->
                 { _: View -> item.invoke(viewCache[uid]!!) }
             }
         } +
@@ -66,9 +66,7 @@ fun getCollectionDiff(
             val newItem = gNew[it]
             val oldItem = gOld[it]
             val component = Registry.getElement(newItem)
-            component.diff(
-                oldItem as Any, newItem as Any
-            )
+            component.diff(oldItem, newItem)
         }
     )
 }

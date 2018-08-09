@@ -37,13 +37,10 @@ infix fun <PropsType, PropType, ViewType> ValueGetter<PropsType, PropType>.rende
         this,
         { old: PropType, new: PropType -> mutator(this, new) })
 
-// marker interface for the items that can be used for layout composition
-interface Element
-
-interface Component {
-    val empty: Element
+interface Component<T> {
+    val empty: T
     fun getEmptyView(context: Context): View
-    fun diff(old: Element, new: Element): List<Mutation>
+    fun diff(old: T, new: T): List<Mutation>
 }
 
 
@@ -59,13 +56,13 @@ fun <StateType, ComponentType> Activity.ui(
     var currentState = state.get().init()
     Registry.getElement(currentState).let {
         val view = it.getEmptyView(this@ui).apply {
-            it.diff(it.empty, currentState as Element).forEach {
+            it.diff(it.empty, currentState).forEach {
                 it(this)
             }
         }
         state.onChange { new ->
             val newState = new.init()
-            it.diff(currentState as Element, newState as Element).forEach {
+            it.diff(currentState, newState).forEach {
                 it(view)
             }
             currentState = newState
