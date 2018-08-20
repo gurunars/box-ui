@@ -9,6 +9,7 @@ import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
+import com.facebook.yoga.android.YogaLayout
 
 /** Replaces view marked by a specific id with a given new view */
 fun <T : View> T.set(parent: ViewGroup, id: Int, init: T.() -> Unit = {}): T {
@@ -127,7 +128,14 @@ fun <T : View> T.layout(parent: ViewGroup, init: T.() -> Unit = {}): T {
 }
 
 /** Initializes a View within a given context */
-inline fun <reified T: View> Context.with(init: T.() -> Unit = {}): T =
-    T::class.java.getConstructor(Context::class.java).newInstance(this).apply {
+inline fun <reified T: View> Context.with(init: T.() -> Unit = {}): T {
+    // This hack with dummy layout is needed because Yoga does not allow
+    // to create the layouts from code directly
+    return (if (T::class == YogaLayout::class) {
+        View.inflate(this, R.layout.yoga_layout, null) as T
+    } else {
+        T::class.java.getConstructor(Context::class.java).newInstance(this)
+    }).apply {
         init()
     }
+}

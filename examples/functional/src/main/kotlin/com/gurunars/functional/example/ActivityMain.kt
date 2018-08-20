@@ -1,7 +1,6 @@
 package com.gurunars.functional.example
 
 import android.app.Activity
-import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
@@ -20,20 +19,13 @@ fun View.layout(
 ))
 
 
-// This hack with dummy layout is needed because Yoga does not allow
-// to create the layouts from code directly
-fun Context.yogaLayout(config: YogaLayout.() -> Unit) =
-    (View.inflate(this, R.layout.yoga_layout, null) as YogaLayout).apply {
-        config()
-    }
-
 class ActivityMain : Activity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         SoLoader.init(this, false);
 
-        yogaLayout {
+        with<YogaLayout> {
             (0..10).forEach {
                 with<TextView> {
                     text="Foo $it"
