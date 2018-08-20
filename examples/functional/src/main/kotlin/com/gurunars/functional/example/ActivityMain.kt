@@ -19,6 +19,7 @@ fun View.layout(
     ViewGroup.LayoutParams.WRAP_CONTENT
 ))
 
+
 // This hack with dummy layout is needed because Yoga does not allow
 // to create the layouts from code directly
 fun Context.yogaLayout(config: YogaLayout.() -> Unit) =
