@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import com.facebook.soloader.SoLoader
+import com.facebook.yoga.YogaNode
 import com.facebook.yoga.android.YogaLayout
 import com.gurunars.box.ui.*
 
@@ -29,7 +30,11 @@ class ActivityMain : Activity() {
             (0..10).forEach {
                 with<TextView> {
                     text="Foo $it"
-                }.layout(this)
+                }.let { addView(it, YogaNode().apply {
+                    setWidth(100f)
+                    flexGrow = 1f
+                    setHeight(30f)
+                }) }
             }
 
             val parent = this
@@ -38,7 +43,10 @@ class ActivityMain : Activity() {
                 onClick {
                     parent.removeView(parent.getChildAt(0))
                 }
-            }.layout(this)
+            }.let { addView(it, YogaNode().apply {
+                this.setWidthAuto()
+                this.setHeightAuto()
+            }) }
         }.layoutAsOne(this)
     }
 }
