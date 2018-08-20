@@ -13,6 +13,8 @@ data class Node<T>(
     override val key: Int? = null
 ): Slot<T>
 
+
+
 class _Node<T>(
     private val childComponent: Component<T>
 ): Component<Node<T>> {
@@ -24,9 +26,11 @@ class _Node<T>(
             setTag(R.id.node, YogaNode())
         }
 
-    override fun diff(old: Node<T>, new: Node<T>): List<Mutation> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+    override fun diff(old: Node<T>, new: Node<T>): List<Mutation> =
+        listOf(
+
+        )
+
 }
 
 data class Container(
