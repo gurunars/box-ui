@@ -6,15 +6,19 @@ import android.view.ViewGroup
 /**
  * A decorator for the component with layout parameters for a specific layout types
  */
-interface Slot<T> {
+interface Slot {
     val key: Int?
-    val child: T
+    val child: Any
 }
 
-fun sameClass(old: Slot<*>?, new: Slot<*>?) =
+interface Container<SlotType: Slot> {
+    val children: List<SlotType>
+}
+
+fun sameClass(old: Slot?, new: Slot?) =
     old?.child?.javaClass != new?.child?.javaClass
 
-fun List<Slot<*>>.group() =
+fun List<Slot>.group() =
     mapIndexed { index, it ->
         Pair(
             it.key ?: index,
@@ -23,8 +27,8 @@ fun List<Slot<*>>.group() =
     }.toMap()
 
 fun getCollectionDiff(
-    old: List<Slot<*>>,
-    new: List<Slot<*>>
+    old: List<Slot>,
+    new: List<Slot>
 ): List<Mutation> {
     val gOld = old.group()
     val gNew = new.group()
