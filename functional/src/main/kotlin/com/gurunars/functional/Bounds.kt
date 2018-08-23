@@ -7,16 +7,16 @@ package com.gurunars.functional
  * @property bottom
  */
 data class Bounds(
-    val left: Int = 0,
-    val right: Int = 0,
-    val top: Int = 0,
-    val bottom: Int = 0
+    val left: Size = 0.dp,
+    val right: Size = 0.dp,
+    val top: Size = 0.dp,
+    val bottom: Size = 0.dp
 ) {
     /** Padding for all dimensions */
-    constructor(all: Int = 0) : this(all, all)
+    constructor(all: Size = 0.dp) : this(all, all)
 
     /** Padding for horizontal and vertical dimensions */
-    constructor(horizontal: Int = 0, vertical: Int = 0) : this(
+    constructor(horizontal: Size = 0.dp, vertical: Size = 0.dp) : this(
         horizontal,
         horizontal,
         vertical,

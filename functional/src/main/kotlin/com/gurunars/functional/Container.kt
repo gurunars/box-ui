@@ -3,16 +3,16 @@ package com.gurunars.functional
 import android.view.View
 import android.view.ViewGroup
 
+interface Container<SlotType: Slot> {
+    val children: List<SlotType>
+}
+
 /**
  * A decorator for the component with layout parameters for a specific layout types
  */
 interface Slot {
     val key: Int?
     val child: Any
-}
-
-interface Container<SlotType: Slot> {
-    val children: List<SlotType>
 }
 
 fun sameClass(old: Slot?, new: Slot?) =
@@ -62,7 +62,7 @@ fun getCollectionDiff(
                         viewCache[uid] = child
                     }
                 }
-            ) + component.diff(component.empty, newItem).map { item ->
+            ) + component.diff(component.empty, newItem as Any).map { item ->
                 { _: View -> item.invoke(viewCache[uid]!!) }
             }
         } +
@@ -70,7 +70,9 @@ fun getCollectionDiff(
             val newItem = gNew[it]
             val oldItem = gOld[it]
             val component = Registry.getElement(newItem)
-            component.diff(oldItem, newItem)
+            component.diff(
+                oldItem as Any, newItem as Any
+            )
         }
     )
 }

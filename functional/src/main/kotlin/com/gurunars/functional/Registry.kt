@@ -7,15 +7,13 @@ object Registry {
 
     class UnknownComponent(component: Any): Throwable(component.javaClass.canonicalName)
 
-    fun<T> getElement(props: T): Component<T> =
+    fun<T> getElement(props: T): Component =
         when(props) {
-            is Text -> TextComponent() as Component<T>
-            /*
-            is Element -> LinearSlotComponent(
+            is Text -> TextComponent()
+            is LinearSlot -> LinearSlotComponent(
                 getElement(props.child)
             )
             is LinearContainer -> LinearContainerComponent()
-            */
             else -> throw UnknownComponent(props as Any)
         }
 

@@ -10,7 +10,7 @@ data class Text(
     val value: String = ""
 ): WithTextAppearence
 
-class TextComponent : Component<Text> {
+class TextComponent : Component {
     private val changeSpec = listOf<ChangeSpec<Text, *, TextView>>(
         { it: Text -> it.value } rendersTo  { text = it }
     ) + textAppearenceChangeSpec()
@@ -19,8 +19,8 @@ class TextComponent : Component<Text> {
     override fun getEmptyView(context: Context) = TextView(context).apply {
         setSingleLine(true)
     }
-    override fun diff(old: Text, new: Text): List<Mutation> = changeSpec.diff(
-        old,
-        new
+    override fun diff(old: Any, new: Any): List<Mutation> = changeSpec.diff(
+        old as Text,
+        new as Text
     )
 }

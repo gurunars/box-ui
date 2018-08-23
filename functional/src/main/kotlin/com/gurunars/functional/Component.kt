@@ -3,6 +3,8 @@ package com.gurunars.functional
 import android.app.Activity
 import android.content.Context
 import android.view.View
+import android.view.ViewGroup
+import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import com.gurunars.box.IRoBox
 import java.util.*
 
@@ -37,10 +39,11 @@ infix fun <PropsType, PropType, ViewType> ValueGetter<PropsType, PropType>.rende
         this,
         { old: PropType, new: PropType -> mutator(this, new) })
 
-interface Component<T> {
-    val empty: T
+
+interface Component {
+    val empty: Any
     fun getEmptyView(context: Context): View
-    fun diff(old: T, new: T): List<Mutation>
+    fun diff(old: Any, new: Any): List<Mutation>
 }
 
 
@@ -56,18 +59,22 @@ fun <StateType, ComponentType> Activity.ui(
     var currentState = state.get().init()
     Registry.getElement(currentState).let {
         val view = it.getEmptyView(this@ui).apply {
-            it.diff(it.empty, currentState).forEach {
+            it.diff(it.empty, currentState as Any).forEach {
                 it(this)
             }
         }
         state.onChange { new ->
             val newState = new.init()
-            it.diff(currentState, newState).forEach {
+            it.diff(currentState as Any, newState as Any).forEach {
                 it(view)
             }
             currentState = newState
         }
-        this.setContentView(view)
+        view.let {
+            setContentView(it, ViewGroup.LayoutParams(
+                MATCH_PARENT, MATCH_PARENT
+            ))
+        }
     }
 }
 
