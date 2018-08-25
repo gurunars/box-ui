@@ -50,11 +50,6 @@ setForegroundGravity
 setForegroundTint
 setForegroundTintMode
 
-# Text
-
-setTextAlignment
-setTextDirection
-
 # Animation
 
 startAnimation
