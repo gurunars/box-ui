@@ -2,6 +2,7 @@ package com.gurunars.functional
 
 import android.content.Context
 import android.content.res.ColorStateList
+import android.graphics.PorterDuff
 import android.support.annotation.DrawableRes
 import android.util.SparseArray
 import android.view.ViewGroup
@@ -44,7 +45,13 @@ data class Color(
 enum class GravityOptions(
     val value: Int
 ) {
-    LEFT(AndroidGravity.LEFT), RIGHT(AndroidGravity.RIGHT), CENTER(AndroidGravity.CENTER)
+    TOP(AndroidGravity.TOP),
+    BOTTOM(AndroidGravity.BOTTOM),
+    START(AndroidGravity.START),
+    END(AndroidGravity.END),
+    LEFT(AndroidGravity.LEFT),
+    RIGHT(AndroidGravity.RIGHT),
+    CENTER(AndroidGravity.CENTER)
 }
 
 typealias Gravity = Set<GravityOptions>
@@ -85,13 +92,13 @@ data class DrawableValue(
 data class Background(
     val drawable: Drawable,
     val tint: ColorStateList,
-    val tintMode: Int
+    val tintMode: PorterDuff.Mode
 )
 
 data class Foreground(
     val drawable: Drawable,
     val tint: ColorStateList,
-    val tintMode: Int,
+    val tintMode: PorterDuff.Mode,
     val gravity: Gravity
 )
 
@@ -165,6 +172,13 @@ class ViewBinder<LayoutParamsT: ViewGroup.LayoutParams>(
     override fun getEmptyTarget(context: Context): AndroidView =
         childBinder.getEmptyTarget(context)
 
+    private fun Context.getAndroidDrawable(drawable: Drawable?) =
+        when (drawable) {
+            is DrawableRef ->  getDrawable(drawable.drawableRes)
+            is DrawableValue -> drawable.drawable
+            else -> null
+        }
+
     private val changeSpec = listOf<ChangeSpec<View, *, AndroidView>>(
         { it: View -> it.padding } rendersTo { setPadding(
             context.toInt(it.left),
@@ -173,10 +187,25 @@ class ViewBinder<LayoutParamsT: ViewGroup.LayoutParams>(
             context.toInt(it.bottom)
         ) },
         { it: View -> it.background?.drawable } rendersTo {
-            when (it) {
-                is DrawableRef -> this.background = context.getDrawable(it.drawableRes)
-                is DrawableValue -> this.background = it.drawable
-            }
+            background = context.getAndroidDrawable(it)
+        },
+        { it: View -> it.background?.tintMode } rendersTo {
+            backgroundTintMode = it
+        },
+        { it: View -> it.background?.tint } rendersTo {
+            backgroundTintList = it
+        },
+        { it: View -> it.foreground?.drawable } rendersTo {
+            foreground = context.getAndroidDrawable(it)
+        },
+        { it: View -> it.foreground?.tintMode } rendersTo {
+            foregroundTintMode = it
+        },
+        { it: View -> it.foreground?.tint } rendersTo {
+            foregroundTintList = it
+        },
+        { it: View -> it.foreground?.gravity } rendersTo {
+            foregroundGravity = null ?: AndroidGravity.START and AndroidGravity.TOP
         }
     )
 
