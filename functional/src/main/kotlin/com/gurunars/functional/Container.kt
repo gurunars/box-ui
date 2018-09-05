@@ -45,16 +45,16 @@ fun getCollectionDiff(
     val viewCache = mutableMapOf<Int, View>()
 
     return (
-        removed.map { { view: View ->
+        removed.map { { view: Any ->
             (view as ViewGroup).removeView(view.findViewById(it))
         } } +
         added.flatMap { uid ->
             val newItem = gNew[uid]
             val component = Registry.getElement(newItem)
             listOf(
-                { view: View ->
+                { view: Any ->
                     component.getEmptyTarget(
-                        view.context
+                        (view as View).context
                     ).apply {
                         id = uid
                     }.let { child ->
@@ -63,7 +63,7 @@ fun getCollectionDiff(
                     }
                 }
             ) + component.diff(component.empty, newItem as Any).map { item ->
-                { _: View -> item.invoke(viewCache[uid]!!) }
+                { _: Any -> item.invoke(viewCache[uid]!!) }
             }
         } +
         updated.flatMap {
