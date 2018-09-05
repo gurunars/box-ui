@@ -7,7 +7,7 @@ object Registry {
 
     class UnknownComponent(component: Any): Throwable(component.javaClass.canonicalName)
 
-    fun<T> getElement(props: T): Binder =
+    fun<T> getElement(props: T): ElementBinder =
         when(props) {
             is Text -> TextBinder()
             is LinearSlot -> LinearSlotBinder(

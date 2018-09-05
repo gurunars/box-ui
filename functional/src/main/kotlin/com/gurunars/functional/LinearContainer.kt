@@ -15,8 +15,8 @@ data class LinearSlot(
 
 
 class LinearSlotBinder(
-    private val childBinder: Binder
-): Binder {
+    private val childBinder: ElementBinder
+): ElementBinder {
 
     override val empty: Any
         get() = LinearSlot(child = childBinder.empty)
@@ -28,7 +28,7 @@ class LinearSlotBinder(
         return changeSpec.diff(old, new) + childComponent.diff(old.child, new.child)
     }
 
-    override fun getEmptyView(context: Context): View = childBinder.getEmptyView(context).apply {
+    override fun getEmptyTarget(context: Context): View = childBinder.getEmptyTarget(context).apply {
         layoutParams = LinearLayout.LayoutParams(
             ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT
         )
@@ -68,9 +68,9 @@ data class LinearContainer(
 }
 
 
-class LinearContainerBinder : Binder {
+class LinearContainerBinder : ElementBinder {
     override val empty = LinearContainer()
-    override fun getEmptyView(context: Context) = LinearLayout(context)
+    override fun getEmptyTarget(context: Context) = LinearLayout(context)
 
     override fun diff(old: Any, new: Any): List<Mutation> =
         changeSpec.diff(

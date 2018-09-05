@@ -10,13 +10,13 @@ data class Text(
     val value: String = ""
 ): WithTextAppearence
 
-class TextBinder : Binder {
+class TextBinder : ElementBinder {
     private val changeSpec = listOf<ChangeSpec<Text, *, TextView>>(
         { it: Text -> it.value } rendersTo  { text = it }
     ) + textAppearenceChangeSpec()
 
     override val empty = Text()
-    override fun getEmptyView(context: Context) = TextView(context).apply {
+    override fun getEmptyTarget(context: Context) = TextView(context).apply {
         setSingleLine(true)
     }
     override fun diff(old: Any, new: Any): List<Mutation> = changeSpec.diff(

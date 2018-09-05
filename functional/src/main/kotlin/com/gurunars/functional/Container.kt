@@ -53,7 +53,7 @@ fun getCollectionDiff(
             val component = Registry.getElement(newItem)
             listOf(
                 { view: View ->
-                    component.getEmptyView(
+                    component.getEmptyTarget(
                         view.context
                     ).apply {
                         id = uid

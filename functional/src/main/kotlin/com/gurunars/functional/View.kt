@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.res.ColorStateList
 import android.support.annotation.DrawableRes
 import android.util.SparseArray
+import android.view.ViewGroup
 
 import android.view.View as AndroidView
 import android.graphics.drawable.Drawable as AndroidDrawable
@@ -139,10 +140,10 @@ data class Flags(
     val activated: Boolean = false
 )
 
-data class View(
+data class View<LayoutParamsT: LayoutParams>(
     val child: Any,
-    val layoutParams: LayoutParams? = null,
-    val padding: Bounds? = Bounds(0.dp),
+    val layoutParams: LayoutParamsT,
+    val padding: Bounds = Bounds(0.dp),
     val background: Background? = null,
     val foreground: Foreground? = null,
     val tags: SparseArray<String>? = SparseArray(),
@@ -151,18 +152,24 @@ data class View(
     val animation: Animation = Animation()
 )
 
-class ViewBinder(
-    private val childBinder: Binder
-): Binder {
-    override val empty = View(child=childBinder.empty)
-
-    override fun getEmptyView(context: Context): AndroidView =
-        childBinder.getEmptyView(context)
-
-    override fun diff(old: Any, new: Any): List<Mutation> = listOf<ChangeSpec<View, *, AndroidView>>(
-        { it: View -> it.layoutParams } rendersTo { it.apply {
-
-        }}
+class ViewBinder<LayoutParamsS: LayoutParams, LayoutParamsT: ViewGroup.LayoutParams>(
+    private val childBinder: ElementBinder,
+    private val paramBinder: Binder<LayoutParamsS, LayoutParamsT>
+): ElementBinder {
+    override val empty = View(
+        child=childBinder.empty,
+        layoutParams=paramBinder.empty
     )
+
+    override fun getEmptyTarget(context: Context): AndroidView =
+        childBinder.getEmptyTarget(context)
+
+    private val changeSpec = listOf<ChangeSpec<View<LayoutParamsS>, *, AndroidView>>(
+        { it: View<LayoutParamsS> -> it.layoutParams } rendersTo { this }
+    )
+
+    override fun diff(old: Any, new: Any): List<Mutation> = changeSpec.diff(
+        old as View<LayoutParamsS>, new as View<LayoutParamsS>
+    ) + paramBinder.diff(old.layoutParams, new.layoutParams)
 
 }

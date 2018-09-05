@@ -9,7 +9,7 @@ import com.gurunars.box.IRoBox
 import java.util.*
 
 
-typealias Mutation = (view: View) -> Unit
+typealias Mutation = (view: Any) -> Unit
 typealias Mutator<PropType, ViewType> = ViewType.(old: PropType, new: PropType) -> Unit
 typealias ValueGetter<PropsType, PropType> = (item: PropsType) -> PropType
 
@@ -25,7 +25,7 @@ class ChangeSpec<in PropsType, PropType, ViewType>(
         return if (Objects.deepEquals(oldP, newP)) {
             null
         } else {
-            { view: View -> mutator(view as ViewType, oldP, newP) }
+            { view: Any -> mutator(view as ViewType, oldP, newP) }
         }
     }
 }
@@ -37,15 +37,15 @@ infix fun <PropsType, PropType, ViewType> ValueGetter<PropsType, PropType>.trans
 infix fun <PropsType, PropType, ViewType> ValueGetter<PropsType, PropType>.rendersTo(mutator: ViewType.(new: PropType) -> Unit) =
     ChangeSpec<PropsType, PropType, ViewType>(
         this,
-        { old: PropType, new: PropType -> mutator(this, new) })
+        { _: PropType, new: PropType -> mutator(this, new) })
 
-
-interface Binder {
-    val empty: Any
-    fun getEmptyView(context: Context): View
-    fun diff(old: Any, new: Any): List<Mutation>
+interface Binder<Source, Target> {
+    val empty: Source
+    fun getEmptyTarget(context: Context): Target
+    fun diff(old: Source, new: Source): List<Mutation>
 }
 
+interface ElementBinder : Binder<Any, View>
 
 @Suppress("UNCHECKED_CAST")
 fun <PropsType> List<ChangeSpec<PropsType, *, *>>.diff(old: PropsType, new: PropsType) =
@@ -58,7 +58,7 @@ fun <StateType, ComponentType> Activity.ui(
 ) {
     var currentState = state.get().init()
     Registry.getElement(currentState).let {
-        val view = it.getEmptyView(this@ui).apply {
+        val view = it.getEmptyTarget(this@ui).apply {
             it.diff(it.empty, currentState as Any).forEach {
                 it(this)
             }
