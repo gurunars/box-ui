@@ -140,9 +140,9 @@ data class Flags(
     val activated: Boolean = false
 )
 
-data class View<LayoutParamsT: LayoutParams>(
+data class View(
     val child: Any,
-    val layoutParams: LayoutParamsT,
+    val layoutParams: LayoutParams,
     val padding: Bounds = Bounds(0.dp),
     val background: Background? = null,
     val foreground: Foreground? = null,
@@ -152,10 +152,10 @@ data class View<LayoutParamsT: LayoutParams>(
     val animation: Animation = Animation()
 )
 
-class ViewBinder<LayoutParamsS: LayoutParams, LayoutParamsT: ViewGroup.LayoutParams>(
+class ViewBinder<LayoutParamsT: ViewGroup.LayoutParams>(
     private val childBinder: ElementBinder,
-    private val paramBinder: Binder<LayoutParamsS, LayoutParamsT>
-): Binder<View<LayoutParamsS>, AndroidView> {
+    private val paramBinder: Binder<LayoutParams, LayoutParamsT>
+): ElementBinder {
 
     override val empty = View(
         child=childBinder.empty,
@@ -165,11 +165,12 @@ class ViewBinder<LayoutParamsS: LayoutParams, LayoutParamsT: ViewGroup.LayoutPar
     override fun getEmptyTarget(context: Context): AndroidView =
         childBinder.getEmptyTarget(context)
 
-    private val changeSpec = listOf<ChangeSpec<View<LayoutParamsS>, *, AndroidView>>(
-        { it: View<LayoutParamsS> -> it.layoutParams } rendersTo { this }
+    private val changeSpec = listOf<ChangeSpec<View, *, AndroidView>>(
+        { it: View -> it.layoutParams } rendersTo { this }
     )
 
-    override fun diff(old: View<LayoutParamsS>, new: View<LayoutParamsS>): List<Mutation> =
-        changeSpec.diff(old, new) + paramBinder.diff(old.layoutParams, new.layoutParams)
+    override fun diff(old: Any, new: Any): List<Mutation> =
+        changeSpec.diff(old as View, new as View) +
+        paramBinder.diff(old.layoutParams, new.layoutParams)
 
 }
