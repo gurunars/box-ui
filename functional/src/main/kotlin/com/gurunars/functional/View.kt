@@ -166,11 +166,23 @@ class ViewBinder<LayoutParamsT: ViewGroup.LayoutParams>(
         childBinder.getEmptyTarget(context)
 
     private val changeSpec = listOf<ChangeSpec<View, *, AndroidView>>(
-        { it: View -> it.layoutParams } rendersTo { this }
+        { it: View -> it.padding } rendersTo { setPadding(
+            context.toInt(it.left),
+            context.toInt(it.top),
+            context.toInt(it.right),
+            context.toInt(it.bottom)
+        ) },
+        { it: View -> it.background?.drawable } rendersTo {
+            when (it) {
+                is DrawableRef -> this.background = context.getDrawable(it.drawableRes)
+                is DrawableValue -> this.background = it.drawable
+            }
+        }
     )
 
     override fun diff(old: Any, new: Any): List<Mutation> =
         changeSpec.diff(old as View, new as View) +
-        paramBinder.diff(old.layoutParams, new.layoutParams)
+        paramBinder.diff(old.layoutParams, new.layoutParams) +
+        childBinder.diff(old.child, new.child)
 
 }
