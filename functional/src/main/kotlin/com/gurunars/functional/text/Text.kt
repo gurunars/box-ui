@@ -10,7 +10,7 @@ data class Text(
     val value: String = ""
 ): WithTextAppearence
 
-class TextComponent : Component {
+class TextBinder : Binder {
     private val changeSpec = listOf<ChangeSpec<Text, *, TextView>>(
         { it: Text -> it.value } rendersTo  { text = it }
     ) + textAppearenceChangeSpec()

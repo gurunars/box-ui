@@ -40,7 +40,7 @@ infix fun <PropsType, PropType, ViewType> ValueGetter<PropsType, PropType>.rende
         { old: PropType, new: PropType -> mutator(this, new) })
 
 
-interface Component {
+interface Binder {
     val empty: Any
     fun getEmptyView(context: Context): View
     fun diff(old: Any, new: Any): List<Mutation>
