@@ -155,7 +155,8 @@ data class View<LayoutParamsT: LayoutParams>(
 class ViewBinder<LayoutParamsS: LayoutParams, LayoutParamsT: ViewGroup.LayoutParams>(
     private val childBinder: ElementBinder,
     private val paramBinder: Binder<LayoutParamsS, LayoutParamsT>
-): ElementBinder {
+): Binder<View<LayoutParamsS>, AndroidView> {
+
     override val empty = View(
         child=childBinder.empty,
         layoutParams=paramBinder.empty
@@ -168,8 +169,7 @@ class ViewBinder<LayoutParamsS: LayoutParams, LayoutParamsT: ViewGroup.LayoutPar
         { it: View<LayoutParamsS> -> it.layoutParams } rendersTo { this }
     )
 
-    override fun diff(old: Any, new: Any): List<Mutation> = changeSpec.diff(
-        old as View<LayoutParamsS>, new as View<LayoutParamsS>
-    ) + paramBinder.diff(old.layoutParams, new.layoutParams)
+    override fun diff(old: View<LayoutParamsS>, new: View<LayoutParamsS>): List<Mutation> =
+        changeSpec.diff(old, new) + paramBinder.diff(old.layoutParams, new.layoutParams)
 
 }
