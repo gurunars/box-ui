@@ -42,19 +42,32 @@ data class Color(
     constructor(value: String): this(AndroidColor.parseColor(value))
 }
 
-enum class GravityOptions(
+enum class Gravity(
     val value: Int
 ) {
     TOP(AndroidGravity.TOP),
     BOTTOM(AndroidGravity.BOTTOM),
-    START(AndroidGravity.START),
-    END(AndroidGravity.END),
     LEFT(AndroidGravity.LEFT),
     RIGHT(AndroidGravity.RIGHT),
-    CENTER(AndroidGravity.CENTER)
+
+    CENTER_VERTICAL(AndroidGravity.CENTER_VERTICAL),
+    FILL_VERTICAL(AndroidGravity.FILL_VERTICAL),
+
+    CENTER_HORIZONTAL(AndroidGravity.CENTER_HORIZONTAL),
+    FILL_HORIZONTAL(AndroidGravity.FILL_HORIZONTAL),
+
+    CENTER(AndroidGravity.CENTER),
+    FILL(AndroidGravity.FILL),
+
+    CLIP_VERTICAL(AndroidGravity.CENTER_VERTICAL),
+    CLIP_HORIZONTAL(AndroidGravity.CLIP_HORIZONTAL),
+
+    START(AndroidGravity.START),
+    END(AndroidGravity.END)
 }
 
-typealias Gravity = Set<GravityOptions>
+fun Set<Gravity>.toInt() =
+    fold(AndroidGravity.NO_GRAVITY) { acc, gravity -> acc or gravity.value }
 
 interface LayoutParams {
     val width: Size
@@ -99,7 +112,7 @@ data class Foreground(
     val drawable: Drawable,
     val tint: ColorStateList,
     val tintMode: PorterDuff.Mode,
-    val gravity: Gravity
+    val gravity: Set<Gravity>
 )
 
 /**
@@ -135,7 +148,7 @@ data class Animation(
     val alpha: Float = 0f
 )
 
-enum class Visibility(val visibility: Int) {
+enum class Visibility(val value: Int) {
     VISIBLE(AndroidView.VISIBLE), GONE(AndroidView.GONE), INVISIBLE(AndroidView.INVISIBLE)
 }
 
@@ -186,6 +199,16 @@ class ViewBinder<LayoutParamsT: ViewGroup.LayoutParams>(
             context.toInt(it.right),
             context.toInt(it.bottom)
         ) },
+        { it: View -> it.tags } rendersTo {
+            it?.let {
+                (0 until it.size()).forEach { i ->
+                    setTag(it.keyAt(i), it.valueAt(i))
+                }
+            }
+        },
+        { it: View -> it.visibility } rendersTo {
+            visibility = it.value
+        },
         { it: View -> it.background?.drawable } rendersTo {
             background = context.getAndroidDrawable(it)
         },
@@ -206,6 +229,21 @@ class ViewBinder<LayoutParamsT: ViewGroup.LayoutParams>(
         },
         { it: View -> it.foreground?.gravity } rendersTo {
             foregroundGravity = null ?: AndroidGravity.START and AndroidGravity.TOP
+        },
+        { it: View -> it.flags.activated } rendersTo {
+            isActivated = it
+        },
+        { it: View -> it.flags.clickable } rendersTo {
+            isClickable = it
+        },
+        { it: View -> it.flags.enabled } rendersTo {
+            isEnabled = it
+        },
+        { it: View -> it.flags.selected } rendersTo {
+            isSelected = it
+        },
+        { it: View -> it.flags.focusable } rendersTo {
+            isFocusable = it
         }
     )
 
