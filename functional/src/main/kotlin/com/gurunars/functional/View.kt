@@ -244,6 +244,48 @@ class ViewBinder<LayoutParamsT: ViewGroup.LayoutParams>(
         },
         { it: View -> it.flags.focusable } rendersTo {
             isFocusable = it
+        },
+        { it: View -> it.animation.pivot.x } rendersTo {
+            pivotX = it
+        },
+        { it: View -> it.animation.pivot.y } rendersTo {
+            pivotY = it
+        },
+        { it: View -> it.animation.scale.x } rendersTo {
+            scaleX = it
+        },
+        { it: View -> it.animation.scale.y } rendersTo {
+            scaleY = it
+        },
+        { it: View -> it.animation.scale.y } rendersTo {
+            scaleY = it
+        },
+        { it: View -> it.animation.translation.x } rendersTo {
+            translationX = it
+        },
+        { it: View -> it.animation.translation.y } rendersTo {
+            translationY = it
+        },
+        { it: View -> it.animation.translation.z } rendersTo {
+            translationZ = it
+        },
+        { it: View -> it.animation.elevation } rendersTo {
+            elevation = it
+        },
+        { it: View -> it.animation.alpha } rendersTo {
+            alpha = it
+        },
+        { it: View -> it.animation.rotation.cameraDistance } rendersTo {
+            cameraDistance = it
+        },
+        { it: View -> it.animation.rotation.general } rendersTo {
+            rotation = it
+        },
+        { it: View -> it.animation.rotation.x } rendersTo {
+            rotationX = it
+        },
+        { it: View -> it.animation.rotation.y } rendersTo {
+            rotationY = it
         }
     )
 
