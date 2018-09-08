@@ -286,8 +286,8 @@ class ViewBinder<LayoutParamsT: ViewGroup.LayoutParams>(
         { it: View -> it.foreground?.tint } rendersTo {
             foregroundTintList = it
         },
-        { it: View -> it.foreground?.gravity?.toInt() } rendersTo {
-            foregroundGravity = it ?: AndroidGravity.NO_GRAVITY
+        { it: View -> it.foreground?.gravity ?: setOf(Gravity.TOP, Gravity.LEFT) } rendersTo {
+            foregroundGravity = it.toInt()
         },
         { it: View -> it.flags.activated } rendersTo {
             isActivated = it
