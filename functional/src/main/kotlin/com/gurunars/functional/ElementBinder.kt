@@ -40,7 +40,7 @@ infix fun <PropsType, PropType, ViewType> ValueGetter<PropsType, PropType>.rende
         { _: PropType, new: PropType -> mutator(this, new) })
 
 interface Binder<Source, Target> {
-    val empty: Source
+    fun getEmpty(view: Any): Source
     fun getEmptyTarget(context: Context): Target
     fun diff(old: Source, new: Source): List<Mutation>
 }
@@ -59,7 +59,7 @@ fun <StateType, ComponentType> Activity.ui(
     var currentState = state.get().init()
     Registry.getElement(currentState).let {
         val view = it.getEmptyTarget(this@ui).apply {
-            it.diff(it.empty, currentState as Any).forEach {
+            it.diff(it.getEmpty(this), currentState as Any).forEach {
                 it(this)
             }
         }

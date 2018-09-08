@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.PorterDuff
 import android.support.annotation.DrawableRes
-import android.util.SparseArray
 import android.view.ViewGroup
 
 import android.view.View as AndroidView
@@ -68,6 +67,14 @@ enum class Gravity(
 
 fun Set<Gravity>.toInt() =
     fold(AndroidGravity.NO_GRAVITY) { acc, gravity -> acc or gravity.value }
+
+private fun Int.toGravity() =
+    Gravity.values().fold(setOf<Gravity>()) { acc, gravity ->
+        if (gravity.value and this == this)
+            acc + gravity
+        else
+            acc
+    }
 
 interface LayoutParams {
     val width: Size
@@ -139,7 +146,7 @@ data class Foreground(
  * Elevation:
  * - setElevation
  */
-data class Animation(
+data class Decoration(
     val pivot: TwoDimensional = TwoDimensional(),
     val scale: TwoDimensional = TwoDimensional(),
     val translation: ThreeDimensional = ThreeDimensional(),
@@ -166,21 +173,80 @@ data class View(
     val padding: Bounds = Bounds(0.dp),
     val background: Background? = null,
     val foreground: Foreground? = null,
-    val tags: SparseArray<String>? = SparseArray(),
     val visibility: Visibility = Visibility.VISIBLE,
     val flags: Flags = Flags(),
-    val animation: Animation = Animation()
+    val decoration: Decoration = Decoration()
 )
 
 class ViewBinder<LayoutParamsT: ViewGroup.LayoutParams>(
     private val childBinder: ElementBinder,
     private val paramBinder: Binder<LayoutParams, LayoutParamsT>
 ): ElementBinder {
-
-    override val empty = View(
-        child=childBinder.empty,
-        layoutParams=paramBinder.empty
-    )
+    override fun getEmpty(view: Any): Any {
+        view as AndroidView
+        return View(
+            child = childBinder.getEmpty(view),
+            layoutParams = paramBinder.getEmpty(view.layoutParams),
+            padding = Bounds(
+                left = view.paddingLeft.px,
+                right = view.paddingRight.px,
+                top = view.paddingTop.px,
+                bottom = view.paddingBottom.px
+            ),
+            background = view.background?.let {
+                Background(
+                    drawable = DrawableValue(it),
+                    tint = view.backgroundTintList,
+                    tintMode = view.backgroundTintMode
+                )
+            },
+            foreground = view.foreground?.let {
+                Foreground(
+                    drawable = DrawableValue(it),
+                    tint = view.backgroundTintList,
+                    tintMode = view.backgroundTintMode,
+                    gravity = view.foregroundGravity.toGravity()
+                )
+            },
+            visibility = view.visibility.let {
+                when(it) {
+                    AndroidView.VISIBLE -> Visibility.VISIBLE
+                    AndroidView.INVISIBLE -> Visibility.INVISIBLE
+                    else -> Visibility.GONE
+                }
+            },
+            flags = Flags(
+                enabled = view.isEnabled,
+                clickable = view.isClickable,
+                focusable = view.isFocusable,
+                selected = view.isSelected,
+                activated = view.isActivated
+            ),
+            decoration = Decoration(
+                pivot = TwoDimensional(
+                    x = view.pivotX,
+                    y = view.pivotY
+                ),
+                scale = TwoDimensional(
+                    x = view.scaleX,
+                    y = view.scaleY
+                ),
+                translation = ThreeDimensional(
+                    x = view.translationX,
+                    y = view.translationY,
+                    z = view.translationZ
+                ),
+                rotation = Rotation(
+                    general = view.rotation,
+                    x = view.rotationX,
+                    y = view.rotationY,
+                    cameraDistance = view.cameraDistance
+                ),
+                elevation = view.elevation,
+                alpha = view.alpha
+            )
+        )
+    }
 
     override fun getEmptyTarget(context: Context): AndroidView =
         childBinder.getEmptyTarget(context)
@@ -199,13 +265,6 @@ class ViewBinder<LayoutParamsT: ViewGroup.LayoutParams>(
             context.toInt(it.right),
             context.toInt(it.bottom)
         ) },
-        { it: View -> it.tags } rendersTo {
-            it?.let {
-                (0 until it.size()).forEach { i ->
-                    setTag(it.keyAt(i), it.valueAt(i))
-                }
-            }
-        },
         { it: View -> it.visibility } rendersTo {
             visibility = it.value
         },
@@ -227,8 +286,8 @@ class ViewBinder<LayoutParamsT: ViewGroup.LayoutParams>(
         { it: View -> it.foreground?.tint } rendersTo {
             foregroundTintList = it
         },
-        { it: View -> it.foreground?.gravity } rendersTo {
-            foregroundGravity = null ?: AndroidGravity.START and AndroidGravity.TOP
+        { it: View -> it.foreground?.gravity?.toInt() } rendersTo {
+            foregroundGravity = it ?: AndroidGravity.NO_GRAVITY
         },
         { it: View -> it.flags.activated } rendersTo {
             isActivated = it
@@ -245,46 +304,46 @@ class ViewBinder<LayoutParamsT: ViewGroup.LayoutParams>(
         { it: View -> it.flags.focusable } rendersTo {
             isFocusable = it
         },
-        { it: View -> it.animation.pivot.x } rendersTo {
+        { it: View -> it.decoration.pivot.x } rendersTo {
             pivotX = it
         },
-        { it: View -> it.animation.pivot.y } rendersTo {
+        { it: View -> it.decoration.pivot.y } rendersTo {
             pivotY = it
         },
-        { it: View -> it.animation.scale.x } rendersTo {
+        { it: View -> it.decoration.scale.x } rendersTo {
             scaleX = it
         },
-        { it: View -> it.animation.scale.y } rendersTo {
+        { it: View -> it.decoration.scale.y } rendersTo {
             scaleY = it
         },
-        { it: View -> it.animation.scale.y } rendersTo {
+        { it: View -> it.decoration.scale.y } rendersTo {
             scaleY = it
         },
-        { it: View -> it.animation.translation.x } rendersTo {
+        { it: View -> it.decoration.translation.x } rendersTo {
             translationX = it
         },
-        { it: View -> it.animation.translation.y } rendersTo {
+        { it: View -> it.decoration.translation.y } rendersTo {
             translationY = it
         },
-        { it: View -> it.animation.translation.z } rendersTo {
+        { it: View -> it.decoration.translation.z } rendersTo {
             translationZ = it
         },
-        { it: View -> it.animation.elevation } rendersTo {
+        { it: View -> it.decoration.elevation } rendersTo {
             elevation = it
         },
-        { it: View -> it.animation.alpha } rendersTo {
+        { it: View -> it.decoration.alpha } rendersTo {
             alpha = it
         },
-        { it: View -> it.animation.rotation.cameraDistance } rendersTo {
+        { it: View -> it.decoration.rotation.cameraDistance } rendersTo {
             cameraDistance = it
         },
-        { it: View -> it.animation.rotation.general } rendersTo {
+        { it: View -> it.decoration.rotation.general } rendersTo {
             rotation = it
         },
-        { it: View -> it.animation.rotation.x } rendersTo {
+        { it: View -> it.decoration.rotation.x } rendersTo {
             rotationX = it
         },
-        { it: View -> it.animation.rotation.y } rendersTo {
+        { it: View -> it.decoration.rotation.y } rendersTo {
             rotationY = it
         }
     )
