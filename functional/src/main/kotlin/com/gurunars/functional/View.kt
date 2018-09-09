@@ -167,6 +167,12 @@ data class Flags(
     val activated: Boolean = false
 )
 
+class Emitter {
+    internal val view: View? = null
+
+    fun doBla() {}
+}
+
 data class View(
     val child: Any,
     val layoutParams: LayoutParams,
@@ -175,7 +181,9 @@ data class View(
     val foreground: Foreground? = null,
     val visibility: Visibility = Visibility.VISIBLE,
     val flags: Flags = Flags(),
-    val decoration: Decoration = Decoration()
+    val decoration: Decoration = Decoration(),
+    val emitter: Emitter? = null,
+    val id: Int = AndroidView.NO_ID
 )
 
 class ViewBinder<LayoutParamsT: ViewGroup.LayoutParams>(
@@ -244,7 +252,8 @@ class ViewBinder<LayoutParamsT: ViewGroup.LayoutParams>(
                 ),
                 elevation = view.elevation,
                 alpha = view.alpha
-            )
+            ),
+            id = view.id
         )
     }
 

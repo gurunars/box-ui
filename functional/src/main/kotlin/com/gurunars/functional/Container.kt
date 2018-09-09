@@ -1,34 +1,26 @@
 package com.gurunars.functional
 
-import android.view.View
+import android.view.View as AndroidView
 import android.view.ViewGroup
 
-interface Container<SlotType: Slot> {
-    val children: List<SlotType>
+interface Container {
+    val children: List<View>
 }
 
-/**
- * A decorator for the component with layout parameters for a specific layout types
- */
-interface Slot {
-    val key: Int?
-    val child: Any
-}
-
-fun sameClass(old: Slot?, new: Slot?) =
+fun sameClass(old: View?, new: View?) =
     old?.child?.javaClass != new?.child?.javaClass
 
-fun List<Slot>.group() =
+fun List<View>.group() =
     mapIndexed { index, it ->
         Pair(
-            it.key ?: index,
+            it.id.takeIf { it != AndroidView.NO_ID } ?: index,
             it
         )
     }.toMap()
 
 fun getCollectionDiff(
-    old: List<Slot>,
-    new: List<Slot>
+    old: List<View>,
+    new: List<View>
 ): List<Mutation> {
     val gOld = old.group()
     val gNew = new.group()
@@ -42,7 +34,7 @@ fun getCollectionDiff(
     val removed = gOld.keys - gNew.keys + typeChanged
 
     // The cache is to prevent wasting time with findViewById calls
-    val viewCache = mutableMapOf<Int, View>()
+    val viewCache = mutableMapOf<Int, AndroidView>()
 
     return (
         removed.map { { view: Any ->
@@ -54,7 +46,7 @@ fun getCollectionDiff(
             listOf(
                 { view: Any ->
                     component.getEmptyTarget(
-                        (view as View).context
+                        (view as AndroidView).context
                     ).apply {
                         id = uid
                     }.let { child ->
@@ -62,7 +54,7 @@ fun getCollectionDiff(
                         viewCache[uid] = child
                     }
                 }
-            ) + component.diff(component.empty, newItem as Any).map { item ->
+            ) + component.diff(component.getEmpty(), newItem as Any).map { item ->
                 { _: Any -> item.invoke(viewCache[uid]!!) }
             }
         } +
