@@ -54,7 +54,7 @@ fun getCollectionDiff(
                         viewCache[uid] = child
                     }
                 }
-            ) + component.diff(component.getEmpty(), newItem as Any).map { item ->
+            ) + component.diff(component.empty, newItem as Any).map { item ->
                 { _: Any -> item.invoke(viewCache[uid]!!) }
             }
         } +

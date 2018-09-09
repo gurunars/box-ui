@@ -190,73 +190,7 @@ class ViewBinder<LayoutParamsT: ViewGroup.LayoutParams>(
     private val childBinder: ElementBinder,
     private val paramBinder: Binder<LayoutParams, LayoutParamsT>
 ): ElementBinder {
-    override fun getEmpty(view: Any): Any {
-        //
-        view as AndroidView
-        return View(
-            child = childBinder.getEmpty(view),
-            layoutParams = paramBinder.getEmpty(view.layoutParams),
-            padding = Bounds(
-                left = view.paddingLeft.px,
-                right = view.paddingRight.px,
-                top = view.paddingTop.px,
-                bottom = view.paddingBottom.px
-            ),
-            background = view.background?.let {
-                Background(
-                    drawable = DrawableValue(it),
-                    tint = view.backgroundTintList,
-                    tintMode = view.backgroundTintMode
-                )
-            },
-            foreground = view.foreground?.let {
-                Foreground(
-                    drawable = DrawableValue(it),
-                    tint = view.backgroundTintList,
-                    tintMode = view.backgroundTintMode,
-                    gravity = view.foregroundGravity.toGravity()
-                )
-            },
-            visibility = view.visibility.let {
-                when(it) {
-                    AndroidView.VISIBLE -> Visibility.VISIBLE
-                    AndroidView.INVISIBLE -> Visibility.INVISIBLE
-                    else -> Visibility.GONE
-                }
-            },
-            flags = Flags(
-                enabled = view.isEnabled,
-                clickable = view.isClickable,
-                focusable = view.isFocusable,
-                selected = view.isSelected,
-                activated = view.isActivated
-            ),
-            decoration = Decoration(
-                pivot = TwoDimensional(
-                    x = view.pivotX,
-                    y = view.pivotY
-                ),
-                scale = TwoDimensional(
-                    x = view.scaleX,
-                    y = view.scaleY
-                ),
-                translation = ThreeDimensional(
-                    x = view.translationX,
-                    y = view.translationY,
-                    z = view.translationZ
-                ),
-                rotation = Rotation(
-                    general = view.rotation,
-                    x = view.rotationX,
-                    y = view.rotationY,
-                    cameraDistance = view.cameraDistance
-                ),
-                elevation = view.elevation,
-                alpha = view.alpha
-            ),
-            id = view.id
-        )
-    }
+    override val empty = View(childBinder.empty, paramBinder.empty)
 
     override fun getEmptyTarget(context: Context): AndroidView =
         childBinder.getEmptyTarget(context)
