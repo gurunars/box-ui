@@ -191,6 +191,7 @@ class ViewBinder<LayoutParamsT: ViewGroup.LayoutParams>(
     private val paramBinder: Binder<LayoutParams, LayoutParamsT>
 ): ElementBinder {
     override fun getEmpty(view: Any): Any {
+        //
         view as AndroidView
         return View(
             child = childBinder.getEmpty(view),
