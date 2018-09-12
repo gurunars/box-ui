@@ -45,7 +45,13 @@ interface Binder<Source, Target> {
     fun diff(old: Source, new: Source): List<Mutation>
 }
 
+interface LayoutParams {
+    val width: Size
+    val height: Size
+}
+
 interface ElementBinder : Binder<Any, View>
+interface ParamBinder : Binder<LayoutParams, ViewGroup.LayoutParams>
 
 @Suppress("UNCHECKED_CAST")
 fun <PropsType> List<ChangeSpec<PropsType, *, *>>.diff(old: PropsType, new: PropsType) =

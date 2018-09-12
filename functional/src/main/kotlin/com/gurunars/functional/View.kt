@@ -4,29 +4,19 @@ import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.PorterDuff
 import android.support.annotation.DrawableRes
-import android.view.ViewGroup
 
 import android.view.View as AndroidView
 import android.graphics.drawable.Drawable as AndroidDrawable
 import android.view.Gravity as AndroidGravity
 import android.graphics.Color as AndroidColor
 
-/**
- * @property left
- * @property right
- * @property top
- * @property bottom
- */
 data class Bounds(
     val left: Size = 0.dp,
     val right: Size = 0.dp,
     val top: Size = 0.dp,
     val bottom: Size = 0.dp
 ) {
-    /** Padding for all dimensions */
     constructor(all: Size = 0.dp) : this(all, all)
-
-    /** Padding for horizontal and vertical dimensions */
     constructor(horizontal: Size = 0.dp, vertical: Size = 0.dp) : this(
         horizontal,
         horizontal,
@@ -67,19 +57,6 @@ enum class Gravity(
 
 fun Set<Gravity>.toInt() =
     fold(AndroidGravity.NO_GRAVITY) { acc, gravity -> acc or gravity.value }
-
-private fun Int.toGravity() =
-    Gravity.values().fold(setOf<Gravity>()) { acc, gravity ->
-        if (gravity.value and this == this)
-            acc + gravity
-        else
-            acc
-    }
-
-interface LayoutParams {
-    val width: Size
-    val height: Size
-}
 
 data class TwoDimensional(
     val x: Float = 0f,
@@ -122,30 +99,6 @@ data class Foreground(
     val gravity: Set<Gravity>
 )
 
-/**
- * Pivot:
- * - setPivotX(x: Float)
- * - setPivotY(y: Float)
- *
- * Scale:
- * - setScaleX(x: Float);
- * - setScaleY(y: Float);
- *
- * Translation:
- * - setTranslationX(tx);
- * - setTranslationY(ty);
- * - setTranslationZ(tz);
- * - setElevation(elevation);
- *
- * Rotation:
- * - setRotation
- * - setRotationX
- * - setRotationY
- * - setCameraDistance
- *
- * Elevation:
- * - setElevation
- */
 data class Decoration(
     val pivot: TwoDimensional = TwoDimensional(),
     val scale: TwoDimensional = TwoDimensional(),
@@ -167,9 +120,8 @@ data class Flags(
     val activated: Boolean = false
 )
 
-class Emitter {
-    internal val view: View? = null
-
+open class Emitter {
+    internal var view: AndroidView? = null
     fun doBla() {}
 }
 
@@ -186,9 +138,9 @@ data class View(
     val id: Int = AndroidView.NO_ID
 )
 
-class ViewBinder<LayoutParamsT: ViewGroup.LayoutParams>(
+class ViewBinder(
     private val childBinder: ElementBinder,
-    private val paramBinder: Binder<LayoutParams, LayoutParamsT>
+    private val paramBinder: ParamBinder
 ): ElementBinder {
     override val empty = View(childBinder.empty, paramBinder.empty)
 
@@ -209,6 +161,9 @@ class ViewBinder<LayoutParamsT: ViewGroup.LayoutParams>(
             context.toInt(it.right),
             context.toInt(it.bottom)
         ) },
+        { it: View -> it.emitter } rendersTo  {
+            it?.view = this
+        },
         { it: View -> it.visibility } rendersTo {
             visibility = it.value
         },
