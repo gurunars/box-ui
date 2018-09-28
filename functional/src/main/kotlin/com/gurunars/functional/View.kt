@@ -120,10 +120,23 @@ data class Flags(
     val activated: Boolean = false
 )
 
-open class Emitter {
-    internal var view: AndroidView? = null
-    fun doBla() {}
-}
+/**
+ * There is a set of operations within views that is intrinsic to their
+ * implementation and that does mutate their state. E.g. setFocus.
+ *
+ * While other attributes exist exclusively in a one way fashion, these
+ * ones have a dual nature.
+ *
+ * The question is how to handle this ones in a coherent manner?
+ *
+ * The shadow view can't be mutated.
+ *
+ * The view itself can't have its internal state to be different from
+ * the shadow view.
+ *
+ * Yes we can make it a feedback loop with optional binding between
+ * properties, but it does not sound nice.
+ */
 
 data class View(
     val child: Any,
@@ -134,7 +147,6 @@ data class View(
     val visibility: Visibility = Visibility.VISIBLE,
     val flags: Flags = Flags(),
     val decoration: Decoration = Decoration(),
-    val emitter: Emitter? = null,
     val id: Int = AndroidView.NO_ID
 )
 
@@ -161,9 +173,6 @@ class ViewBinder(
             context.toInt(it.right),
             context.toInt(it.bottom)
         ) },
-        { it: View -> it.emitter } rendersTo  {
-            it?.view = this
-        },
         { it: View -> it.visibility } rendersTo {
             visibility = it.value
         },
