@@ -2,6 +2,7 @@ package com.gurunars.functional
 
 import com.gurunars.functional.text.Text
 import com.gurunars.functional.text.TextBinder
+import android.widget.LinearLayout as AndroidLinearLayout
 
 object Registry {
 
@@ -9,7 +10,7 @@ object Registry {
 
     fun<T> getParams(props: T): ParamBinder =
         when(props) {
-            is Linear
+            is LinearLayoutParams -> LinearLayoutParamsBinder()
             else -> throw UnknownComponent(props as Any)
         }
 
@@ -20,7 +21,7 @@ object Registry {
                 getParams(props.layoutParams)
             )
             is Text -> TextBinder()
-            is LinearContainer -> LinearContainerBinder()
+            is LinearLayout -> LinearContainerBinder()
             else -> throw UnknownComponent(props as Any)
         }
 
