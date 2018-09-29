@@ -59,24 +59,23 @@ fun <StateType, ComponentType> Activity.ui(
     init: StateType.() -> ComponentType
 ) {
     var currentState = state.get().init()
-    Registry.getElement(currentState).let {
-        val view = it.getEmptyTarget(this@ui).apply {
-            it.diff(it.empty, currentState as Any).forEach {
+    Registry.getElement(currentState).let { binder ->
+        val view = binder.getEmptyTarget(this@ui).apply {
+            binder.diff(binder.empty, currentState as Any).forEach {
                 it(this)
             }
         }
         state.onChange { new ->
             val newState = new.init()
-            it.diff(currentState as Any, newState as Any).forEach {
+            binder.diff(currentState as Any, newState as Any).forEach {
                 it(view)
             }
             currentState = newState
         }
-        view.let {
-            setContentView(it, ViewGroup.LayoutParams(
-                MATCH_PARENT, MATCH_PARENT
-            ))
-        }
+        setContentView(
+            view, ViewGroup.LayoutParams(
+            MATCH_PARENT, MATCH_PARENT
+        ))
     }
 }
 
