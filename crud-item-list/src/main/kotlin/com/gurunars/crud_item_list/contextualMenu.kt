@@ -36,10 +36,10 @@ internal fun <ItemType : Item> Context.contextualMenu(
         ).apply {
             this.id = id
             onClick {
-                action.perform(items.get(), selectedItems.get(), { first, second ->
+                action.perform(items.get(), selectedItems.get()) { first, second ->
                     items.set(first)
                     selectedItems.set(second)
-                })
+                }
             }
             layout(this@with) {
                 width = dip(45)
