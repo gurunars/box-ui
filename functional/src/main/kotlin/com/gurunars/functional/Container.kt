@@ -1,5 +1,6 @@
 package com.gurunars.functional
 
+import android.content.Context
 import android.view.View as AndroidView
 import android.view.ViewGroup
 
@@ -19,6 +20,7 @@ fun List<View>.group() =
     }.toMap()
 
 fun getCollectionDiff(
+    context: Context,
     old: List<View>,
     new: List<View>
 ): List<Mutation> {
@@ -54,7 +56,7 @@ fun getCollectionDiff(
                         viewCache[uid] = child
                     }
                 }
-            ) + component.diff(component.empty, newItem as Any).map { item ->
+            ) + component.diff(context, component.empty, newItem as Any).map { item ->
                 { _: Any -> item.invoke(viewCache[uid]!!) }
             }
         } +
@@ -63,7 +65,7 @@ fun getCollectionDiff(
             val oldItem = gOld[it]
             val component = Registry.getElement(newItem)
             component.diff(
-                oldItem as Any, newItem as Any
+                context, oldItem as Any, newItem as Any
             )
         }
     )

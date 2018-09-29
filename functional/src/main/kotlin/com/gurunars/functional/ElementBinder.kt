@@ -38,7 +38,7 @@ infix fun <PropsType, PropType, ViewType> ValueGetter<PropsType, PropType>.rende
 interface Binder<Source, Target> {
     val empty: Source
     fun getEmptyTarget(context: Context): Target
-    fun diff(old: Source, new: Source): List<Mutation>
+    fun diff(context: Context, old: Source, new: Source): List<Mutation>
 }
 
 interface LayoutParams {
@@ -61,13 +61,13 @@ fun <StateType, ComponentType> Activity.ui(
     var currentState = state.get().init()
     Registry.getElement(currentState).let { binder ->
         val view = binder.getEmptyTarget(this@ui).apply {
-            binder.diff(binder.empty, currentState as Any).forEach {
+            binder.diff(this@ui, binder.empty, currentState as Any).forEach {
                 it(this)
             }
         }
         state.onChange { new ->
             val newState = new.init()
-            binder.diff(currentState as Any, newState as Any).forEach {
+            binder.diff(this@ui, currentState as Any, newState as Any).forEach {
                 it(view)
             }
             currentState = newState

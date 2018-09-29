@@ -7,20 +7,24 @@ import android.widget.LinearLayout as AndroidLinearLayout
 data class LinearLayoutParams(
     override val width: Size = WrapContent,
     override val height: Size = WrapContent,
-    val margin: Bounds = Bounds(0.dp)
+    val margin: Bounds = Bounds(0.dp),
+    val weight: Int = 0,
+    val layoutGravity: Set<Gravity> = setOf()
 ): LayoutParams
 
 
 class LinearLayoutParamsBinder : ParamBinder {
 
-    private val changeSpec = listOf<ChangeSpec<LinearLayoutParams, *, AndroidLinearLayout.LayoutParams>>(
-        { it: LinearLayoutParams -> it.width } rendersTo { width = it }
-
-    )
-
-    override fun diff(old: LayoutParams, new: LayoutParams): List<Mutation> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+    override fun diff(context: Context, old: LayoutParams, new: LayoutParams): List<Mutation> =
+        listOf<ChangeSpec<LinearLayoutParams, *, AndroidLinearLayout.LayoutParams>>(
+            { it: LinearLayoutParams -> it.width } rendersTo { width = context.toInt(it) },
+            { it: LinearLayoutParams -> it.height } rendersTo { height = context.toInt(it) },
+            { it: LinearLayoutParams -> it.margin.bottom } rendersTo { bottomMargin = context.toInt(it) },
+            { it: LinearLayoutParams -> it.margin.top } rendersTo { topMargin = context.toInt(it) },
+            { it: LinearLayoutParams -> it.margin.left } rendersTo { leftMargin = context.toInt(it) },
+            { it: LinearLayoutParams -> it.margin.right } rendersTo { rightMargin = context.toInt(it) },
+            { it: LinearLayoutParams -> it.layoutGravity } rendersTo { gravity = it.toInt() }
+        ).diff(old as LinearLayoutParams, new as LinearLayoutParams)
 
     override val empty = LinearLayoutParams()
 
@@ -57,9 +61,9 @@ class LinearContainerBinder : ElementBinder {
         { it: LinearLayout -> it.verticalGravity } rendersTo { setVerticalGravity(it.value) }
     )
 
-    override fun diff(old: Any, new: Any): List<Mutation> =
+    override fun diff(context: Context, old: Any, new: Any): List<Mutation> =
         changeSpec.diff(
             old as LinearLayout,
             new as LinearLayout
-        ) + getCollectionDiff(old.children, new.children)
+        ) + getCollectionDiff(context, old.children, new.children)
 }

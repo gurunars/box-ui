@@ -256,9 +256,9 @@ class ViewBinder(
         }
     )
 
-    override fun diff(old: Any, new: Any): List<Mutation> =
+    override fun diff(context: Context, old: Any, new: Any): List<Mutation> =
         changeSpec.diff(old as View, new as View) +
-        paramBinder.diff(old.layoutParams, new.layoutParams) +
-        childBinder.diff(old.child, new.child)
+        paramBinder.diff(context, old.layoutParams, new.layoutParams) +
+        childBinder.diff(context, old.child, new.child)
 
 }
