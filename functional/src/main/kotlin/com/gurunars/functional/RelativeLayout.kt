@@ -4,54 +4,54 @@ import android.content.Context
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.RelativeLayout as AndroidRelativeLayout
 
-sealed class Rule(private val verb: Int, private val ref: Int? = null) {
+sealed class Rule(private val verb: Int, private val id: Int? = null) {
     fun remove(params: AndroidRelativeLayout.LayoutParams) {
         params.removeRule(verb)
     }
     fun add(params: AndroidRelativeLayout.LayoutParams) {
-        if (ref == null) {
+        if (id == null) {
             params.addRule(verb)
         } else {
-            params.addRule(verb, ref)
+            params.addRule(verb, id)
         }
     }
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (other !is Rule) return false
         if (verb != other.verb) return false
-        if (ref != other.ref) return false
+        if (id != other.id) return false
         return true
     }
 
     override fun hashCode(): Int {
         var result = verb
-        result = 31 * result + (ref ?: 0)
+        result = 31 * result + (id ?: 0)
         return result
     }
 
 }
-class Above(ref: Int): Rule(AndroidRelativeLayout.ABOVE, ref)
-class AlignBaseline(ref: Int): Rule(AndroidRelativeLayout.ALIGN_BASELINE, ref)
-class AlignBottom(ref: Int): Rule(AndroidRelativeLayout.ALIGN_BOTTOM, ref)
-class AlignEnd(ref: Int): Rule(AndroidRelativeLayout.ALIGN_END, ref)
-class AlignLeft(ref: Int): Rule(AndroidRelativeLayout.ALIGN_LEFT, ref)
+class Above(id: Int): Rule(AndroidRelativeLayout.ABOVE, id)
+class AlignBaseline(id: Int): Rule(AndroidRelativeLayout.ALIGN_BASELINE, id)
+class AlignBottom(id: Int): Rule(AndroidRelativeLayout.ALIGN_BOTTOM, id)
+class AlignEnd(id: Int): Rule(AndroidRelativeLayout.ALIGN_END, id)
+class AlignLeft(id: Int): Rule(AndroidRelativeLayout.ALIGN_LEFT, id)
 object AlignParentBottom: Rule(AndroidRelativeLayout.ALIGN_PARENT_BOTTOM)
 object AlignParentEnd: Rule(AndroidRelativeLayout.ALIGN_PARENT_END)
 object AlignParentLeft: Rule(AndroidRelativeLayout.ALIGN_PARENT_LEFT)
 object AlignParentRight: Rule(AndroidRelativeLayout.ALIGN_PARENT_RIGHT)
 object AlignParentStart: Rule(AndroidRelativeLayout.ALIGN_PARENT_START)
 object AlignParentTop: Rule(AndroidRelativeLayout.ALIGN_PARENT_TOP)
-class AlignRight(ref: Int): Rule(AndroidRelativeLayout.ALIGN_RIGHT, ref)
-class AlignStart(ref: Int): Rule(AndroidRelativeLayout.ALIGN_START, ref)
-class AlignTop(ref: Int): Rule(AndroidRelativeLayout.ALIGN_TOP, ref)
-class Below(ref: Int): Rule(AndroidRelativeLayout.BELOW, ref)
+class AlignRight(id: Int): Rule(AndroidRelativeLayout.ALIGN_RIGHT, id)
+class AlignStart(id: Int): Rule(AndroidRelativeLayout.ALIGN_START, id)
+class AlignTop(id: Int): Rule(AndroidRelativeLayout.ALIGN_TOP, id)
+class Below(id: Int): Rule(AndroidRelativeLayout.BELOW, id)
 object CenterHorizontal: Rule(AndroidRelativeLayout.CENTER_HORIZONTAL)
 object CenterInParent: Rule(AndroidRelativeLayout.CENTER_IN_PARENT)
 object CenterVertical: Rule(AndroidRelativeLayout.CENTER_VERTICAL)
-class EndOf(ref: Int): Rule(AndroidRelativeLayout.END_OF, ref)
-class LeftOf(ref: Int): Rule(AndroidRelativeLayout.LEFT_OF, ref)
-class RightOf(ref: Int): Rule(AndroidRelativeLayout.RIGHT_OF, ref)
-class StartOf(ref: Int): Rule(AndroidRelativeLayout.START_OF, ref)
+class EndOf(id: Int): Rule(AndroidRelativeLayout.END_OF, id)
+class LeftOf(id: Int): Rule(AndroidRelativeLayout.LEFT_OF, id)
+class RightOf(id: Int): Rule(AndroidRelativeLayout.RIGHT_OF, id)
+class StartOf(id: Int): Rule(AndroidRelativeLayout.START_OF, id)
 
 data class RelativeLayoutParams(
     override val width: Size = WrapContent,
