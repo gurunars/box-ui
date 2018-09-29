@@ -1,5 +1,6 @@
 package com.gurunars.functional
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.PorterDuff
@@ -36,7 +37,9 @@ enum class Gravity(
 ) {
     TOP(AndroidGravity.TOP),
     BOTTOM(AndroidGravity.BOTTOM),
+    @SuppressLint("RtlHardcoded")
     LEFT(AndroidGravity.LEFT),
+    @SuppressLint("RtlHardcoded")
     RIGHT(AndroidGravity.RIGHT),
 
     CENTER_VERTICAL(AndroidGravity.CENTER_VERTICAL),
