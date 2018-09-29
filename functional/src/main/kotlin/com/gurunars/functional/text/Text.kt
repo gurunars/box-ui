@@ -6,7 +6,7 @@ import com.gurunars.functional.*
 
 
 data class Text(
-    override val textAppearence: TextAppearence = TextAppearence(),
+    override val textAppearance: TextAppearance = TextAppearance(),
     val value: String = ""
 ): WithTextAppearence
 
@@ -19,7 +19,7 @@ class TextBinder : ElementBinder {
     override fun getEmptyTarget(context: Context) = TextView(context).apply {
         setSingleLine(true)
     }
-    override fun diff(old: Any, new: Any): List<Mutation> = changeSpec.diff(
+    override fun diff(context: Context, old: Any, new: Any): List<Mutation> = changeSpec.diff(
         old as Text,
         new as Text
     )
