@@ -30,10 +30,6 @@ class ChangeSpec<in PropsType, PropType, ViewType>(
     }
 }
 
-infix fun <PropsType, PropType, ViewType> ValueGetter<PropsType, PropType>.transitsTo(mutator: Mutator<PropType, ViewType>) =
-    ChangeSpec(this, mutator)
-
-
 infix fun <PropsType, PropType, ViewType> ValueGetter<PropsType, PropType>.rendersTo(mutator: ViewType.(new: PropType) -> Unit) =
     ChangeSpec<PropsType, PropType, ViewType>(
         this,
