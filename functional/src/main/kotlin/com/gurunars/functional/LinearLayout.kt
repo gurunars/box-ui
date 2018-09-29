@@ -8,7 +8,7 @@ data class LinearLayoutParams(
     override val width: Size = WrapContent,
     override val height: Size = WrapContent,
     val margin: Bounds = Bounds(0.dp),
-    val weight: Int = 0,
+    val weight: Float = 0f,
     val layoutGravity: Set<Gravity> = setOf()
 ): LayoutParams
 
@@ -19,6 +19,7 @@ class LinearLayoutParamsBinder : ParamBinder {
         listOf<ChangeSpec<LinearLayoutParams, *, AndroidLinearLayout.LayoutParams>>(
             { it: LinearLayoutParams -> it.width } rendersTo { width = context.toInt(it) },
             { it: LinearLayoutParams -> it.height } rendersTo { height = context.toInt(it) },
+            { it: LinearLayoutParams -> it.weight } rendersTo { weight = it },
             { it: LinearLayoutParams -> it.margin.bottom } rendersTo { bottomMargin = context.toInt(it) },
             { it: LinearLayoutParams -> it.margin.top } rendersTo { topMargin = context.toInt(it) },
             { it: LinearLayoutParams -> it.margin.left } rendersTo { leftMargin = context.toInt(it) },
