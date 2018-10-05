@@ -64,20 +64,20 @@ data class RelativeLayoutParams(
 class RelativeLayoutParamsBinder : ParamBinder {
 
     override fun diff(context: Context, old: LayoutParams, new: LayoutParams): List<Mutation> =
-        listOf<ChangeSpec<RelativeLayoutParams, *, AndroidRelativeLayout.LayoutParams>>(
-            { it: RelativeLayoutParams -> it.width } rendersTo { width = context.toInt(it) },
-            { it: RelativeLayoutParams -> it.height } rendersTo { height = context.toInt(it) },
-            { it: RelativeLayoutParams -> it.margin.bottom } rendersTo { bottomMargin = context.toInt(it) },
-            { it: RelativeLayoutParams -> it.margin.top } rendersTo { topMargin = context.toInt(it) },
-            { it: RelativeLayoutParams -> it.margin.left } rendersTo { leftMargin = context.toInt(it) },
-            { it: RelativeLayoutParams -> it.margin.right } rendersTo { rightMargin = context.toInt(it) },
-            { it: RelativeLayoutParams -> it.rules } transitsTo { oldRules, newRules ->
+        changeSpecs<RelativeLayoutParams, AndroidRelativeLayout.LayoutParams> {
+            rendersTo({ width }) { width = context.toInt(it) }
+            rendersTo({ height }) { height = context.toInt(it) }
+            rendersTo({ margin.bottom }) { bottomMargin = context.toInt(it) }
+            rendersTo({ margin.top }) { topMargin = context.toInt(it) }
+            rendersTo({ margin.left }) { leftMargin = context.toInt(it) }
+            rendersTo({ margin.right }) { rightMargin = context.toInt(it) }
+            transitsTo({ rules }) { oldRules, newRules ->
                 run {
                     (oldRules - newRules).forEach { it.remove(this) }
                     (newRules - oldRules).forEach { it.add(this) }
                 }
             }
-        ).diff(old as RelativeLayoutParams, new as RelativeLayoutParams)
+        }.diff(old as RelativeLayoutParams, new as RelativeLayoutParams)
 
     override val empty = RelativeLayoutParams()
 
@@ -92,14 +92,15 @@ data class RelativeLayout(
     override val children: List<View> = listOf()
 ): Container
 
+
 class RelativeContainerBinder : ElementBinder {
     override val empty = RelativeLayout()
     override fun getEmptyTarget(context: Context) = AndroidRelativeLayout(context)
 
-    private val changeSpec = listOf<ChangeSpec<RelativeLayout, *, AndroidRelativeLayout>>(
-        { it: RelativeLayout -> it.horisontalGravity } rendersTo { setHorizontalGravity(it.value) },
-        { it: RelativeLayout -> it.verticalGravity } rendersTo { setVerticalGravity(it.value) }
-    )
+    private val changeSpec = changeSpecs<RelativeLayout, AndroidRelativeLayout> {
+        rendersTo({ horisontalGravity }) { setHorizontalGravity(it.value) }
+        rendersTo({ verticalGravity }) { setVerticalGravity(it.value) }
+    }
 
     override fun diff(context: Context, old: Any, new: Any): List<Mutation> =
         changeSpec.diff(

@@ -169,95 +169,97 @@ class ViewBinder(
             else -> null
         }
 
-    private val changeSpec = listOf<ChangeSpec<View, *, AndroidView>>(
-        { it: View -> it.padding } rendersTo { setPadding(
-            context.toInt(it.left),
-            context.toInt(it.top),
-            context.toInt(it.right),
-            context.toInt(it.bottom)
-        ) },
-        { it: View -> it.visibility } rendersTo {
+    private val changeSpec = changeSpecs<View, AndroidView> {
+        rendersTo({ padding }){
+            setPadding(
+                context.toInt(it.left),
+                context.toInt(it.top),
+                context.toInt(it.right),
+                context.toInt(it.bottom)
+            )
+        }
+        rendersTo({ visibility }) {
             visibility = it.value
-        },
-        { it: View -> it.background?.drawable } rendersTo {
+        }
+        rendersTo({ background?.drawable }) {
             background = context.getAndroidDrawable(it)
-        },
-        { it: View -> it.background?.tintMode } rendersTo {
+        }
+        rendersTo({ background?.tintMode }) {
             backgroundTintMode = it
-        },
-        { it: View -> it.background?.tint } rendersTo {
+        }
+        rendersTo({ background?.tint }) {
             backgroundTintList = it
-        },
-        { it: View -> it.foreground?.drawable } rendersTo {
+        }
+        rendersTo({ foreground?.drawable }) {
             foreground = context.getAndroidDrawable(it)
-        },
-        { it: View -> it.foreground?.tintMode } rendersTo {
+        }
+        rendersTo({ foreground?.tintMode })  {
             foregroundTintMode = it
-        },
-        { it: View -> it.foreground?.tint } rendersTo {
+        }
+        rendersTo({ foreground?.tint }) {
             foregroundTintList = it
-        },
-        { it: View -> it.foreground?.gravity ?: setOf(Gravity.TOP, Gravity.LEFT) } rendersTo {
+        }
+        rendersTo({ foreground?.gravity ?: setOf(Gravity.TOP, Gravity.LEFT) }) {
             foregroundGravity = it.toInt()
-        },
-        { it: View -> it.flags.activated } rendersTo {
+        }
+        rendersTo({ flags.activated }) {
             isActivated = it
-        },
-        { it: View -> it.flags.clickable } rendersTo {
+        }
+        rendersTo({ flags.clickable }) {
             isClickable = it
-        },
-        { it: View -> it.flags.enabled } rendersTo {
+        }
+        rendersTo({ flags.enabled }) {
             isEnabled = it
-        },
-        { it: View -> it.flags.selected } rendersTo {
+        }
+        rendersTo({ flags.selected }) {
             isSelected = it
-        },
-        { it: View -> it.flags.focusable } rendersTo {
+        }
+        rendersTo({ flags.focusable }) {
             isFocusable = it
-        },
-        { it: View -> it.decoration.pivot.x } rendersTo {
+        }
+        rendersTo({ decoration.pivot.x }) {
             pivotX = it
-        },
-        { it: View -> it.decoration.pivot.y } rendersTo {
+        }
+        rendersTo({ decoration.pivot.y }) {
             pivotY = it
-        },
-        { it: View -> it.decoration.scale.x } rendersTo {
+        }
+        rendersTo({ decoration.scale.x }) {
             scaleX = it
-        },
-        { it: View -> it.decoration.scale.y } rendersTo {
+        }
+        rendersTo({ decoration.scale.y }) {
             scaleY = it
-        },
-        { it: View -> it.decoration.scale.y } rendersTo {
+        }
+        rendersTo({ decoration.scale.y }) {
             scaleY = it
-        },
-        { it: View -> it.decoration.translation.x } rendersTo {
+        }
+        rendersTo({ decoration.translation.x }) {
             translationX = it
-        },
-        { it: View -> it.decoration.translation.y } rendersTo {
+        }
+        rendersTo({ decoration.translation.y }) {
             translationY = it
-        },
-        { it: View -> it.decoration.translation.z } rendersTo {
+        }
+        rendersTo({ decoration.translation.z }) {
             translationZ = it
-        },
-        { it: View -> it.decoration.elevation } rendersTo {
+        }
+        rendersTo({ decoration.elevation }) {
             elevation = it
-        },
-        { it: View -> it.decoration.alpha } rendersTo {
+        }
+        rendersTo({ decoration.alpha }) {
             alpha = it
-        },
-        { it: View -> it.decoration.rotation.cameraDistance } rendersTo {
+        }
+        rendersTo({ decoration.rotation.cameraDistance }) {
             cameraDistance = it
-        },
-        { it: View -> it.decoration.rotation.general } rendersTo {
+        }
+        rendersTo({ decoration.rotation.general }) {
             rotation = it
-        },
-        { it: View -> it.decoration.rotation.x } rendersTo {
+        }
+        rendersTo({ decoration.rotation.x }) {
             rotationX = it
-        },
-        { it: View -> it.decoration.rotation.y } rendersTo {
+        }
+        rendersTo({ decoration.rotation.y }) {
             rotationY = it
         }
-    )
+    }
 
     override fun diff(context: Context, old: Any, new: Any): List<Mutation> =
         changeSpec.diff(old as View, new as View) +

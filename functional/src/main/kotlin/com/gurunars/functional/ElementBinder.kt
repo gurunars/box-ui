@@ -11,8 +11,7 @@ import java.util.*
 
 typealias Mutation = (view: Any) -> Unit
 typealias Mutator<PropType, ViewType> = ViewType.(old: PropType, new: PropType) -> Unit
-typealias ValueGetter<PropsType, PropType> = (item: PropsType) -> PropType
-
+typealias ValueGetter<PropsType, PropType> = PropsType.() -> PropType
 
 class ChangeSpec<in PropsType, PropType, ViewType>(
     private val valueGetter: ValueGetter<PropsType, PropType>,
@@ -30,13 +29,29 @@ class ChangeSpec<in PropsType, PropType, ViewType>(
     }
 }
 
-infix fun <PropsType, PropType, ViewType> ValueGetter<PropsType, PropType>.transitsTo(mutator: Mutator<PropType, ViewType>) =
-    ChangeSpec(this, mutator)
+class ChangeSpecs<PropsType, ViewType> {
+    private val specs: MutableList<ChangeSpec<PropsType, Any, ViewType>> = mutableListOf()
 
-infix fun <PropsType, PropType, ViewType> ValueGetter<PropsType, PropType>.rendersTo(mutator: ViewType.(new: PropType) -> Unit) =
-    ChangeSpec<PropsType, PropType, ViewType>(
-        this,
-        { _: PropType, new: PropType -> mutator(this, new) })
+    @Suppress("UNCHECKED_CAST")
+    private fun <PropType> add(spec: ChangeSpec<PropsType, PropType, ViewType>) =
+        specs.add(spec as ChangeSpec<PropsType, Any, ViewType>)
+
+    fun <PropType> rendersTo(getter: ValueGetter<PropsType, PropType>, mutator: ViewType.(new: PropType) -> Unit) =
+        add(ChangeSpec(getter, { _: PropType, new: PropType -> mutator(this, new) }))
+
+    fun <PropType> transitsTo(getter: ValueGetter<PropsType, PropType>, mutator: Mutator<PropType, ViewType>) =
+        add(ChangeSpec(getter, mutator))
+
+    fun diff(old: PropsType, new: PropsType) =
+        specs.mapNotNull { it.produce(old, new) }
+
+}
+
+fun<PropsType, ViewType> changeSpecs(init: ChangeSpecs<PropsType, ViewType>.() -> Unit) =
+    ChangeSpecs<PropsType, ViewType>().apply {
+        init()
+    }
+
 
 interface Binder<Source, Target> {
     val empty: Source
@@ -51,10 +66,6 @@ interface LayoutParams {
 
 interface ElementBinder : Binder<Any, View>
 interface ParamBinder : Binder<LayoutParams, ViewGroup.LayoutParams>
-
-@Suppress("UNCHECKED_CAST")
-fun <PropsType> List<ChangeSpec<PropsType, *, *>>.diff(old: PropsType, new: PropsType) =
-    mapNotNull { it.produce(old, new) }
 
 
 fun <StateType, ComponentType> Activity.ui(

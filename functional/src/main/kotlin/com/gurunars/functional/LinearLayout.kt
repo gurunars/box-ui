@@ -16,16 +16,22 @@ data class LinearLayoutParams(
 class LinearLayoutParamsBinder : ParamBinder {
 
     override fun diff(context: Context, old: LayoutParams, new: LayoutParams): List<Mutation> =
-        listOf<ChangeSpec<LinearLayoutParams, *, AndroidLinearLayout.LayoutParams>>(
-            { it: LinearLayoutParams -> it.width } rendersTo { width = context.toInt(it) },
-            { it: LinearLayoutParams -> it.height } rendersTo { height = context.toInt(it) },
-            { it: LinearLayoutParams -> it.weight } rendersTo { weight = it },
-            { it: LinearLayoutParams -> it.margin.bottom } rendersTo { bottomMargin = context.toInt(it) },
-            { it: LinearLayoutParams -> it.margin.top } rendersTo { topMargin = context.toInt(it) },
-            { it: LinearLayoutParams -> it.margin.left } rendersTo { leftMargin = context.toInt(it) },
-            { it: LinearLayoutParams -> it.margin.right } rendersTo { rightMargin = context.toInt(it) },
-            { it: LinearLayoutParams -> it.layoutGravity } rendersTo { gravity = it.toInt() }
-        ).diff(old as LinearLayoutParams, new as LinearLayoutParams)
+        changeSpecs<LinearLayoutParams, AndroidLinearLayout.LayoutParams> {
+            rendersTo({ width }) { width = context.toInt(it) }
+            rendersTo({ height }) { height = context.toInt(it) }
+            rendersTo({ weight }) { weight = it }
+            rendersTo({ margin.bottom }) {
+                bottomMargin = context.toInt(it)
+            }
+            rendersTo({ margin.top }) { topMargin = context.toInt(it) }
+            rendersTo({ margin.left }) {
+                leftMargin = context.toInt(it)
+            }
+            rendersTo({ margin.right }) {
+                rightMargin = context.toInt(it)
+            }
+            rendersTo({ layoutGravity }) { gravity = it.toInt() }
+        }.diff(old as LinearLayoutParams, new as LinearLayoutParams)
 
     override val empty = LinearLayoutParams()
 
@@ -51,16 +57,16 @@ class LinearContainerBinder : ElementBinder {
     override val empty = LinearLayout()
     override fun getEmptyTarget(context: Context) = AndroidLinearLayout(context)
 
-    private val changeSpec = listOf<ChangeSpec<LinearLayout, *, AndroidLinearLayout>>(
-        { it: LinearLayout -> it.orientation } rendersTo  {
-            orientation = when(it) {
+    private val changeSpec = changeSpecs<LinearLayout, AndroidLinearLayout> {
+        rendersTo({ orientation }) {
+            orientation = when (it) {
                 LinearLayout.Orientation.VERTICAL -> AndroidLinearLayout.VERTICAL
                 LinearLayout.Orientation.HORIZONTAL -> AndroidLinearLayout.VERTICAL
             }
-        },
-        { it: LinearLayout -> it.horisontalGravity } rendersTo { setHorizontalGravity(it.value) },
-        { it: LinearLayout -> it.verticalGravity } rendersTo { setVerticalGravity(it.value) }
-    )
+        }
+        rendersTo({ horisontalGravity }) { setHorizontalGravity(it.value) }
+        rendersTo({ verticalGravity }) { setVerticalGravity(it.value) }
+    }
 
     override fun diff(context: Context, old: Any, new: Any): List<Mutation> =
         changeSpec.diff(
