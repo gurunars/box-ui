@@ -11,9 +11,9 @@ data class Text(
 ): WithTextAppearence
 
 class TextBinder : ElementBinder {
-    private val changeSpec = listOf<ChangeSpec<Text, *, TextView>>(
-        { it: Text -> it.value } rendersTo  { text = it }
-    ) + textAppearenceChangeSpec()
+    private val changeSpec = changeSpecs<Text, TextView> {
+        rendersTo({ value })  { text = it }
+    } + textAppearanceChangeSpec()
 
     override val empty = Text()
     override fun getEmptyTarget(context: Context) = TextView(context).apply {

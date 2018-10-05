@@ -20,11 +20,11 @@ interface WithTextAppearence {
     val textAppearance: TextAppearance
 }
 
-fun<T: WithTextAppearence> textAppearenceChangeSpec() = listOf<ChangeSpec<T, *, TextView>>(
-    { it: T -> it.textAppearance.color } rendersTo { setTextColor(it.value) },
-    { it: T -> it.textAppearance.gravity } rendersTo { gravity = it.value },
-    { it: T -> it.textAppearance.size } rendersTo { textSize = context.toInt(it).toFloat() },
-    { it: T -> it.textAppearance.textStyle } rendersTo {
+fun<T: WithTextAppearence> textAppearanceChangeSpec() = changeSpecs<T, TextView> {
+    rendersTo({ textAppearance.color }) { setTextColor(it.value) }
+    rendersTo({ textAppearance.gravity }) { gravity = it.value }
+    rendersTo({ textAppearance.size }) { textSize = context.toInt(it).toFloat() }
+    rendersTo({ textAppearance.textStyle }) {
         when {
             it.isEmpty()
             -> setTypeface(typeface, Typeface.NORMAL)
@@ -45,4 +45,4 @@ fun<T: WithTextAppearence> textAppearenceChangeSpec() = listOf<ChangeSpec<T, *, 
             -> paintFlags
         }
     }
-)
+}

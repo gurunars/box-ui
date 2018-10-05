@@ -30,7 +30,7 @@ class ChangeSpec<in PropsType, PropType, ViewType>(
 }
 
 class ChangeSpecs<PropsType, ViewType> {
-    private val specs: MutableList<ChangeSpec<PropsType, Any, ViewType>> = mutableListOf()
+    protected val specs: MutableList<ChangeSpec<PropsType, Any, ViewType>> = mutableListOf()
 
     @Suppress("UNCHECKED_CAST")
     private fun <PropType> add(spec: ChangeSpec<PropsType, PropType, ViewType>) =
@@ -44,6 +44,12 @@ class ChangeSpecs<PropsType, ViewType> {
 
     fun diff(old: PropsType, new: PropsType) =
         specs.mapNotNull { it.produce(old, new) }
+
+    operator fun plus(other: ChangeSpecs<PropsType, ViewType>) =
+        ChangeSpecs<PropsType, ViewType>().apply {
+            specs.addAll(this@ChangeSpecs.specs)
+            specs.addAll(other.specs)
+        }
 
 }
 
