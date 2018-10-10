@@ -44,7 +44,7 @@ fun getCollectionDiff(
         } } +
         added.flatMap { uid ->
             val newItem = gNew[uid]
-            val component = Registry.getElement(newItem)
+            val component = Registry.getElementBinder(newItem)
             listOf(
                 { view: Any ->
                     component.getEmptyTarget(
@@ -63,7 +63,7 @@ fun getCollectionDiff(
         updated.flatMap {
             val newItem = gNew[it]
             val oldItem = gOld[it]
-            val component = Registry.getElement(newItem)
+            val component = Registry.getElementBinder(newItem)
             component.diff(
                 context, oldItem as Any, newItem as Any
             )

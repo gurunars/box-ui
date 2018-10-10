@@ -3,6 +3,9 @@ package com.gurunars.functional
 import android.content.Context
 import android.graphics.Paint
 import android.graphics.Typeface
+import android.view.View
+import android.view.ViewGroup
+import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import android.widget.EditText
 import android.widget.TextView
 
@@ -89,4 +92,21 @@ class TextBinder : ElementBinder {
         old as Text,
         new as Text
     )
+}
+
+class StringBinder : ElementBinder {
+    override val empty = ""
+
+    override fun getEmptyTarget(context: Context): View = TextView(context).apply {
+        setSingleLine(true)
+        layoutParams = ViewGroup.LayoutParams(WRAP_CONTENT, WRAP_CONTENT)
+    }
+
+    private val changeSpec = changeSpecs<Any, TextView> {
+        rendersTo({ toString() }, { text = it })
+    }
+
+    override fun diff(context: Context, old: Any, new: Any): List<Mutation> =
+        changeSpec.diff(old, new)
+
 }

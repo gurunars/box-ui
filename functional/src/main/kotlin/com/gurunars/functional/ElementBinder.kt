@@ -79,7 +79,7 @@ fun <StateType, ComponentType> Activity.ui(
     init: StateType.() -> ComponentType
 ) {
     var currentState = state.get().init()
-    Registry.getElement(currentState).let { binder ->
+    Registry.getElementBinder(currentState).let { binder ->
         val view = binder.getEmptyTarget(this@ui).apply {
             binder.diff(this@ui, binder.empty, currentState as Any).forEach {
                 it(this)
