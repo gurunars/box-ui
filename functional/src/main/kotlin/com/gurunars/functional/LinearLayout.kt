@@ -53,7 +53,7 @@ data class LinearLayout(
 
 }
 
-class LinearContainerBinder : ElementBinder {
+class LinearLayoutBinder : ElementBinder {
     override val empty = LinearLayout()
     override fun getEmptyTarget(context: Context) = AndroidLinearLayout(context)
 

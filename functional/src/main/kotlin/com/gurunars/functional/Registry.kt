@@ -20,8 +20,8 @@ object Registry {
                 getParamBinder(props.layoutParams)
             )
             is Text -> TextBinder()
-            is LinearLayout -> LinearContainerBinder()
-            is RelativeLayout -> RelativeContainerBinder()
+            is LinearLayout -> LinearLayoutBinder()
+            is RelativeLayout -> RelativeLayoutBinder()
             is TextInput -> TextInputBinder()
             else -> StringBinder()
         }

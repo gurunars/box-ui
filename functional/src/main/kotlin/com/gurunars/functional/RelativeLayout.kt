@@ -93,7 +93,7 @@ data class RelativeLayout(
 ): Container
 
 
-class RelativeContainerBinder : ElementBinder {
+class RelativeLayoutBinder : ElementBinder {
     override val empty = RelativeLayout()
     override fun getEmptyTarget(context: Context) = AndroidRelativeLayout(context)
 
