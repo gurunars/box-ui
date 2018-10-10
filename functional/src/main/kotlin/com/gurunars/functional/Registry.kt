@@ -1,7 +1,5 @@
 package com.gurunars.functional
 
-import com.gurunars.functional.text.Text
-import com.gurunars.functional.text.TextBinder
 import android.widget.LinearLayout as AndroidLinearLayout
 
 object Registry {
