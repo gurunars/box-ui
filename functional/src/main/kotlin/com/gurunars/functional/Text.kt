@@ -51,13 +51,13 @@ fun<T: WithTextAppearence, V: TextView> textAppearanceChangeSpec() = changeSpecs
     }
 }
 
-data class Input(
+data class TextInput(
     override val textAppearance: TextAppearance = TextAppearance(),
     val value: Box<String>
 ): WithTextAppearence
 
-class InputBinder : ElementBinder {
-    private val changeSpec = changeSpecs<Input, EditText> {
+class TextInputBinder : ElementBinder {
+    private val changeSpec = changeSpecs<TextInput, EditText> {
         rendersTo({ value })  { setText(it.get()) }
     } + textAppearanceChangeSpec()
 
@@ -66,8 +66,8 @@ class InputBinder : ElementBinder {
         setSingleLine(true)
     }
     override fun diff(context: Context, old: Any, new: Any): List<Mutation> = changeSpec.diff(
-        old as Input,
-        new as Input
+        old as TextInput,
+        new as TextInput
     )
 }
 

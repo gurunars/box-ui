@@ -22,6 +22,7 @@ object Registry {
             is Text -> TextBinder()
             is LinearLayout -> LinearContainerBinder()
             is RelativeLayout -> RelativeContainerBinder()
+            is TextInput -> TextInputBinder()
             else -> throw UnknownComponent(props as Any)
         }
 
