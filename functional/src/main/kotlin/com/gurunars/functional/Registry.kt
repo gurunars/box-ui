@@ -23,6 +23,8 @@ object Registry {
             is LinearLayout -> LinearLayoutBinder()
             is RelativeLayout -> RelativeLayoutBinder()
             is TextInput -> TextInputBinder()
+            //is Map<*> -> MapBinder()
+            //is Collection<*> -> CollectionBinder()
             else -> StringBinder()
         }
 
