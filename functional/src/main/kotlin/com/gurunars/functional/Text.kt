@@ -56,7 +56,7 @@ fun<T: WithTextAppearence, V: TextView> textAppearanceChangeSpec() = changeSpecs
 
 data class TextInput(
     override val textAppearance: TextAppearance = TextAppearance(),
-    val value: Box<String>
+    val value: Field<String>
 ): WithTextAppearence
 
 class TextInputBinder : ElementBinder {
