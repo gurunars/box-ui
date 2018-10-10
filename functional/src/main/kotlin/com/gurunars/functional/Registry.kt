@@ -11,6 +11,7 @@ object Registry {
     fun<T> getParams(props: T): ParamBinder =
         when(props) {
             is LinearLayoutParams -> LinearLayoutParamsBinder()
+            is RelativeLayoutParams -> RelativeLayoutParamsBinder()
             else -> throw UnknownComponent(props as Any)
         }
 
@@ -22,6 +23,7 @@ object Registry {
             )
             is Text -> TextBinder()
             is LinearLayout -> LinearContainerBinder()
+            is RelativeLayout -> RelativeContainerBinder()
             else -> throw UnknownComponent(props as Any)
         }
 
