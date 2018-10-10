@@ -2,6 +2,7 @@ package com.gurunars.functional.example
 
 import android.app.Activity
 import android.os.Bundle
+import com.gurunars.box.Box
 import com.gurunars.functional.ui
 
 class ActivityMain : Activity() {
@@ -9,6 +10,8 @@ class ActivityMain : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        ui()
+        val state = Box("one")
+
+        ui(state) { this }
     }
 }
