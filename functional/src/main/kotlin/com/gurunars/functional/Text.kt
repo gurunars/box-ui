@@ -61,7 +61,7 @@ data class TextInput(
 
 class TextInputBinder : ElementBinder {
     private val changeSpec = changeSpecs<TextInput, EditText> {
-        rendersTo({ value })  { setText(it.get()) }
+        rendersTo({ value })  { setText(it.value) }
     } + textAppearanceChangeSpec()
 
     override val empty = Text()

@@ -59,15 +59,12 @@ android {
 }
 
 dependencies {
-    androidTestImplementation project(':example-test-utils')
     implementation("android.arch.core:runtime:1.1.1") {
         force = true
     }
     implementation supportV4
     implementation kotlinStdLib
-    implementation project(':android-utils')
     implementation project(':box')
-    implementation project(':box-ui')
 }
 
 spoon {
