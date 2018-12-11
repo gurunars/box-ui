@@ -9,7 +9,7 @@ import android.widget.Toast
 import com.gurunars.animal_item.AnimalItem
 import com.gurunars.animal_item.Service
 import com.gurunars.animal_item.Service.Companion.getRealService
-import com.gurunars.animal_item.bindAnimal
+import com.gurunars.animal_item.renderAnimal
 import com.gurunars.box.*
 import com.gurunars.box.ui.layoutAsOne
 import com.gurunars.box.ui.statefulView
@@ -42,7 +42,7 @@ class ActivityMain : Activity() {
                 selectedItems = selectedItems,
                 itemViewBinders = AnimalItem.Type.values().map {
                     Pair(it as Enum<*>, { item: IRoBox<SelectableItem<AnimalItem>> ->
-                        coloredRowSelectionDecorator(item) { bindAnimal(it) }
+                        coloredRowSelectionDecorator(item) { renderAnimal(it) }
                     })
                 }.toMap()
             ).layoutAsOne(this)

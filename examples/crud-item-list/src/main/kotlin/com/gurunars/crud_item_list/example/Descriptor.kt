@@ -7,7 +7,7 @@ import android.view.Gravity
 import android.view.View
 import com.gurunars.android_utils.Icon
 import com.gurunars.animal_item.AnimalItem
-import com.gurunars.animal_item.bindAnimal
+import com.gurunars.animal_item.renderAnimal
 import com.gurunars.crud_item_list.ItemTypeDescriptor
 import com.gurunars.box.IBox
 import com.gurunars.box.IRoBox
@@ -16,7 +16,6 @@ import com.gurunars.box.oneWayBranch
 import com.gurunars.box.ui.fullSize
 import com.gurunars.box.ui.text
 import com.gurunars.item_list.SelectableItem
-import com.gurunars.item_list.coloredRowSelectionDecorator
 import org.jetbrains.anko.backgroundColor
 import org.jetbrains.anko.button
 import org.jetbrains.anko.editText
@@ -49,7 +48,7 @@ internal class Descriptor(
         }
 
     override fun bindRow(field: IRoBox<SelectableItem<AnimalItem>>): View =
-        coloredRowSelectionDecorator(field) { context.bindAnimal(it ) }
+        coloredRowSelectionDecorator(field) { context.renderAnimal(it ) }
 
     override val icon = Icon(icon = iconId)
     override fun createNewItem() = AnimalItem(

@@ -12,7 +12,7 @@ import com.gurunars.box.ui.setBorders
 import com.gurunars.box.ui.text
 import org.jetbrains.anko.*
 
-fun Context.bindAnimal(field: IRoBox<AnimalItem>): View = linearLayout {
+fun Context.renderAnimal(field: IRoBox<AnimalItem>): View = linearLayout {
     gravity = Gravity.CENTER_VERTICAL
     imageView().apply {
         resource(field.oneWayBranch { type.resourceId })

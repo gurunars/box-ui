@@ -114,7 +114,7 @@ abstract class AbstractActivityStorybook : Activity() {
                     bottomMargin = dip(10)
                 }
                 itemListView(
-                    itemViewBinders = mapOf(
+                    renderer = mapOf(
                         Item.Default.ONLY as Enum<*> to { field: IRoBox<PackageName> ->
                             bindPackageName(field, activeSection)
                         }

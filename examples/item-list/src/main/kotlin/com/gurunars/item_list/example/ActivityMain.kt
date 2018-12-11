@@ -9,11 +9,12 @@ import android.widget.Toast
 import com.gurunars.animal_item.AnimalItem
 import com.gurunars.animal_item.Service
 import com.gurunars.animal_item.Service.Companion.getRealService
-import com.gurunars.animal_item.bindAnimal
+import com.gurunars.animal_item.renderAnimal
 import com.gurunars.box.IBox
-import com.gurunars.box.IRoBox
 import com.gurunars.box.ui.layoutAsOne
+import com.gurunars.item_list.Renderer
 import com.gurunars.item_list.itemListView
+import com.gurunars.item_list.renderWith
 
 class ActivityMain : Activity() {
 
@@ -32,9 +33,9 @@ class ActivityMain : Activity() {
 
         itemListView(
             items = items,
-            itemViewBinders = AnimalItem.Type.values().map {
-                Pair(it as Enum<*>, { value: IRoBox<AnimalItem> -> this.bindAnimal(value) })
-            }.toMap()
+            renderer = Renderer(
+                renderWith<AnimalItem> { renderAnimal(it) }
+            )
         ).layoutAsOne(this)
     }
 
@@ -75,9 +76,9 @@ class ActivityMain : Activity() {
     }
 
     @StringRes private fun delete(): Int {
-        this.items.set(this.items.get().filterIndexed({ index, _ ->
+        this.items.set(this.items.get().filterIndexed { index, _ ->
             index % 2 == 0
-        }))
+        })
         return R.string.did_delete
     }
 
@@ -116,7 +117,10 @@ class ActivityMain : Activity() {
 
     @StringRes private fun reset(): Int {
         srv.clear()
-        create()
+        items.set((1..4000).map { index ->
+            val type = AnimalItem.Type.values()[index % 4]
+            AnimalItem(-index.toLong(), type, 0)
+        })
         return R.string.did_reset
     }
 }

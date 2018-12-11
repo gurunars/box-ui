@@ -11,11 +11,10 @@ import com.gurunars.box.ui.statefulView
 /**
  * Wrapper around item item with an "isSelected" flag.
  *
- * @param ItemType type of the actual item
  * @property item the actual item
  * @property isSelected a flag indicating if this particular item should be marked as selected
  */
-data class SelectableItem<ItemType: Item> internal constructor(
+data class SelectableItem constructor(
     val item: Item,
     val isSelected: Boolean
 ) : Item {
@@ -28,11 +27,10 @@ data class SelectableItem<ItemType: Item> internal constructor(
         item.toString() + "|" + isSelected
 }
 
-
-internal fun <ItemType : Item> clickableBind(
+internal fun clickableBind(
     selectedItems: IBox<Set<Item>>,
-    renderItem: RenderItem<SelectableItem<ItemType>>,
-    field: IRoBox<SelectableItem<ItemType>>,
+    renderItem: RenderItem<SelectableItem>,
+    field: IRoBox<SelectableItem>,
     explicitSelectionMode: IRoBox<Boolean>
 ) =
     renderItem(field).apply {
@@ -62,18 +60,20 @@ internal fun <ItemType : Item> clickableBind(
  * Items can be selected initially via long clicking and further on by consequentially
  * clicking them.
  *
- * @param ItemType type of the item to be shown in the list
  * @param items A collection of items shown in the list
  * @param selectedItems A collection of items selected at the moment
  * @param itemViewBinders a type based mapping between item type and item renderer
  * @param emptyViewBinder a function returning a view to be shown when the list is empty
  * @param explicitSelectionMode when true selection mode is initiated via normal click instead of a long one
  */
-fun Context.selectableItemListView(
-    items: IRoBox<List<Item>>,
-    selectedItems: IBox<Set<Item>> = Box(setOf()),
-    itemViewBinders: Set<ItemBinding<*>> = setOf(),
+fun<ItemType: Item> Context.selectableItemListView(
+    itemViewBinders: Set<RenderType<*>> = setOf(),
     emptyViewBinder: EmptyViewBinder = this::defaultEmptyViewBinder,
+    decorateSelection: View.(type: Any, isSelected: IRoBox<Boolean>) -> Unit = {
+        _, isSelected -> coloredRowSelectionDecorator(isSelected=isSelected)
+    },
+    items: IRoBox<List<ItemType>>,
+    selectedItems: IBox<Set<Item>> = Box(setOf()),
     explicitSelectionMode: IRoBox<Boolean> = false.box
 ): View = statefulView(R.id.selectableItemListView) {
 
@@ -99,12 +99,24 @@ fun Context.selectableItemListView(
 
     itemListView(
         items = selectables,
-        itemViewBinders = itemViewBinders
-            .map {
-                it.type rendersTo { item: IRoBox<SelectableItem> ->
-                    clickableBind(selectedItems, it, item, explicitSelectionMode)
+        renderer = Renderer(
+            *itemViewBinders.map { original ->
+                renderWith(original.type) { selectable: IRoBox<SelectableItem> ->
+                    clickableBind(selectedItems, {
+                        original.renderGeneric(selectable.oneWayBranch { item })
+                    }, selectable, explicitSelectionMode).apply {
+                        decorateSelection(original.type, selectable.oneWayBranch { isSelected })
+                    }
                 }
-            }.toSet(),
-        emptyViewBinder = emptyViewBinder
+            }.toTypedArray(),
+            getType = {
+                if (it is SelectableItem) {
+                    it.item::class
+                } else {
+                    it::class
+                }
+            }
+        ),
+        emptyRenderer = emptyViewBinder
     ).layoutAsOne(this)
 }
