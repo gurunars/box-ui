@@ -6,20 +6,16 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import com.gurunars.box.IRoBox
 import com.gurunars.box.box
-import com.gurunars.box.ui.Bounds
-import com.gurunars.box.ui.dip
-import com.gurunars.box.ui.fullSize
-import com.gurunars.box.ui.padding
+import com.gurunars.box.ui.*
 
 /**
- * @param ItemType type of the item to be shown in the list
  * @param items A collection of items shown in the list
  * @param itemViewBinders a mapping between item types and view binders meant to render the respective items
  * @param emptyViewBinder a function returning a view to be shown when the list is empty
  */
-fun <ItemType : Item> Context.itemListView(
-    items: IRoBox<List<ItemType>>,
-    itemViewBinders: Map<Enum<*>, ItemViewBinder<ItemType>> = mapOf(),
+fun Context.itemListView(
+    items: IRoBox<List<Item>>,
+    itemViewBinders: Set<ItemBinding<*>> = setOf(),
     emptyViewBinder: EmptyViewBinder = this::defaultEmptyViewBinder,
     reverseLayout: IRoBox<Boolean> = false.box
 ): View = RecyclerView(this).apply {

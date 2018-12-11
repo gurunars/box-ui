@@ -9,14 +9,16 @@ import com.gurunars.box.IRoBox
 import com.gurunars.box.ui.asRow
 import com.gurunars.box.ui.fullSize
 
-internal class ItemAdapter<ItemType : Item>(
-    private val items: IRoBox<List<ItemType>>,
+internal class ItemAdapter(
+    private val items: IRoBox<List<Item>>,
     private val emptyViewBinder: EmptyViewBinder,
-    private val itemViewBinders: Map<Enum<*>, ItemViewBinder<ItemType>>
+    itemViewBinders: Set<ItemBinding<*>>
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var previousList: List<Pair<Long, Int>> = listOf()
     private var recyclerView: RecyclerView? = null
+
+    private val binders = itemViewBinders.map { it.type to it }.toMap()
 
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
         this.recyclerView = recyclerView
@@ -77,12 +79,14 @@ internal class ItemAdapter<ItemType : Item>(
             // If enums are from different classes - they have same ordinals
             val initialPayload = items.get().first { getItemTypeInt(it) == viewType }
             val field = Box(initialPayload)
-            val binder = itemViewBinders[initialPayload.type] ?: parent.context::defaultItemViewBinder
+            val binder = binders[initialPayload::class] ?: ItemBinding(Item::class) {
+                parent.context.defaultItemViewBinder(it)
+            }
             return object : RecyclerView.ViewHolder(
-                    binder(field).apply {
-                        asRow()
-                        setTag(R.id.payloadTag, field)
-                    }) {}
+                binder.renderGeneric(field).apply {
+                    asRow()
+                    setTag(R.id.payloadTag, field)
+                }) {}
         }
     }
 
@@ -91,7 +95,7 @@ internal class ItemAdapter<ItemType : Item>(
             return // nothing to bind
         }
         @Suppress("UNCHECKED_CAST")
-        val field = holder.itemView.getTag(R.id.payloadTag) as Box<ItemType>
+        val field = holder.itemView.getTag(R.id.payloadTag) as Box<Item>
         field.set(items.get()[position])
     }
 
@@ -107,7 +111,7 @@ internal class ItemAdapter<ItemType : Item>(
                 }
             }
 
-    private fun getItemTypeInt(item: ItemType) = itemViewBinders.keys.indexOf(item.type)
+    private fun getItemTypeInt(item: Item) = binders.keys.indexOf(item::class)
 
     override fun getItemViewType(position: Int) =
             if (items.get().isEmpty())
