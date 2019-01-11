@@ -13,16 +13,14 @@ import com.gurunars.animal_item.renderAnimal
 import com.gurunars.box.*
 import com.gurunars.box.ui.layoutAsOne
 import com.gurunars.box.ui.statefulView
-import com.gurunars.item_list.RenderItem
-import com.gurunars.item_list.SelectableItem
-import com.gurunars.item_list.selectableItemListView
+import com.gurunars.item_list.*
 
 class ActivityMain : Activity() {
 
     lateinit var srv: Service
     lateinit var items: IBox<List<AnimalItem>>
 
-    private val selectedItems = Box<Set<AnimalItem>>(setOf())
+    private val selectedItems = Box<Set<Long>>(setOf())
     private val explicitSelectionMode = false.box
 
     private fun add(type: AnimalItem.Type) {
@@ -36,15 +34,15 @@ class ActivityMain : Activity() {
 
         statefulView(R.id.main) {
             retain(selectedItems, explicitSelectionMode)
-            selectableItemListView(
-                explicitSelectionMode = explicitSelectionMode,
+            itemListView(
                 items = items,
-                selectedItems = selectedItems,
-                itemViewBinders = AnimalItem.Type.values().map {
-                    RenderItem(it as Enum<*>, { item: IRoBox<SelectableItem<AnimalItem>> ->
-                        renderAnimal(item.oneWayBranch { this.item })
-                    })
-                }.toSet()
+                renderer = Renderer(
+                    renderWith<AnimalItem> { item ->
+                        withSelector(selectedItems, item) { isSelected ->
+                            renderAnimal(item).coloredRowSelectionDecorator(isSelected)
+                        }
+                    }
+                )
             ).layoutAsOne(this)
         }.layoutAsOne(this)
     }
@@ -75,19 +73,22 @@ class ActivityMain : Activity() {
     private fun updateSelected(): Int {
         val selected = selectedItems.get()
         items.patch {
-            this.map {
-                if (selected.any { (id) -> it.id == id })
+            map {
+                if (selected.contains(it.id))
                     it.copy(version = it.version + 1)
-                else it
+                else
+                    it
             }
         }
         return R.string.did_update_selected
     }
 
     private fun deleteSelected(): Int {
-        items.set(items.get().filterNot { item: AnimalItem ->
-            selectedItems.get().any { (id) -> item.id == id }
-        })
+        items.patch {
+            filter {
+                !selectedItems.get().contains(it.id)
+            }
+        }
         return R.string.did_delete_selected
     }
 
