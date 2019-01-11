@@ -88,6 +88,7 @@ private class ItemAdapter(
     }
 
     private class ItemCallback(
+        val getKey: KeyGetter,
         val previousList: List<Any>,
         val currentList: List<Any>
     ) : DiffUtil.Callback() {
@@ -100,7 +101,7 @@ private class ItemAdapter(
             previousList.getOrNull(oldItemPosition) == currentList.getOrNull(newItemPosition)
 
         override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
-            previousList.getOrNull(oldItemPosition)?.hashCode() == currentList.getOrNull(newItemPosition)?.hashCode()
+            previousList.getOrNull(oldItemPosition)?.let { getKey(it) } == currentList.getOrNull(newItemPosition)?.let { getKey(it) }
     }
 
     init {
@@ -112,7 +113,7 @@ private class ItemAdapter(
             }
             Single.fromCallable {
                 DiffUtil.calculateDiff(
-                    ItemCallback(previousList, list)
+                    ItemCallback(getKey, previousList, list)
                 )
             }
                 .subscribeOn(ComputationScheduler())
@@ -203,7 +204,7 @@ private class ItemAdapter(
 
 /**
  * @param items A collection of items shown in the list
- * @param getKey
+ * @param getKey a function returning a unique key for the item
  * @param renderer a mapping between item types and view functionMap meant to render the respective items
  */
 fun Context.itemListView(
