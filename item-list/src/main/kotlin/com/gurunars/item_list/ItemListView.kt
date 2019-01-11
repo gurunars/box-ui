@@ -11,7 +11,6 @@ import android.view.ViewGroup
 import android.widget.TextView
 import com.gurunars.box.Box
 import com.gurunars.box.IRoBox
-import com.gurunars.box.box
 import com.gurunars.box.ui.*
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -79,7 +78,7 @@ private class ItemAdapter(
     private val getKey: KeyGetter
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private var previousList: List<Pair<Long, Int>> = listOf()
+    private var previousList: List<Any> = listOf()
     private var recyclerView: RecyclerView? = null
 
     private val renderMap = renderer.functionMap.map { it.type to it }.toMap()
@@ -89,30 +88,31 @@ private class ItemAdapter(
     }
 
     private class ItemCallback(
-        val previousList: List<Pair<Long, Int>>,
-        val currentList: List<Pair<Long, Int>>) : DiffUtil.Callback() {
+        val previousList: List<Any>,
+        val currentList: List<Any>
+    ) : DiffUtil.Callback() {
 
         override fun getOldListSize() = Math.max(1, previousList.size)
 
         override fun getNewListSize() = Math.max(1, currentList.size)
 
         override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
-            previousList.getOrNull(oldItemPosition)?.second == currentList.getOrNull(newItemPosition)?.second
+            previousList.getOrNull(oldItemPosition) == currentList.getOrNull(newItemPosition)
 
         override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
-            previousList.getOrNull(oldItemPosition)?.first == currentList.getOrNull(newItemPosition)?.first
+            previousList.getOrNull(oldItemPosition)?.hashCode() == currentList.getOrNull(newItemPosition)?.hashCode()
     }
 
     init {
         items.onChange { list ->
             if (previousList.isEmpty() || list.isEmpty()) {
                 notifyDataSetChanged()
-                previousList = list.shrink(getKey)
+                previousList = list
                 return@onChange
             }
             Single.fromCallable {
                 DiffUtil.calculateDiff(
-                    ItemCallback(previousList, list.shrink(getKey))
+                    ItemCallback(previousList, list)
                 )
             }
                 .subscribeOn(ComputationScheduler())
@@ -121,18 +121,18 @@ private class ItemAdapter(
                     it.dispatchUpdatesTo(this)
                 }
                 .subscribe({
-                    previousList = list.shrink()
+                    previousList = list
                 }, { exe ->
                     // In case of a drastic failure - just reset the adapter
                     if (exe is IndexOutOfBoundsException) {
                         val recycler = recyclerView ?: return@subscribe
                         recycler.recycledViewPool.clear()
                         recycler.swapAdapter(
-                            ItemAdapter(items, emptyViewBinder, renderer),
+                            ItemAdapter(items, emptyViewBinder, renderer, getKey),
                             false
                         )
                     }
-                    previousList = list.shrink()
+                    previousList = list
                 })
         }
     }
@@ -181,7 +181,7 @@ private class ItemAdapter(
         } else {
             val itemList = items.get()
             if (itemList.isNotEmpty()) {
-                items.get()[position].id
+                getKey(items.get()[position])
             } else {
                 RecyclerView.NO_ID
             }
@@ -203,14 +203,14 @@ private class ItemAdapter(
 
 /**
  * @param items A collection of items shown in the list
+ * @param getKey
  * @param renderer a mapping between item types and view functionMap meant to render the respective items
- * @param emptyRenderer a function returning a view to be shown when the list is empty
  */
 fun Context.itemListView(
     items: IRoBox<List<Any>>,
     renderer: Renderer,
-    emptyRenderer: EmptyViewBinder = this::defaultEmptyViewBinder,
-    reverseLayout: IRoBox<Boolean> = false.box
+    getKey: KeyGetter = { it.hashCode().toLong() },
+    emptyRenderer: EmptyViewBinder = this::defaultEmptyViewBinder
 ): View = RecyclerView(this).apply {
     id = R.id.recyclerView
     fullSize()
@@ -220,10 +220,10 @@ fun Context.itemListView(
     adapter = ItemAdapter(
         items,
         emptyRenderer,
-        renderer
+        renderer,
+        getKey
     )
     layoutManager = LinearLayoutManager(context).apply {
         orientation = LinearLayoutManager.VERTICAL
-        reverseLayout.onChange { this.reverseLayout = it }
     }
 }
