@@ -66,13 +66,13 @@ internal fun<T: Any> clickableBind(
  * @param explicitSelectionMode when true selection mode is initiated via normal click instead of a long one
  */
 fun<T: Any> Context.selectableItemListView(
-    itemViewBinders: Set<RenderType<*>> = setOf(),
+    itemViewBinders: Set<RenderType<T>> = setOf(),
     emptyViewBinder: EmptyViewBinder = this::defaultEmptyViewBinder,
     decorateSelection: View.(type: Any, isSelected: IRoBox<Boolean>) -> Unit = {
         _, isSelected -> coloredRowSelectionDecorator(isSelected=isSelected)
     },
     items: IRoBox<List<T>>,
-    getKey: KeyGetter<T>,
+    getKey: KeyGetter<T> = { it.hashCode().toLong() },
     selectedItems: IBox<Set<T>> = Box(setOf()),
     explicitSelectionMode: IRoBox<Boolean> = false.box
 ): View = statefulView(R.id.selectableItemListView) {

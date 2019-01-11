@@ -13,6 +13,7 @@ import com.gurunars.animal_item.renderAnimal
 import com.gurunars.box.*
 import com.gurunars.box.ui.layoutAsOne
 import com.gurunars.box.ui.statefulView
+import com.gurunars.item_list.RenderItem
 import com.gurunars.item_list.SelectableItem
 import com.gurunars.item_list.coloredRowSelectionDecorator
 import com.gurunars.item_list.selectableItemListView
@@ -41,10 +42,10 @@ class ActivityMain : Activity() {
                 items = items,
                 selectedItems = selectedItems,
                 itemViewBinders = AnimalItem.Type.values().map {
-                    Pair(it as Enum<*>, { item: IRoBox<SelectableItem<AnimalItem>> ->
-                        coloredRowSelectionDecorator(item) { renderAnimal(it) }
+                    RenderItem(it as Enum<*>, { item: IRoBox<SelectableItem<AnimalItem>> ->
+                        renderAnimal(item.oneWayBranch { this.item })
                     })
-                }.toMap()
+                }.toSet()
             ).layoutAsOne(this)
         }.layoutAsOne(this)
     }
