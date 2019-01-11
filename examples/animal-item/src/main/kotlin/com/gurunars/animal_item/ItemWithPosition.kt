@@ -1,6 +1,6 @@
 package com.gurunars.animal_item
 
 // TODO: move to own package
-interface ItemWithPosition : DbItem {
+interface ItemWithPosition : Item {
     var position: Int
 }

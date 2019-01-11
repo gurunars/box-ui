@@ -71,14 +71,14 @@ fun Context.defaultEmptyViewBinder() = TextView(this).apply {
     gravity = Gravity.CENTER
 }
 
-private class ItemAdapter(
-    private val items: IRoBox<List<Any>>,
+private class ItemAdapter<T: Any>(
+    private val items: IRoBox<List<T>>,
     private val emptyViewBinder: EmptyViewBinder,
     private val renderer: Renderer,
-    private val getKey: KeyGetter
+    private val getKey: KeyGetter<T>
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private var previousList: List<Any> = listOf()
+    private var previousList: List<T> = listOf()
     private var recyclerView: RecyclerView? = null
 
     private val renderMap = renderer.functionMap.map { it.type to it }.toMap()
@@ -87,10 +87,10 @@ private class ItemAdapter(
         this.recyclerView = recyclerView
     }
 
-    private class ItemCallback(
-        val getKey: KeyGetter,
-        val previousList: List<Any>,
-        val currentList: List<Any>
+    private class ItemCallback<T>(
+        val getKey: KeyGetter<T>,
+        val previousList: List<T>,
+        val currentList: List<T>
     ) : DiffUtil.Callback() {
 
         override fun getOldListSize() = Math.max(1, previousList.size)
@@ -188,7 +188,7 @@ private class ItemAdapter(
             }
         }
 
-    private fun getItemTypeInt(item: Any) = renderMap.keys.indexOf(item::class)
+    private fun getItemTypeInt(item: T) = renderMap.keys.indexOf(item::class)
 
     override fun getItemViewType(position: Int) =
         if (items.get().isEmpty())
@@ -207,10 +207,10 @@ private class ItemAdapter(
  * @param getKey a function returning a unique key for the item
  * @param renderer a mapping between item types and view functionMap meant to render the respective items
  */
-fun Context.itemListView(
-    items: IRoBox<List<Any>>,
+fun<T: Any> Context.itemListView(
+    items: IRoBox<List<T>>,
     renderer: Renderer,
-    getKey: KeyGetter = { it.hashCode().toLong() },
+    getKey: KeyGetter<T> = { it.hashCode().toLong() },
     emptyRenderer: EmptyViewBinder = this::defaultEmptyViewBinder
 ): View = RecyclerView(this).apply {
     id = R.id.recyclerView

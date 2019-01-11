@@ -23,7 +23,6 @@ data class AnimalItem @Ignore constructor(
         EMPTY(R.drawable.ic_menu_empty)
     }
 
-    override fun toString(): String {
-        return "#$id{$type @ $version}"
-    }
+    override fun toString(): String =
+        "#$id{$type @ $version}"
 }

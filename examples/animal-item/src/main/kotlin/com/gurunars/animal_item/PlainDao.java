@@ -1,7 +1,5 @@
 package com.gurunars.animal_item;
 
-import com.gurunars.item_list.Item;
-
 import java.util.List;
 
 // NOTE: if written in Kotlin - does not work with Room annotations

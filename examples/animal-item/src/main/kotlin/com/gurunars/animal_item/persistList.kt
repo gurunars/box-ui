@@ -1,7 +1,6 @@
 package com.gurunars.animal_item
 
 import com.esotericsoftware.kryo.Kryo
-import com.gurunars.item_list.Item
 import org.objenesis.strategy.StdInstantiatorStrategy
 
 typealias RunInTransaction = (transition: Runnable) -> Unit
@@ -12,7 +11,7 @@ private fun <ItemType : Item> asMap(items: List<ItemType>) = mapOf(*items
 )
 
 // TODO: move to own package
-fun <ItemType : DbItem> persistList(
+fun <ItemType : Item> persistList(
     runInTransaction: RunInTransaction,
     dao: PlainDao<ItemType>,
     items: List<ItemType>

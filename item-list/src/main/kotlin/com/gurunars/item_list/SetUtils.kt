@@ -1,12 +1,12 @@
 package com.gurunars.item_list
 
-typealias KeyGetter = (item: Any) -> Long
+typealias KeyGetter<T> = (item: T) -> Long
 
-internal fun Collection<Any>.has(getKey: KeyGetter, item: Any) =
+internal fun<T: Any> Collection<T>.has(getKey: KeyGetter<T>, item: T) =
     find { getKey(item) == getKey(it) } != null
 
-internal fun Set<Any>.exclude(getKey: KeyGetter, item: Any) =
+internal fun<T: Any> Set<T>.exclude(getKey: KeyGetter<T>, item: T) =
     filterNot { getKey(item) == getKey(it) }.toSet()
 
-internal fun Set<Any>.include(item: Any) =
+internal fun<T: Any> Set<T>.include(item: T) =
     this + item
