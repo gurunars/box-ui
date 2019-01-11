@@ -36,6 +36,7 @@ class ActivityMain : Activity() {
             retain(selectedItems, explicitSelectionMode)
             itemListView(
                 items = items,
+                getKey = { it.id },
                 renderer = Renderer(
                     renderWith<AnimalItem> { item ->
                         withSelector(selectedItems, item) { isSelected ->

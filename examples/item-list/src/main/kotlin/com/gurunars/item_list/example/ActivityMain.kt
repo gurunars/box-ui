@@ -33,6 +33,7 @@ class ActivityMain : Activity() {
 
         itemListView(
             items = items,
+            getKey = { it.id },
             renderer = Renderer(
                 renderWith<AnimalItem> { renderAnimal(it) }
             )
