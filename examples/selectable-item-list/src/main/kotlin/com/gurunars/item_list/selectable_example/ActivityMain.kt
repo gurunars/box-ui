@@ -15,7 +15,6 @@ import com.gurunars.box.ui.layoutAsOne
 import com.gurunars.box.ui.statefulView
 import com.gurunars.item_list.RenderItem
 import com.gurunars.item_list.SelectableItem
-import com.gurunars.item_list.coloredRowSelectionDecorator
 import com.gurunars.item_list.selectableItemListView
 
 class ActivityMain : Activity() {

@@ -49,9 +49,9 @@ class RenderType<ItemType>(
         this.render(item as IRoBox<ItemType>)
 }
 
-class Renderer(
-    internal vararg val functionMap: RenderType<*>,
-    internal val getType: (item: Any) -> Any = { it::class }
+class Renderer<T: Any>(
+    internal vararg val functionMap: RenderType<T>,
+    internal val getType: (item: T) -> Any = { it::class }
 )
 
 fun <ItemType> renderWith(target: Any, render: RenderItem<ItemType>): RenderType<ItemType> =
@@ -74,7 +74,7 @@ fun Context.defaultEmptyViewBinder() = TextView(this).apply {
 private class ItemAdapter<T: Any>(
     private val items: IRoBox<List<T>>,
     private val emptyViewBinder: EmptyViewBinder,
-    private val renderer: Renderer,
+    private val renderer: Renderer<T>,
     private val getKey: KeyGetter<T>
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -209,7 +209,7 @@ private class ItemAdapter<T: Any>(
  */
 fun<T: Any> Context.itemListView(
     items: IRoBox<List<T>>,
-    renderer: Renderer,
+    renderer: Renderer<T>,
     getKey: KeyGetter<T> = { it.hashCode().toLong() },
     emptyRenderer: EmptyViewBinder = this::defaultEmptyViewBinder
 ): View = RecyclerView(this).apply {

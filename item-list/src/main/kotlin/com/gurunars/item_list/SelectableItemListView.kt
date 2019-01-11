@@ -66,7 +66,7 @@ internal fun<T: Any> clickableBind(
  * @param explicitSelectionMode when true selection mode is initiated via normal click instead of a long one
  */
 fun<T: Any> Context.selectableItemListView(
-    itemViewBinders: Set<RenderType<T>> = setOf(),
+    renderer: Renderer<T>,
     emptyViewBinder: EmptyViewBinder = this::defaultEmptyViewBinder,
     decorateSelection: View.(type: Any, isSelected: IRoBox<Boolean>) -> Unit = {
         _, isSelected -> coloredRowSelectionDecorator(isSelected=isSelected)
@@ -82,7 +82,7 @@ fun<T: Any> Context.selectableItemListView(
     // The flag is require to prevent selection cleanup during the initialization
     var initialized = false
 
-    val selectables = Box<List<Any>>(listOf())
+    val selectables = Box<List<SelectableItem<T>>>(listOf())
 
     items.onChange { its ->
         if (initialized) {
@@ -100,7 +100,7 @@ fun<T: Any> Context.selectableItemListView(
     itemListView(
         items = selectables,
         renderer = Renderer(
-            *itemViewBinders.map { original ->
+            *renderer.functionMap.map { original ->
                 renderWith(original.type) { selectable: IRoBox<SelectableItem<T>> ->
                     clickableBind(selectedItems, {
                         original.renderGeneric(selectable.oneWayBranch { item })
@@ -109,14 +109,9 @@ fun<T: Any> Context.selectableItemListView(
                     }
                 }
             }.toTypedArray(),
-            getType = {
-                if (it is SelectableItem<*>) {
-                    it.item::class
-                } else {
-                    it::class
-                }
-            }
+            getType = { renderer.getType(it.item) }
         ),
+        getKey = { getKey(it.item) },
         emptyRenderer = emptyViewBinder
     ).layoutAsOne(this)
 }
