@@ -1,13 +1,12 @@
 package com.gurunars.item_list
 
-internal fun <ItemType : Item> Collection<ItemType>.has(item: ItemType) =
-    find { item.id == it.id } != null
+typealias KeyGetter = (item: Any) -> Long
 
-internal fun <ItemType : Item> Set<ItemType>.exclude(item: ItemType) =
-    filterNot { it.id == item.id }.toSet()
+internal fun Collection<Any>.has(getKey: KeyGetter, item: Any) =
+    find { getKey(item) == getKey(it) } != null
 
-internal fun <ItemType : Item> Set<ItemType>.include(item: ItemType) =
+internal fun Set<Any>.exclude(getKey: KeyGetter, item: Any) =
+    filterNot { getKey(item) == getKey(it) }.toSet()
+
+internal fun Set<Any>.include(item: Any) =
     this + item
-
-internal fun <ItemType : Item> List<ItemType>.shrink() =
-    map { Pair(it.id, it.hashCode()) }

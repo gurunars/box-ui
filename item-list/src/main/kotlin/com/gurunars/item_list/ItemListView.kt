@@ -5,7 +5,6 @@ import android.graphics.Color
 import android.support.v7.util.DiffUtil
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
@@ -17,19 +16,12 @@ import com.gurunars.box.ui.*
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.internal.schedulers.ComputationScheduler
-import java.io.Serializable
-
-/** Abstraction of the entity that can be shown in the ItemListView. */
-interface Item : Serializable {
-    /** Item unique identifier. */
-    val id: Long
-}
 
 /***/
 typealias RenderItem<ItemType> = (field: IRoBox<ItemType>) -> View
 
 /***/
-fun Context.defaultItemViewBinder(field: IRoBox<Item>) = TextView(this).apply {
+fun<T> Context.defaultItemViewBinder(field: IRoBox<T>) = TextView(this).apply {
     setBackgroundColor(Color.YELLOW)
     setTextColor(Color.RED)
     field.onChange { value ->
@@ -40,7 +32,7 @@ fun Context.defaultItemViewBinder(field: IRoBox<Item>) = TextView(this).apply {
     }
 }
 
-class RenderType<ItemType: Item>(
+class RenderType<ItemType>(
     val type: Any,
     val render: RenderItem<ItemType>
 ) {
@@ -54,19 +46,19 @@ class RenderType<ItemType: Item>(
     override fun hashCode(): Int = type.hashCode()
 
     @Suppress("UNCHECKED_CAST")
-    internal fun<T: Item> renderGeneric(item: IRoBox<T>) =
+    internal fun<T> renderGeneric(item: IRoBox<T>) =
         this.render(item as IRoBox<ItemType>)
 }
 
 class Renderer(
     internal vararg val functionMap: RenderType<*>,
-    internal val getType: (item: Item) -> Any = { it::class }
+    internal val getType: (item: Any) -> Any = { it::class }
 )
 
-fun <ItemType: Item> renderWith(target: Any, render: RenderItem<ItemType>): RenderType<ItemType> =
+fun <ItemType> renderWith(target: Any, render: RenderItem<ItemType>): RenderType<ItemType> =
     RenderType(target, render)
 
-inline fun <reified ItemType: Item> renderWith(noinline render: RenderItem<ItemType>): RenderType<ItemType> =
+inline fun <reified ItemType> renderWith(noinline render: RenderItem<ItemType>): RenderType<ItemType> =
     RenderType(ItemType::class, render)
 
 /** View binder for the case when there are no item in the list. */
@@ -80,10 +72,11 @@ fun Context.defaultEmptyViewBinder() = TextView(this).apply {
     gravity = Gravity.CENTER
 }
 
-private class ItemAdapter<ItemType: Item>(
-    private val items: IRoBox<List<ItemType>>,
+private class ItemAdapter(
+    private val items: IRoBox<List<Any>>,
     private val emptyViewBinder: EmptyViewBinder,
-    private val renderer: Renderer
+    private val renderer: Renderer,
+    private val getKey: KeyGetter
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var previousList: List<Pair<Long, Int>> = listOf()
@@ -114,12 +107,12 @@ private class ItemAdapter<ItemType: Item>(
         items.onChange { list ->
             if (previousList.isEmpty() || list.isEmpty()) {
                 notifyDataSetChanged()
-                previousList = list.shrink()
+                previousList = list.shrink(getKey)
                 return@onChange
             }
             Single.fromCallable {
                 DiffUtil.calculateDiff(
-                    ItemCallback(previousList, list.shrink())
+                    ItemCallback(previousList, list.shrink(getKey))
                 )
             }
                 .subscribeOn(ComputationScheduler())
@@ -164,7 +157,7 @@ private class ItemAdapter<ItemType: Item>(
             val initialPayload = items.get().first { getItemTypeInt(it) == viewType }
             val field = Box(initialPayload)
             val binder: RenderType<*> = renderMap[renderer.getType(initialPayload)]
-                ?: RenderType<Item>(Item::class) { parent.context.defaultItemViewBinder(it) }
+                ?: RenderType<Any>(Any::class) { parent.context.defaultItemViewBinder(it) }
             return object : RecyclerView.ViewHolder(
                 binder.renderGeneric(field).apply {
                     asRow()
@@ -178,7 +171,7 @@ private class ItemAdapter<ItemType: Item>(
             return // nothing to bind
         }
         @Suppress("UNCHECKED_CAST")
-        val field = holder.itemView.getTag(R.id.payloadTag) as Box<Item>
+        val field = holder.itemView.getTag(R.id.payloadTag) as Box<Any>
         field.set(items.get()[position])
     }
 
@@ -194,7 +187,7 @@ private class ItemAdapter<ItemType: Item>(
             }
         }
 
-    private fun getItemTypeInt(item: Item) = renderMap.keys.indexOf(item::class)
+    private fun getItemTypeInt(item: Any) = renderMap.keys.indexOf(item::class)
 
     override fun getItemViewType(position: Int) =
         if (items.get().isEmpty())
@@ -213,8 +206,8 @@ private class ItemAdapter<ItemType: Item>(
  * @param renderer a mapping between item types and view functionMap meant to render the respective items
  * @param emptyRenderer a function returning a view to be shown when the list is empty
  */
-fun<ItemType: Item> Context.itemListView(
-    items: IRoBox<List<ItemType>>,
+fun Context.itemListView(
+    items: IRoBox<List<Any>>,
     renderer: Renderer,
     emptyRenderer: EmptyViewBinder = this::defaultEmptyViewBinder,
     reverseLayout: IRoBox<Boolean> = false.box
