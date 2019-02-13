@@ -1,4 +1,4 @@
-package com.example.box
+package com.gurunars.box
 
 import android.app.Activity
 import android.os.Bundle
