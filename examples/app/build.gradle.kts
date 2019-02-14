@@ -1,14 +1,15 @@
-plugins {
-    id("com.android.application")
-    id("kotlin-android")
-    id("kotlin-android-extensions")
-}
+fun KotlinBuildScript.initSampleApp(appId: String) {
 
-fun Project.stuff() {
+    plugins {
+        id("com.android.application")
+        id("kotlin-android")
+        id("kotlin-android-extensions")
+    }
+
     android {
         compileSdkVersion(28)
         defaultConfig {
-            applicationId = "com.example.box"
+            applicationId = appId
             minSdkVersion(23)
             targetSdkVersion(28)
             versionCode = 1
@@ -28,4 +29,4 @@ fun Project.stuff() {
     }
 }
 
-stuff()
+initSampleApp("com.example.box")
