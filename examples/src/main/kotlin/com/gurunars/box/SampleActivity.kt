@@ -7,13 +7,15 @@ import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.widget.TextView
 
+import com.gurunars.samplelibrary.getProfoundMessage
+
 class SampleActivity: Activity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContentView(TextView(this).apply {
-            text = "FOO BAR"
+            text = getProfoundMessage()
             gravity = Gravity.CENTER
             textSize = 25f
         }, ViewGroup.LayoutParams(MATCH_PARENT, MATCH_PARENT))
