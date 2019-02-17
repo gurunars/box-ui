@@ -16,7 +16,7 @@ android {
         minSdkVersion(23)
         targetSdkVersion(28)
         versionCode = 1
-        versionName = "1.0"
+        versionName = Release.version
         testInstrumentationRunner = "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -29,8 +29,8 @@ android {
 }
 
 dependencies {
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.21")
-    implementation("com.android.support:appcompat-v7:28.0.0")
+    implementation(Packages.kotlin)
+    implementation(Packages.appCompat)
 }
 repositories {
     mavenCentral()

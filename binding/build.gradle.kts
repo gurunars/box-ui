@@ -8,10 +8,10 @@ plugins {
 }
 
 group = "com.gurunars.binding"
-version = "1.0"
+version = Release.version
 
 dependencies {
-    testImplementation("junit:junit:4.12")
-    implementation("io.reactivex.rxjava2:rxjava:2.1.13")
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.21")
+    testImplementation(Packages.junit)
+    implementation(Packages.rx)
+    implementation(Packages.kotlin)
 }
