@@ -1,1 +1,1 @@
-include(":examples", ":samplelibrary")
+include(":examples", ":samplelibrary", ":binding")

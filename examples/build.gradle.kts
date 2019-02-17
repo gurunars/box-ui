@@ -1,3 +1,4 @@
+
 plugins {
     setOf(
         "com.android.application",
@@ -25,6 +26,8 @@ android {
         }
     }
 }
+
+
 dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.21")
     implementation("com.android.support:appcompat-v7:28.0.0")
