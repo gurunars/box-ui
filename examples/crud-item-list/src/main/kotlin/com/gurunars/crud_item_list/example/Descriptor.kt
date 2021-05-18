@@ -17,11 +17,6 @@ import com.gurunars.box.ui.fullSize
 import com.gurunars.box.ui.text
 import com.gurunars.item_list.WithSelection
 import com.gurunars.item_list.coloredRowSelectionDecorator
-import org.jetbrains.anko.backgroundColor
-import org.jetbrains.anko.button
-import org.jetbrains.anko.editText
-import org.jetbrains.anko.textView
-import org.jetbrains.anko.verticalLayout
 
 internal class Descriptor(
     private val context: Context,

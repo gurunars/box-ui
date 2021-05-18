@@ -10,7 +10,6 @@ import com.gurunars.box.ui.asRow
 import com.gurunars.box.ui.resource
 import com.gurunars.box.ui.setBorders
 import com.gurunars.box.ui.text
-import org.jetbrains.anko.*
 
 fun Context.bindAnimal(field: IRoBox<AnimalItem>): View = linearLayout {
     gravity = Gravity.CENTER_VERTICAL

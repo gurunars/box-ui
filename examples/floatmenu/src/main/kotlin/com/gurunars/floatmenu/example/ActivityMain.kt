@@ -10,8 +10,6 @@ import com.gurunars.box.ui.layoutAsOne
 import com.gurunars.box.ui.onClick
 import com.gurunars.box.ui.with
 import com.gurunars.floatmenu.contextualFabMenu
-import org.jetbrains.anko.backgroundColor
-
 
 class ActivityMain : Activity() {
 

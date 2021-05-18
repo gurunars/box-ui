@@ -18,7 +18,6 @@ import com.gurunars.box.ui.statefulView
 import com.gurunars.crud_item_list.IconColorBundle
 import com.gurunars.crud_item_list.ItemTypeDescriptor
 import com.gurunars.crud_item_list.crudItemListView
-import org.jetbrains.anko.backgroundColor
 
 class ActivityMain : Activity() {
 
